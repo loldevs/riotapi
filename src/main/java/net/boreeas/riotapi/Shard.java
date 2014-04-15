@@ -21,22 +21,49 @@ package net.boreeas.riotapi;
  * Created on 4/12/2014.
  */
 public enum Shard {
-    EUW("euw", "chat.eu.lol.riotgames.com", 5223, "prod.euw.lol.riotgames.com"),
-    EUNE("eune", "chat.eun1.lol.riotgames.com", 5223, "prod.eun1.lol.riotgames.com"),
-    NA("na", "chat.na1.lol.riotgames.com", 5223, "prod.na1.lol.riotgames.com"),
-    BR("br", "chat.br.lol.riotgames.com", 5223, "prod.br.lol.riotgames.com"),
-    OCE("oce", "chat.oc1.lol.riotgames.com", 5223, "prod.oc1.lol.riotgames.com"),
-    KR("kr", null, 0, null);  // TODO: kr urls
+    // TODO: Some of this may be outdated. SEA is missing?
+    EUW("euw",  "eu.lol.riotgames.com"),
+    EUNE("eune","chat.eun1.lol.riotgames.com"),
+    NA("na",    "chat.na1.lol.riotgames.com"),
+    BR("br",    "chat.br.lol.riotgames.com"),
+    OCE("oce",  "chat.oc1.lol.riotgames.com"),
+    TR("tr",    "tr.lol.riotgames.com"),
+    RU("ru",    "ru.lol.riotgames.com"),
+    LAN("lan",  "la1.lol.riotgames.com"),
+    LAS("las",  "la2.lol.riotgames.com"),
+    PBE("pbe",  "pbe1.lol.riotgames.com"),
+    KR("kr",    "kr.lol.riotgames.com"),
+    SG("sg",    "lol.garenanow.com", true),
+    TW("tw",    "lol.garenanow.com", "chattw.lol.garenanow.com", "prodtw.lol.garenanow.com", "loginqueuetw.lol.garenanow.com", true),
+    TH("th",    "lol.garenanow.com", "chatth.lol.garenanow.com", "prodth.lol.garenanow.com", "lqth.lol.garenanow.com", true),
+    PH("ph",    "lol.garenanow.com", "chatph.lol.garenanow.com", "prodph.lol.garenanow.com", "lqph.lol.garenanow.com", true),
+    VN("vn",    "lol.garenanow.com", "chatvn.lol.garenanow.com", "prodvn.lol.garenanow.com", "lqvn.lol.garenanow.com", true);
+
 
     public final String name;
-    public final String jabberUrl;
-    public final int jabberPort;
+    public final String baseUrl;
+    public final String chatUrl;
     public final String prodUrl;
+    public final String loginQueue;
+    public final boolean isGarena;
 
-    private Shard(String name, String jabberUrl, int jabberPort, String prodUrl) {
+    public static final int jabberPort = 5223;
+
+
+    private Shard(String name, String baseUrl) {
+        this(name, baseUrl, "chat." + baseUrl, "prod." + baseUrl, "lq." + baseUrl, false);
+    }
+
+    private Shard(String name, String baseUrl, boolean isGarena) {
+        this(name, baseUrl, "chat." + baseUrl, "prod." + baseUrl, "lq." + baseUrl, isGarena);
+    }
+
+    private Shard(String name, String baseUrl, String chatUrl, String prodUrl, String lqUrl, boolean isGarena) {
         this.name = name;
-        this.jabberUrl = jabberUrl;
-        this.jabberPort = jabberPort;
+        this.baseUrl = baseUrl;
+        this.chatUrl = chatUrl;
         this.prodUrl = prodUrl;
+        this.loginQueue = lqUrl;
+        this.isGarena = isGarena;
     }
 }

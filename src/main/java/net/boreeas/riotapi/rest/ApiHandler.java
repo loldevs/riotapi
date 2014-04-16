@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Handles sending GET request to the riot api server
@@ -918,6 +919,24 @@ public class ApiHandler {
         WebTarget tgt = teamInfoTarget.path(String.join(",", teamIds));
 
         return gson.fromJson($(tgt), type);
+    }
+
+    /**
+     * Retrieve summoner ids for the specified names
+     * @param names The names of the users
+     * @return Their respective ids
+     */
+    public List<Long> getSummonerIds(String... names) {
+        return getSummoners(names).values().stream().<Long>map((s) -> s.getId()).collect(Collectors.toList());
+    }
+
+    /**
+     * Retrieve the summoner id for the specified user
+     * @param name The name of the user
+     * @return Their respective ids
+     */
+    public long getSummonerId(String name) {
+        return getSummoner(name).getId();
     }
 
 

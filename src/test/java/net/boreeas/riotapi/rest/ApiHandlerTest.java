@@ -41,148 +41,298 @@ public class ApiHandlerTest extends TestCase {
     }
 
     public void testGetBasicChampData() throws Exception {
-        Thread.sleep(1500);
-        List<BasicChampData> euwBasicChampDatas = handler.getBasicChampData();
-        assertNotNull(euwBasicChampDatas);
-        assertFalse(euwBasicChampDatas.isEmpty());
+        try {
+            Thread.sleep(1500);
+            List<BasicChampData> euwBasicChampDatas = handler.getBasicChampData();
+            assertNotNull(euwBasicChampDatas);
+            assertFalse(euwBasicChampDatas.isEmpty());
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetFreeToPlayChampions() throws Exception {
-        Thread.sleep(1500);
-        assertNotNull(handler.getFreeToPlayChampions());
-        assertEquals(handler.getFreeToPlayChampions().size(), 10);
+        try {
+            Thread.sleep(1500);
+            assertNotNull(handler.getFreeToPlayChampions());
+            assertEquals(handler.getFreeToPlayChampions().size(), 10);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetChampionBasicData() throws Exception {
-        Thread.sleep(1500);
-        handler.getBasicChampData(1);
+        try {
+            Thread.sleep(1500);
+            handler.getBasicChampData(1);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetRecentGames() throws Exception {
-        Thread.sleep(1500);
-        handler.getRecentGames(SUMMONER_ID_2);
+        try {
+            Thread.sleep(1500);
+            handler.getRecentGames(SUMMONER_ID_2);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetLeagues() throws Exception {
-        Thread.sleep(1500);
-        handler.getLeagues(SUMMONER_ID_2);
+        try {
+            Thread.sleep(1500);
+            handler.getLeagues(SUMMONER_ID_2);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetLeagueEntries() throws Exception {
-        Thread.sleep(1500);
-        handler.getLeagueEntries(SUMMONER_ID_1);
+        try {
+            Thread.sleep(1500);
+            handler.getLeagueEntries(SUMMONER_ID_1);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetLeaguesByTeam() throws Exception {
-        Thread.sleep(1500);
-        handler.getLeaguesByTeam(TEAM_ID);
+        try {
+            Thread.sleep(1500);
+            handler.getLeaguesByTeam(TEAM_ID);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetLeagueEntriesByTeam() throws Exception {
-        Thread.sleep(1500);
-        handler.getLeagueEntriesByTeam(TEAM_ID);
+        try {
+            Thread.sleep(1500);
+            handler.getLeagueEntriesByTeam(TEAM_ID);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetChallenger() throws Exception {
-        Thread.sleep(1500);
-        handler.getChallenger(Queue.RANKED_SOLO_5v5);
+        try {
+            Thread.sleep(1500);
+            handler.getChallenger(Queue.RANKED_SOLO_5v5);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetChampion() throws Exception {
-        handler.getChampion(1, ChampData.ALL);
+        try {
+            handler.getChampion(1, ChampData.ALL);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetChampions() throws Exception {
-        handler.getChampions(ChampData.ALL);
+        try {
+            handler.getChampions(ChampData.ALL);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetItems() {
-        handler.getItemList(ItemData.ALL);
+        try {
+            handler.getItemList(ItemData.ALL);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetItem() {
-        handler.getItem(2003, ItemData.CONSUME_ON_FULL);
+        try {
+            handler.getItem(2003, ItemData.CONSUME_ON_FULL);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetMasteries() {
-        handler.getMasteries(MasteryData.ALL);
+        try {
+            handler.getMasteries(MasteryData.ALL);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetMastery() {
-        handler.getMastery(4353, MasteryData.SANITIZED_DESCRIPTION);
+        try {
+            handler.getMastery(4353, MasteryData.SANITIZED_DESCRIPTION);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetRealm() {
-        handler.getRealm();
+        try {
+            handler.getRealm();
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetRunes() {
-        handler.getRuneList(ItemData.ALL);
+        try {
+            handler.getRuneList(ItemData.ALL);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetRune() {
-        handler.getRune(5235, ItemData.HIDE_FROM_ALL);
+        try {
+            handler.getRune(5235, ItemData.HIDE_FROM_ALL);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetSummonerSpells() {
-        handler.getSummonerSpells(SpellData.COOLDOWN_BURN);
+        try {
+            handler.getSummonerSpells(SpellData.COOLDOWN_BURN);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetSummonerSpell() {
-        handler.getSummonerSpell(1, SpellData.ALL);
+        try {
+            handler.getSummonerSpell(1, SpellData.ALL);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetRankedStats() throws InterruptedException {
-        Thread.sleep(1500);
-        handler.getRankedStats(SUMMONER_ID_1);
+        try {
+            Thread.sleep(1500);
+            handler.getRankedStats(SUMMONER_ID_1);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetStatSummary() throws InterruptedException {
-        Thread.sleep(1500);
-        handler.getStatsSummary(SUMMONER_ID_1, Season.SEASON3);
+        try {
+            Thread.sleep(1500);
+            handler.getStatsSummary(SUMMONER_ID_1, Season.SEASON3);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetSummoners() throws InterruptedException {
-        Thread.sleep(1500);
-        handler.getSummoners(SUMMONER_NAME_1, SUMMONER_NAME_2);
+        try {
+            Thread.sleep(1500);
+            handler.getSummoners(SUMMONER_NAME_1, SUMMONER_NAME_2);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetSummonersById() throws InterruptedException {
-        Thread.sleep(1500);
-        handler.getSummoners(SUMMONER_ID_1, SUMMONER_ID_2);
+        try {
+            Thread.sleep(1500);
+            handler.getSummoners(SUMMONER_ID_1, SUMMONER_ID_2);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetSummoner() throws InterruptedException {
-        Thread.sleep(1500);
-        handler.getSummoner(SUMMONER_NAME_2);
+        try {
+            Thread.sleep(1500);
+            handler.getSummoner(SUMMONER_NAME_2);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetSummonerById() throws InterruptedException {
-        Thread.sleep(1500);
-        handler.getSummoner(SUMMONER_ID_2);
+        try {
+            Thread.sleep(1500);
+            handler.getSummoner(SUMMONER_ID_2);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetRunePages() throws InterruptedException {
-        Thread.sleep(1500);
-        handler.getRunePages(SUMMONER_ID_2);
-        handler.getRunePagesMultipleUsers(SUMMONER_ID_2, SUMMONER_ID_1);
+        try {
+            Thread.sleep(1500);
+            handler.getRunePages(SUMMONER_ID_2);
+            handler.getRunePagesMultipleUsers(SUMMONER_ID_2, SUMMONER_ID_1);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetMasteryPages() throws InterruptedException {
-        Thread.sleep(1500);
-        handler.getMasteryPages(SUMMONER_ID_1);
-        handler.getMasteryPagesMultipleUsers(SUMMONER_ID_1, SUMMONER_ID_2);
+        try {
+            Thread.sleep(1500);
+            handler.getMasteryPages(SUMMONER_ID_1);
+            handler.getMasteryPagesMultipleUsers(SUMMONER_ID_1, SUMMONER_ID_2);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetNames() throws InterruptedException {
-        Thread.sleep(1500);
-        handler.getSummonerName(SUMMONER_ID_2);
-        handler.getSummonerNames(SUMMONER_ID_1, SUMMONER_ID_2);
+        try {
+            Thread.sleep(1500);
+            handler.getSummonerName(SUMMONER_ID_2);
+            handler.getSummonerNames(SUMMONER_ID_1, SUMMONER_ID_2);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            ex.printStackTrace();
+        }
     }
 
     public void testGetTeams() throws InterruptedException {
-        Thread.sleep(1500);
-        handler.getTeams(SUMMONER_ID_1);
-        handler.getTeams(TEAM_ID);
+        try {
+            Thread.sleep(1500);
+            handler.getTeams(SUMMONER_ID_1);
+            handler.getTeams(TEAM_ID);
+        } catch (RequestException ex) {
+            System.out.println("### PASS with RequestException");
+            System.out.println(ex.getMessage());
+        }
     }
 }

@@ -53,7 +53,7 @@ public enum Shard {
     public static final String rtmpsAppPath = "app:/mod_ser.dat";
 
     private Shard(String name, String baseUrl) {
-        this(name, baseUrl, "api", "chat", "prod", "lq", false);
+        this(name, baseUrl, "prod", "chat", "prod", "lq", false);
     }
 
     private Shard(String name, String baseUrl, String apiPath) {
@@ -67,7 +67,7 @@ public enum Shard {
     private Shard(String name, String baseUrl, String apiPath, String chatPath, String prodPath, String lqPath, boolean isGarena) {
         this.name = name;
         this.baseUrl = baseUrl;
-        this.apiUrl = "https://" + apiPath + ".lol.leagueoflegends.com/api/lol";
+        this.apiUrl = "https://" + apiPath + ".api.pvp.net/api/lol";
         this.chatUrl = chatPath + "." + baseUrl;
         this.prodUrl = prodPath + "." + baseUrl;
         this.loginQueue = lqPath + "." + baseUrl;

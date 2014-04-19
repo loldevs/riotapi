@@ -25,6 +25,7 @@ import java.util.List;
  */
 @Getter
 public class Spell {
+    private List<Image> altImages;
     private List<Integer> cooldown;
     private String cooldownBurn;
     private List<Integer> cost;

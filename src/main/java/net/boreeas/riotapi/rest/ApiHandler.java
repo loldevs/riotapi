@@ -43,7 +43,6 @@ import java.util.stream.Collectors;
 public class ApiHandler {
 
     private static final String API_BASE_URL = "https://prod.api.pvp.net/api/lol";
-    private static final String API_KR_BASE_URL = "https://asia.api.pvp.net/api/lol";
 
     private Gson gson = new Gson();
     private WebTarget championInfoTarget;
@@ -63,17 +62,9 @@ public class ApiHandler {
 
         String region = shard.name;
 
-        WebTarget defaultTarget;
-        WebTarget defaultStaticTarget;
-        if (shard == Shard.KR) { // KR uses seperate server for everything except static-data
-            Client c = ClientBuilder.newClient();
-            defaultTarget = c.target(API_KR_BASE_URL).queryParam("api_key", token).path(region);
-            defaultStaticTarget = c.target(API_BASE_URL).queryParam("api_key", token).path("static-data").path(region);
-        } else {
-            WebTarget base = ClientBuilder.newClient().target(API_BASE_URL).queryParam("api_key", token);
-            defaultTarget = base.path(region);
-            defaultStaticTarget = base.path("static-data").path(region);
-        }
+        Client c = ClientBuilder.newClient();
+        WebTarget defaultTarget = c.target(shard.apiUrl).queryParam("api_key", token).path(region);
+        WebTarget defaultStaticTarget = c.target(API_BASE_URL).queryParam("api_key", token).path("static-data").path(region);
 
         championInfoTarget  = defaultTarget.path("v1.2").path("champion");
         gameInfoTarget      = defaultTarget.path("v1.3").path("game/by-summoner");
@@ -939,6 +930,18 @@ public class ApiHandler {
         return getSummoner(name).getId();
     }
 
+    /**
+     * Retrieve currently supported game versions.
+     * <p/>
+     * This method does not count towards the rate limit
+     * @return A list of supported game versions
+     * @see <a href=https://developer.riotgames.com/api/methods#!/710/2527>Official API documentation</a>
+     */
+    public List<String> getVersions() {
+        Type type = new TypeToken<List<String>>(){}.getType();
+        WebTarget tgt = staticDataTarget.path("versions");
+        return gson.fromJson($(tgt), type);
+    }
 
 
     /**

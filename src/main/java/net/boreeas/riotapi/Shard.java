@@ -22,22 +22,22 @@ package net.boreeas.riotapi;
  */
 public enum Shard {
     // TODO: Some of this may be outdated. SEA is missing?
-    EUW("euw",  "eu.lol.riotgames.com"),
-    EUNE("eune","chat.eun1.lol.riotgames.com"),
-    NA("na",    "chat.na1.lol.riotgames.com"),
-    BR("br",    "chat.br.lol.riotgames.com"),
-    OCE("oce",  "chat.oc1.lol.riotgames.com"),
-    TR("tr",    "tr.lol.riotgames.com"),
-    RU("ru",    "ru.lol.riotgames.com"),
-    LAN("lan",  "la1.lol.riotgames.com"),
-    LAS("las",  "la2.lol.riotgames.com"),
-    PBE("pbe",  "pbe1.lol.riotgames.com"),
-    KR("kr",    "kr.lol.riotgames.com"),
-    SG("sg",    "lol.garenanow.com", true),
-    TW("tw",    "lol.garenanow.com", "chattw.lol.garenanow.com", "prodtw.lol.garenanow.com", "loginqueuetw.lol.garenanow.com", true),
-    TH("th",    "lol.garenanow.com", "chatth.lol.garenanow.com", "prodth.lol.garenanow.com", "lqth.lol.garenanow.com", true),
-    PH("ph",    "lol.garenanow.com", "chatph.lol.garenanow.com", "prodph.lol.garenanow.com", "lqph.lol.garenanow.com", true),
-    VN("vn",    "lol.garenanow.com", "chatvn.lol.garenanow.com", "prodvn.lol.garenanow.com", "lqvn.lol.garenanow.com", true);
+    EUW("euw", "eu.lol.riotgames.com"),
+    EUNE("eune", "eun1.lol.riotgames.com"),
+    NA("na", "na1.lol.riotgames.com"),
+    BR("br", "br.lol.riotgames.com"),
+    OCE("oce", "oc1.lol.riotgames.com"),
+    TR("tr", "tr.lol.riotgames.com", "eu"),
+    RU("ru", "ru.lol.riotgames.com", "eu"),
+    LAN("lan", "la1.lol.riotgames.com"),
+    LAS("las", "la2.lol.riotgames.com"),
+    PBE("pbe", "pbe1.lol.riotgames.com"),
+    KR("kr", "kr.lol.riotgames.com", "asia"),
+    SG("sg", "lol.garenanow.com", "asia", true),
+    TW("tw", "lol.garenanow.com", "asia", "chattw", "prodtw", "loginqueuetw", true),
+    TH("th", "lol.garenanow.com", "asia", "chatth", "prodth", "lqth", true),
+    PH("ph", "lol.garenanow.com", "asia", "chatph", "prodph", "lqph", true),
+    VN("vn", "lol.garenanow.com", "asia", "chatvn", "prodvn", "lqvn", true);
 
 
     public final String name;
@@ -45,25 +45,32 @@ public enum Shard {
     public final String chatUrl;
     public final String prodUrl;
     public final String loginQueue;
+    public final String apiUrl;
     public final boolean isGarena;
 
     public static final int jabberPort = 5223;
-
+    public static final int rtmpsPort = 2099;
+    public static final String rtmpsAppPath = "app:/mod_ser.dat";
 
     private Shard(String name, String baseUrl) {
-        this(name, baseUrl, "chat." + baseUrl, "prod." + baseUrl, "lq." + baseUrl, false);
+        this(name, baseUrl, "api", "chat", "prod", "lq", false);
     }
 
-    private Shard(String name, String baseUrl, boolean isGarena) {
-        this(name, baseUrl, "chat." + baseUrl, "prod." + baseUrl, "lq." + baseUrl, isGarena);
+    private Shard(String name, String baseUrl, String apiPath) {
+        this(name, baseUrl, apiPath, "chat", "prod", "lq", false);
     }
 
-    private Shard(String name, String baseUrl, String chatUrl, String prodUrl, String lqUrl, boolean isGarena) {
+    private Shard(String name, String baseUrl, String apiPath, boolean isGarena) {
+        this(name, baseUrl, apiPath, "chat", "prod", "lq", isGarena);
+    }
+
+    private Shard(String name, String baseUrl, String apiPath, String chatPath, String prodPath, String lqPath, boolean isGarena) {
         this.name = name;
         this.baseUrl = baseUrl;
-        this.chatUrl = chatUrl;
-        this.prodUrl = prodUrl;
-        this.loginQueue = lqUrl;
+        this.apiUrl = "https://" + apiPath + ".api.lol.leagueoflegends.com/api/lol";
+        this.chatUrl = chatPath + "." + baseUrl;
+        this.prodUrl = prodPath + "." + baseUrl;
+        this.loginQueue = lqPath + "." + baseUrl;
         this.isGarena = isGarena;
     }
 }

@@ -22,6 +22,7 @@ package net.boreeas.riotapi.rest;
 public enum ChampData {
     ALL,
     ALLY_TIPS("allytips"),
+    ALTIMAGES,
     BLURB,
     ENEMY_TIPS("enemytips"),
     IMAGE,

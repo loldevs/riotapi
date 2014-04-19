@@ -29,4 +29,5 @@ public class SpellVars {
     private String dyn;
     private String key;
     private String link;
+    private String ranksWith;
 }

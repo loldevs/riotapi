@@ -26,5 +26,6 @@ import java.util.List;
 @Getter
 public class RecommendedItemBlock {
     private List<BlockItem> items;
+    private boolean recMath;
     private String type;
 }

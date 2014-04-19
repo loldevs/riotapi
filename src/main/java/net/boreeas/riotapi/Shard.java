@@ -67,7 +67,7 @@ public enum Shard {
     private Shard(String name, String baseUrl, String apiPath, String chatPath, String prodPath, String lqPath, boolean isGarena) {
         this.name = name;
         this.baseUrl = baseUrl;
-        this.apiUrl = "https://" + apiPath + ".api.lol.leagueoflegends.com/api/lol";
+        this.apiUrl = "https://" + apiPath + ".lol.leagueoflegends.com/api/lol";
         this.chatUrl = chatPath + "." + baseUrl;
         this.prodUrl = prodPath + "." + baseUrl;
         this.loginQueue = lqPath + "." + baseUrl;

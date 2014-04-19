@@ -186,8 +186,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get champion information for all champions.
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param champData Additional information to retrieve
      * @return The information for all champions
@@ -199,8 +200,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get champion information for all champions
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param locale Locale code for returned data
      * @param version Data dragon version for returned data
@@ -219,8 +221,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * All champions in the game.
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @return All champions in the game
      */
@@ -229,8 +232,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * All champions in the game.
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param champData Additional information to retrieve
      * @return All champions in the game
@@ -240,8 +244,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * All champions in the game.
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param locale Locale code for returned data
      * @param version Data dragon version for returned data
@@ -254,8 +259,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get information about the specified champion
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param id The id of the champion
      * @return The champion
@@ -267,8 +273,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get information about the specified champion
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param id The id of the champion
      * @param champData Additional information to retrieve
@@ -281,8 +288,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get information about the specified champion
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param locale Locale code for returned data
      * @param version Data dragon version for returned data
@@ -300,8 +308,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a listing of items in the game
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @return The list of items
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2166>Official API documentation</a>
@@ -312,8 +321,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a listing of items in the game
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param data Additional information to retrieve
      * @return The list of items
@@ -325,8 +335,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a listing of items in the game
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param version Data dragon version for returned data
      * @param locale Locale code for returned data
@@ -343,8 +354,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Retrieve a specific item
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param id The id of the item
      * @return The item
@@ -356,8 +368,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Retrieve a specific item
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param id The id of the item
      * @param data Additional information to retrieve
@@ -370,8 +383,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Retrieve a specific item
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param id The id of the item
      * @param data Additional information to retrieve
@@ -389,8 +403,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a listing of all masteries
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @return The masteries
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2173>Official API documentation</a>
@@ -401,8 +416,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a listing of all masteries
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param data Additional information to retrieve
      * @return The masteries
@@ -414,8 +430,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a listing of all masteries
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param data Additional information to retrieve
      * @param version Data dragon version for returned data
@@ -432,8 +449,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a specific mastery
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param id The id of the mastery
      * @return The mastery
@@ -445,8 +463,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a specific mastery
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param id The id of the mastery
      * @param data Additional information to retrieve
@@ -459,8 +478,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a specific mastery
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param id The id of the mastery
      * @param data Additional information to retrieve
@@ -478,8 +498,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get realm information for this region
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @return Realm information
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2170>Official API documentation</a>
@@ -490,8 +511,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a list of all runes
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @return All runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2172>Official API documentation</a>
@@ -502,8 +524,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a list of all runes
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param data Additional information to retrieve
      * @return All runes
@@ -515,8 +538,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a list of all runes
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param data Additional information to retrieve
      * @param version Data dragon version for returned data
@@ -533,8 +557,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Retrieve a specific rune
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param id The id of the rune
      * @return The rune
@@ -546,8 +571,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Retrieve a specific rune
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param id The id of the rune
      * @param data Additional information to retrieve
@@ -560,8 +586,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Retrieve a specific rune
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param id The id of the rune
      * @param data Additional information to retrieve
@@ -579,8 +606,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a list of all summoner spells as returned by the API
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
@@ -591,8 +619,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a list of all summoner spells as returned by the API
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param data Additional information to retrieve
      * @return The summoner spells
@@ -605,8 +634,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a list of all summoner spells as returned by the API
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param data Additional information to retrieve
      * @param version Data dragon version for returned data
@@ -624,8 +654,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a list of all summoner spells as Java Collection
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
@@ -635,8 +666,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a list of all summoner spells as Java Collection
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param data Additional information to retrieve
      * @return The summoner spells
@@ -647,8 +679,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Get a list of all summoner spells as Java Collection
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param data Additional information to retrieve
      * @param version Data dragon version for returned data
@@ -661,8 +694,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Retrieve a specific summoner spell
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param id The id of the spell
      * @return The spell
@@ -674,8 +708,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Retrieve a specific summoner spell
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param id The id of the spell
      * @param data Additional information to retrieve
@@ -688,8 +723,9 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Retrieve a specific summoner spell
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @param id The id of the spell
      * @param data Additional information to retrieve
@@ -922,6 +958,7 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Retrieve the summoner id for the specified user
      * @param name The name of the user
      * @return Their respective ids
@@ -932,7 +969,7 @@ public class ApiHandler {
 
     /**
      * Retrieve currently supported game versions.
-     * <p/>
+     * </p>
      * This method does not count towards the rate limit
      * @return A list of supported game versions
      * @see <a href=https://developer.riotgames.com/api/methods#!/710/2527>Official API documentation</a>

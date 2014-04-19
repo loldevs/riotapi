@@ -48,7 +48,7 @@ public class ApiHandlerTest extends TestCase {
             assertFalse(euwBasicChampDatas.isEmpty());
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -59,7 +59,7 @@ public class ApiHandlerTest extends TestCase {
             assertEquals(handler.getFreeToPlayChampions().size(), 10);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -69,7 +69,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getBasicChampData(1);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -79,7 +79,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getRecentGames(SUMMONER_ID_2);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -89,7 +89,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getLeagues(SUMMONER_ID_2);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -99,7 +99,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getLeagueEntries(SUMMONER_ID_1);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -109,7 +109,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getLeaguesByTeam(TEAM_ID);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -119,7 +119,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getLeagueEntriesByTeam(TEAM_ID);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -129,7 +129,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getChallenger(Queue.RANKED_SOLO_5v5);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -138,7 +138,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getChampion(1, ChampData.ALL);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -147,7 +147,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getChampions(ChampData.ALL);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -156,7 +156,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getItemList(ItemData.ALL);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -165,7 +165,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getItem(2003, ItemData.CONSUME_ON_FULL);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -174,7 +174,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getMasteries(MasteryData.ALL);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -183,7 +183,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getMastery(4353, MasteryData.SANITIZED_DESCRIPTION);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -192,7 +192,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getRealm();
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -201,7 +201,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getRuneList(ItemData.ALL);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -210,7 +210,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getRune(5235, ItemData.HIDE_FROM_ALL);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -219,7 +219,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getSummonerSpells(SpellData.COOLDOWN_BURN);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -228,7 +228,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getSummonerSpell(1, SpellData.ALL);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -238,7 +238,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getRankedStats(SUMMONER_ID_1);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -248,7 +248,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getStatsSummary(SUMMONER_ID_1, Season.SEASON3);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -258,7 +258,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getSummoners(SUMMONER_NAME_1, SUMMONER_NAME_2);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -268,7 +268,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getSummoners(SUMMONER_ID_1, SUMMONER_ID_2);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -278,7 +278,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getSummoner(SUMMONER_NAME_2);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -288,7 +288,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getSummoner(SUMMONER_ID_2);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -299,7 +299,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getRunePagesMultipleUsers(SUMMONER_ID_2, SUMMONER_ID_1);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -310,7 +310,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getMasteryPagesMultipleUsers(SUMMONER_ID_1, SUMMONER_ID_2);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -321,7 +321,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getSummonerNames(SUMMONER_ID_1, SUMMONER_ID_2);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 

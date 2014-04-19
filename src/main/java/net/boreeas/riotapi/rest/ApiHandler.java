@@ -641,6 +641,7 @@ public class ApiHandler {
      * @param data Additional information to retrieve
      * @param version Data dragon version for returned data
      * @param locale Locale code for returned data
+     * @param dataById If specified as true, the returned data map will use the spells' IDs as the keys.
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
      */
@@ -686,6 +687,7 @@ public class ApiHandler {
      * @param data Additional information to retrieve
      * @param version Data dragon version for returned data
      * @param locale Locale code for returned data
+     * @param dataById If specified as true, the returned data map will use the spells' IDs as the keys.
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
      */
@@ -968,6 +970,7 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
      * Retrieve currently supported game versions.
      * </p>
      * This method does not count towards the rate limit

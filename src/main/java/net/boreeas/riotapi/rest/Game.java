@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ import java.util.List;
 public class Game {
     private int championId;
     private long createDate;
-    private List<Player> fellowPlayers;
+    private List<Player> fellowPlayers = new ArrayList<>();
     private long gameId;
     private String gameMode;
     private String gameType;
@@ -54,8 +55,8 @@ public class Game {
         return GameType.getByName(gameType);
     }
 
-    public Queue getSubType() {
-        return Queue.getByName(subType);
+    public QueueType getSubType() {
+        return QueueType.getByName(subType);
     }
 
     public Team getTeam() {

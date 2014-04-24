@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @Getter
 public class SpellVars {
-    private List<Double> coeff;
+    private List<Double> coeff = new ArrayList<>();
     private String dyn;
     private String key;
     private String link;

@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,10 +36,10 @@ public class Champion {
     private String lore;
     private String partype;
     private ChampionPassive passive;
-    private List<RecommendedItems> recommended;
-    private List<Skin> skins;
-    private List<Spell> spells;
+    private List<RecommendedItems> recommended = new ArrayList<>();
+    private List<Skin> skins = new ArrayList<>();
+    private List<Spell> spells = new ArrayList<>();
     private ChampionStats stats;
-    private List<String> tags;
+    private List<String> tags = new ArrayList<>();
     private String title;
 }

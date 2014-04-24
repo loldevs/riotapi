@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,7 +27,7 @@ import java.util.Map;
 @Getter
 public class RuneList {
     private Item basic;
-    private Map<String, Item> data;
+    private Map<String, Item> data = new HashMap<>();
     private String type;
     private String version;
 }

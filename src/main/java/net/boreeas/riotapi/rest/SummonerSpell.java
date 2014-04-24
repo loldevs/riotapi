@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,6 @@ import java.util.List;
 @Getter
 public class SummonerSpell extends Spell {
     private int id;
-    private List<String> modes;
+    private List<String> modes = new ArrayList<>();
     private int summonerLevel;
 }

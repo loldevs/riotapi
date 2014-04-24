@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,15 +26,15 @@ import java.util.List;
  */
 @Getter
 public class Spell {
-    private List<Image> altImages;
-    private List<Integer> cooldown;
+    private List<Image> altImages = new ArrayList<>();
+    private List<Integer> cooldown = new ArrayList<>();
     private String cooldownBurn;
-    private List<Integer> cost;
+    private List<Integer> cost = new ArrayList<>();
     private String costBurn;
     private String costType;
     private String description;
-    private List<List<Integer>> effect;
-    private List<String> effectBurn;
+    private List<List<Integer>> effect = new ArrayList<>();
+    private List<String> effectBurn = new ArrayList<>();
     private Image image;
     private String key;
     private LevelTip leveltip;
@@ -45,7 +46,7 @@ public class Spell {
     private String sanitizedDescription;
     private String sanitizedTooltip;
     private String tooltip;
-    private List<SpellVars> vars;
+    private List<SpellVars> vars = new ArrayList<>();
 
     public boolean isSelfTargeted() {
         return range instanceof String;

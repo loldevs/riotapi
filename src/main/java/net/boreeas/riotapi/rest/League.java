@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,17 +30,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class League {
-    private List<LeagueItem> entries;
+    private List<LeagueItem> entries = new ArrayList<>();
     private String name;
     private String participantId;
     private String queue;
     private String tier;
 
-    public Queue getQueue() {
-        return Queue.getByName(queue);
+    public QueueType getQueue() {
+        return QueueType.getByName(queue);
     }
 
-    public Tier getTier() {
-        return Tier.getByName(tier);
+    public LeagueTier getTier() {
+        return LeagueTier.getByName(tier);
     }
 }

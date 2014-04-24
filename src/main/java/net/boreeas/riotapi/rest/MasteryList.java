@@ -17,6 +17,8 @@
 package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,7 +26,7 @@ import java.util.Map;
  */
 @Getter
 public class MasteryList {
-    private Map<String, Mastery> data;
+    private Map<String, Mastery> data = new HashMap<>();
     private MasteryTree tree;
     private String type;
     private String version;

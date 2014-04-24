@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +26,6 @@ import java.util.List;
  */
 @Getter
 public class LevelTip {
-    private List<String> effect;
-    private List<String> label;
+    private List<String> effect = new ArrayList<>();
+    private List<String> label = new ArrayList<>();
 }

@@ -30,7 +30,7 @@ public class TeamStatDetails {
     @Getter(AccessLevel.NONE) private String teamStatType;
     private int wins;
 
-    private Queue getQueue() {
-        return Queue.getByName(teamStatType);
+    private QueueType getQueue() {
+        return QueueType.getByName(teamStatType);
     }
 }

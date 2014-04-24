@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Player {
     private int championId;
-    private int summonerId;
+    private long summonerId;
     private int teamId;
 
     public Team getTeam() {

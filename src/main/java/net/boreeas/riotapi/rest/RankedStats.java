@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @Getter
 public class RankedStats {
-    private List<PlayerChampionStats> champions;
+    private List<PlayerChampionStats> champions = new ArrayList<>();
     private long modifyDate;
     private long summonerId;
 }

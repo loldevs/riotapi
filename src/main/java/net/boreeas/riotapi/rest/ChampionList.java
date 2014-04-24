@@ -19,6 +19,7 @@ package net.boreeas.riotapi.rest;
 import lombok.Getter;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,9 +27,9 @@ import java.util.Map;
  */
 @Getter
 public class ChampionList {
-    private Map<String, Champion> data;
+    private Map<String, Champion> data = new HashMap<>();
     private String format;
-    private Map<String, String> keys;
+    private Map<String, String> keys = new HashMap<>();
     private String type;
     private String version;
 

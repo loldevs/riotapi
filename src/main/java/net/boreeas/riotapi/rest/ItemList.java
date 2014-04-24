@@ -18,6 +18,8 @@ package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
@@ -27,9 +29,9 @@ import java.util.List;
 @Getter
 public class ItemList {
     private Item basic;
-    private Map<String, Item> data;
-    private List<ItemGroup> groups;
-    private List<ItemTree> tree;
+    private Map<String, Item> data = new HashMap<>();
+    private List<ItemGroup> groups = new ArrayList<>();
+    private List<ItemTree> tree = new ArrayList<>();
     private String type;
     private String version;
 }

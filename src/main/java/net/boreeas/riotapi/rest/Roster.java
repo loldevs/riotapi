@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +26,6 @@ import java.util.List;
  */
 @Getter
 public class Roster {
-    private List<TeamMemberInfo> memberList;
+    private List<TeamMemberInfo> memberList = new ArrayList<>();
     private long ownerId;
 }

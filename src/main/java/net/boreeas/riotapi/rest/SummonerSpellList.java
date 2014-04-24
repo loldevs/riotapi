@@ -19,6 +19,7 @@ package net.boreeas.riotapi.rest;
 import lombok.Getter;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,7 +27,7 @@ import java.util.Map;
  */
 @Getter
 public class SummonerSpellList {
-    private Map<String, SummonerSpell> data;
+    private Map<String, SummonerSpell> data = new HashMap<>();
     private String type;
     private String version;
 

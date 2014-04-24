@@ -17,6 +17,8 @@
 package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -28,7 +30,7 @@ public class Realm {
     private String dd;
     private String l;
     private String lg;
-    private Map<String, String> n;
+    private Map<String, String> n = new HashMap<>();
     @Getter private int profileiconmax;
     @Getter private String store;
     private String v;

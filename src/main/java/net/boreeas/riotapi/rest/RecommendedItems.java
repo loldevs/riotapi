@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @Getter
 public class RecommendedItems {
-    private List<RecommendedItemBlock> blocks;
+    private List<RecommendedItemBlock> blocks = new ArrayList<>();
     private String champion;
     private String map;
     private String mode;

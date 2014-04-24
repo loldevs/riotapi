@@ -53,11 +53,11 @@ public class LeagueItem {
         }
     }
 
-    public Tier getTier() {
-        return Tier.getByName(tier);
+    public LeagueTier getTier() {
+        return LeagueTier.getByName(tier);
     }
 
-    public Queue getQueueType() {
-        return Queue.getByName(queueType);
+    public QueueType getQueueType() {
+        return QueueType.getByName(queueType);
     }
 }

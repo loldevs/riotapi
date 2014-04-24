@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,5 +26,5 @@ import java.util.List;
  */
 @Getter
 public class MasteryTreeList {
-    private List<MasteryTreeItem> masteryTreeItems;
+    private List<MasteryTreeItem> masteryTreeItems = new ArrayList<>();
 }

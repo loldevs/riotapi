@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,5 +27,5 @@ import java.util.List;
 @Getter
 public class ItemTree {
     private String header;
-    private List<String> tags;
+    private List<String> tags = new ArrayList<>();
 }

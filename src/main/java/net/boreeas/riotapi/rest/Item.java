@@ -18,6 +18,8 @@ package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,15 +33,15 @@ public class Item {
     private boolean consumed;
     private int depth;
     private String description;
-    private List<String> from;
+    private List<String> from = new ArrayList<>();
     private PurchaseData gold;
     private String group;
     private boolean hideFromAll;
     private int id;
     private Image image;
     private boolean inStore;
-    private List<String> into;
-    private Map<String, Boolean> maps;
+    private List<String> into = new ArrayList<>();
+    private Map<String, Boolean> maps = new HashMap<>();
     private String name;
     private String plaintext;
     private String requiredChampion;

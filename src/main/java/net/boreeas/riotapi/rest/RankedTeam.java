@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class RankedTeam {
     private long lastGameDate;
     private long lastJoinDate;
     private long lastJoinedRankedTeamQueueDate;
-    private List<MatchHistorySummary> matchHistory;
+    private List<MatchHistorySummary> matchHistory = new ArrayList<>();
     private MessageOfDay messageOfDay;
     private long modifyDate;
     private String name;

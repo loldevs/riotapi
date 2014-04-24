@@ -18,7 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import net.boreeas.riotapi.RiotUtil;
+import net.boreeas.riotapi.Util;
 import net.boreeas.riotapi.Shard;
 
 import javax.ws.rs.client.Client;
@@ -170,7 +170,7 @@ public class ApiHandler {
      * @return The queue's challenger league
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1864>Official API documentation</a>
      */
-    public League getChallenger(Queue queue) {
+    public League getChallenger(QueueType queue) {
         WebTarget tgt = leagueInfoTarget.path("challenger").queryParam("type", queue.name);
         return gson.fromJson($(tgt), League.class);
     }
@@ -795,7 +795,7 @@ public class ApiHandler {
      * @param names The names of the players
      * @return A map, mapping standardized player names to summoner information
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1930>Official API documentation</a>
-     * @see net.boreeas.riotapi.RiotUtil#standardizeSummonerName(java.lang.String)
+     * @see net.boreeas.riotapi.Util#standardizeSummonerName(java.lang.String)
      */
     public Map<String, Summoner> getSummoners(String... names) {
         Type type = new TypeToken<Map<String, Summoner>>(){}.getType();
@@ -810,7 +810,7 @@ public class ApiHandler {
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1930>Official API documentation</a>
      */
     public Summoner getSummoner(String name) {
-        return getSummoners(name).get(RiotUtil.standardizeSummonerName(name));
+        return getSummoners(name).get(Util.standardizeSummonerName(name));
     }
 
     /**
@@ -993,7 +993,7 @@ public class ApiHandler {
 
         Response response = target.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
         if (response.getStatus() != 200) {
-            throw new RequestException(RequestException.ErrorType.getByCode(response.getStatus()));
+            throw new RequestException(response.getStatus(), RequestException.ErrorType.getByCode(response.getStatus()));
         }
 
         return new InputStreamReader((java.io.InputStream) response.getEntity());

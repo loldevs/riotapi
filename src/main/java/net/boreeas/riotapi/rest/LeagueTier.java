@@ -16,18 +16,18 @@
 
 package net.boreeas.riotapi.rest;
 
-import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created on 4/14/2014.
  */
-@Getter
-public class MasteryPage {
-    private boolean current;
-    private long id;
-    private List<Mastery> masteries = new ArrayList<>();
-    private String name;
+public enum LeagueTier {
+    CHALLENGER,
+    DIAMOND,
+    PLATINUM,
+    GOLD,
+    SILVER,
+    BRONZE;
+
+    public static LeagueTier getByName(String name) {
+        return valueOf(name);
+    }
 }

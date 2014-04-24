@@ -22,8 +22,8 @@ package net.boreeas.riotapi.rest;
 public class RequestException extends RuntimeException {
     private ErrorType error;
 
-    public RequestException(ErrorType error) {
-        super(error + " error during request");
+    public RequestException(int responseCode, ErrorType error) {
+        super(responseCode + "/" + error + " error during request");
         this.error = error;
     }
 
@@ -37,7 +37,7 @@ public class RequestException extends RuntimeException {
         BAD_REQUEST(400),
         UNAUTHORIZED(401),
         NOT_FOUND(404),
-        RATE_LIMIT_EXCEEDED(421),
+        RATE_LIMIT_EXCEEDED(429),
         INTERNAL_SERVER_ERROR(500),
         SERVICE_UNAVAILABLE(503);
 
@@ -52,7 +52,7 @@ public class RequestException extends RuntimeException {
                 case 400: return BAD_REQUEST;
                 case 401: return UNAUTHORIZED;
                 case 404: return NOT_FOUND;
-                case 421: return RATE_LIMIT_EXCEEDED;
+                case 429: return RATE_LIMIT_EXCEEDED;
                 case 500: return INTERNAL_SERVER_ERROR;
                 case 503: return SERVICE_UNAVAILABLE;
                 default: return null;

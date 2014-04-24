@@ -16,12 +16,6 @@ Shard.jabberPort;   // The port for the chat server
 Shard.prodUrl;      // The url of the production server for this region
 ```
 
-The *Shard* enum is not complete yet, however support for the major regions is added.
-Planned:
-* Add missing regions
-* A couple of constants are missing, namely the prod ports as well as all URLs for the KR region
-
-
 ## RiotUtil
 
 A place for all those functions that didn't find a home anywhere else, such as *standardizeSummonerName()*,

@@ -36,10 +36,29 @@ Initialize the API by creating an *ApiHandler* object by passing a *Shard* (the 
 ApiHandler handler = new ApiHandler(Shard.EUW, "my-api-key");
 ```
 
+Alternatively, you can use a *ThrottledApiHandler*, which will automatically space request to prevent hitting
+the rate limit. Limits are specified as a timeframe, consisting of a *timeDelta* and a *TimeUnit* as well as a maximum
+number of requests that may be sent in this timeframe. For example, for development, one such limit would have a timeDelta
+of 10, a TimeUnit.SECONDS and 10 requests maximum (the "10 requests in 10 seconds" limit).
+In fact, a *ThrottledApiHandler* using the development key limits can be created via *ThrottledApiHandler.developmentDefault*,
+otherwise, you need to create it yourself:
+
+```java
+ThrottledApiHandler handler = new ThrottledApiHandler(Shard.EUW, "my-api-key", new Limit(10, TimeUnit.SECONDS, 10), new Limit(10, TimeUnit.MINUTES, 50);
+```
+
+Requests via a throttled handler will execute immediately if accessing the static-data part of the api. Otherwise,
+a Future<T> is returned, where T is the type that the normal ApiHandler would return for this method. In this case, the
+request will execute some time in the future (get() on the future object will block until the request has executed)
+
 Access api methods by calling the corresponding method on the handler:
 
 ```java
+// ApiHandler
 Map<String, Summoner> summoners = handler.getSummoners("Snoopeh", "Froggen", "Wickd");
+// ThrottledApiHandler
+Future<Map<String, Summoner>> futureSummoners = handler.getSummoners("Snoopeh", "Froggen", "Wickd");
+Map<String, Summoner> summoners = futureSummoners.get();
 ```
 
 Convenience methods are also available:

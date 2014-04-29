@@ -998,6 +998,7 @@ public class ApiHandler {
 
         return new InputStreamReader((java.io.InputStream) response.getEntity());
     }
+
     /**
      * Necessary wrapper class for champion lists since they are sent by the api as a single object
      * instead of an array

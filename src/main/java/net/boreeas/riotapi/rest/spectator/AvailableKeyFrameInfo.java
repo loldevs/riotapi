@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rest;
+package net.boreeas.riotapi.rest.spectator;
+
+import lombok.Getter;
+import lombok.SneakyThrows;
+
+import java.util.Date;
 
 /**
- * Created on 4/14/2014.
+ * Created on 4/28/2014.
  */
-public enum Tier {
-    CHALLENGER,
-    DIAMOND,
-    PLATINUM,
-    GOLD,
-    SILVER,
-    BRONZE;
+@Getter
+public class AvailableKeyFrameInfo {
+    private int id;
+    private String receivedTime;
+    private int nextChunkId;
 
-    public static Tier getByName(String name) {
-        return valueOf(name);
+    @SneakyThrows
+    public Date getReceivedTimeAsDate() {
+        return SpectatorApiHandler.DATE_FMT.parse(receivedTime);
     }
 }

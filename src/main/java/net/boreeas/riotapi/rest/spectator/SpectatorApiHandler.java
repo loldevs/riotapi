@@ -27,7 +27,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -55,7 +54,6 @@ public class SpectatorApiHandler {
      * Retrieves the current version of the spectator server
      * @return the current version as a string
      */
-    @SneakyThrows(IOException.class)
     public String getCurrentVersion() {
         return readAsString(consumerTarget.path("version"));
     }

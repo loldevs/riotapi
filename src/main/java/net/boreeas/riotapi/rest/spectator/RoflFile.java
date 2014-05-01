@@ -20,19 +20,33 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 
 import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.security.NoSuchAlgorithmException;
+import java.nio.ByteOrder;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 /**
  * Created on 4/29/2014.
  */
 public class RoflFile {
+
+    private static final int SIGNATURE_POS              = 6;
+    private static final int HEADER_LEN_POS             = SIGNATURE_POS         + 256;
+    private static final int FILE_LEN_POS               = HEADER_LEN_POS        + 2;
+    private static final int META_DATA_OFFSET_POS       = FILE_LEN_POS          + 4;
+    private static final int META_DATA_LEN_POS          = META_DATA_OFFSET_POS  + 4;
+    private static final int PAYLOAD_HEADER_OFFSET_POS  = META_DATA_LEN_POS     + 4;
+    private static final int PAYLOAD_HEADER_LEN_POS     = PAYLOAD_HEADER_OFFSET_POS + 4;
+    private static final int PAYLOAD_OFFSET_POS         = PAYLOAD_HEADER_LEN_POS + 4;
 
     private Cipher cipher;
 
@@ -40,9 +54,11 @@ public class RoflFile {
     private ByteBuffer buffer;
     private GameMetaData metaData;
     private byte[] encryptionKey;
+    private List<byte[]> chunks = new ArrayList<>();
+    private List<byte[]> keyframes = new ArrayList<>();
 
-    public RoflFile(File f) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException {
-        cipher = Cipher.getInstance("Blowfish/ECB/PKCS5Padding");;
+    public RoflFile(File f) throws IOException, GeneralSecurityException {
+        cipher = Cipher.getInstance("Blowfish/ECB/PKCS5Padding");
 
         RandomAccessFile file = new RandomAccessFile(f, "r");
         long length = file.length();
@@ -51,94 +67,124 @@ public class RoflFile {
         data = new byte[(int) length];
         file.readFully(data);
         buffer = ByteBuffer.wrap(data);
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
 
-        assertString("RIOT\0\0", 0);
+        // Assert we are actually reading a ROFL file
+        assertBytes("RIOT\0\0".getBytes(), 0);
 
+        // Get metadata
         byte[] metaDataBuf = new byte[(int) getMetaDataLength()];
-        buffer.get(metaDataBuf, (int) getMetaDataOffset(), metaDataBuf.length);
+        buffer.position(getMetaDataOffset());
+        buffer.get(metaDataBuf);
         String json = new String(metaDataBuf, "UTF-8");
         System.out.println(new JsonParser().parse(json));
         metaData = new Gson().fromJson(new String(metaDataBuf, "UTF-8"), GameMetaData.class);
 
+        // Get encryption key
         byte[] encryptionKeyBuf = new byte[getEncryptionKeyLength()];
-        buffer.get(encryptionKeyBuf, (int) (getPayloadHeaderOffset() + 34), encryptionKeyBuf.length);
+        buffer.position(getPayloadHeaderOffset() + 34);
+        buffer.get(encryptionKeyBuf);
         encryptionKey = DatatypeConverter.parseBase64Binary(new String(encryptionKeyBuf, "UTF-8"));
+        encryptionKey = decrypt(encryptionKey, ("" + metaData.getGameId()).getBytes());
+
+        // Load and decrypt chunks
+        for (int i = 0; i < getChunkCount(); i++) {
+            ChunkOrKeyFrameHeader header = getChunkHeader(i);
+            chunks.add(decryptPayloadEntry(header));
+        }
+
+        // Load and decrypt keyframes
+        for (int i = 0; i < getKeyFrameCount(); i++) {
+            ChunkOrKeyFrameHeader header = getKeyFrameHeader(i);
+            keyframes.add(decryptPayloadEntry(header));
+        }
     }
 
+    private byte[] decryptPayloadEntry(ChunkOrKeyFrameHeader header) throws GeneralSecurityException, IOException {
+
+        byte[] keyFrame = new byte[(int) header.getLength()];
+        buffer.position(getPayloadEntryOffset() + header.getOffset());
+        buffer.get(keyFrame);
+
+        return decompress(decrypt(keyFrame, encryptionKey));
+    }
+
+    // <editor-fold>
     public byte[] getSignature() {
         byte[] sigBuf = new byte[256];
-        buffer.position(6);
+        buffer.position(SIGNATURE_POS);
         buffer.get(sigBuf);
         return sigBuf;
     }
 
     public int getHeaderLength() {
-        buffer.position(262);
+        buffer.position(HEADER_LEN_POS);
         return getUshort();
     }
 
     public long getFileLength() {
-        buffer.position(264);
-        return getUint();
+        // Ex-uint
+        return buffer.getInt(FILE_LEN_POS);
     }
 
-    public long getMetaDataOffset() {
-        buffer.position(268);
-        return getUint();
+    public int getMetaDataOffset() {
+        // Ex-uint
+        return buffer.getInt(META_DATA_OFFSET_POS);
     }
 
-    public long getMetaDataLength() {
-        buffer.position(272);
-        return getUint();
+    public int getMetaDataLength() {
+        // Ex-uint
+        return buffer.getInt(META_DATA_LEN_POS);
     }
 
-    public long getPayloadHeaderOffset() {
-        buffer.position(276);
-        return getUint();
+    public int getPayloadHeaderOffset() {
+        // Ex-uint
+        return buffer.getInt(PAYLOAD_HEADER_OFFSET_POS);
     }
 
-    public long getPayloadHeaderLength() {
-        buffer.position(280);
-        return getUint();
+    public int getPayloadHeaderLength() {
+        // Ex-uint
+        return buffer.getInt(PAYLOAD_HEADER_LEN_POS);
     }
 
-    public long getPayloadOffset() {
-        buffer.position(284);
-        return getUint();
+    public int getPayloadOffset() {
+        // Ex-uint
+        return buffer.getInt(PAYLOAD_OFFSET_POS);
     }
 
     public long getGameId() {
-        return buffer.getLong((int) getPayloadHeaderOffset());
+        return buffer.getLong(getPayloadHeaderOffset());
     }
 
     public long getGameLength() {
-        buffer.position((int) (getPayloadHeaderOffset() + 8));
+        buffer.position(getPayloadHeaderOffset() + 8);
         return getUint();
     }
 
     public int getKeyFrameCount() {
-        return buffer.getInt((int) (getPayloadHeaderOffset() + 12));
+        return buffer.getInt(getPayloadHeaderOffset() + 12);
     }
 
     public int getChunkCount() {
-        return buffer.getInt((int) (getPayloadHeaderOffset() + 16));
+        return buffer.getInt(getPayloadHeaderOffset() + 16);
     }
 
     public int getEndStartupChunkId() {
-        return buffer.getInt((int) (getPayloadHeaderOffset() + 20));
+        return buffer.getInt(getPayloadHeaderOffset() + 20);
     }
 
     public int getGameStartChunkId() {
-        return buffer.getInt((int) (getPayloadHeaderOffset() + 24));
+        return buffer.getInt(getPayloadHeaderOffset() + 24);
     }
 
     public long getKeyFrameInterval() {
-        buffer.position((int) (getPayloadHeaderOffset() + 28));
+        buffer.position(getPayloadHeaderOffset() + 28);
         return getUint();
     }
 
     public int getEncryptionKeyLength() {
-        buffer.position((int) (getPayloadHeaderOffset() + 32));
+        buffer.position(getPayloadHeaderOffset() + 32);
+        return getUshort();
     }
 
     public GameMetaData getMetaData() {
@@ -154,7 +200,7 @@ public class RoflFile {
             throw new IndexOutOfBoundsException("Chunk id (" + id + ") exceeded chunk count (" + getChunkCount() + ")");
         }
 
-        buffer.position((int) (getPayloadOffset() + (id * 17)));
+        buffer.position(getPayloadOffset() + (id * 17));
         int cid = buffer.getInt();
         int type = buffer.get();
         long length = getUint();
@@ -169,7 +215,7 @@ public class RoflFile {
             throw new IndexOutOfBoundsException("Keyframe id (" + id + ") exceeded keyframe count (" + getChunkCount() + ")");
         }
 
-        buffer.position((int) (getPayloadOffset() + (getChunkCount() * 17) + (id * 17)));
+        buffer.position(getPayloadOffset() + (getChunkCount() * 17) + (id * 17));
         int cid = buffer.getInt();
         int type = buffer.get();
         long length = getUint();
@@ -179,25 +225,62 @@ public class RoflFile {
         return new ChunkOrKeyFrameHeader(cid, type, length, nextCid, offset);
     }
 
-    private byte[] decrypt(byte[] data, String key) throws NoSuchPaddingException, NoSuchAlgorithmException {
-        cipher.init(Cipher.DECRYPT_MODE, );
+    public byte[] getChunk(int i) {
+        return chunks.get(i);
     }
 
+    public byte[] getKeyFrame(int i) {
+        return keyframes.get(i);
+    }
+    // </editor-fold>
 
 
+
+    private int getPayloadEntryOffset() {
+        return getPayloadOffset() + (getChunkCount() * 17) + (getKeyFrameCount() * 17);
+    }
 
     private int getUshort() {
-        return (buffer.get() << 8) | buffer.get();
+
+        return ((int) buffer.getShort()) & 0xFFFF;
     }
 
     private long getUint() {
-        return (buffer.get() << 24) | (buffer.get() << 16) | (buffer.get() << 8) | buffer.get();
+        return ((long) buffer.getInt()) & 0xFFFFFFFFL;
     }
 
-    private void assertString(String s, int offset) {
-        for (int i = 0; i < s.length(); i++) {
-            if (buffer.asCharBuffer().charAt(offset + i) != s.charAt(i)) {
-                throw new IllegalStateException("String assertion failed at offset " + (offset + i));
+    private byte[] decrypt(byte[] data, byte[] key) throws GeneralSecurityException {
+        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "Blowfish"));
+        return cipher.doFinal(data);
+    }
+
+    private byte[] decompress(byte[] data) throws IOException {
+        try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(data))) {
+            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int read = 0;
+
+            do {
+                read = in.read(buffer);
+                if (read == buffer.length) {
+                    bout.write(buffer);
+                } else {
+                    bout.write(buffer, 0, read);
+                }
+            } while (read == buffer.length);
+
+            return bout.toByteArray();
+        } catch (IOException ex) {
+            throw new RuntimeException("Failure during decompression", ex);
+        }
+
+    }
+
+
+    private void assertBytes(byte[] bytes, int offset) {
+        for (int i = 0; i < bytes.length; i++) {
+            if (data[offset + i] != bytes[i]) {
+                throw new IllegalStateException("Buffer assertion failed at offset " + (offset + i));
             }
         }
     }

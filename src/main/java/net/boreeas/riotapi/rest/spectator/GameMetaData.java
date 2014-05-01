@@ -19,6 +19,7 @@ package net.boreeas.riotapi.rest.spectator;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,9 +29,12 @@ import java.util.List;
  * Created on 4/28/2014.
  */
 @Getter
+@ToString
 public class GameMetaData {
 
     @Getter(AccessLevel.NONE) private GameKey gameKey;
+    private int gameId;
+    private String platformId;
     private String gameServerAddress;
     private int port;
     private String encryptionKey;
@@ -89,11 +93,11 @@ public class GameMetaData {
     }
 
     public long getGameId() {
-        return gameKey.gameId;
+        return gameKey == null ? gameId : gameKey.gameId;
     }
 
     public Platform getPlatform() {
-        return Platform.byName(gameKey.platformId);
+        return Platform.byName(gameKey == null ? platformId : gameKey.platformId);
     }
 
 

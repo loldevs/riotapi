@@ -27,6 +27,9 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -90,11 +93,11 @@ public class SpectatorApiHandler {
      * @param platform The target platform
      * @param gameId The target game
      * @param chunkId The target chunk
-     * @return The chunk, encrypted and base-64 compressed
+     * @return The chunk, encrypted and zip-compressed
      */
-    public String getChunk(Platform platform, long gameId, int chunkId) {
+    public byte[] getChunk(Platform platform, long gameId, int chunkId) {
         WebTarget tgt = consumerTarget.path("getGameDataChunk").path(platform.name).path(gameId + "/" + chunkId).path(TOKEN);
-        return readAsString(tgt);
+        return readAsByteArray(tgt);
     }
 
     /**
@@ -102,7 +105,7 @@ public class SpectatorApiHandler {
      * @param platform The target platform
      * @param gameId The target game
      * @param keyframeId The target chunk
-     * @return The chunk, encrypted and base-64 compressed
+     * @return The chunk, encrypted and zip-compressed
      */
     public String getKeyframe(Platform platform, long gameId, int keyframeId) {
         WebTarget tgt = consumerTarget.path("getKeyFrame").path(platform.name).path(gameId + "/" + keyframeId).path(TOKEN);
@@ -122,11 +125,33 @@ public class SpectatorApiHandler {
             throw new RequestException(response.getStatus(), RequestException.ErrorType.getByCode(response.getStatus()));
         }
 
-        return new InputStreamReader((java.io.InputStream) response.getEntity());
+        return new InputStreamReader(getInputStream(response));
+    }
+
+    private InputStream getInputStream(Response response) {
+        return (java.io.InputStream) response.getEntity();
     }
 
     @SneakyThrows
     private String readAsString(WebTarget tgt) {
         return new String(new BufferedReader($(tgt)).readLine());
+    }
+
+    private byte[] readAsByteArray(WebTarget tgt) {
+        try (InputStream in = getInputStream(tgt.request().accept(MediaType.APPLICATION_OCTET_STREAM_TYPE).get())) {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ;
+
+            byte[] buffer = new byte[1024];
+            int read = 0;
+            do {
+                read = in.read(buffer);
+                out.write(buffer);
+            } while (read == buffer.length);
+
+            return out.toByteArray();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

@@ -18,16 +18,29 @@ package net.boreeas.riotapi.rest.spectator;
 
 import net.boreeas.riotapi.Shard;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.zip.GZIPInputStream;
+
 /**
  * Created on 4/28/2014.
  */
-public class SpectatorClient {
+public class SpectatorClient implements SpectatorSource {
 
     private SpectatorApiHandler handler;
     private Platform platform;
     private long gameId;
     private GameMetaData metaData;
     private String encryptionKey;
+    private ChunkInfo lastChunkInfo;
+    private Timer getChunkTimer = new Timer(true);
+    private Cipher cipher;
 
 
     public SpectatorClient(Shard region, Platform platform, long gameId) {
@@ -40,8 +53,103 @@ public class SpectatorClient {
 
     private void initialize() {
         metaData = handler.getGameMetaData(platform, gameId);
+        lastChunkInfo = handler.getLastChunkInfo(platform, gameId);
+    }
+
+    private void scheduleReadNextChunk() {
+        getChunkTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                ChunkInfo next = handler.getLastChunkInfo(platform, gameId);
+                if (next.getChunkId() != lastChunkInfo.getChunkId()) {
+                    lastChunkInfo = next;
+                    scheduleReadNextChunk();
+
+                    loadNextChunk();
+                }
+            }
+        }, lastChunkInfo.getNextAvailableChunk());
+    }
+
+    private void loadNextChunk() {
+
+    }
+
+    private byte[] decrypt(byte[] data, byte[] key) throws GeneralSecurityException {
+        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "Blowfish"));
+        return cipher.doFinal(data);
+    }
+
+    private byte[] decompress(byte[] data) throws IOException {
+        try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(data))) {
+            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int read = 0;
+
+            do {
+                read = in.read(buffer);
+                if (read == buffer.length) {
+                    bout.write(buffer);
+                } else {
+                    bout.write(buffer, 0, read);
+                }
+            } while (read == buffer.length);
+
+            return bout.toByteArray();
+        } catch (IOException ex) {
+            throw new RuntimeException("Failure during decompression", ex);
+        }
 
     }
 
 
+    @Override
+    public long getGameId() {
+        return metaData.getGameId();
+    }
+
+    @Override
+    public long getGameLength() {
+        return metaData.getGameLength();
+    }
+
+    @Override
+    public int getKeyFrameCount() {
+        return 0;
+    }
+
+    @Override
+    public int getChunkCount() {
+        return 0;
+    }
+
+    @Override
+    public int getEndStartupChunkId() {
+        return 0;
+    }
+
+    @Override
+    public int getGameStartChunkId() {
+        return 0;
+    }
+
+    @Override
+    public long getKeyFrameInterval() {
+        return 0;
+    }
+
+    @Override
+    public GameMetaData getMetaData() {
+        return null;
+    }
+
+    @Override
+    public byte[] getChunk(int i) {
+        return new byte[0];
+    }
+
+    @Override
+    public byte[] getKeyFrame(int i) {
+        return new byte[0];
+    }
 }

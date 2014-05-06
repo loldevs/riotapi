@@ -16,6 +16,7 @@
 
 package net.boreeas.riotapi.rtmp.amf;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import java.util.List;
  * Created on 4/16/2014.
  */
 @Getter
+@EqualsAndHashCode(exclude = {"members"})
 public class TraitDefinition {
     private String type;
     private boolean externalizable;

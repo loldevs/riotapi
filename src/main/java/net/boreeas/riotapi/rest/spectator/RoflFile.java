@@ -37,7 +37,7 @@ import java.util.zip.GZIPInputStream;
 /**
  * Created on 4/29/2014.
  */
-public class RoflFile {
+public class RoflFile implements SpectatorSource {
 
     private static final int SIGNATURE_POS              = 6;
     private static final int HEADER_LEN_POS             = SIGNATURE_POS         + 256;
@@ -152,31 +152,38 @@ public class RoflFile {
         return buffer.getInt(PAYLOAD_OFFSET_POS);
     }
 
+    @Override
     public long getGameId() {
         return buffer.getLong(getPayloadHeaderOffset());
     }
 
+    @Override
     public long getGameLength() {
         buffer.position(getPayloadHeaderOffset() + 8);
         return getUint();
     }
 
+    @Override
     public int getKeyFrameCount() {
         return buffer.getInt(getPayloadHeaderOffset() + 12);
     }
 
+    @Override
     public int getChunkCount() {
         return buffer.getInt(getPayloadHeaderOffset() + 16);
     }
 
+    @Override
     public int getEndStartupChunkId() {
         return buffer.getInt(getPayloadHeaderOffset() + 20);
     }
 
+    @Override
     public int getGameStartChunkId() {
         return buffer.getInt(getPayloadHeaderOffset() + 24);
     }
 
+    @Override
     public long getKeyFrameInterval() {
         buffer.position(getPayloadHeaderOffset() + 28);
         return getUint();
@@ -187,6 +194,7 @@ public class RoflFile {
         return getUshort();
     }
 
+    @Override
     public GameMetaData getMetaData() {
         return metaData;
     }
@@ -225,10 +233,12 @@ public class RoflFile {
         return new ChunkOrKeyFrameHeader(cid, type, length, nextCid, offset);
     }
 
+    @Override
     public byte[] getChunk(int i) {
         return chunks.get(i);
     }
 
+    @Override
     public byte[] getKeyFrame(int i) {
         return keyframes.get(i);
     }

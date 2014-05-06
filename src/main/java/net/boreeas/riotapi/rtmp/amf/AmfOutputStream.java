@@ -93,7 +93,7 @@ public class AmfOutputStream extends OutputStream {
     }
 
     public void writeInt(int val) throws IOException {
-        if (val >= 0x4000_0000 || val < 0) {
+        if (val > 536870911  || val < -268435456) {
             throw new RangeException(val);
         }
 

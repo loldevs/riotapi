@@ -45,7 +45,7 @@ public class ThrottledApiHandler {
 
     private float[] limits;
     private Queue<ApiFuture> pending = new LinkedList<>();
-    private Timer timer = new Timer();
+    private Timer timer = new Timer(true);
 
     private ApiHandler handler;
 

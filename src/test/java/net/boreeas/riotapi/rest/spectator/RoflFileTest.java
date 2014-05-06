@@ -48,18 +48,22 @@ public class RoflFileTest extends TestCase {
         for (int i = 0; i < file.getChunkCount(); i++) {
             System.out.println("Chunk [" + i + "]");
             System.out.println("\t" + file.getChunkHeader(i));
+            /*
             for (String line: Util.hexdump(file.getChunk(i))) {
                 System.out.println("\t" + line);
             }
+            */
         }
 
         System.out.println("Keyframe count : " + file.getKeyFrameCount());
         for (int i = 0; i < file.getKeyFrameCount(); i++) {
             System.out.println("Keyframe [" + i + "]");
             System.out.println("\t" + file.getKeyFrameHeader(i));
+            /*
             for (String line: Util.hexdump(file.getKeyFrame(i))) {
                 System.out.println("\t" + line);
             }
+            */
         }
 
 

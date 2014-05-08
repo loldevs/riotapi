@@ -16,7 +16,8 @@
 
 package net.boreeas.riotapi.rtmp.p2.serialization;
 
-import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3ObjectSerializer;
+import net.boreeas.riotapi.rtmp.p2.serialization.amf0.Amf0Type;
+import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3Type;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -24,16 +25,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created on 5/3/2014.
+ * Created on 5/7/2014.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SerializationContext {
-    public String traitName();
-    public boolean dynamic() default false;
-    public boolean externalizable() default false;
-    public String[] excludes() default {};
-    public String[] members() default {};
-    public Class<? extends Amf3ObjectSerializer> serializerAmf3() default Amf3ObjectSerializer.class;
-    public Class<? extends Amf0ObjectSerializer> serializerAmf0() default Amf0ObjectSerializer.class;
+public @interface AmfType {
+    public Amf0Type amf0Type() default Amf0Type.UNDEFINED;
+    public Amf3Type amf3Type() default Amf3Type.UNDEFINED;
 }

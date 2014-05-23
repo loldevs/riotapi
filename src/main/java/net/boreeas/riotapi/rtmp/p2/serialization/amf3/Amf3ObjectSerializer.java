@@ -30,6 +30,7 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -66,23 +67,32 @@ public class Amf3ObjectSerializer implements AmfSerializer {
             }
         }
 
-        for (String name: def.getMembers()) {
-            Field f = o.getClass().getDeclaredField(name);
-            f.setAccessible(true);
-            writer.encodeAmf3(f.get(o));
-        }
+        serializeStaticMembers(o, def.getMembers());
 
         if (def.isDynamic()) {
             if (o instanceof DynamicObject) {
-                for (Map.Entry<String, Object> entries: ((DynamicObject) o).getDynamicMembers().entrySet()) {
-                    writer.serializeAmf3(entries.getKey());
-                    writer.encodeAmf3(entries.getValue());
-                }
-                writer.serializeAmf3("");
+                serializeDynamicMembers(((DynamicObject) o).getDynamicMembers());
             } else {
                 throw new IllegalArgumentException("Can't serialize dynamic object that doesn't implement DynamicObject");
             }
         }
+    }
+
+    protected void serializeStaticMembers(Object o, List<String> members) throws NoSuchFieldException, IOException, IllegalAccessException {
+        for (String name: members) {
+            Field f = o.getClass().getDeclaredField(name);
+            f.setAccessible(true);
+            writer.encodeAmf3(f.get(o));
+        }
+        writer.encodeAmf3("");
+    }
+
+    protected void serializeDynamicMembers(Map<String, Object> kvPairs) throws IOException {
+        for (Map.Entry<String, Object> entries: kvPairs.entrySet()) {
+            writer.serializeAmf3(entries.getKey());
+            writer.encodeAmf3(entries.getValue());
+        }
+        writer.serializeAmf3("");
     }
 
     protected void serializeTraitDefHeader(TraitDefinition def) throws IOException {

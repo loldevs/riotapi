@@ -23,36 +23,34 @@ import net.boreeas.riotapi.rtmp.p2.serialization.ObjectEncoding;
 import java.io.IOException;
 
 /**
- * Created on 5/19/2014.
+ * Created on 5/23/2014.
  */
-public class Invoke extends Command {
-    public Invoke(MessageType type) {
+public class Notification extends Command {
+    public Notification(MessageType type) {
         super(type);
     }
 
     @Override
     public void writeBody(AmfWriter writer) throws IOException {
-        ObjectEncoding encoding = getType() == MessageType.INVOKE ? ObjectEncoding.AMF3 : ObjectEncoding.AMF0;
+        if (getMethod() != null) {
+            writeAsInvoke(writer);
+        } else {
+            writer.write(getBuffer());
+        }
+    }
+
+    private void writeAsInvoke(AmfWriter writer) throws IOException {
+        ObjectEncoding encoding = getType() == MessageType.DATA_AMF3 ? ObjectEncoding.AMF3 : ObjectEncoding.AMF0;
         boolean isRequest = getMethod().getStatus() == CallStatus.REQUEST;
 
         if (isRequest) {
             writer.encode(getMethod().getName(), encoding);
-        } else {
-            writer.encode(getMethod().isSuccess() ? "_result" : "_error", encoding);
-        }
 
-        writer.encode(getInvokeId(), encoding);
-        writer.encode(getConnectionParams(), encoding);
-
-        if (isRequest) {
             for (Object obj: getMethod().getParams()) {
                 writer.encode(obj, encoding);
             }
         } else {
-            if (!getMethod().isSuccess()) {
-                getMethod().setParams(new Status(Status.CALL_FAILED, "error", "Call failed."));
-            }
-            writer.encode(getMethod().getParams(), encoding);
+            writer.encode(getMethod().isSuccess() ? "_result" : "_error", encoding);
         }
     }
 }

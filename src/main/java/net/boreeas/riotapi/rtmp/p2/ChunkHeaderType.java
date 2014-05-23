@@ -21,7 +21,7 @@ package net.boreeas.riotapi.rtmp.p2;
  */
 public enum ChunkHeaderType {
     FULL(11),
-    NO_STREAM_ID(7),
+    NO_MSG_STREAM_ID(7),
     TIMESTAMP_ONLY(3),
     NO_HEADER(0);
 

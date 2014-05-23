@@ -444,7 +444,7 @@ public class AmfReader {
 
 
         if (classDef.cls == null) { // Read as kv-pairs
-            AnonymousAmfObject result = new AnonymousAmfObject(classDef.type, new HashMap<>());
+            AnonymousAmfObject result = new TypedAmfObject(classDef.type);
             amf3ObjectReferences.add(result);
 
             for (String s: classDef.members) {

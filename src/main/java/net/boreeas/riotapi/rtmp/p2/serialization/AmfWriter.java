@@ -102,6 +102,21 @@ public class AmfWriter {
 
     }
 
+    // <editor-fold desc="Convenience">
+    public void writeUint24(int i) throws IOException {
+        write(i >> 16);
+        write(i >> 8);
+        write(i);
+    }
+
+    public void writeLittleEndianInt(int i) throws IOException {
+        write(i);
+        write(i >> 8);
+        write(i >> 16);
+        write(i >> 24);
+    }
+    // </editor-fold>
+
     public void encode(Object object) throws IOException {
         encode(object, encoding);
     }
@@ -276,5 +291,6 @@ public class AmfWriter {
             encodeAmf3(Array.get(obj, i));
         }
     }
+
     // </editor-fold>
 }

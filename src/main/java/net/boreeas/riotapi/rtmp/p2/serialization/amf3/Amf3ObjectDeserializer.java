@@ -62,9 +62,14 @@ public class Amf3ObjectDeserializer {
             String name;
             while (!(name = in.readUTF()).isEmpty()) {
 
-                Field f = obj.getClass().getDeclaredField(name);
-                f.setAccessible(true);
-                f.set(obj, reader.decodeAmf3());
+                if (obj instanceof DynamicObject) {
+                    ((DynamicObject) obj).getDynamicMembers().put(name, reader.decodeAmf3());
+                } else {
+                    // see if we can serialize into fields
+                    Field f = obj.getClass().getDeclaredField(name);
+                    f.setAccessible(true);
+                    f.set(obj, reader.decodeAmf3());
+                }
             }
         }
     }

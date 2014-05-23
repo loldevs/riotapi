@@ -30,6 +30,7 @@ public class RtmpHeader {
 
     private MessageType messageType;
     private int packetLength;
+    private int fmt;
     private int streamId;
     private int msgStreamId;
     private int timestamp;

@@ -21,7 +21,7 @@ import net.boreeas.riotapi.rtmp.p2.MessageType;
 /**
  * Created on 5/18/2014.
  */
-public class NotificationAmf0 extends Command {
+public class NotificationAmf0 extends Notification {
     public NotificationAmf0() {
         super(MessageType.DATA_AMF0);
     }

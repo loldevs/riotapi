@@ -121,7 +121,7 @@ public class RtmpPacketReader implements Runnable {
         int chunkStreamId = getChunkStreamId(headerTypeByte);
 
         ChunkHeaderType headerType = ChunkHeaderType.values()[headerTypeByte >> 6];
-        RtmpHeader header = new RtmpHeader(null, 0, chunkStreamId, 0, 0, headerType != ChunkHeaderType.FULL);
+        RtmpHeader header = new RtmpHeader(null, 0, headerType.ordinal(), chunkStreamId, 0, 0, headerType != ChunkHeaderType.FULL);
 
         RtmpHeader previous;
         if ((previous = headers.get(chunkStreamId)) == null && headerType == ChunkHeaderType.FULL) {
@@ -136,7 +136,7 @@ public class RtmpPacketReader implements Runnable {
                 header.setMsgStreamId(reader.readIntLittleEndian());
                 break;
 
-            case NO_STREAM_ID:
+            case NO_MSG_STREAM_ID:
                 header.setTimestamp(reader.readUint24());
                 header.setPacketLength(reader.readUint24());
                 header.setMessageType(MessageType.values()[reader.read()]);

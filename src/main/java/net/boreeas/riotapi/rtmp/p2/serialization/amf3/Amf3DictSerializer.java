@@ -16,11 +16,11 @@
 
 package net.boreeas.riotapi.rtmp.p2.serialization.amf3;
 
-import net.boreeas.riotapi.rtmp.p2.AmfWriter;
+import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
 import net.boreeas.riotapi.rtmp.p2.serialization.AmfSerializer;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Map;
 
 /**
@@ -35,7 +35,7 @@ public class Amf3DictSerializer implements AmfSerializer<Map<?, ?>> {
     }
 
     @Override
-    public void serialize(Map<?, ?> map, OutputStream out) throws IOException {
+    public void serialize(Map<?, ?> map, DataOutputStream out) throws IOException {
         writer.serializeAmf3(map.size() << 1 | 1);
         out.write(0);   // Keys don't use weak references
 

@@ -19,15 +19,16 @@ package net.boreeas.riotapi.rtmp.p2.serialization.amf3;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import net.boreeas.riotapi.rtmp.amf.TraitDefinition;
-import net.boreeas.riotapi.rtmp.p2.AmfWriter;
 import net.boreeas.riotapi.rtmp.p2.serialization.AmfSerializer;
+import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
 import net.boreeas.riotapi.rtmp.p2.serialization.SerializationContext;
 
+import java.io.DataOutputStream;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -37,18 +38,19 @@ import java.util.Set;
  */
 public class Amf3ObjectSerializer implements AmfSerializer {
 
-    @Setter private Map<TraitDefinition, Integer> traitRefTable;
-    @Setter private AmfWriter writer;
+    @Setter protected Map<TraitDefinition, Integer> traitRefTable;
+    @Setter protected AmfWriter writer;
+    @Setter SerializationContext context;
 
     @Override
     @SneakyThrows({NoSuchFieldException.class, IllegalAccessException.class})
-    public void serialize(Object o, OutputStream out) throws IOException {
-        SerializationContext context = o.getClass().getAnnotation(SerializationContext.class);
+    public void serialize(Object o, DataOutputStream out) throws IOException {
 
         TraitDefinition def = new TraitDefinition(context.traitName(), context.externalizable(), context.dynamic());
 
         if (traitRefTable.containsKey(def)) {
-            writer.serializeAmf3(traitRefTable.get(def) << 1);
+            serializeTraitRef(traitRefTable.get(def));
+            // Reassign trait definition to the one we used before
             final TraitDefinition def_ = def;
             def = traitRefTable.entrySet().stream().filter((entry) -> entry.getKey().equals(def_)).findFirst().get().getKey();
         } else {
@@ -65,7 +67,9 @@ public class Amf3ObjectSerializer implements AmfSerializer {
         }
 
         for (String name: def.getMembers()) {
-            writer.encodeAmf3(o.getClass().getField(name).get(o));
+            Field f = o.getClass().getDeclaredField(name);
+            f.setAccessible(true);
+            writer.encodeAmf3(f.get(o));
         }
 
         if (def.isDynamic()) {
@@ -81,20 +85,8 @@ public class Amf3ObjectSerializer implements AmfSerializer {
         }
     }
 
-    private void serializeTraitDef(TraitDefinition def, Object o) throws IOException {
-        traitRefTable.put(def, traitRefTable.size());
+    protected void serializeTraitDefHeader(TraitDefinition def) throws IOException {
 
-        SerializationContext context = o.getClass().getAnnotation(SerializationContext.class);
-        if (context.members().length == 0) {
-            Set<String> excludes = new HashSet<>();
-            for (String s: context.excludes()) {excludes.add(s);}
-
-            for (Field f: o.getClass().getDeclaredFields()) {
-                if (!excludes.contains(f.getName())) {
-                    def.addMember(f.getName());
-                }
-            }
-        }
 
         int header = def.getMembers().size();
         header = (header << 1) | (def.isDynamic() ? 1 : 0);
@@ -106,5 +98,26 @@ public class Amf3ObjectSerializer implements AmfSerializer {
         for (String name: def.getMembers()) {
             writer.serializeAmf3(name);
         }
+    }
+
+    private void serializeTraitDef(TraitDefinition def, Object o) throws IOException {
+        traitRefTable.put(def, traitRefTable.size());
+
+        if (context.members().length == 0) {
+            Set<String> excludes = new HashSet<>();
+            for (String s: context.excludes()) {excludes.add(s);}
+
+            for (Field f: o.getClass().getDeclaredFields()) {
+                if (!excludes.contains(f.getName()) && !Modifier.isFinal(f.getModifiers()) && !Modifier.isStatic(f.getModifiers())) {
+                    def.addMember(f.getName());
+                }
+            }
+        }
+
+        serializeTraitDefHeader(def);
+    }
+
+    protected void serializeTraitRef(int idx) throws IOException {
+        writer.serializeAmf3(idx << 2 | 1);
     }
 }

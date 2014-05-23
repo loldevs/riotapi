@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization;
+package net.boreeas.riotapi.rtmp.p2.messages;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
+import net.boreeas.riotapi.rtmp.p2.MessageType;
 
 /**
- * Created on 5/2/2014.
+ * Created on 5/18/2014.
  */
-public interface AmfSerializer<T> {
-    public void serialize(T t, DataOutputStream out) throws IOException;
+public class NotificationAmf3 extends Command {
+    public NotificationAmf3() {
+        super(MessageType.DATA_AMF3);
+    }
 }

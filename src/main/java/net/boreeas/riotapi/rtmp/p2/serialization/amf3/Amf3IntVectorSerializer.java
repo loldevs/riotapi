@@ -16,11 +16,11 @@
 
 package net.boreeas.riotapi.rtmp.p2.serialization.amf3;
 
-import net.boreeas.riotapi.rtmp.p2.AmfWriter;
+import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
 import net.boreeas.riotapi.rtmp.p2.serialization.AmfSerializer;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * Created on 5/3/2014.
@@ -33,7 +33,7 @@ public class Amf3IntVectorSerializer implements AmfSerializer<int[]> {
     }
 
     @Override
-    public void serialize(int[] ints, OutputStream out) throws IOException {
+    public void serialize(int[] ints, DataOutputStream out) throws IOException {
         writer.serializeAmf3(ints.length << 1 | 1);
         out.write(1);   // Fixed size
 

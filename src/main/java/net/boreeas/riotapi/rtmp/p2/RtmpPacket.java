@@ -45,7 +45,7 @@ public class RtmpPacket {
         return currentPos == length;
     }
 
-    public void copyBytes(byte[] b) {
+    public void append(byte[] b) {
         System.arraycopy(b, 0, buffer, currentPos, b.length);
         currentPos += b.length;
     }

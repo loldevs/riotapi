@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization.amf0;
+package net.boreeas.riotapi.rtmp.p2.messages;
 
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfSerializer;
-
-import java.io.IOException;
-import java.io.OutputStream;
+import net.boreeas.riotapi.rtmp.p2.MessageType;
 
 /**
- * Created on 5/7/2014.
+ * Created on 5/18/2014.
  */
-public class Amf0IntegerSerializer implements AmfSerializer<Integer> {
-    @Override
-    public void serialize(Integer integer, OutputStream out) throws IOException {
-
+public class InvokeAmf3 extends Invoke {
+    public InvokeAmf3() {
+        super(MessageType.INVOKE);
     }
 }

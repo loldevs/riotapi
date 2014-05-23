@@ -18,39 +18,20 @@ package net.boreeas.riotapi.rtmp.p2;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Created on 4/23/2014.
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class RtmpHeader {
-    private HeaderType messageType;
 
+    private MessageType messageType;
     private int packetLength;
     private int streamId;
     private int msgStreamId;
     private int timestamp;
-
-    public int getStreamIdBytes() {
-        if (streamId < 0 || streamId > 65599) {
-            throw new RuntimeException("Illegal streamId");
-        } else if (streamId <= 63) {
-            return 1;
-        } else if (streamId <= 319) {
-            return 2;
-        } else  /* streamId <= 65599) */ {
-            return 3;
-        }
-    }
-
-    public int formatTypeAndStreamId() {
-        switch (getStreamIdBytes()) {
-            case 1: return messageType.shiftId() | streamId;
-            case 2: return (messageType.shiftId() << 8) | (streamId - 64);
-            case 3: return (messageType.shiftId() << 16) | (streamId - 64);
-            default: throw new IllegalStateException();
-        }
-    }
-
+    private boolean isTimestampRelative;
 }

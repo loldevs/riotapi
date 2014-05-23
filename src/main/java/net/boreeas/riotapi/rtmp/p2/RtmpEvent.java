@@ -16,14 +16,34 @@
 
 package net.boreeas.riotapi.rtmp.p2;
 
+import lombok.Getter;
+import lombok.Setter;
+import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
+
+import java.io.IOException;
+
 /**
  * Created on 4/25/2014.
  */
-public class RtmpEvent {
+@Getter
+public abstract class RtmpEvent {
     private RtmpHeader header;
     private MessageType type;
+    @Setter private int timeStamp;
 
     public RtmpEvent(MessageType type) {
         this.type = type;
     }
+
+    public RtmpEvent(MessageType type, int timeStamp) {
+        this.type = type;
+        this.timeStamp = timeStamp;
+    }
+
+    public void setHeader(RtmpHeader header) {
+        this.header = header;
+        this.timeStamp = header.getTimestamp();
+    }
+
+    public abstract void writeBody(AmfWriter writer) throws IOException;
 }

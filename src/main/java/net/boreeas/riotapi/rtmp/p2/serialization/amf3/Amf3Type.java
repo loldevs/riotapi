@@ -32,18 +32,24 @@ public enum Amf3Type {
     FALSE,              // 0x03
     INTEGER,            // 0x04
     DOUBLE,             // 0x05
-    STRING,             // 0x06
-    XML_DOC,            // 0x07
-    DATE,               // 0x08
-    ARRAY,              // 0x09
-    OBJECT,             // 0x0A
-    XML,                // 0x0B
-    BYTE_ARRAY,         // 0x0C
-    VECTOR_INT,         // 0x0D
-    VECTOR_UINT,        // 0x0E
-    VECTOR_DOUBLE,      // 0x0F
-    VECTOR_OBJECT,      // 0x10
-    DICTIONARY;         // 0x11
+    STRING(true),       // 0x06
+    XML_DOC(true),      // 0x07
+    DATE(true),         // 0x08
+    ARRAY(true),        // 0x09
+    OBJECT(true),       // 0x0A
+    XML(true),          // 0x0B
+    BYTE_ARRAY(true),   // 0x0C
+    VECTOR_INT(true),   // 0x0D
+    VECTOR_UINT(true),  // 0x0E
+    VECTOR_DOUBLE(true),// 0x0F
+    VECTOR_OBJECT(true),// 0x10
+    DICTIONARY(true);   // 0x11
+
+
+    public final boolean referencable;
+
+    private Amf3Type() { this(false); }
+    private Amf3Type(boolean referencable) { this.referencable = referencable; }
 
     public static Amf3Type getTypeForObject(Object o) {
         if (o == null) return NULL;
@@ -58,7 +64,7 @@ public enum Amf3Type {
         if (o instanceof int[]) return VECTOR_INT;
         if (o instanceof long[]) return VECTOR_UINT;
         if (o instanceof double[]) return VECTOR_DOUBLE;
-        if (o instanceof Object[]) return VECTOR_OBJECT;
+        if (o.getClass().isArray()) return VECTOR_OBJECT;
         if (o.getClass().isAnnotationPresent(SerializationContext.class)) return OBJECT;
         return UNDEFINED;
     }

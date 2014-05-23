@@ -16,26 +16,77 @@
 
 package net.boreeas.riotapi.rtmp.p2.serialization.amf0;
 
-import net.boreeas.riotapi.rtmp.p2.AmfWriter;
+import lombok.Setter;
+import lombok.SneakyThrows;
 import net.boreeas.riotapi.rtmp.p2.serialization.AmfSerializer;
+import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
+import net.boreeas.riotapi.rtmp.p2.serialization.SerializationContext;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created on 5/8/2014.
  */
 public class Amf0ObjectSerializer implements AmfSerializer {
 
-    private AmfWriter writer;
-
-    public void setWriter(AmfWriter writer) {
-        this.writer = writer;
-    }
+    @Setter protected AmfWriter writer;
+    @Setter protected SerializationContext context;
 
     @Override
-    public void serialize(Object obj, OutputStream out) throws IOException {
+    public void serialize(Object obj, DataOutputStream out) throws IOException {
 
-        // TODO
+        if (context.traitName().isEmpty()) {
+            serializeAnonymous(obj, out);
+        } else {
+            serializeTyped(obj, out);
+        }
+    }
+
+    @SneakyThrows({NoSuchFieldException.class, IllegalAccessException.class})
+    public void serializeTyped(Object obj, OutputStream out) throws IOException {
+        DataOutputStream dout  = new DataOutputStream(out);
+        dout.writeUTF(context.traitName());
+
+        if (context.members().length == 0) {
+            serializeAnonymous(obj, out);
+            return;
+        }
+
+        for (String s: context.members()) {
+            dout.writeUTF(s);
+
+            Field f = obj.getClass().getDeclaredField(s);
+            f.setAccessible(true);
+            writer.encodeAmf0(f.get(obj));
+        }
+
+        dout.writeUTF("");
+        dout.write(Amf0Type.OBJECT_END.ordinal());
+    }
+
+    @SneakyThrows(value = {IllegalAccessException.class})
+    public void serializeAnonymous(Object obj, OutputStream out) throws IOException {
+        DataOutputStream dout = new DataOutputStream(out);
+        Set<String> excludes = new HashSet<>(Arrays.asList(context.excludes()));
+
+        for (Field f: obj.getClass().getDeclaredFields()) {
+            if (excludes.contains(f.getName()) || Modifier.isFinal(f.getModifiers()) || Modifier.isStatic(f.getModifiers())) {
+                continue;
+            }
+
+            f.setAccessible(true);
+            dout.writeUTF(f.getName());
+            writer.encodeAmf0(f.get(obj));
+        }
+
+        dout.writeUTF("");
+        dout.write(Amf0Type.OBJECT_END.ordinal());
     }
 }

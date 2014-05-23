@@ -14,42 +14,48 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2;
+package net.boreeas.riotapi.rtmp.p2.serialization;
 
+import lombok.Delegate;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import net.boreeas.riotapi.Util;
 import net.boreeas.riotapi.rtmp.amf.TraitDefinition;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfSerializer;
-import net.boreeas.riotapi.rtmp.p2.serialization.ObjectEncoding;
-import net.boreeas.riotapi.rtmp.p2.serialization.SerializationContext;
-import net.boreeas.riotapi.rtmp.p2.serialization.amf0.Amf0IntegerSerializer;
+import net.boreeas.riotapi.rtmp.p2.serialization.amf0.Amf0DateSerializer;
+import net.boreeas.riotapi.rtmp.p2.serialization.amf0.Amf0MapSerializer;
+import net.boreeas.riotapi.rtmp.p2.serialization.amf0.Amf0NumberSerializer;
+import net.boreeas.riotapi.rtmp.p2.serialization.amf0.Amf0ObjectSerializer;
+import net.boreeas.riotapi.rtmp.p2.serialization.amf0.Amf0StringSerializer;
 import net.boreeas.riotapi.rtmp.p2.serialization.amf0.Amf0Type;
 import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3ByteArraySerializer;
 import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3DateSerializer;
 import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3DictSerializer;
-import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3DoubleSerializer;
 import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3DoubleVectorSerializer;
 import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3IntVectorSerializer;
 import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3IntegerSerializer;
-import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3LongSerializer;
+import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3NumberSerializer;
 import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3ObjectSerializer;
-import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3ObjectVectorSerializer;
 import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3StringSerializer;
 import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3Type;
 import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3UintVectorSerializer;
+import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3VectorSerializer;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created on 5/2/2014.
  */
 public class AmfWriter {
 
-    private OutputStream out;
+    @Delegate private DataOutputStream out;
     private ObjectEncoding encoding;
 
     private Map<Class, AmfSerializer> amf3Serializers = new HashMap<>();
@@ -65,23 +71,35 @@ public class AmfWriter {
     }
 
     public AmfWriter(OutputStream out, ObjectEncoding encoding) {
-        this.out = out;
+        this.out = new DataOutputStream(out);
         this.encoding = encoding;
 
-        amf3Serializers.put(Integer.class, new Amf3IntegerSerializer());
-        amf3Serializers.put(Double.class, new Amf3DoubleSerializer());
-        amf3Serializers.put(Long.class, new Amf3LongSerializer());
+        amf3Serializers.put(Integer.class, Amf3IntegerSerializer.INSTANCE);
+        amf3Serializers.put(Double.class, Amf3NumberSerializer.INSTANCE);
+        amf3Serializers.put(Long.class, Amf3NumberSerializer.INSTANCE);
         amf3Serializers.put(Boolean.class, (o1, o2) -> {}); // Boolean value is indicated by type marker
         amf3Serializers.put(String.class, new Amf3StringSerializer(this));
         amf3Serializers.put(Date.class, new Amf3DateSerializer(this));
-        amf3Serializers.put(Map.class, new Amf3DictSerializer(this));
+        amf3Serializers.put(HashMap.class, new Amf3DictSerializer(this));
         amf3Serializers.put(byte[].class, new Amf3ByteArraySerializer(this));
         amf3Serializers.put(int[].class, new Amf3IntVectorSerializer(this));
         amf3Serializers.put(long[].class, new Amf3UintVectorSerializer(this));
         amf3Serializers.put(double[].class, new Amf3DoubleVectorSerializer(this));
-        amf3Serializers.put(Object[].class, new Amf3ObjectVectorSerializer(this));
+        amf3Serializers.put(ArrayList.class, new Amf3VectorSerializer(this));
 
-        amf0Serializers.put(Integer.class, new Amf0IntegerSerializer());
+        amf0Serializers.put(Integer.class, Amf0NumberSerializer.INSTANCE);
+        amf0Serializers.put(Byte.class, Amf0NumberSerializer.INSTANCE);
+        amf0Serializers.put(Short.class, Amf0NumberSerializer.INSTANCE);
+        amf0Serializers.put(Long.class, Amf0NumberSerializer.INSTANCE);
+        amf0Serializers.put(Double.class, Amf0NumberSerializer.INSTANCE);
+        amf0Serializers.put(Float.class, Amf0NumberSerializer.INSTANCE);
+        amf0Serializers.put(Boolean.class, (bool, os) -> os.write(bool == Boolean.TRUE ? 1 : 0));
+        amf0Serializers.put(String.class, Amf0StringSerializer.INSTANCE);
+        amf0Serializers.put(Character.class, (c, os) -> Amf0StringSerializer.INSTANCE.serialize(""+c, os));
+        amf0Serializers.put(UUID.class, (uuid, os) -> Amf0StringSerializer.INSTANCE.serialize(uuid.toString(), os));
+        amf0Serializers.put(Date.class, Amf0DateSerializer.INSTANCE);
+        amf0Serializers.put(HashMap.class, new Amf0MapSerializer(this));
+
     }
 
     public void encode(Object object) throws IOException {
@@ -115,43 +133,62 @@ public class AmfWriter {
             return;
         }
 
-        if (amf0ObjectRefTable.containsKey(obj)) { // Send ref instead of object
-            out.write(Amf0Type.REFERENCE.ordinal());
-            out.serializeAmf0(amf0ObjectRefTable.get(obj));
-            return;
+        if (type.referencable) {
+            // These types can be sent by reference
+            if (amf0ObjectRefTable.containsKey(obj)) { // Send ref instead of object
+                out.write(Amf0Type.REFERENCE.ordinal());
+                serializeAmf0(amf0ObjectRefTable.get(obj));
+                return;
+            }
+
+            amf0ObjectRefTable.put(obj, (short) amf0ObjectRefTable.size());
         }
 
-        amf0ObjectRefTable.put(obj, (short) amf0ObjectRefTable.size());
         out.write(type.ordinal());
         serializeAmf0(obj);
      }
 
+    @SneakyThrows(value = {InstantiationException.class, IllegalAccessException.class})
     public void serializeAmf0(Object obj) throws IOException {
-        System.out.println("Serializing [0] " + obj.getClass() + "/" + obj);
 
+        SerializationContext context;
         if (amf0Serializers.containsKey(obj.getClass())) {
             amf0Serializers.get(obj.getClass()).serialize(obj, out);
 
-        } else if (obj.getClass().isAnnotationPresent(SerializationContext.class)) {
-
-            SerializationContext context = obj.getClass().getAnnotation(SerializationContext.class);
+        } else if ((context = Util.searchClassHierarchy(obj.getClass(), SerializationContext.class)) != null) {
             Amf0ObjectSerializer serializer = context.serializerAmf0().newInstance();
 
             serializer.setWriter(this);
+            serializer.setContext(context);
             serializer.serialize(obj, out);
+        } else if (obj.getClass().isArray()) {
+            // Arrays require special handling
+            serializeArrayAmf0(obj);
         } else {
             throw new IllegalArgumentException("Can't serialize " + obj.getClass());
+        }
+
+        out.flush();
+    }
+
+    private void serializeArrayAmf0(Object obj) throws IOException {
+        int len = Array.getLength(obj);
+        out.write(len >> 24);
+        out.write(len >> 16);
+        out.write(len >> 8);
+        out.write(len);
+
+        for (int i = 0; i < len; i++) {
+            encodeAmf0(Array.get(obj, i));
         }
     }
 
     public <T> void registerAmf0Serializer(@NonNull Class<T> targetClass, AmfSerializer<T> serializer) {
         this.amf0Serializers.put(targetClass, serializer);
     }
-
     // </editor-fold>
 
     // <editor-fold desc="Amf3">
-
     public <T> void registerAmf3Serializer(@NonNull Class<T> targetClass, AmfSerializer<T> serializer) {
         this.amf3Serializers.put(targetClass, serializer);
     }
@@ -180,11 +217,11 @@ public class AmfWriter {
 
         Map<Object, Integer> refTable = marker == Amf3Type.STRING ? amf3StringRefTable : amf3ObjectRefTable;
 
-        if (marker == Amf3Type.STRING && ((String) obj).isEmpty()) {    // Never reference empty strings
+        if ((marker == Amf3Type.STRING && obj.toString().isEmpty()) // Never reference empty strings
+          || !marker.referencable) {
 
             serializeAmf3(obj);
         } else if (!writeRefIfAlreadyReferenced(obj, refTable)) {       // Writes ref id if exists
-
             refTable.put(obj, refTable.size());
             serializeAmf3(obj);
         }
@@ -201,29 +238,43 @@ public class AmfWriter {
 
     /**
      * Serializes the specified object to amf3
-     * @param o The object to serialize
+     * @param obj The object to serialize
      * @throws IOException
      */
     @SneakyThrows(value = {InstantiationException.class, IllegalAccessException.class})
-    public void serializeAmf3(Object o) throws IOException {
-        System.out.println("Serializing [3] " + o.getClass() + "/" + o);
+    public void serializeAmf3(Object obj) throws IOException {
 
-        if (amf3Serializers.containsKey(o.getClass())) {
-            amf3Serializers.get(o.getClass()).serialize(o, out);
+        SerializationContext context;
+        if (amf3Serializers.containsKey(obj.getClass())) {
+            amf3Serializers.get(obj.getClass()).serialize(obj, out);
 
-        } else if (o.getClass().isAnnotationPresent(SerializationContext.class)) {
+        } else if ((context = Util.searchClassHierarchy(obj.getClass(), SerializationContext.class)) != null) {
 
-            SerializationContext annotation = o.getClass().getAnnotation(SerializationContext.class);
-            Amf3ObjectSerializer serializer = annotation.serializerAmf3().newInstance();
+            Amf3ObjectSerializer serializer = context.serializerAmf3().newInstance();
 
             serializer.setTraitRefTable(traitRefTable);
             serializer.setWriter(this);
-            serializer.serialize(o, out);
+            serializer.setContext(context);
+            serializer.serialize(obj, out);
+        } else if (obj.getClass().isArray()) {
+            // Arrays require special handling
+            serializeArrayAmf3(obj);
         } else {
-            throw new IllegalArgumentException("Can't serialize " + o.getClass());
+            throw new IllegalArgumentException("Can't serialize " + obj.getClass());
+        }
+
+        out.flush();
+    }
+
+    private void serializeArrayAmf3(Object obj) throws IOException {
+        int length = Array.getLength(obj);
+        serializeAmf3(length << 1 | 1);
+        out.write(1);       // Fixed size
+        serializeAmf3("*"); // Dynamic type
+
+        for (int i = 0; i < length; i++) {
+            encodeAmf3(Array.get(obj, i));
         }
     }
     // </editor-fold>
-
-
 }

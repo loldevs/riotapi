@@ -14,33 +14,41 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization.amf3;
+package net.boreeas.riotapi.rtmp.p2.serialization.amf0;
 
-import net.boreeas.riotapi.rtmp.p2.AmfWriter;
+import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
 import net.boreeas.riotapi.rtmp.p2.serialization.AmfSerializer;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.util.Map;
 
 /**
- * Created on 5/3/2014.
+ * Created on 5/11/2014.
  */
-public class Amf3ObjectVectorSerializer implements AmfSerializer<Object[]> {
+public class Amf0MapSerializer implements AmfSerializer<Map<?, ?>> {
 
     private AmfWriter writer;
 
-    public Amf3ObjectVectorSerializer(AmfWriter writer) {
+    public Amf0MapSerializer(AmfWriter writer) {
         this.writer = writer;
     }
 
     @Override
-    public void serialize(Object[] objects, OutputStream out) throws IOException {
-        writer.serializeAmf3(objects.length << 1 | 1);
-        out.write(1);   // Fixed size
-        writer.serializeAmf3("*"); // Object type - any
+    public void serialize(Map<?, ?> map, DataOutputStream out) throws IOException {
+        int len = map.size();
+        out.write(len >> 24);
+        out.write(len >> 16);
+        out.write(len >> 8);
+        out.write(len);
 
-        for (Object obj: objects) {
-            writer.encodeAmf3(obj);
+        for (Map.Entry entry: map.entrySet()) {
+            writer.serializeAmf0(entry.getKey().toString());
+            writer.encodeAmf0(entry.getValue());
         }
+
+        out.write(0);
+        out.write(0);
+        out.write(Amf0Type.OBJECT_END.ordinal());
     }
 }

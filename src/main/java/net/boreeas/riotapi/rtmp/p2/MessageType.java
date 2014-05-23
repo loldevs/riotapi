@@ -20,7 +20,31 @@ package net.boreeas.riotapi.rtmp.p2;
  * Created on 4/25/2014.
  */
 public enum MessageType {
-    ABORT,
-    SUBSCRIBE,
-    MESSAGE
+
+    SET_CHUNK_SIZE(1),
+    ABORT_MESSAGE(2),
+    ACKNOWLEDGEMENT(3),
+    USER_CONTROL_MESSAGE(4),
+    WINDOW_ACKNOWLEDGEMENT_SIZE(5),
+    SET_PEER_BANDWIDTH(6),
+
+    AUDIO(8),
+    VIDEO(9),
+
+    DATA_AMF3(15),
+    SHARED_OBJ_AMF3(16),
+    INVOKE(17),
+
+    DATA_AMF0(18),
+    SHARED_OBJ_AMF0(19),
+    INVOKEX(20),
+
+    AGGREGATE(22);
+
+
+    public final int id;
+
+    private MessageType(int id) {
+        this.id = id;
+    }
 }

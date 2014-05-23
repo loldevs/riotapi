@@ -16,11 +16,11 @@
 
 package net.boreeas.riotapi.rtmp.p2.serialization.amf3;
 
-import net.boreeas.riotapi.rtmp.p2.AmfWriter;
+import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
 import net.boreeas.riotapi.rtmp.p2.serialization.AmfSerializer;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Date;
 
 /**
@@ -35,7 +35,7 @@ public class Amf3DateSerializer implements AmfSerializer<Date> {
     }
 
     @Override
-    public void serialize(Date date, OutputStream out) throws IOException {
+    public void serialize(Date date, DataOutputStream out) throws IOException {
         out.write(1);   // Not-cached
         writer.serializeAmf3(date.getTime());
     }

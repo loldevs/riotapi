@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization;
-
-import java.io.DataOutputStream;
-import java.io.IOException;
+package net.boreeas.riotapi.rtmp.p2;
 
 /**
- * Created on 5/2/2014.
+ * Created on 5/18/2014.
  */
-public interface AmfSerializer<T> {
-    public void serialize(T t, DataOutputStream out) throws IOException;
+public enum ChunkHeaderType {
+    FULL(11),
+    NO_STREAM_ID(7),
+    TIMESTAMP_ONLY(3),
+    NO_HEADER(0);
+
+    public final int length;
+
+    private ChunkHeaderType(int length) {
+        this.length = length;
+    }
 }

@@ -14,26 +14,28 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization.amf3;
+package net.boreeas.riotapi.rtmp.p2.messages;
 
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfSerializer;
+import lombok.Getter;
+import net.boreeas.riotapi.rtmp.p2.MessageType;
+import net.boreeas.riotapi.rtmp.p2.RtmpEvent;
+import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
- * Created on 5/3/2014.
+ * Created on 5/18/2014.
  */
-public class Amf3LongSerializer implements AmfSerializer<Long> {
+public class VideoData extends RtmpEvent {
+    @Getter private byte[] buffer;
+
+    public VideoData(byte[] buffer) {
+        super(MessageType.AUDIO);
+        this.buffer = buffer;
+    }
+
     @Override
-    public void serialize(Long val, OutputStream out) throws IOException {
-        out.write((int) (val >> 56));
-        out.write((int) (val >> 48));
-        out.write((int) (val >> 40));
-        out.write((int) (val >> 32));
-        out.write((int) (val >> 24));
-        out.write((int) (val >> 16));
-        out.write((int) (val >>  8));
-        out.write((int) (long) val);
+    public void writeBody(AmfWriter writer) throws IOException {
+        writer.write(buffer);
     }
 }

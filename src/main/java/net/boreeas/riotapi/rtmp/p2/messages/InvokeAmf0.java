@@ -14,26 +14,15 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2;
+package net.boreeas.riotapi.rtmp.p2.messages;
+
+import net.boreeas.riotapi.rtmp.p2.MessageType;
 
 /**
- * Created on 4/23/2014.
+ * Created on 5/18/2014.
  */
-public enum HeaderType {
-    FULL(11, 0),
-    NO_MSG_STREAM_ID(7, 1),
-    TIMESTAMP_ONLY(3, 2),
-    NONE(0 , 3);
-
-    public final int length;
-    public final int id;
-
-    private HeaderType(int length, int id) {
-        this.length = length;
-        this.id = id;
-    }
-
-    public int shiftId() {
-        return id << 6;
+public class InvokeAmf0 extends Invoke {
+    public InvokeAmf0() {
+        super(MessageType.INVOKEX);
     }
 }

@@ -16,6 +16,7 @@
 
 package net.boreeas.riotapi;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,5 +63,17 @@ public class Util {
     public static boolean isPrintable(char c) {
         Character.UnicodeBlock block = Character.UnicodeBlock.of(c);
         return !Character.isISOControl(c) && block != null && block != Character.UnicodeBlock.SPECIALS;
+    }
+
+    public static <A extends Annotation> A searchClassHierarchy(Class<?> cls, Class<A> annotation) {
+        while (cls != null) {
+            if (cls.isAnnotationPresent(annotation)) {
+                return cls.getAnnotation(annotation);
+            } else {
+                cls = cls.getSuperclass();
+            }
+        }
+
+        return null;
     }
 }

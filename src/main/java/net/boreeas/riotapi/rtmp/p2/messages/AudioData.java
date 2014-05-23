@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization.amf3;
+package net.boreeas.riotapi.rtmp.p2.messages;
 
+import lombok.Getter;
+import net.boreeas.riotapi.rtmp.p2.MessageType;
+import net.boreeas.riotapi.rtmp.p2.RtmpEvent;
 import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfSerializer;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Created on 5/3/2014.
+ * Created on 5/18/2014.
  */
-public class Amf3StringSerializer implements AmfSerializer<String> {
+public class AudioData extends RtmpEvent {
+    @Getter private byte[] buffer;
 
-    private final AmfWriter writer;
-
-    public Amf3StringSerializer(AmfWriter writer) {
-        this.writer = writer;
+    public AudioData(byte[] buffer) {
+        super(MessageType.AUDIO);
+        this.buffer = buffer;
     }
 
     @Override
-    public void serialize(String val, DataOutputStream out) throws IOException {
-        writer.serializeAmf3(val.length() << 1 | 1);
-        out.write(val.getBytes("UTF-8"));
+    public void writeBody(AmfWriter writer) throws IOException {
+        writer.write(buffer);
     }
 }

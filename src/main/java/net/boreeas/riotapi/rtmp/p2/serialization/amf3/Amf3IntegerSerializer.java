@@ -19,36 +19,41 @@ package net.boreeas.riotapi.rtmp.p2.serialization.amf3;
 import net.boreeas.riotapi.rtmp.RangeException;
 import net.boreeas.riotapi.rtmp.p2.serialization.AmfSerializer;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * Created on 5/3/2014.
  */
-public class Amf3IntegerSerializer implements AmfSerializer<Integer> {
+public enum Amf3IntegerSerializer implements AmfSerializer<Integer> {
+    INSTANCE;
 
     @Override
-    public void serialize(Integer val, OutputStream out) throws IOException {
+    public void serialize(Integer val, DataOutputStream out) throws IOException {
         if (val > 536870911  || val < -268435456) {
             throw new RangeException(val);
         }
 
-        int marker = 1 << 7;
+        int continueMarker = 1 << 7;
+        int mask = 0x7f;
+        val &= 0x1fffffff; // clear top 3 (unused) bits
 
-        if (val <= 0x7F) {
+        if (val < 0x80) {
             out.write(val);
-        } else if (val <= 0x3FFFF) {
-            out.write(val >> 7 | marker);
-            out.write(val);
-        } else if (val <= 0x1FFFFF) {
-            out.write(val >> 14 | marker);
-            out.write(val >>  7 | marker);
-            out.write(val);
+        } else if (val < 0x4000) {
+            out.write((val >> 7 & mask) | continueMarker);
+            out.write(val & mask);
+        } else if (val < 0x200000) {
+            out.write((val >> 14 & mask) | continueMarker);
+            out.write((val >>  7 & mask) | continueMarker);
+            out.write(val & mask);
         } else {
-            out.write(val >> 21 | marker);
-            out.write(val >> 14 | marker);
-            out.write(val >>  7 | marker);
-            out.write(val);
+            // if the number is this big, the last byte uses all 8 bits
+            // so we shift one bit more for each previous byte
+            out.write((val >> 22 & mask) | continueMarker);
+            out.write((val >> 15 & mask) | continueMarker);
+            out.write((val >>  8 & mask) | continueMarker);
+            out.write(val & 0xff);
         }
     }
 }

@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization.amf3;
+package net.boreeas.riotapi.rtmp.p2.serialization.amf0;
 
 import net.boreeas.riotapi.rtmp.p2.serialization.AmfSerializer;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
- * Created on 5/3/2014.
+ * Created on 5/10/2014.
  */
-public class Amf3DoubleSerializer implements AmfSerializer<Double> {
+public enum Amf0StringSerializer implements AmfSerializer<String> {
+    INSTANCE;
+
     @Override
-    public void serialize(Double d, OutputStream out) throws IOException {
-        long val = Double.doubleToLongBits(d);
-        out.write((int) (val >> 56));
-        out.write((int) (val >> 48));
-        out.write((int) (val >> 40));
-        out.write((int) (val >> 32));
-        out.write((int) (val >> 24));
-        out.write((int) (val >> 16));
-        out.write((int) (val >>  8));
-        out.write((int) val);
+    public void serialize(String s, DataOutputStream out) throws IOException {
+        if (s.length() < 0xFFFF) {
+            new DataOutputStream(out).writeUTF(s);
+        } else {
+            DataOutputStream dout = new DataOutputStream(out);
+            dout.writeInt(s.length());
+            dout.write(s.getBytes("UTF-8"));
+        }
     }
 }

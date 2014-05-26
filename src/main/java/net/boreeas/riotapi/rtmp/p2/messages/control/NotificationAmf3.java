@@ -14,27 +14,15 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.messages;
+package net.boreeas.riotapi.rtmp.p2.messages.control;
 
-import lombok.Getter;
 import net.boreeas.riotapi.rtmp.p2.MessageType;
-import net.boreeas.riotapi.rtmp.p2.RtmpEvent;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
-
-import java.io.IOException;
 
 /**
  * Created on 5/18/2014.
  */
-public class AbortMessage extends RtmpEvent {
-    @Getter private final int streamId;
-
-    public AbortMessage(int streamId) {
-        super(MessageType.ABORT_MESSAGE);
-        this.streamId = streamId;
-    }
-
-    public void writeBody(AmfWriter writer) throws IOException {
-        writer.writeInt(streamId);
+public class NotificationAmf3 extends Notification {
+    public NotificationAmf3() {
+        super(MessageType.DATA_AMF3);
     }
 }

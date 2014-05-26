@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.messages;
+package net.boreeas.riotapi.rtmp.p2.messages.control;
 
 import lombok.Getter;
 import net.boreeas.riotapi.rtmp.p2.MessageType;
@@ -26,16 +26,15 @@ import java.io.IOException;
 /**
  * Created on 5/18/2014.
  */
-public class WindowAcknowledgementSize extends RtmpEvent {
-    @Getter private int ackSize;
+public class SetChunkSize extends RtmpEvent {
+    @Getter private final int chunkSize;
 
-    public WindowAcknowledgementSize(int ackSize) {
-        super(MessageType.WINDOW_ACKNOWLEDGEMENT_SIZE);
-        this.ackSize = ackSize;
+    public SetChunkSize(int chunkSize) {
+        super(MessageType.SET_CHUNK_SIZE);
+        this.chunkSize = chunkSize;
     }
 
-    @Override
     public void writeBody(AmfWriter writer) throws IOException {
-        writer.writeInt(ackSize);
+        writer.writeInt(chunkSize);
     }
 }

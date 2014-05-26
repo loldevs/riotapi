@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.messages;
+package net.boreeas.riotapi.rtmp.p2;
 
-import net.boreeas.riotapi.rtmp.p2.MessageType;
+import java.net.ProtocolException;
 
 /**
- * Created on 5/18/2014.
+ * Created on 5/24/2014.
  */
-public class InvokeAmf3 extends Invoke {
-    public InvokeAmf3() {
-        super(MessageType.INVOKE);
+public class RtmpVersionMismatchException extends ProtocolException {
+    public RtmpVersionMismatchException(int serverVersion, int rtmpVersion) {
+        super("Got server version " + serverVersion + " but expected " + rtmpVersion);
     }
 }

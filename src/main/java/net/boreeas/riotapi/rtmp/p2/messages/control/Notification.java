@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.messages;
+package net.boreeas.riotapi.rtmp.p2.messages.control;
 
 import net.boreeas.riotapi.rtmp.p2.MessageType;
 import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;

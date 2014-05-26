@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.messages;
+package net.boreeas.riotapi.rtmp.p2.messages.control;
 
 import lombok.Getter;
 import net.boreeas.riotapi.rtmp.p2.MessageType;
@@ -22,25 +22,20 @@ import net.boreeas.riotapi.rtmp.p2.RtmpEvent;
 import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created on 5/18/2014.
  */
-public class UserControlMessage extends RtmpEvent {
-    @Getter private int type;
-    @Getter private List<Integer> values;
+public class WindowAcknowledgementSize extends RtmpEvent {
+    @Getter private int ackSize;
 
-    public UserControlMessage(int type, List<Integer> values) {
-        super(MessageType.USER_CONTROL_MESSAGE);
-        this.type = type;
-        this.values = values;
+    public WindowAcknowledgementSize(int ackSize) {
+        super(MessageType.WINDOW_ACKNOWLEDGEMENT_SIZE);
+        this.ackSize = ackSize;
     }
 
+    @Override
     public void writeBody(AmfWriter writer) throws IOException {
-        writer.writeShort(type);
-        for (int i: values) {
-            writer.writeInt(i);
-        }
+        writer.writeInt(ackSize);
     }
 }

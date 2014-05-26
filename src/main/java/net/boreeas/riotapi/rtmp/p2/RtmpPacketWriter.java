@@ -16,7 +16,7 @@
 
 package net.boreeas.riotapi.rtmp.p2;
 
-import net.boreeas.riotapi.rtmp.p2.messages.SetChunkSize;
+import net.boreeas.riotapi.rtmp.p2.messages.control.SetChunkSize;
 import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
 import net.boreeas.riotapi.rtmp.p2.serialization.ObjectEncoding;
 
@@ -155,10 +155,11 @@ public class RtmpPacketWriter {
     }
 
     public void writeAsynch(RtmpEvent evt, int streamId, int msgStreamId) {
-        writeAsynch(evt, streamId, msgStreamId, e -> {});
+        writeAsync(evt, streamId, msgStreamId, e -> {
+        });
     }
 
-    public void writeAsynch(RtmpEvent evt, int streamId, int msgStreamId, Consumer<IOException> onError) {
+    public void writeAsync(RtmpEvent evt, int streamId, int msgStreamId, Consumer<IOException> onError) {
         new Thread(() -> {
             try {
                 write(evt, streamId, msgStreamId);

@@ -16,26 +16,11 @@
 
 package net.boreeas.riotapi.rtmp.p2.messages;
 
-import lombok.Getter;
-import net.boreeas.riotapi.rtmp.p2.MessageType;
-import net.boreeas.riotapi.rtmp.p2.RtmpEvent;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
-
-import java.io.IOException;
+import net.boreeas.riotapi.rtmp.p2.serialization.SerializationContext;
 
 /**
- * Created on 5/18/2014.
+ * Created on 5/26/2014.
  */
-public class VideoData extends RtmpEvent {
-    @Getter private byte[] buffer;
-
-    public VideoData(byte[] buffer) {
-        super(MessageType.AUDIO);
-        this.buffer = buffer;
-    }
-
-    @Override
-    public void writeBody(AmfWriter writer) throws IOException {
-        writer.write(buffer);
-    }
+@SerializationContext(traitName = )
+public class FlexMessage {
 }

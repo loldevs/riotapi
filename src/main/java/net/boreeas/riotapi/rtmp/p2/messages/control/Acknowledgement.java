@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.messages;
+package net.boreeas.riotapi.rtmp.p2.messages.control;
 
 import lombok.Getter;
 import net.boreeas.riotapi.rtmp.p2.MessageType;
@@ -26,19 +26,15 @@ import java.io.IOException;
 /**
  * Created on 5/18/2014.
  */
-public class SetPeerBandwidth extends RtmpEvent {
-    @Getter private int width;
-    @Getter private int limitType;
+public class Acknowledgement extends RtmpEvent {
+    @Getter private final int sequenceId;
 
-    public SetPeerBandwidth(int width, int limitType) {
-        super(MessageType.SET_PEER_BANDWIDTH);
-        this.width = width;
-        this.limitType = limitType;
+    public Acknowledgement(int sequenceId) {
+        super(MessageType.ACKNOWLEDGEMENT);
+        this.sequenceId = sequenceId;
     }
 
-    @Override
     public void writeBody(AmfWriter writer) throws IOException {
-        writer.writeInt(width);
-        writer.write(limitType);
+        writer.writeInt(sequenceId);
     }
 }

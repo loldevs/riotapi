@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.messages;
+package net.boreeas.riotapi.rtmp.p2.messages.control;
 
 import net.boreeas.riotapi.rtmp.p2.MessageType;
 
 /**
  * Created on 5/18/2014.
  */
-public class InvokeAmf0 extends Invoke {
-    public InvokeAmf0() {
-        super(MessageType.INVOKEX);
+public class NotificationAmf0 extends Notification {
+    public NotificationAmf0() {
+        super(MessageType.DATA_AMF0);
     }
 }

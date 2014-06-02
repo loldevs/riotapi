@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization.amf0;
+package net.boreeas.riotapi.rtmp.serialization.amf0;
 
 import lombok.Setter;
 import lombok.SneakyThrows;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfSerializer;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
-import net.boreeas.riotapi.rtmp.p2.serialization.SerializationContext;
+import net.boreeas.riotapi.rtmp.serialization.AmfSerializer;
+import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
+import net.boreeas.riotapi.rtmp.serialization.NoSerialization;
+import net.boreeas.riotapi.rtmp.serialization.Serialization;
+import net.boreeas.riotapi.rtmp.serialization.SerializedName;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created on 5/8/2014.
@@ -37,56 +35,44 @@ import java.util.Set;
 public class Amf0ObjectSerializer implements AmfSerializer {
 
     @Setter protected AmfWriter writer;
-    @Setter protected SerializationContext context;
 
     @Override
     public void serialize(Object obj, DataOutputStream out) throws IOException {
 
-        if (context.traitName().isEmpty()) {
-            serializeAnonymous(obj, out);
-        } else {
-            serializeTyped(obj, out);
-        }
-    }
+        Serialization context = obj.getClass().getAnnotation(Serialization.class);
 
-    @SneakyThrows({NoSuchFieldException.class, IllegalAccessException.class})
-    public void serializeTyped(Object obj, OutputStream out) throws IOException {
-        DataOutputStream dout  = new DataOutputStream(out);
-        dout.writeUTF(context.traitName());
-
-        if (context.members().length == 0) {
-            serializeAnonymous(obj, out);
-            return;
+        if (!context.name().isEmpty()) {
+            out.writeUTF(context.name());
         }
 
-        for (String s: context.members()) {
-            dout.writeUTF(s);
-
-            Field f = obj.getClass().getDeclaredField(s);
-            f.setAccessible(true);
-            writer.encodeAmf0(f.get(obj));
-        }
-
-        dout.writeUTF("");
-        dout.write(Amf0Type.OBJECT_END.ordinal());
+        serializeAnonymous(obj, out);
     }
 
     @SneakyThrows(value = {IllegalAccessException.class})
-    public void serializeAnonymous(Object obj, OutputStream out) throws IOException {
-        DataOutputStream dout = new DataOutputStream(out);
-        Set<String> excludes = new HashSet<>(Arrays.asList(context.excludes()));
+    public void serializeAnonymous(Object obj, DataOutputStream out) throws IOException {
 
-        for (Field f: obj.getClass().getDeclaredFields()) {
-            if (excludes.contains(f.getName()) || Modifier.isFinal(f.getModifiers()) || Modifier.isStatic(f.getModifiers())) {
-                continue;
+        Class c = obj.getClass();
+
+        while (c != null) {
+            for (Field f : obj.getClass().getDeclaredFields()) {
+                if (Modifier.isFinal(f.getModifiers()) || Modifier.isStatic(f.getModifiers()) || f.isAnnotationPresent(NoSerialization.class)) {
+                    continue;
+                }
+
+                f.setAccessible(true);
+                String name = f.getName();
+                if (f.isAnnotationPresent(SerializedName.class)) {
+                    name = f.getAnnotation(SerializedName.class).name();
+                }
+
+                out.writeUTF(name);
+                writer.encodeAmf0(f.get(obj));
             }
 
-            f.setAccessible(true);
-            dout.writeUTF(f.getName());
-            writer.encodeAmf0(f.get(obj));
+            c = c.getSuperclass();
         }
 
-        dout.writeUTF("");
-        dout.write(Amf0Type.OBJECT_END.ordinal());
+        out.writeUTF("");
+        out.write(Amf0Type.OBJECT_END.ordinal());
     }
 }

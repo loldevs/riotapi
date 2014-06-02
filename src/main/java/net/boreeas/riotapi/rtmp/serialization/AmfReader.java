@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization;
+package net.boreeas.riotapi.rtmp.serialization;
 
 import lombok.AllArgsConstructor;
 import lombok.Delegate;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.ToString;
-import net.boreeas.riotapi.rtmp.p2.serialization.amf0.Amf0Type;
-import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3ObjectDeserializer;
-import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3Type;
+import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0ObjectDeserializer;
+import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0Type;
+import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3ObjectDeserializer;
+import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3Type;
+import net.boreeas.riotapi.rtmp.serialization.amf3.Dynamic;
 import org.reflections.Reflections;
 
 import java.io.DataInputStream;
@@ -32,13 +34,10 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Callable;
 
 /**
@@ -55,8 +54,9 @@ public class AmfReader {
 
     private List<Object> amf3ObjectReferences = new ArrayList<>();
     private List<String> amf3StringReferences = new ArrayList<>();
-    private List<ClassDef> amf3ClassReferences = new ArrayList<>();
+    private List<TraitDefinition> amf3ClassReferences = new ArrayList<>();
     private List<Callable<Object>> amf3Deserializers = new ArrayList<>();
+    private Map<String, Amf3ObjectDeserializer> amf3ObjectDeserializers = new HashMap<>();
 
     public AmfReader(InputStream in) {
         this(in, "net.boreeas"); // By default, look for classes from this package
@@ -72,7 +72,7 @@ public class AmfReader {
     /**
      * Creates an input stream without rescanning the classpath
      * @param in The inputstream to read from
-     * @param original The reader from which to take the set of serializable classes
+     * @param base The reader from which to take the set of serializable classes
      */
     public AmfReader(InputStream in, AmfReader base) {
         this.in = new DataInputStream(in);
@@ -122,6 +122,10 @@ public class AmfReader {
         amf3Deserializers.add(this::readAmf3Map);
     }
 
+    public void addObjectDeserializer(String type, Amf3ObjectDeserializer deserializer) {
+        amf3ObjectDeserializers.put(type, deserializer);
+    }
+
     public void scanPackages(String... packages) {
         reflections.merge(new Reflections(packages));
         buildSerializableClassList();
@@ -129,8 +133,8 @@ public class AmfReader {
 
     private synchronized void buildSerializableClassList() {
         this.serializableClasses = new HashMap<>();
-        reflections.getTypesAnnotatedWith(SerializationContext.class).forEach(
-                cls -> serializableClasses.put(cls.getAnnotation(SerializationContext.class).traitName(), cls)
+        reflections.getTypesAnnotatedWith(Serialization.class).forEach(
+                cls -> serializableClasses.put(cls.getAnnotation(Serialization.class).name(), cls)
         );
     }
 
@@ -197,7 +201,7 @@ public class AmfReader {
         return arr;
     }
 
-    private Map<String, Object> readAmf0KeyValuePairs() throws IOException {
+    public Map<String, Object> readAmf0KeyValuePairs() throws IOException {
         Map<String, Object> map = new HashMap<>();
 
         while (true) {
@@ -221,43 +225,24 @@ public class AmfReader {
     @SneakyThrows({IllegalAccessException.class, InstantiationException.class, NoSuchFieldException.class})
     public Object readAmf0Object() throws IOException {
         String name = in.readUTF();
-        Map<String, Object> kvPairs = readAmf0KeyValuePairs();
-
         Class<?> cls = serializableClasses.get(name);
         Object result;
 
         if (cls == null) {
-            result = new AnonymousAmfObject(name, kvPairs);
+            Map<String, Object> kvPairs = readAmf0KeyValuePairs();
+            result = new AmfObject(name, kvPairs);
         } else {
-            result = cls.newInstance();
-            for (Map.Entry<String, Object> field: kvPairs.entrySet()) {
-                Field f = cls.getDeclaredField(field.getKey());
-                f.setAccessible(true);
-
-                // amf0 can only encode doubles
-                if (f.getType() == Long.class || f.getType() == long.class) {
-                    f.set(result, ((Double) field.getValue()).longValue());
-                } else if (f.getType() == Integer.class || f.getType() == int.class) {
-                    f.set(result, ((Double) field.getValue()).intValue());
-                } else if (f.getType() == Short.class || f.getType() == short.class) {
-                    f.set(result, ((Double) field.getValue()).shortValue());
-                } else if (f.getType() == Byte.class || f.getType() == byte.class) {
-                    f.set(result, ((Double) field.getValue()).byteValue());
-                } else if (f.getType() == Float.class || f.getType() == float.class) {
-                    f.set(result, ((Double) field.getValue()).floatValue());
-                } else {
-                    f.set(result, field.getValue());
-                }
-
-            }
+            Amf0ObjectDeserializer deserializer = cls.getAnnotation(Serialization.class).amf0Deserializer().newInstance();
+            deserializer.setCls(cls);
+            result = deserializer.deserialize(this);
         }
 
         amf0ObjectReferences.add(result);
         return result;
     }
 
-    public AnonymousAmfObject readAmf0AnonymousObject() throws IOException {
-        AnonymousAmfObject obj = new AnonymousAmfObject(in.readUTF(), readAmf0KeyValuePairs());
+    public AmfObject readAmf0AnonymousObject() throws IOException {
+        AmfObject obj = new AmfObject(in.readUTF(), readAmf0KeyValuePairs());
         amf0ObjectReferences.add(obj);
 
         return obj;
@@ -440,38 +425,47 @@ public class AmfReader {
         Amf3Header header = readAmf3Header();
         if (header.isReference) return amf3ObjectReferences.get(header.value);
 
-        ClassDef classDef = readAmf3ClassDefinition(header.value);
+        TraitDefinition traitDef = readAmf3TraitDefinition(header.value);
 
 
-        if (classDef.cls == null) { // Read as kv-pairs
-            AnonymousAmfObject result = new TypedAmfObject(classDef.type);
-            amf3ObjectReferences.add(result);
+        String type = traitDef.getName();
 
-            for (String s: classDef.members) {
-                result.set(s, decodeAmf3());
+        Object result;
+        if (amf3ObjectDeserializers.containsKey(type)) {
+            result = amf3ObjectDeserializers.get(type).deserialize(this, traitDef);
+        } else if (serializableClasses.containsKey(type)) { // Read as kv-pairs
+            Class<?> c = serializableClasses.get(type);
+
+            Serialization context = c.getAnnotation(Serialization.class);
+            Amf3ObjectDeserializer deserializer = context.amf3Deserializer().newInstance();
+            deserializer.setCls(c);
+
+            result = deserializer.deserialize(this, traitDef);
+
+        } else {
+            AmfObject amfObj = new AmfObject(type);
+            result = amfObj;
+
+            for (FieldRef s: traitDef.getStaticFields()) {
+                amfObj.set(s.getName(), decodeAmf3());
             }
 
-            if (classDef.dynamic) {
+            if (traitDef.isDynamic()) {
                 String key;
                 while (!(key = in.readUTF()).isEmpty()) {
-                    result.set(key, decodeAmf3());
+                    amfObj.set(key, decodeAmf3());
                 }
             }
 
             return result;
-        } else {
-            Object result = classDef.cls.newInstance();
-            amf3ObjectReferences.add(result);
-
-            Amf3ObjectDeserializer deserializer = classDef.cls.getAnnotation(SerializationContext.class).deserializer().newInstance();
-            deserializer.setReader(this);
-            deserializer.deserialize(result, classDef.cls.getAnnotation(SerializationContext.class), in);
-
-            return result;
         }
+
+        amf3ObjectReferences.add(result);
+        return result;
     }
 
-    private ClassDef readAmf3ClassDefinition(int flags) throws IOException {
+
+    private TraitDefinition readAmf3TraitDefinition(int flags) throws IOException {
         if ((flags & 1) == 0) { // Reference
             return amf3ClassReferences.get(flags >> 1);
         }
@@ -479,58 +473,55 @@ public class AmfReader {
         String type = readAmf3String();
         boolean externalizable = ((flags >> 1) & 1) == 1;
         boolean dynamic = ((flags >> 2) & 1) == 1;
+
+        TraitDefinition def = new TraitDefinition(type, dynamic, externalizable);
         String[] members = new String[flags >> 3];
 
-        for (int i = 0; i < members.length; i++) {
-            members[i] = readAmf3String();
-        }
-
         Class match = serializableClasses.get(type);
-        ClassDef def;
 
-        if (!assertClassMatch(match, externalizable, dynamic, members)) {
-            if (externalizable) {
-                // Can't read externalizable objects that don't specify their deserialization process
-                throw new IllegalStateException("Undeserializable class " + type);
+        for (int i = 0; i < members.length; i++) {
+            String fieldName = readAmf3String();
+            if (match != null) {
+                def.getStaticFields().add(scanForField(match, fieldName));
+            } else {
+                def.getStaticFields().add(new FieldRef(fieldName, fieldName, null));
             }
-
-            def = new ClassDef(type, members, externalizable, dynamic, null);
-        } else {
-            def = new ClassDef(type, members, externalizable, dynamic, match);
         }
 
         amf3ClassReferences.add(def);
         return def;
     }
 
+    private FieldRef scanForField(Class<?> c, String name) {
+        while (c != null) {
+            for (Field field: c.getDeclaredFields()) {
+                if (field.isAnnotationPresent(NoSerialization.class) || field.isAnnotationPresent(Dynamic.class)) continue;
+                if (Modifier.isStatic(field.getModifiers()) || Modifier.isFinal(field.getModifiers())) continue;
+
+                if (field.getName().equals(name)) {
+                    return new FieldRef(name, name, c);
+                }
+
+                if (field.isAnnotationPresent(SerializedName.class)) {
+                    if (field.getAnnotation(SerializedName.class).name().equals(name)) {
+                        return new FieldRef(field.getName(), name, c);
+                    }
+                }
+            }
+
+            c = c.getSuperclass();
+        }
+
+        return null;
+    }
+
     private boolean assertClassMatch(Class<?> c, boolean externalizable, boolean dynamic, String[] members) {
         if (c == null) return false;
 
-        SerializationContext context = c.getAnnotation(SerializationContext.class);
-        boolean membersMatch = true;
-
-        if (context.members().length > 0) {
-            membersMatch = Arrays.equals(context.members(), members);
-        } else {
-            Field[] fields = c.getDeclaredFields();
-            Set<String> excludes = new HashSet<>(Arrays.asList(context.excludes()));
-
-            int i = 0;
-            for (Field f: fields) {
-                if (Modifier.isFinal(f.getModifiers()) || Modifier.isStatic(f.getModifiers())) {
-                    continue;
-                }
-
-                if (!excludes.contains(f.getName()) && !members[i++].equals(f.getName())) {
-                    membersMatch = false;
-                    break;
-                }
-            }
-        }
+        Serialization context = c.getAnnotation(Serialization.class);
 
         return context.dynamic() == dynamic
-                && context.externalizable() == externalizable
-                && membersMatch;
+                && context.externalizable() == externalizable;
     }
 
     @AllArgsConstructor

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2;
+package net.boreeas.riotapi.rtmp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

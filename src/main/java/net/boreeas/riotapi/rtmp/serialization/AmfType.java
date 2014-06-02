@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization;
+package net.boreeas.riotapi.rtmp.serialization;
 
-import net.boreeas.riotapi.rtmp.p2.serialization.amf0.Amf0Type;
-import net.boreeas.riotapi.rtmp.p2.serialization.amf3.Amf3Type;
+import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0Type;
+import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3Type;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

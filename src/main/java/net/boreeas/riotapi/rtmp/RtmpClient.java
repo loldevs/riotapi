@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2;
+package net.boreeas.riotapi.rtmp;
 
 import lombok.Getter;
-import net.boreeas.riotapi.rtmp.p2.messages.control.Command;
-import net.boreeas.riotapi.rtmp.p2.messages.control.Invoke;
-import net.boreeas.riotapi.rtmp.p2.messages.control.InvokeAmf0;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfReader;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
-import net.boreeas.riotapi.rtmp.p2.serialization.AnonymousAmfObject;
-import net.boreeas.riotapi.rtmp.p2.serialization.ObjectEncoding;
+import net.boreeas.riotapi.rtmp.messages.control.Command;
+import net.boreeas.riotapi.rtmp.messages.control.Invoke;
+import net.boreeas.riotapi.rtmp.messages.control.InvokeAmf0;
+import net.boreeas.riotapi.rtmp.serialization.AmfReader;
+import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
+import net.boreeas.riotapi.rtmp.serialization.AnonymousAmfObject;
+import net.boreeas.riotapi.rtmp.serialization.ObjectEncoding;
 
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;

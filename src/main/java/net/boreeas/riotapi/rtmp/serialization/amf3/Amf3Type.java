@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization.amf3;
+package net.boreeas.riotapi.rtmp.serialization.amf3;
 
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfType;
-import net.boreeas.riotapi.rtmp.p2.serialization.SerializationContext;
+import net.boreeas.riotapi.rtmp.serialization.AmfType;
 
 import java.util.Date;
 import java.util.Map;
@@ -65,7 +64,6 @@ public enum Amf3Type {
         if (o instanceof long[]) return VECTOR_UINT;
         if (o instanceof double[]) return VECTOR_DOUBLE;
         if (o.getClass().isArray()) return VECTOR_OBJECT;
-        if (o.getClass().isAnnotationPresent(SerializationContext.class)) return OBJECT;
-        return UNDEFINED;
+        return OBJECT;
     }
 }

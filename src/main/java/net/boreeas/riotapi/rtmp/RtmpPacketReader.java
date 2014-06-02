@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2;
+package net.boreeas.riotapi.rtmp;
 
 import lombok.Setter;
-import net.boreeas.riotapi.rtmp.p2.messages.control.AbortMessage;
-import net.boreeas.riotapi.rtmp.p2.messages.control.Acknowledgement;
-import net.boreeas.riotapi.rtmp.p2.messages.control.AudioData;
-import net.boreeas.riotapi.rtmp.p2.messages.control.Command;
-import net.boreeas.riotapi.rtmp.p2.messages.control.InvokeAmf0;
-import net.boreeas.riotapi.rtmp.p2.messages.control.InvokeAmf3;
-import net.boreeas.riotapi.rtmp.p2.messages.control.NotificationAmf0;
-import net.boreeas.riotapi.rtmp.p2.messages.control.NotificationAmf3;
-import net.boreeas.riotapi.rtmp.p2.messages.control.SetChunkSize;
-import net.boreeas.riotapi.rtmp.p2.messages.control.SetPeerBandwidth;
-import net.boreeas.riotapi.rtmp.p2.messages.control.UserControlMessage;
-import net.boreeas.riotapi.rtmp.p2.messages.control.VideoData;
-import net.boreeas.riotapi.rtmp.p2.messages.control.WindowAcknowledgementSize;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfReader;
+import net.boreeas.riotapi.rtmp.messages.control.AbortMessage;
+import net.boreeas.riotapi.rtmp.messages.control.Acknowledgement;
+import net.boreeas.riotapi.rtmp.messages.control.AudioData;
+import net.boreeas.riotapi.rtmp.messages.control.Command;
+import net.boreeas.riotapi.rtmp.messages.control.InvokeAmf0;
+import net.boreeas.riotapi.rtmp.messages.control.InvokeAmf3;
+import net.boreeas.riotapi.rtmp.messages.control.NotificationAmf0;
+import net.boreeas.riotapi.rtmp.messages.control.NotificationAmf3;
+import net.boreeas.riotapi.rtmp.messages.control.SetChunkSize;
+import net.boreeas.riotapi.rtmp.messages.control.SetPeerBandwidth;
+import net.boreeas.riotapi.rtmp.messages.control.UserControlMessage;
+import net.boreeas.riotapi.rtmp.messages.control.VideoData;
+import net.boreeas.riotapi.rtmp.messages.control.WindowAcknowledgementSize;
+import net.boreeas.riotapi.rtmp.serialization.AmfReader;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

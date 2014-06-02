@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2;
+package net.boreeas.riotapi.rtmp;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
+import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
 
 import java.io.IOException;
 

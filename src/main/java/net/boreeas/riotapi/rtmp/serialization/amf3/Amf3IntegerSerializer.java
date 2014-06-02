@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization.amf3;
+package net.boreeas.riotapi.rtmp.serialization.amf3;
 
-import net.boreeas.riotapi.rtmp.RangeException;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfSerializer;
+import net.boreeas.riotapi.rtmp.serialization.AmfSerializer;
+import net.boreeas.riotapi.rtmp.serialization.RangeException;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization;
+package net.boreeas.riotapi.rtmp.serialization;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

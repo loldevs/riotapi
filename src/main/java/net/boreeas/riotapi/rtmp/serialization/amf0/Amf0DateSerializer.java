@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization.amf0;
+package net.boreeas.riotapi.rtmp.serialization.amf0;
 
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfSerializer;
+import net.boreeas.riotapi.rtmp.serialization.AmfSerializer;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

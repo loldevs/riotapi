@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization.amf3;
+package net.boreeas.riotapi.rtmp.serialization.amf3;
 
 import java.util.Map;
 
@@ -22,5 +22,5 @@ import java.util.Map;
  * Created on 5/6/2014.
  */
 public interface DynamicObject {
-    public Map<String, Object> getDynamicMembers();
+    public Map<String, Object> getFields();
 }

@@ -16,26 +16,15 @@
 
 package net.boreeas.riotapi.rtmp.serialization.amf3;
 
-import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
-import net.boreeas.riotapi.rtmp.serialization.AmfSerializer;
-
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Created on 5/3/2014.
+ * Created on 5/26/2014.
  */
-public class Amf3ByteArraySerializer implements AmfSerializer<byte[]> {
-
-    private AmfWriter writer;
-
-    public Amf3ByteArraySerializer(AmfWriter writer) {
-        this.writer = writer;
-    }
-
-    @Override
-    public void serialize(byte[] bytes, DataOutputStream out) throws IOException {
-        writer.serializeAmf3(bytes.length << 1 | 1);
-        out.write(bytes);
-    }
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Dynamic {
 }

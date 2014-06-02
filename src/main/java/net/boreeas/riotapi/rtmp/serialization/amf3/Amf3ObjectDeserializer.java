@@ -14,63 +14,50 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization.amf3;
+package net.boreeas.riotapi.rtmp.serialization.amf3;
 
 import lombok.Setter;
 import lombok.SneakyThrows;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfReader;
-import net.boreeas.riotapi.rtmp.p2.serialization.SerializationContext;
+import net.boreeas.riotapi.rtmp.serialization.AmfReader;
+import net.boreeas.riotapi.rtmp.serialization.FieldRef;
+import net.boreeas.riotapi.rtmp.serialization.TraitDefinition;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created on 5/18/2014.
  */
 public class Amf3ObjectDeserializer {
+    @Setter private Class cls;
 
-    @Setter protected AmfReader reader;
+    @SneakyThrows({InstantiationException.class, IllegalAccessException.class, NoSuchFieldException.class})
+    public Object deserialize(AmfReader reader, TraitDefinition def) throws IOException {
 
-    @SneakyThrows({IllegalArgumentException.class, IllegalAccessException.class, NoSuchFieldException.class})
-    public void deserialize(Object obj, SerializationContext ctx, DataInputStream in) throws IOException {
-        if (ctx.members().length == 0) {
-            Set<String> excludes = new HashSet<>(Arrays.asList(ctx.excludes()));
+        Object instance = cls.newInstance();
 
-            for (Field f: obj.getClass().getDeclaredFields()) {
-                if (excludes.contains(f.getName()) || Modifier.isFinal(f.getModifiers()) || Modifier.isStatic(f.getModifiers())) {
-                    continue;
-                }
-
-                f.setAccessible(true);
-                f.set(obj, reader.decodeAmf3());
-            }
-        } else {
-            for (String name: ctx.members()) {
-
-                Field f = obj.getClass().getDeclaredField(name);
-                f.setAccessible(true);
-                f.set(obj, reader.decodeAmf3());
-            }
+        for (FieldRef ref: def.getStaticFields()) {
+            setStaticField(instance, reader.decodeAmf3(), ref);
         }
 
-        if (ctx.dynamic()) {
+        if (def.isDynamic()) {
             String name;
-            while (!(name = in.readUTF()).isEmpty()) {
-
-                if (obj instanceof DynamicObject) {
-                    ((DynamicObject) obj).getDynamicMembers().put(name, reader.decodeAmf3());
-                } else {
-                    // see if we can serialize into fields
-                    Field f = obj.getClass().getDeclaredField(name);
-                    f.setAccessible(true);
-                    f.set(obj, reader.decodeAmf3());
-                }
+            while (!(name = reader.readUTF()).isEmpty()) {
+                setDynamicField(instance, reader.decodeAmf3(), new FieldRef(name, name, cls));
             }
         }
+
+        return instance;
+    }
+    protected void setDynamicField(Object target, Object value, FieldRef ref) throws NoSuchFieldException, IllegalAccessException {
+        Field field = ref.getLocation().getDeclaredField(ref.getName());
+        field.setAccessible(true);
+        field.set(target, value);
+    }
+
+    protected void setStaticField(Object target, Object value, FieldRef ref) throws NoSuchFieldException, IllegalAccessException {
+        Field field = ref.getLocation().getDeclaredField(ref.getName());
+        field.setAccessible(true);
+        field.set(target, value);
     }
 }

@@ -1,4 +1,4 @@
-/*
+package net.boreeas.riotapi.rtmp.messages;/*
  * Copyright 2014 Malte Schütze
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +14,37 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.messages;
+import lombok.Getter;
+import lombok.Setter;
 
-import net.boreeas.riotapi.rtmp.p2.serialization.SerializationContext;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created on 5/26/2014.
  */
-@SerializationContext(traitName = )
+@Getter
+@Setter
 public class FlexMessage {
+    public static class HeaderName {
+        public static final String DEST_CLIENT_ID = "DSDstClientId";
+        public static final String ENDPOINT = "DSEndpoint";
+        public static final String REMOTE_CREDENTIALS = "DSRemoteCredentials";
+        public static final String REQUEST_TIMEOUT = "DSRequestTimeout";
+        public static final String LOCAL_CLIENT_ID = "DSId";
+    }
+
+
+    private String clientId;
+    private String destination;
+    private String messageId;
+    private long timestamp;
+    private long timeToLive;
+    private Object body;
+    private Map<String, Object> headers = new HashMap<>();
+
+    public FlexMessage() {
+        this.messageId = UUID.randomUUID().toString();
+    }
 }

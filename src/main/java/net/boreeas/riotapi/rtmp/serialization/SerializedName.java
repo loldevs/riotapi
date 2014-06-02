@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.serialization.amf3;
+package net.boreeas.riotapi.rtmp.serialization;
 
-import net.boreeas.riotapi.rtmp.serialization.AmfSerializer;
-
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Created on 5/3/2014.
+ * Created on 5/26/2014.
  */
-public enum Amf3NumberSerializer implements AmfSerializer<Number> {
-    INSTANCE;
-
-    @Override
-    public void serialize(Number d, DataOutputStream out) throws IOException {
-        new DataOutputStream(out).writeDouble(d.doubleValue());
-    }
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface SerializedName {
+    public String name();
 }

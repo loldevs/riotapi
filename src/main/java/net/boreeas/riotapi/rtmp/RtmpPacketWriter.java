@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2;
+package net.boreeas.riotapi.rtmp;
 
-import net.boreeas.riotapi.rtmp.p2.messages.control.SetChunkSize;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
-import net.boreeas.riotapi.rtmp.p2.serialization.ObjectEncoding;
+import net.boreeas.riotapi.rtmp.messages.control.SetChunkSize;
+import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
+import net.boreeas.riotapi.rtmp.serialization.ObjectEncoding;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

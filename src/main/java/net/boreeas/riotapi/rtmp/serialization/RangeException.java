@@ -14,21 +14,13 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.serialization.amf3;
-
-import net.boreeas.riotapi.rtmp.serialization.AmfSerializer;
-
-import java.io.DataOutputStream;
-import java.io.IOException;
+package net.boreeas.riotapi.rtmp.serialization;
 
 /**
- * Created on 5/3/2014.
+ * Created on 5/26/2014.
  */
-public enum Amf3NumberSerializer implements AmfSerializer<Number> {
-    INSTANCE;
-
-    @Override
-    public void serialize(Number d, DataOutputStream out) throws IOException {
-        new DataOutputStream(out).writeDouble(d.doubleValue());
+public class RangeException extends RuntimeException {
+    public RangeException(Integer val) {
+        super("Value out of range: " + val);
     }
 }

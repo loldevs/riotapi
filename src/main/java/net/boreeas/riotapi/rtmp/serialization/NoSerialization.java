@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.serialization;
+package net.boreeas.riotapi.rtmp.serialization;
 
-import java.io.InputStream;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Created on 5/2/2014.
+ * Created on 5/26/2014.
  */
-public interface AmfDeserializer<T> {
-    public T deserialize(InputStream in);
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface NoSerialization {
 }

@@ -27,12 +27,12 @@ public enum Shard {
     NA("na", "na1.lol.riotgames.com"),
     BR("br", "br.lol.riotgames.com"),
     OCE("oce", "oc1.lol.riotgames.com"),
-    TR("tr", "tr.lol.riotgames.com", "eu"),
-    RU("ru", "ru.lol.riotgames.com", "eu"),
+    TR("tr", "tr.lol.riotgames.com"),
+    RU("ru", "ru.lol.riotgames.com"),
     LAN("lan", "la1.lol.riotgames.com"),
     LAS("las", "la2.lol.riotgames.com"),
     PBE("pbe", "pbe1.lol.riotgames.com"),
-    KR("kr", "kr.lol.riotgames.com", "asia"),
+    KR("kr", "kr.lol.riotgames.com"),
     SG("sg", "lol.garenanow.com", "asia", true),
     TW("tw", "lol.garenanow.com", "asia", "chattw", "prodtw", "loginqueuetw", true),
     TH("th", "lol.garenanow.com", "asia", "chatth", "prodth", "lqth", true),
@@ -53,7 +53,7 @@ public enum Shard {
     public static final String rtmpsAppPath = "app:/mod_ser.dat";
 
     private Shard(String name, String baseUrl) {
-        this(name, baseUrl, "prod", "chat", "prod", "lq", false);
+        this(name, baseUrl, name, "chat", "prod", "lq", false);
     }
 
     private Shard(String name, String baseUrl, String apiPath) {

@@ -93,7 +93,7 @@ public class ThrottledApiHandler {
                 future.setErr(e);
             }
 
-            future.getSignal().countDown();
+            future.getSignal().notifyAll();
         });
 
 
@@ -1015,7 +1015,7 @@ public class ThrottledApiHandler {
         @Getter private Callable<T> request;
         @Setter private T value;
         @Setter private Exception err;
-        @Getter private CountDownLatch signal = new CountDownLatch(1);
+        @Getter private Object signal = new Object();
 
         public ApiFuture(Callable<T> request) {
             this.request = request;
@@ -1044,7 +1044,7 @@ public class ThrottledApiHandler {
                 throw new ExecutionException("Task was cancelled", null);
             }
 
-            signal.await();
+            signal.wait();
 
             if (err != null) {
                 throw new ExecutionException(err);
@@ -1059,7 +1059,7 @@ public class ThrottledApiHandler {
                 throw new ExecutionException("Task was cancelled", null);
             }
 
-            signal.await(timeout, unit);
+            signal.wait(TimeUnit.MILLISECONDS.convert(timeout, unit));
 
             if (err != null) {
                 throw new ExecutionException(err);

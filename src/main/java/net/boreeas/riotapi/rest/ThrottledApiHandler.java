@@ -125,7 +125,7 @@ public class ThrottledApiHandler {
         delegation to api handler
      *************************** */
 
-
+    // <editor-fold desc="Champion">
 
     /**
      * Get basic champion data (id, freeToPlay) for all champions
@@ -155,6 +155,10 @@ public class ThrottledApiHandler {
         return new ApiFuture<>(() -> handler.getFreeToPlayChampions());
     }
 
+    // </editor-fold>
+
+    // <editor-fold desc="Game">
+
     /**
      * Get a listing of recent games for the summoner
      * @param summoner The id of the summoner
@@ -165,6 +169,10 @@ public class ThrottledApiHandler {
         return new ApiFuture<>(() -> handler.getRecentGames(summoner));
     }
 
+    // </editor-fold>
+
+    // <editor-fold desc="League">
+
     /**
      * Get a listing of leagues for the the summoner
      * @param summoner The id of the summoner
@@ -173,6 +181,16 @@ public class ThrottledApiHandler {
      */
     public Future<List<League>> getLeagues(long summoner) {
         return new ApiFuture<>(() -> handler.getLeagues(summoner));
+    }
+
+    /**
+     * Get a listing of leagues for the specified summoners
+     * @param summoners The ids of the summoners
+     * @return A list of leagues
+     * @see <a href=https://developer.riotgames.com/api/methods#!/593/1862>Official API documentation</a>
+     */
+    public Future<Map<Long, List<League>>> getLeagues(long... summoners) {
+        return new ApiFuture<>(() -> handler.getLeagues(summoners));
     }
 
     /**
@@ -186,13 +204,33 @@ public class ThrottledApiHandler {
     }
 
     /**
+     * Get a listing of all league entries in the summoners' leagues
+     * @param summoners The ids of the summoners
+     * @return A map, mapping summoner ids to lists of league entries for that summoner
+     * @see <a href=https://developer.riotgames.com/api/methods#!/593/1863>Official API documentation</a>
+     */
+    public Future<Map<Long, List<LeagueItem>>> getLeagueEntries(long... summoners) {
+        return new ApiFuture<>(() -> handler.getLeagueEntries(summoners));
+    }
+
+    /**
      * Get a listing of leagues for the specified team
      * @param teamId The id of the team
      * @return A list of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1860>Official API documentation</a>
      */
     public Future<List<League>> getLeaguesByTeam(String teamId) {
-        return new ApiFuture<>(() -> handler.getLeaguesByTeam(teamId));
+        return new ApiFuture<>(() -> handler.getLeagues(teamId));
+    }
+
+    /**
+     * Get a listing of leagues for the specified teams
+     * @param teamIds The ids of the team
+     * @return A mapping of team ids to lists of leagues
+     * @see <a href=https://developer.riotgames.com/api/methods#!/593/1860>Official API documentation</a>
+     */
+    public Future<Map<String, List<League>>> getLeaguesByTeam(String... teamIds) {
+        return new ApiFuture<>(() -> handler.getLeagues(teamIds));
     }
 
     /**
@@ -202,8 +240,22 @@ public class ThrottledApiHandler {
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1861>Official API documentation</a>
      */
     public Future<List<LeagueItem>> getLeagueEntriesByTeam(String teamId) {
-        return new ApiFuture<>(() -> handler.getLeagueEntriesByTeam(teamId));
+        return new ApiFuture<>(() -> handler.getLeagueEntries(teamId));
     }
+
+    /**
+     * Get a listing of all league entries in the teams' leagues
+     * @param teamIds The ids of the teams
+     * @return A mapping of teamIds to lists of league entries
+     * @see <a href=https://developer.riotgames.com/api/methods#!/593/1861>Official API documentation</a>
+     */
+    public Future<Map<String, List<LeagueItem>>> getLeagueEntriesByTeam(String... teamIds) {
+        return new ApiFuture<>(() -> handler.getLeagueEntries(teamIds));
+    }
+
+    // </editor-fold>
+
+    // <editor-fold desc="Static Data">
 
     /**
      * Get the region's challenger league
@@ -720,6 +772,10 @@ public class ThrottledApiHandler {
         return handler.getSummonerSpell(id, data, version, locale);
     }
 
+    // </editor-fold>
+
+    // <editor-fold desc="Stats">
+
     /**
      * Get ranked stats for a player
      * @param summoner The id of the summoner
@@ -761,6 +817,10 @@ public class ThrottledApiHandler {
     public Future<List<PlayerStats>> getStatsSummary(long summoner, Season season) {
         return new ApiFuture<>(() -> handler.getStatsSummary(summoner, season));
     }
+
+    // </editor-fold>
+
+    // <editor-fold desc="Summoner">
 
     /**
      * Get summoner information for the summoners with the specified names
@@ -863,14 +923,38 @@ public class ThrottledApiHandler {
         return new ApiFuture<>(() -> handler.getRunePages(id));
     }
 
+    // </editor-fold>
+
+    // <editor-fold desc="Team">
+
     /**
      * Retrieve the ranked teams of a user
      * @param id The user's id
      * @return The ranked teams of the user
      * @see <a href=https://developer.riotgames.com/api/methods#!/594/1865>Official API documentation</a>
      */
-    public Future<List<RankedTeam>> getTeams(int id) {
-        return new ApiFuture<>(() -> handler.getTeams(id));
+    public Future<List<RankedTeam>> getTeams(long id) {
+        return new ApiFuture<>(() -> handler.getTeamsBySummoner(id));
+    }
+
+    /**
+     * Retrieve the ranked teams of the specified users
+     * @param ids The users' ids
+     * @return The ranked teams of the users
+     * @see <a href=https://developer.riotgames.com/api/methods#!/594/1865>Official API documentation</a>
+     */
+    public Future<Map<Long, List<RankedTeam>>> getTeams(long... ids) {
+        return new ApiFuture<>(() -> handler.getTeamsBySummoners(ids));
+    }
+
+    /**
+     * Retrieve information for the specified ranked team
+     * @param teamId The team to retrieve
+     * @return Information about the specified team
+     * @see <a href=https://developer.riotgames.com/api/methods#!/594/1866>Official API documentation</a>
+     */
+    public Future<RankedTeam> getTeam(String teamId) {
+        return new ApiFuture<>(() -> handler.getTeam(teamId));
     }
 
     /**
@@ -882,6 +966,10 @@ public class ThrottledApiHandler {
     public Future<Map<String, RankedTeam>> getTeams(String... teamIds) {
         return new ApiFuture<>(() -> handler.getTeams(teamIds));
     }
+
+    // </editor-fold>
+
+    // <editor-fold desc="Utility">
 
     /**
      * Retrieve summoner ids for the specified names
@@ -902,24 +990,15 @@ public class ThrottledApiHandler {
         return new ApiFuture<>(() -> handler.getSummonerId(name));
     }
 
-    /**
-     * <p>
-     * Retrieve currently supported game versions.
-     * </p>
-     * This method does not count towards the rate limit and is not affected by the throttle
-     * @return A list of supported game versions
-     * @see <a href=https://developer.riotgames.com/api/methods#!/710/2527>Official API documentation</a>
-     */
-    public List<String> getVersions() {
-        return handler.getVersions();
-    }
+    // </editor-fold>
+
 
     /**
      * Stops the threads handling pending requests. No further requests will
-     * be
+     * be executed.
      */
     public void stop() {
-
+        timer.cancel();
     }
 
 

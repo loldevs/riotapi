@@ -18,7 +18,7 @@ package net.boreeas.riotapi.rtmp.serialization.amf0;
 
 import net.boreeas.riotapi.Util;
 import net.boreeas.riotapi.rtmp.serialization.AmfType;
-import net.boreeas.riotapi.rtmp.serialization.SerializationContext;
+import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.Date;
 import java.util.Map;
@@ -60,8 +60,8 @@ public enum Amf0Type {
         if (obj instanceof Map) return ECMA_ARRAY;
         if (obj instanceof Date) return DATE;
         if (obj.getClass().isArray()) return STRICT_ARRAY;
-        SerializationContext ctx = Util.searchClassHierarchy(obj.getClass(), SerializationContext.class);
-        if (ctx != null) return ctx.traitName().isEmpty() ? OBJECT : TYPED_OBJECT;
+        Serialization ctx = Util.searchClassHierarchy(obj.getClass(), Serialization.class);
+        if (ctx != null) return ctx.name().isEmpty() ? OBJECT : TYPED_OBJECT;
         return UNDEFINED;
     }
 }

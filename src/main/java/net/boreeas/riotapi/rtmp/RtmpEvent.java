@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rtmp;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ import java.io.IOException;
  * Created on 4/25/2014.
  */
 @Getter
+@ToString
 public abstract class RtmpEvent {
     private RtmpHeader header;
     private MessageType type;

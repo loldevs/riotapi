@@ -18,11 +18,13 @@ package net.boreeas.riotapi.rtmp;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Created on 4/25/2014.
  */
 @Getter
+@ToString
 public class RtmpPacket {
     @Setter private RtmpHeader header;
     @Setter private RtmpEvent body;

@@ -27,8 +27,8 @@ import java.util.Map;
 public enum Amf3Type {
     UNDEFINED,          // 0x00
     NULL,               // 0x01
-    TRUE,               // 0x02
-    FALSE,              // 0x03
+    FALSE,              // 0x02
+    TRUE,               // 0x03
     INTEGER,            // 0x04
     DOUBLE,             // 0x05
     STRING(true),       // 0x06
@@ -63,7 +63,7 @@ public enum Amf3Type {
         if (o instanceof int[]) return VECTOR_INT;
         if (o instanceof long[]) return VECTOR_UINT;
         if (o instanceof double[]) return VECTOR_DOUBLE;
-        if (o.getClass().isArray()) return VECTOR_OBJECT;
+        if (o.getClass().isArray()) return VECTOR_OBJECT; // This is dangerous
         return OBJECT;
     }
 }

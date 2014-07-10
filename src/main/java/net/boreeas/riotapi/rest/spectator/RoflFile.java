@@ -77,7 +77,6 @@ public class RoflFile implements SpectatorSource {
         buffer.position(getMetaDataOffset());
         buffer.get(metaDataBuf);
         String json = new String(metaDataBuf, "UTF-8");
-        System.out.println(new JsonParser().parse(json));
         metaData = new Gson().fromJson(new String(metaDataBuf, "UTF-8"), GameMetaData.class);
 
         // Get encryption key

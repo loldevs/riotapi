@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.messages.control;
+package net.boreeas.riotapi.rtmp.messages.control;
 
 import lombok.Getter;
-import net.boreeas.riotapi.rtmp.p2.MessageType;
-import net.boreeas.riotapi.rtmp.p2.RtmpEvent;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
+import lombok.ToString;
+import net.boreeas.riotapi.rtmp.MessageType;
+import net.boreeas.riotapi.rtmp.RtmpEvent;
+import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,20 +28,32 @@ import java.util.List;
 /**
  * Created on 5/18/2014.
  */
+@ToString
 public class UserControlMessage extends RtmpEvent {
-    @Getter private int type;
+    @Getter private Type controlMessageType;
     @Getter private List<Integer> values;
 
-    public UserControlMessage(int type, List<Integer> values) {
+    public UserControlMessage(Type controlMessageType, List<Integer> values) {
         super(MessageType.USER_CONTROL_MESSAGE);
-        this.type = type;
+        this.controlMessageType = controlMessageType;
         this.values = values;
     }
 
     public void writeBody(AmfWriter writer) throws IOException {
-        writer.writeShort(type);
+        writer.writeShort(controlMessageType.ordinal());
         for (int i: values) {
             writer.writeInt(i);
         }
+    }
+
+    public enum Type {
+        STREAM_BEGIN,
+        STREAM_EOF,
+        STREAM_DRY,
+        SET_BUFFER_LENGTH,
+        STREAM_IS_RECORDED,
+        __UNUSED__,
+        PING_REQUEST,
+        PING_RESPONSE
     }
 }

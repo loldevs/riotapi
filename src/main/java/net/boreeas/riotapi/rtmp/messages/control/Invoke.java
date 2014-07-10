@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.messages.control;
+package net.boreeas.riotapi.rtmp.messages.control;
 
-import net.boreeas.riotapi.rtmp.p2.MessageType;
-import net.boreeas.riotapi.rtmp.p2.messages.Status;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
-import net.boreeas.riotapi.rtmp.p2.serialization.ObjectEncoding;
+import net.boreeas.riotapi.rtmp.MessageType;
+import net.boreeas.riotapi.rtmp.messages.Status;
+import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
+import net.boreeas.riotapi.rtmp.serialization.ObjectEncoding;
 
 import java.io.IOException;
 
@@ -33,7 +33,7 @@ public class Invoke extends Command {
 
     @Override
     public void writeBody(AmfWriter writer) throws IOException {
-        ObjectEncoding encoding = getType() == MessageType.INVOKE ? ObjectEncoding.AMF3 : ObjectEncoding.AMF0;
+        ObjectEncoding encoding = getType() == MessageType.INVOKE_AMF3 ? ObjectEncoding.AMF3 : ObjectEncoding.AMF0;
         boolean isRequest = getMethod().getStatus() == CallStatus.REQUEST;
 
         if (isRequest) {

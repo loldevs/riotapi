@@ -21,23 +21,135 @@ package net.boreeas.riotapi;
  * Created on 4/12/2014.
  */
 public enum Shard {
-    // TODO: Some of this may be outdated. SEA is missing?
-    EUW("euw", "eu.lol.riotgames.com", "eu", 8088),
-    EUNE("eune", "eun1.lol.riotgames.com", "eu", 8088),
-    NA("na", "na1.lol.riotgames.com", "na", 8088),
-    BR("br", "br.lol.riotgames.com", "br", 80),
-    OCE("oce", "oc1.lol.riotgames.com", null, 8088),    // TODO: OCE spectator url
-    TR("tr", "tr.lol.riotgames.com", "eu", "tr", 80),
-    RU("ru", "ru.lol.riotgames.com", "eu", "tr", 80),
-    LAN("lan", "la1.lol.riotgames.com", "br", 80),
-    LAS("las", "la2.lol.riotgames.com", "br", 80),
-    PBE("pbe", "pbe1.lol.riotgames.com", "pbe1", 8088),
-    KR("kr", "kr.lol.riotgames.com", "asia", false, "QFKR1PROXY.kassad.in", 8088),
-    SG("sg", "lol.garenanow.com", "asia", true, null, 8088),    // TODO: SG spectator URL
-    TW("tw", "lol.garenanow.com", "asia", "chattw", "prodtw", "loginqueuetw", true, "FQTW1PROXY.kassad.in", 8088),
-    TH("th", "lol.garenanow.com", "asia", "chatth", "prodth", "lqth", true, null, 8088), // TODO: TH spectator url
-    PH("ph", "lol.garenanow.com", "asia", "chatph", "prodph", "lqph", true, null, 8088), // TODO: PH spectator url
-    VN("vn", "lol.garenanow.com", "asia", "chatvn", "prodvn", "lqvn", true, null, 8088); // TODO: VN spectator url
+
+    EUW("euw",
+            "eu." + Constants.BASE_PATH,
+            "chat.eu." + Constants.BASE_PATH,
+            Constants.API_PATH,
+            "lq.eu." + Constants.BASE_PATH,
+            "prod.eu." + Constants.BASE_PATH,
+            "https://spectator.eu." + Constants.BASE_PATH + ":8088",
+            false),
+    EUNE("eune",
+            "eun1." + Constants.BASE_PATH,
+            "chat.eun1." + Constants.BASE_PATH,
+            Constants.API_PATH,
+            "lq.eun1." + Constants.BASE_PATH,
+            "prod.eun1." + Constants.BASE_PATH,
+            "https://spectator.eu." + Constants.BASE_PATH + ":8088",
+            false),
+    NA("na",
+            "na1." + Constants.BASE_PATH,
+            "chat.na1." + Constants.BASE_PATH,
+            Constants.API_PATH,
+            "lq.na1." + Constants.BASE_PATH,
+            "prod.na1." + Constants.BASE_PATH,
+            "https://spectator.na." + Constants.BASE_PATH + ":8088",
+            false),
+    BR("br",
+            "br." + Constants.BASE_PATH,
+            "chat.br." + Constants.BASE_PATH,
+            Constants.API_PATH,
+            "lq.br." + Constants.BASE_PATH,
+            "prod.br." + Constants.BASE_PATH,
+            "https://spectator.br." + Constants.BASE_PATH + ":80",
+            false),
+    OCE("oce",
+            "oc1." + Constants.BASE_PATH,
+            "chat.oc1." + Constants.BASE_PATH,
+            Constants.API_PATH,
+            "lq.oc1." + Constants.BASE_PATH,
+            "prod.oc1." + Constants.BASE_PATH,
+            null,   // TODO: OCE spectator url
+            false),
+    TR("tr",
+            "tr." + Constants.BASE_PATH,
+            "chat.tr." + Constants.BASE_PATH,
+            Constants.API_PATH,
+            "lq.tr." + Constants.BASE_PATH,
+            "prod.tr." + Constants.BASE_PATH,
+            "https://spectator.tr." + Constants.BASE_PATH + ":80",
+            false),
+    RU("ru",
+            "ru." + Constants.BASE_PATH,
+            "chat.ru." + Constants.BASE_PATH,
+            Constants.API_PATH,
+            "lq.ru." + Constants.BASE_PATH,
+            "prod.ru." + Constants.BASE_PATH,
+            "https://spectator.eu." + Constants.BASE_PATH + ":80",
+            false),
+    LAN("lan",
+            "la1." + Constants.BASE_PATH,
+            "chat.la1." + Constants.BASE_PATH,
+            Constants.API_PATH,
+            "lq.la1." + Constants.BASE_PATH,
+            "prod.la1." + Constants.BASE_PATH,
+            "https://spectator.br." + Constants.BASE_PATH + ":80",
+            false),
+    LAS("las",
+            "la2." + Constants.BASE_PATH,
+            "chat.la2." + Constants.BASE_PATH,
+            Constants.API_PATH,
+            "lq.la2." + Constants.BASE_PATH,
+            "prod.la2." + Constants.BASE_PATH,
+            "https://spectator.br." + Constants.BASE_PATH + ":80",
+            false),
+    PBE("pbe",
+            "pbe1." + Constants.BASE_PATH,
+            "chat.pbe1." + Constants.BASE_PATH,
+            Constants.API_PATH,
+            "lq.pbe1." + Constants.BASE_PATH,
+            "prod.pbe1." + Constants.BASE_PATH,
+            "https://spectator.pbe1." + Constants.BASE_PATH + ":8088",
+            false),
+    KR("kr",
+            "kr." + Constants.BASE_PATH,
+            "chat.kr." + Constants.BASE_PATH,
+            "https://asia.api." + Constants.BASE_PATH + "/api/lol",
+            "lq.kr." + Constants.BASE_PATH,
+            "prod.kr." + Constants.BASE_PATH,
+            "https://QFKR1PROXY.kassad.in:8088",
+            false),
+    SG("sg",
+            Constants.GARENA_PATH,
+            "chat." + Constants.GARENA_PATH,
+            "https://asia.api." + Constants.BASE_PATH + "/api/lol",
+            "lq." + Constants.GARENA_PATH,
+            "prod." + Constants.GARENA_PATH,
+            "https://qfsea1proxy.kassad.in:8088",
+            true),
+    TW("tw",
+            Constants.GARENA_PATH,
+            "chatth." + Constants.GARENA_PATH,
+            "https://asia.api." + Constants.BASE_PATH + "/api/lol",
+            "loginqueuetw." + Constants.GARENA_PATH,
+            "prodtw." + Constants.GARENA_PATH,
+            "https://FQTW1PROXY.kassad.in:8088",
+            true),
+    TH("th",
+            Constants.GARENA_PATH,
+            "chatth." + Constants.GARENA_PATH,
+            "https://asia.api." + Constants.BASE_PATH + "/api/lol",
+            "lqth." + Constants.GARENA_PATH,
+            "prodth." + Constants.GARENA_PATH,
+            "https://qfsea1proxy.kassad.in:8088",
+            true),
+    PH("ph",
+            Constants.GARENA_PATH,
+            "chatph." + Constants.GARENA_PATH,
+            "https://asia.api." + Constants.BASE_PATH + "/api/lol",
+            "lqph." + Constants.GARENA_PATH,
+            "prodph." + Constants.GARENA_PATH,
+            "https://qfsea1proxy.kassad.in:8088",
+            true),
+    VN("vn",
+            Constants.GARENA_PATH,
+            "chatvn." + Constants.BASE_PATH,
+            "https://asia.api." + Constants.BASE_PATH + "/api/lol",
+            "lqvn." + Constants.GARENA_PATH,
+            "prodvn." + Constants.GARENA_PATH,
+            "https://qfsea1proxy.kassad.in:8088",
+            true);
 
 
     public final String name;
@@ -49,31 +161,26 @@ public enum Shard {
     public final String spectatorUrl;
     public final boolean isGarena;
 
-    public static final int jabberPort = 5223;
-    public static final int rtmpsPort = 2099;
-    public static final String rtmpsAppPath = "app:/mod_ser.dat";
+    public static final int JABBER_PORT = 5223;
+    public static final int RTMPS_PORT = 2099;
+    public static final String RTMPS_APP_PATH = "app:/mod_ser.dat";
 
-    private Shard(String name, String baseUrl, String spectatorPath, int spectatorPort) {
-        this(name, baseUrl, "prod", "chat", "prod", "lq", false, "spectator." + spectatorPath + "." + baseUrl, spectatorPort);
-    }
 
-    private Shard(String name, String baseUrl, String apiPath, String spectatorPath, int spectatorPort) {
-        this(name, baseUrl, apiPath, "chat", "prod", "lq", false, "spectator." + spectatorPath + "." + baseUrl, spectatorPort);
-    }
-
-    private Shard(String name, String baseUrl, String apiPath, boolean isGarena, String spectatorUrl, int spectatorPort) {
-        this(name, baseUrl, apiPath, "chat", "prod", "lq", isGarena, spectatorUrl, spectatorPort);
-    }
-
-    private Shard(String name, String baseUrl, String apiPath, String chatPath, String prodPath, String lqPath,
-                  boolean isGarena, String spectatorUrl, int spectatorPort) {
+    private Shard(String name, String base, String chat, String api, String loginQueue, String prod, String spectator, boolean garena) {
         this.name = name;
-        this.baseUrl = baseUrl;
-        this.apiUrl = "https://" + apiPath + ".api.pvp.net/api/lol";
-        this.chatUrl = chatPath + "." + baseUrl;
-        this.prodUrl = prodPath + "." + baseUrl;
-        this.loginQueue = lqPath + "." + baseUrl;
-        this.isGarena = isGarena;
-        this.spectatorUrl = "http://" + spectatorUrl + ":" + spectatorPort;
+        this.baseUrl = base;
+        this.chatUrl = chat;
+        this.apiUrl = api;
+        this.prodUrl = prod;
+        this.loginQueue = loginQueue;
+        this.spectatorUrl = spectator;
+        this.isGarena = garena;
+    }
+
+
+    private static class Constants {
+        static String BASE_PATH = "lol.riotgames.com";
+        static String GARENA_PATH = "lol.garenanow.com";
+        static String API_PATH= "https://prod.api." + Constants.BASE_PATH + "/api/lol";
     }
 }

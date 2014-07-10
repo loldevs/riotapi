@@ -36,7 +36,7 @@ public class Amf3DateSerializer implements AmfSerializer<Date> {
 
     @Override
     public void serialize(Date date, DataOutputStream out) throws IOException {
-        out.write(1);   // Not-cached
+        writer.serializeAmf3(1);   // Not-cached
         writer.serializeAmf3(date.getTime());
     }
 }

@@ -51,23 +51,24 @@ public class Amf3ObjectSerializer implements AmfSerializer {
         } else {
             traitDef = getTraitDefiniton(o);
             cacheTraitDef(o, traitDef);
+            traitRefTable.put(traitDef, traitRefTable.size());
 
 
             writer.serializeAmf3(traitDef.getHeader());
             writer.serializeAmf3(traitDef.getName());
             for (FieldRef field: traitDef.getStaticFields()) {
-                writer.serializeAmf3(field.getSerializeName());
+                writer.serializeAmf3(field.getSerializedName());
             }
         }
 
         for (FieldRef ref: traitDef.getStaticFields()) {
-            writer.serializeAmf3(getStaticField(o, ref));
+            writer.encodeAmf3(getStaticField(o, ref));
         }
-        writer.serializeAmf3("");
 
         if (traitDef.isDynamic()) {
             for (FieldRef ref: traitDef.getDynamicFields()) {
-                writer.serializeAmf3(getDynamicField(o, ref));
+                writer.serializeAmf3(ref.getSerializedName());
+                writer.encodeAmf3(getDynamicField(o, ref));
             }
             writer.serializeAmf3("");
         }
@@ -120,6 +121,6 @@ public class Amf3ObjectSerializer implements AmfSerializer {
     }
 
     protected void cacheTraitDef(Object o, TraitDefinition def) {
-        traitDefCache.put(o, def);
+        traitDefCache.put(o.getClass(), def);
     }
 }

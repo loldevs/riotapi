@@ -18,8 +18,10 @@ package net.boreeas.riotapi.rtmp.serialization;
 
 import lombok.AllArgsConstructor;
 import lombok.ToString;
+import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0ObjectDeserializer;
 import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0ObjectSerializer;
 import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0Type;
+import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3ObjectDeserializer;
 import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3ObjectSerializer;
 import net.boreeas.riotapi.rtmp.serialization.amf3.DynamicObject;
 
@@ -33,7 +35,11 @@ import java.util.Map;
  */
 @AllArgsConstructor
 @ToString
-@Serialization(dynamic = true, amf0Serializer = AnonymousAmfObject.AmfObjectAmf0Serializer.class)
+@Serialization(dynamic = true,
+               amf0Serializer = AnonymousAmfObject.AmfObjectAmf0Serializer.class,
+               amf3Serializer = AnonymousAmfObject.AmfObjectAmf3Serializer.class,
+               amf0Deserializer = AnonymousAmfObject.AmfObjectAmf0Deserializer.class,
+               amf3Deserializer = AnonymousAmfObject.AmfObjectAmf3Deserializer.class)
 public class AnonymousAmfObject implements DynamicObject {
     private final Map<String, Object> fields;
 
@@ -53,6 +59,10 @@ public class AnonymousAmfObject implements DynamicObject {
         return fields.containsKey(field);
     }
 
+    @Override
+    public Map<String, Object> getFields() {
+        return fields;
+    }
 
 
     public static class AmfObjectAmf0Serializer extends Amf0ObjectSerializer {
@@ -94,6 +104,20 @@ public class AnonymousAmfObject implements DynamicObject {
         @Override
         protected Object getDynamicField(Object o, FieldRef ref) throws NoSuchFieldException, IllegalAccessException {
             return ((AnonymousAmfObject) o).get(ref.getName());
+        }
+    }
+
+    public static class AmfObjectAmf0Deserializer extends Amf0ObjectDeserializer {
+        @Override
+        protected void setField(Object object, String name, Object value) throws NoSuchFieldException, IllegalAccessException {
+            ((AnonymousAmfObject) object).set(name, value);
+        }
+    }
+
+    public static class AmfObjectAmf3Deserializer extends Amf3ObjectDeserializer {
+        @Override
+        protected void setDynamicField(Object target, Object value, FieldRef ref) throws NoSuchFieldException, IllegalAccessException {
+            ((AnonymousAmfObject) target).set(ref.getName(), value);
         }
     }
 }

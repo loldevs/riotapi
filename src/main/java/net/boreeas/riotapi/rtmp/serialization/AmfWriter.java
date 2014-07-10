@@ -226,6 +226,7 @@ public class AmfWriter {
      * @throws IOException
      */
     public void encodeAmf3(Object obj, Amf3Type marker) throws IOException {
+
         out.write(marker.ordinal());
         if (marker == Amf3Type.NULL) {
             return; // Null marker is enough

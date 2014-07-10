@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.messages.control;
+package net.boreeas.riotapi.rtmp.messages.control;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.boreeas.riotapi.rtmp.p2.MessageType;
-import net.boreeas.riotapi.rtmp.p2.RtmpEvent;
+import lombok.ToString;
+import net.boreeas.riotapi.rtmp.MessageType;
+import net.boreeas.riotapi.rtmp.RtmpEvent;
 
 /**
  * Created on 5/18/2014.
  */
 @Getter
 @Setter
+@ToString
 public abstract class Command extends RtmpEvent {
     private Method method;
     private byte[] buffer;
@@ -38,6 +40,7 @@ public abstract class Command extends RtmpEvent {
 
 
     @Getter
+    @ToString
     public static class Method {
         private CallStatus status;
         private String name;

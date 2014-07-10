@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rtmp.serialization;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.List;
  */
 @Getter
 @RequiredArgsConstructor
+@ToString
 public class TraitDefinition {
     private final String name;
     private final boolean dynamic;

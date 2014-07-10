@@ -29,6 +29,7 @@ public enum Amf3NumberSerializer implements AmfSerializer<Number> {
 
     @Override
     public void serialize(Number d, DataOutputStream out) throws IOException {
+
         new DataOutputStream(out).writeDouble(d.doubleValue());
     }
 }

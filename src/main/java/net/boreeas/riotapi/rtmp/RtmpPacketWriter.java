@@ -44,6 +44,7 @@ public class RtmpPacketWriter {
     }
 
     public void write(RtmpEvent body, int streamId, int msgStreamId) throws IOException {
+
         RtmpHeader header = new RtmpHeader();
         RtmpPacket packet = new RtmpPacket(header, body);
 
@@ -60,6 +61,8 @@ public class RtmpPacketWriter {
     }
 
     private void write(RtmpPacket packet) throws IOException {
+
+
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         packet.getBody().writeBody(new AmfWriter(bout));
         byte[] buffer = bout.toByteArray();
@@ -88,6 +91,9 @@ public class RtmpPacketWriter {
         if (packet.getBody() instanceof SetChunkSize) {
             CHUNK_SIZE = ((SetChunkSize) packet.getBody()).getChunkSize();
         }
+
+        writer.flush();
+
     }
 
     private ChunkHeaderType getHeaderType(RtmpHeader header, RtmpHeader previousHeader) {
@@ -137,16 +143,19 @@ public class RtmpPacketWriter {
             case FULL:
                 writer.writeUint24(timeStamp);
                 writer.writeUint24(header.getPacketLength());
-                writer.write(header.getMessageType().ordinal());
+                writer.write(header.getMessageType().id);
                 writer.writeLittleEndianInt(header.getMsgStreamId());
+                break;
 
             case NO_MSG_STREAM_ID:
                 writer.writeUint24(timeStamp);
                 writer.writeUint24(header.getPacketLength());
-                writer.write(header.getMessageType().ordinal());
+                writer.write(header.getMessageType().id);
+                break;
 
             case TIMESTAMP_ONLY:
                 writer.writeUint24(timeStamp);
+                break;
         }
 
         if (timeStamp == 0xffffff) {
@@ -154,7 +163,7 @@ public class RtmpPacketWriter {
         }
     }
 
-    public void writeAsynch(RtmpEvent evt, int streamId, int msgStreamId) {
+    public void writeAsync(RtmpEvent evt, int streamId, int msgStreamId) {
         writeAsync(evt, streamId, msgStreamId, e -> {
         });
     }

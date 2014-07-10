@@ -33,11 +33,11 @@ public enum MessageType {
 
     DATA_AMF3(15),
     SHARED_OBJ_AMF3(16),
-    INVOKE(17),
+    INVOKE_AMF3(17),
 
     DATA_AMF0(18),
     SHARED_OBJ_AMF0(19),
-    INVOKEX(20),
+    INVOKE_AMF0(20),
 
     AGGREGATE(22);
 
@@ -46,5 +46,15 @@ public enum MessageType {
 
     private MessageType(int id) {
         this.id = id;
+    }
+
+    public static final MessageType getById(int id) {
+        for (MessageType type: values()) {
+            if (type.id == id) {
+                return type;
+            }
+        }
+
+        return null;
     }
 }

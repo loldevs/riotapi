@@ -27,13 +27,11 @@ import java.util.UUID;
 @Getter
 @Setter
 public class FlexMessage {
-    public static class HeaderName {
-        public static final String DEST_CLIENT_ID = "DSDstClientId";
-        public static final String ENDPOINT = "DSEndpoint";
-        public static final String REMOTE_CREDENTIALS = "DSRemoteCredentials";
-        public static final String REQUEST_TIMEOUT = "DSRequestTimeout";
-        public static final String LOCAL_CLIENT_ID = "DSId";
-    }
+    public static final String DEST_CLIENT_ID = "DSDstClientId";
+    public static final String ENDPOINT = "DSEndpoint";
+    public static final String REMOTE_CREDENTIALS = "DSRemoteCredentials";
+    public static final String REQUEST_TIMEOUT = "DSRequestTimeout";
+    public static final String LOCAL_CLIENT_ID = "DSId";
 
 
     private String clientId;

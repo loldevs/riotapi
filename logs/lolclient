@@ -1,0 +1,72 @@
+2014-07-10 22:31:05,763 [ INFO:main    ] Connecting to prod.na1.lol.riotgames.com:2099
+2014-07-10 22:31:08,405 [ INFO:Thread-0] Unknown command: _result/[AmfObject(type=null, fields={DSMessagingVersion=1.0, code=NetConnection.Connect.Success, level=status, description=Connection succeeded., details=null, objectEncoding=3.0})]/REQUEST/Success=false
+			class net.boreeas.riotapi.rtmp.serialization.AmfObject <- class net.boreeas.riotapi.rtmp.messages.control.Command$Method
+2014-07-10 22:31:48,296 [ INFO:main    ] Connecting to prod.na1.lol.riotgames.com:2099
+2014-07-10 22:31:50,850 [ INFO:Thread-0] Unknown command: _result/[AmfObject(type=null, fields={DSMessagingVersion=1.0, code=NetConnection.Connect.Success, level=status, description=Connection succeeded., details=null, objectEncoding=3.0})]/REQUEST/Success=false
+			class net.boreeas.riotapi.rtmp.serialization.AmfObject <- class net.boreeas.riotapi.rtmp.messages.control.Command$Method
+2014-07-10 22:32:19,546 [ INFO:main    ] Connecting to prod.na1.lol.riotgames.com:2099
+2014-07-10 22:32:22,612 [ INFO:Thread-0] Unknown command: _result/[AmfObject(type=null, fields={DSMessagingVersion=1.0, code=NetConnection.Connect.Success, level=status, description=Connection succeeded., details=null, objectEncoding=3.0})]/REQUEST/Success=false
+			class net.boreeas.riotapi.rtmp.serialization.AmfObject <- class net.boreeas.riotapi.rtmp.messages.control.Command$Method
+2014-07-10 22:32:29,465 [ INFO:main    ] Connecting to prod.na1.lol.riotgames.com:2099
+2014-07-10 22:32:32,120 [ INFO:Thread-0] Unknown command: _result/[AmfObject(type=null, fields={DSMessagingVersion=1.0, code=NetConnection.Connect.Success, level=status, description=Connection succeeded., details=null, objectEncoding=3.0})]/REQUEST/Success=false
+			class net.boreeas.riotapi.rtmp.serialization.AmfObject <- class net.boreeas.riotapi.rtmp.messages.control.Command$Method
+2014-07-10 22:32:41,488 [ INFO:main    ] Connecting to prod.na1.lol.riotgames.com:2099
+2014-07-10 22:32:44,055 [ INFO:Thread-0] Unknown command: _result/[AmfObject(type=null, fields={DSMessagingVersion=1.0, code=NetConnection.Connect.Success, level=status, description=Connection succeeded., details=null, objectEncoding=3.0})]/REQUEST/Success=false
+			class net.boreeas.riotapi.rtmp.serialization.AmfObject <- class net.boreeas.riotapi.rtmp.messages.control.Command$Method
+2014-07-10 22:33:49,109 [ INFO:main    ] Connecting to prod.na1.lol.riotgames.com:2099
+2014-07-10 22:33:51,734 [ INFO:Thread-0] Unknown command: _result/[AmfObject(type=null, fields={DSMessagingVersion=1.0, code=NetConnection.Connect.Success, level=status, description=Connection succeeded., details=null, objectEncoding=3.0})]/REQUEST/Success=false
+			class net.boreeas.riotapi.rtmp.serialization.AmfObject <- class net.boreeas.riotapi.rtmp.messages.control.Command$Method
+2014-07-10 22:34:01,883 [ INFO:main    ] Connecting to prod.na1.lol.riotgames.com:2099
+2014-07-10 22:34:04,522 [ INFO:Thread-0] Unknown command: _result/[AmfObject(type=null, fields={DSMessagingVersion=1.0, code=NetConnection.Connect.Success, level=status, description=Connection succeeded., details=null, objectEncoding=3.0})]/REQUEST/Success=false
+			class net.boreeas.riotapi.rtmp.serialization.AmfObject <- class net.boreeas.riotapi.rtmp.messages.control.Command$Method
+2014-07-10 22:34:16,946 [ INFO:main    ] Connecting to prod.na1.lol.riotgames.com:2099
+2014-07-10 22:34:19,472 [ INFO:Thread-0] Unknown command: _result/[AmfObject(type=null, fields={DSMessagingVersion=1.0, code=NetConnection.Connect.Success, level=status, description=Connection succeeded., details=null, objectEncoding=3.0})]/REQUEST/Success=false
+			class net.boreeas.riotapi.rtmp.serialization.AmfObject <- class net.boreeas.riotapi.rtmp.messages.control.Command$Method
+2014-07-10 22:36:12,187 [ INFO:main    ] Connecting to prod.na1.lol.riotgames.com:2099
+2014-07-10 22:36:14,863 [ INFO:Thread-0] Unknown command: _result/[AmfObject(type=null, fields={DSMessagingVersion=1.0, code=NetConnection.Connect.Success, level=status, description=Connection succeeded., details=null, objectEncoding=3.0})]/REQUEST/Success=false
+			class net.boreeas.riotapi.rtmp.serialization.AmfObject <- class net.boreeas.riotapi.rtmp.messages.control.Command$Method
+2014-07-10 22:41:17,153 [ INFO:main    ] Connecting to prod.na1.lol.riotgames.com:2099
+2014-07-10 22:41:19,825 [ INFO:Thread-0] Unknown command: _result/[AmfObject(type=null, fields={DSMessagingVersion=1.0, code=NetConnection.Connect.Success, level=status, description=Connection succeeded., details=null, objectEncoding=3.0})]/REQUEST/Success=false
+			class net.boreeas.riotapi.rtmp.serialization.AmfObject <- class net.boreeas.riotapi.rtmp.messages.control.Command$Method
+2014-07-10 22:41:20,277 [ERROR:Thread-0] Unknown exception occurred
+java.lang.ArrayIndexOutOfBoundsException: -1
+	at net.boreeas.riotapi.rtmp.RtmpPacketReader.readHeader(RtmpPacketReader.java:132)
+	at net.boreeas.riotapi.rtmp.RtmpPacketReader.readPacket(RtmpPacketReader.java:95)
+	at net.boreeas.riotapi.rtmp.RtmpPacketReader.run(RtmpPacketReader.java:76)
+	at java.lang.Thread.run(Thread.java:745)
+2014-07-10 22:41:53,259 [ INFO:main    ] Connecting to prod.na1.lol.riotgames.com:2099
+2014-07-10 22:41:55,900 [ INFO:Thread-0] Unknown command: _result/[AmfObject(type=null, fields={DSMessagingVersion=1.0, code=NetConnection.Connect.Success, level=status, description=Connection succeeded., details=null, objectEncoding=3.0})]/REQUEST/Success=false
+			class net.boreeas.riotapi.rtmp.serialization.AmfObject <- class net.boreeas.riotapi.rtmp.messages.control.Command$Method
+2014-07-10 22:41:56,319 [ERROR:Thread-0] Unknown exception occurred
+java.lang.ArrayIndexOutOfBoundsException: -1
+	at net.boreeas.riotapi.rtmp.RtmpPacketReader.readHeader(RtmpPacketReader.java:132)
+	at net.boreeas.riotapi.rtmp.RtmpPacketReader.readPacket(RtmpPacketReader.java:95)
+	at net.boreeas.riotapi.rtmp.RtmpPacketReader.run(RtmpPacketReader.java:76)
+	at java.lang.Thread.run(Thread.java:745)
+2014-07-10 22:43:00,446 [ INFO:main    ] Connecting to prod.na1.lol.riotgames.com:2099
+2014-07-10 22:43:03,019 [ INFO:RtmpClient reader thread] Unknown command: _result/[AmfObject(type=null, fields={DSMessagingVersion=1.0, code=NetConnection.Connect.Success, level=status, description=Connection succeeded., details=null, objectEncoding=3.0})]/REQUEST/Success=false
+			class net.boreeas.riotapi.rtmp.serialization.AmfObject <- class net.boreeas.riotapi.rtmp.messages.control.Command$Method
+2014-07-10 22:43:03,456 [ERROR:RtmpClient reader thread] Unknown exception occurred
+java.lang.ArrayIndexOutOfBoundsException: -1
+	at net.boreeas.riotapi.rtmp.RtmpPacketReader.readHeader(RtmpPacketReader.java:132)
+	at net.boreeas.riotapi.rtmp.RtmpPacketReader.readPacket(RtmpPacketReader.java:95)
+	at net.boreeas.riotapi.rtmp.RtmpPacketReader.run(RtmpPacketReader.java:76)
+	at java.lang.Thread.run(Thread.java:745)
+2014-07-10 22:49:43,732 [ INFO:main    ] Connecting to prod.na1.lol.riotgames.com:2099
+2014-07-10 22:49:46,357 [ INFO:RtmpClient reader thread] Unknown command: _result/[AmfObject(type=null, fields={DSMessagingVersion=1.0, code=NetConnection.Connect.Success, level=status, description=Connection succeeded., details=null, objectEncoding=3.0})]/REQUEST/Success=false
+			class net.boreeas.riotapi.rtmp.serialization.AmfObject <- class net.boreeas.riotapi.rtmp.messages.control.Command$Method
+2014-07-10 22:49:46,821 [ERROR:RtmpClient reader thread] Unknown exception occurred
+java.lang.ArrayIndexOutOfBoundsException: -1
+	at net.boreeas.riotapi.rtmp.RtmpPacketReader.readHeader(RtmpPacketReader.java:132)
+	at net.boreeas.riotapi.rtmp.RtmpPacketReader.readPacket(RtmpPacketReader.java:95)
+	at net.boreeas.riotapi.rtmp.RtmpPacketReader.run(RtmpPacketReader.java:76)
+	at java.lang.Thread.run(Thread.java:745)
+2014-07-10 22:50:24,847 [ INFO:main    ] Connecting to prod.na1.lol.riotgames.com:2099
+2014-07-10 22:50:27,549 [ INFO:RtmpClient reader thread] Unknown command: _result/[AmfObject(type=null, fields={DSMessagingVersion=1.0, code=NetConnection.Connect.Success, level=status, description=Connection succeeded., details=null, objectEncoding=3.0})]/REQUEST/Success=false
+			class net.boreeas.riotapi.rtmp.serialization.AmfObject <- class net.boreeas.riotapi.rtmp.messages.control.Command$Method
+2014-07-10 22:50:28,187 [ERROR:RtmpClient reader thread] Unknown exception occurred
+java.lang.ArrayIndexOutOfBoundsException: -1
+	at net.boreeas.riotapi.rtmp.RtmpPacketReader.readHeader(RtmpPacketReader.java:132)
+	at net.boreeas.riotapi.rtmp.RtmpPacketReader.readPacket(RtmpPacketReader.java:95)
+	at net.boreeas.riotapi.rtmp.RtmpPacketReader.run(RtmpPacketReader.java:76)
+	at java.lang.Thread.run(Thread.java:745)

@@ -54,7 +54,7 @@ public class Amf0ObjectSerializer implements AmfSerializer {
         Class c = obj.getClass();
 
         while (c != null) {
-            for (Field f : obj.getClass().getDeclaredFields()) {
+            for (Field f : c.getDeclaredFields()) {
                 if (Modifier.isFinal(f.getModifiers()) || Modifier.isStatic(f.getModifiers()) || f.isAnnotationPresent(NoSerialization.class)) {
                     continue;
                 }

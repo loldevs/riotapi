@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.p2.messages.control;
+package net.boreeas.riotapi.rtmp.messages.control;
 
 import lombok.Getter;
-import net.boreeas.riotapi.rtmp.p2.MessageType;
-import net.boreeas.riotapi.rtmp.p2.RtmpEvent;
-import net.boreeas.riotapi.rtmp.p2.serialization.AmfWriter;
+import lombok.ToString;
+import net.boreeas.riotapi.rtmp.MessageType;
+import net.boreeas.riotapi.rtmp.RtmpEvent;
+import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
 
 import java.io.IOException;
 
 /**
  * Created on 5/18/2014.
  */
+@ToString
 public class AudioData extends RtmpEvent {
     @Getter private byte[] buffer;
 

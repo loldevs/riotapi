@@ -16,11 +16,7 @@
 
 package net.boreeas.riotapi.rtmp.serialization;
 
-import lombok.AllArgsConstructor;
-import lombok.Delegate;
-import lombok.NonNull;
-import lombok.SneakyThrows;
-import lombok.ToString;
+import lombok.*;
 import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0ObjectDeserializer;
 import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0Type;
 import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3ObjectDeserializer;
@@ -31,13 +27,10 @@ import org.reflections.Reflections;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Callable;
 
 /**
@@ -72,7 +65,7 @@ public class AmfReader {
     /**
      * Creates an input stream without rescanning the classpath
      * @param in The inputstream to read from
-     * @param base The reader from which to take the set of serializable classes
+     * @param base The reader from which to take the release of serializable classes
      */
     public AmfReader(InputStream in, AmfReader base) {
         this.in = new DataInputStream(in);
@@ -104,8 +97,8 @@ public class AmfReader {
 
         amf3Deserializers.add(() -> { throw new UnsupportedOperationException("Undefined"); });
         amf3Deserializers.add(() -> null);
-        amf3Deserializers.add(() -> true);
         amf3Deserializers.add(() -> false);
+        amf3Deserializers.add(() -> true);
         amf3Deserializers.add(this::readInt29);
         amf3Deserializers.add(in::readDouble);
         amf3Deserializers.add(this::readAmf3String);
@@ -124,6 +117,7 @@ public class AmfReader {
 
     public void addObjectDeserializer(String type, Amf3ObjectDeserializer deserializer) {
         amf3ObjectDeserializers.put(type, deserializer);
+        deserializer.setObjectRefTable(amf3ObjectReferences);
     }
 
     public void scanPackages(String... packages) {
@@ -133,9 +127,14 @@ public class AmfReader {
 
     private synchronized void buildSerializableClassList() {
         this.serializableClasses = new HashMap<>();
-        reflections.getTypesAnnotatedWith(Serialization.class).forEach(
-                cls -> serializableClasses.put(cls.getAnnotation(Serialization.class).name(), cls)
-        );
+        reflections.getTypesAnnotatedWith(Serialization.class).forEach(cls -> {
+            Serialization s = cls.getAnnotation(Serialization.class);
+
+            serializableClasses.put(s.name(), cls);
+            for (String alt: s.noncanonicalNames()) {
+                serializableClasses.put(alt, cls);
+            }
+        });
     }
 
 
@@ -150,21 +149,17 @@ public class AmfReader {
     // </editor-fold>
 
     // <editor-fold desc="Amf0">
-    public Object decodeAmf0() throws IOException {
+    public <T> T decodeAmf0() throws IOException {
         return deserializeAmf0(in.read());
     }
 
-    public <T> T decodeAmf0As() throws IOException {
-        return (T) decodeAmf0();
-    }
-
-    public Object deserializeAmf0(@NonNull Amf0Type type) throws IOException {
+    public <T> T deserializeAmf0(@NonNull Amf0Type type) throws IOException {
         return deserializeAmf0(type.ordinal());
     }
 
-    private Object deserializeAmf0(int type) throws IOException {
+    private <T> T  deserializeAmf0(int type) throws IOException {
         try {
-            return amf0Deserializers.get(type).call();
+            return (T) amf0Deserializers.get(type).call();
         } catch (Exception ex) {
             throw new IOException("Error during deserialization", ex);
         }
@@ -172,8 +167,8 @@ public class AmfReader {
 
 
     // <editor-fold desc="Amf0 Deserializer">
-    private Object readAmf0Reference() throws IOException {
-        return amf0ObjectReferences.get(in.readShort());
+    private <T> T  readAmf0Reference() throws IOException {
+        return (T) amf0ObjectReferences.get(in.readShort());
     }
 
     public Date readAmf0Date() throws IOException {
@@ -209,7 +204,8 @@ public class AmfReader {
             int type = in.read();
             if (type == Amf0Type.OBJECT_END.ordinal()) { break; }
 
-            map.put(name, deserializeAmf0(type));
+            Object obj = deserializeAmf0(type);
+            map.put(name, obj);
         }
 
         return map;
@@ -222,7 +218,7 @@ public class AmfReader {
         return result;
     }
 
-    @SneakyThrows({IllegalAccessException.class, InstantiationException.class, NoSuchFieldException.class})
+    @SneakyThrows({IllegalAccessException.class, InstantiationException.class})
     public Object readAmf0Object() throws IOException {
         String name = in.readUTF();
         Class<?> cls = serializableClasses.get(name);
@@ -242,7 +238,7 @@ public class AmfReader {
     }
 
     public AmfObject readAmf0AnonymousObject() throws IOException {
-        AmfObject obj = new AmfObject(in.readUTF(), readAmf0KeyValuePairs());
+        AmfObject obj = new AmfObject(null, readAmf0KeyValuePairs());
         amf0ObjectReferences.add(obj);
 
         return obj;
@@ -252,22 +248,18 @@ public class AmfReader {
     // </editor-fold>
 
     // <editor-fold desc="Amf3">
-    public Object decodeAmf3() throws IOException {
+    public <T> T decodeAmf3() throws IOException {
         int type = in.read();
         return deserializeAmf3(type);
     }
 
-    public <T> T decodeAmf3As() throws IOException {
-        return (T) decodeAmf3();
-    }
-
-    public Object deserializeAmf3(@NonNull Amf3Type type) throws IOException {
+    public <T> T  deserializeAmf3(@NonNull Amf3Type type) throws IOException {
         return deserializeAmf3(type.ordinal());
     }
 
-    private Object deserializeAmf3(int type) throws IOException {
+    private <T> T  deserializeAmf3(int type) throws IOException {
         try {
-            return amf3Deserializers.get(type).call();
+            return (T) amf3Deserializers.get(type).call();
         } catch (Exception ex) {
             throw new IOException("Error during deserialization", ex);
         }
@@ -281,42 +273,44 @@ public class AmfReader {
     public int readInt29() throws IOException {
         // first byte
         int total = in.read();
-        if (total < 128)
+        if (total < 128) {
             return total;
+        }
+
+        String dbg = "" + total;
 
         total = (total & 0x7f) << 7;
         // second byte
         int nextByte = in.read();
-        if (nextByte < 128)
-        {
+        dbg += "," + nextByte;
+
+        if (nextByte < 128) {
             total = total | nextByte;
-        }
-        else
-        {
+        } else {
             total = (total | nextByte & 0x7f) << 7;
             // third byte
             nextByte = in.read();
-            if (nextByte < 128)
-            {
+            dbg = "," + nextByte;
+            if (nextByte < 128) {
                 total = total | nextByte;
-            }
-            else
-            {
+            } else {
                 total = (total | nextByte & 0x7f) << 8;
                 // fourth byte
                 nextByte = in.read();
+                dbg = "," + nextByte;
                 total = total | nextByte;
             }
         }
 
-
         int mask = 1 << 28; // 29th bit holds sign for int29
-        return -(total & mask) | total; // -(result & mask) sets all bit above the mask if the bit at the mask is set
+        return -(total & mask) | total; // -(result & mask) sets all bit above the mask if the bit at the mask is release
     }
 
     public Date readAmf3Date() throws IOException {
         Amf3Header header = readAmf3Header();
-        if (header.isReference) return (Date) amf3ObjectReferences.get(header.value);
+        if (header.isReference) {
+            return getAmf3Reference(header);
+        }
 
         Date d = new Date((long) in.readDouble());
         amf3ObjectReferences.add(d);
@@ -339,7 +333,7 @@ public class AmfReader {
 
     public byte[] readAmf3ByteArray() throws IOException {
         Amf3Header header = readAmf3Header();
-        if (header.isReference) return (byte[]) amf3ObjectReferences.get(header.value);
+        if (header.isReference) return getAmf3Reference(header);
 
         byte[] buffer = new byte[header.value];
         in.read(buffer);
@@ -350,10 +344,10 @@ public class AmfReader {
 
     public Map<Object, Object> readAmf3Array() throws IOException {
         Amf3Header header = readAmf3Header();
-        if (header.isReference) return (Map<Object, Object>) amf3ObjectReferences.get(header.value);
+        if (header.isReference) return getAmf3Reference(header);
 
         Map<Object, Object> result = new HashMap<>();
-        amf3ObjectReferences.add(result); // Add here for cyclic references
+        amf3ObjectReferences.add(result); // Add here for reference order
 
         String key;
         while (!(key = readAmf3String()).isEmpty()) {
@@ -367,15 +361,15 @@ public class AmfReader {
         return result;
     }
 
-    private <T> Object readAmf3Vector(boolean typed, Callable<T> readFunc) throws IOException {
+    private <T> List<T> readAmf3Vector(boolean typed, Callable<T> readFunc) throws IOException {
         Amf3Header header = readAmf3Header();
-        if (header.isReference) return amf3ObjectReferences.get(header.value);
+        if (header.isReference) return getAmf3Reference(header);
 
         boolean fixedSize = in.readBoolean();
         String type = typed ? readAmf3String() : null;
 
         List<T> result = new ArrayList<>();
-        amf3ObjectReferences.add(result);
+        amf3ObjectReferences.add(result);  // Add here for reference order
 
         for (int i = 0; i < header.value; i++) {
             try {
@@ -385,7 +379,7 @@ public class AmfReader {
             }
         }
 
-        return fixedSize ? result.toArray() : result;
+        return result;
     }
 
     public Object readAmf3VectorInt() throws IOException {
@@ -406,12 +400,12 @@ public class AmfReader {
 
     public Map<Object, Object> readAmf3Map() throws IOException {
         Amf3Header header = readAmf3Header();
-        if (header.isReference) return (Map<Object, Object>) amf3ObjectReferences.get(header.value);
+        if (header.isReference) return getAmf3Reference(header);
 
         boolean weakReferences = in.readBoolean();
 
         Map<Object, Object> result = new HashMap<>();
-        amf3ObjectReferences.add(result);
+        amf3ObjectReferences.add(result);  // Add here for reference order
 
         for (int i = 0; i < header.value; i++) {
             result.put(decodeAmf3(), decodeAmf3());
@@ -420,10 +414,14 @@ public class AmfReader {
         return result;
     }
 
+    private <T> T getAmf3Reference(Amf3Header header) {
+        return (T) amf3ObjectReferences.get(header.value);
+    }
+
     @SneakyThrows({IllegalAccessException.class, InstantiationException.class})
     public Object readAmf3Object() throws IOException {
         Amf3Header header = readAmf3Header();
-        if (header.isReference) return amf3ObjectReferences.get(header.value);
+        if (header.isReference) return getAmf3Reference(header);
 
         TraitDefinition traitDef = readAmf3TraitDefinition(header.value);
 
@@ -439,12 +437,14 @@ public class AmfReader {
             Serialization context = c.getAnnotation(Serialization.class);
             Amf3ObjectDeserializer deserializer = context.amf3Deserializer().newInstance();
             deserializer.setCls(c);
+            deserializer.setObjectRefTable(amf3ObjectReferences);
 
             result = deserializer.deserialize(this, traitDef);
 
         } else {
             AmfObject amfObj = new AmfObject(type);
             result = amfObj;
+            amf3ObjectReferences.add(result);
 
             for (FieldRef s: traitDef.getStaticFields()) {
                 amfObj.set(s.getName(), decodeAmf3());
@@ -457,10 +457,8 @@ public class AmfReader {
                 }
             }
 
-            return result;
         }
 
-        amf3ObjectReferences.add(result);
         return result;
     }
 

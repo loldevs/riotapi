@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp.messages.control;
+package net.boreeas.riotapi.rtmp;
 
-import net.boreeas.riotapi.rtmp.MessageType;
+import lombok.Getter;
 
 /**
- * Created on 5/18/2014.
+ * Created on 6/11/2014.
  */
-public class NotificationAmf3 extends Notification {
-    public NotificationAmf3() {
-        super(MessageType.DATA_AMF3);
+@Getter
+public class AsyncMessageEvent {
+    private String clientId;
+    private String subtopic;
+    private Object body;
+
+    public AsyncMessageEvent(String clientId, String subtopic, Object body) {
+        this.clientId = clientId;
+        this.subtopic = subtopic;
+        this.body = body;
     }
 }

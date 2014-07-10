@@ -17,6 +17,8 @@
 package net.boreeas.riotapi.rtmp;
 
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import net.boreeas.riotapi.rtmp.messages.control.AbortMessage;
 import net.boreeas.riotapi.rtmp.messages.control.Acknowledgement;
 import net.boreeas.riotapi.rtmp.messages.control.AudioData;
@@ -34,6 +36,7 @@ import net.boreeas.riotapi.rtmp.serialization.AmfReader;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,18 +47,19 @@ import java.util.function.Consumer;
 /**
  * Created on 5/18/2014.
  */
+@Log4j(topic="Reader")
 public class RtmpPacketReader implements Runnable {
 
     private AmfReader reader;
     private int chunkSize = 128;
     private transient boolean interrupted;
     @Setter private Consumer<Exception> onError;
-    @Setter private Consumer<RtmpPacket> onPacket;
+    @Setter private Consumer<RtmpEvent> onPacket;
 
     private Map<Integer, RtmpHeader> headers = new HashMap<>();
     private Map<Integer, RtmpPacket> packets = new HashMap<>();
 
-    public RtmpPacketReader(AmfReader reader, Consumer<Exception> onError, Consumer<RtmpPacket> onPacket) {
+    public RtmpPacketReader(AmfReader reader, Consumer<Exception> onError, Consumer<RtmpEvent> onPacket) {
         this.reader = reader;
         this.onError = onError;
         this.onPacket = onPacket;
@@ -72,6 +76,11 @@ public class RtmpPacketReader implements Runnable {
                 readPacket();
             }
         } catch (IOException ex) {
+
+            if (!interrupted) {
+                onError.accept(ex);
+            }
+        } catch (Exception ex) {
 
             onError.accept(ex);
         } finally {
@@ -110,7 +119,7 @@ public class RtmpPacketReader implements Runnable {
             }
 
             if (event instanceof AbortMessage) {
-                packets.remove(((AbortMessage)event).getStreamId());
+                packets.remove(((AbortMessage)event).getAbortStreamId());
             }
         }
     }
@@ -132,14 +141,14 @@ public class RtmpPacketReader implements Runnable {
             case FULL:
                 header.setTimestamp(reader.readUint24());
                 header.setPacketLength(reader.readUint24());
-                header.setMessageType(MessageType.values()[reader.read()]);
+                header.setMessageType(MessageType.getById(reader.read()));
                 header.setMsgStreamId(reader.readIntLittleEndian());
                 break;
 
             case NO_MSG_STREAM_ID:
                 header.setTimestamp(reader.readUint24());
                 header.setPacketLength(reader.readUint24());
-                header.setMessageType(MessageType.values()[reader.read()]);
+                header.setMessageType(MessageType.getById(reader.read()));
                 header.setMsgStreamId(previous.getMsgStreamId());
                 break;
 
@@ -198,7 +207,7 @@ public class RtmpPacketReader implements Runnable {
                     while (r.available() >= 4) {
                         values.add(r.readInt());
                     }
-                    return new UserControlMessage(type, values);
+                    return new UserControlMessage(UserControlMessage.Type.values()[type], values);
                 });
             case WINDOW_ACKNOWLEDGEMENT_SIZE:
                 return parsePacket(packet, r -> new WindowAcknowledgementSize(r.readInt()));
@@ -216,16 +225,17 @@ public class RtmpPacketReader implements Runnable {
                 return parsePacket(packet, r -> parseInvokeOrData(r, new NotificationAmf3()));
             case SHARED_OBJ_AMF3:
                 return null; // FIXME
-            case INVOKE:
+            case INVOKE_AMF3:
                 return parsePacket(packet, r -> {
                     int val = r.read();
+                    log.debug("AMF3 Invoke: Unknown leading byte " + val);
                     return parseInvokeOrData(r, new InvokeAmf3());
                 });
             case DATA_AMF0:
                 return parsePacket(packet, r -> parseInvokeOrData(r, new NotificationAmf0()));
             case SHARED_OBJ_AMF0:
                 return null; // FIXME
-            case INVOKEX:
+            case INVOKE_AMF0:
                 return parsePacket(packet, r -> parseInvokeOrData(r, new InvokeAmf0()));
             case AGGREGATE:
                 return null; // FIXME
@@ -247,12 +257,13 @@ public class RtmpPacketReader implements Runnable {
     private RtmpEvent parseInvokeOrData(AmfReader reader, Command command) throws IOException {
         String methodName = (String) reader.decodeAmf0();
 
-        command.setInvokeId((int) reader.decodeAmf0());
+        command.setInvokeId(((Double) reader.decodeAmf0()).intValue());
         command.setConnectionParams(reader.decodeAmf0());
 
         List<Object> params = new ArrayList<>();
         while (reader.available() > 0) {
-            params.add(reader.decodeAmf0());
+            Object obj = reader.decodeAmf0();
+            params.add(obj);
         }
 
         command.setMethod(new Command.Method(methodName, params.toArray()));

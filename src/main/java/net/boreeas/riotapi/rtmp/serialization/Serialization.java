@@ -33,6 +33,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Serialization {
     public String name() default "";
+    public String[] noncanonicalNames() default {};
     public boolean dynamic() default false;
     public boolean externalizable() default false;
     public Class<? extends Amf3ObjectSerializer> amf3Serializer() default Amf3ObjectSerializer.class;

@@ -42,6 +42,10 @@ public class AmfObject implements DynamicObject {
     private final String type;
     private final Map<String, Object> fields;
 
+    public AmfObject() {
+        this("");
+    }
+
     public AmfObject(String type) {
         this(type, new HashMap<>());
     }

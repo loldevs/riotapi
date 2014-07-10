@@ -16,8 +16,8 @@
 
 package net.boreeas.riotapi.rtmp.serialization.amf3;
 
-import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
 import net.boreeas.riotapi.rtmp.serialization.AmfSerializer;
+import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -35,6 +35,7 @@ public class Amf3StringSerializer implements AmfSerializer<String> {
 
     @Override
     public void serialize(String val, DataOutputStream out) throws IOException {
+
         writer.serializeAmf3(val.length() << 1 | 1);
         out.write(val.getBytes("UTF-8"));
     }

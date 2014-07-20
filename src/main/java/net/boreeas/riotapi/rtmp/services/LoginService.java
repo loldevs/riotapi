@@ -44,7 +44,7 @@ public class LoginService {
      * @return Session information
      */
     public Session login(AuthenticationCredentials credentials) {
-        return client.sendRpcAndWait(SERVICE, "login", "credentials");
+        return client.sendRpcAndWait(SERVICE, "login", "credentials", credentials);
     }
 
     /**

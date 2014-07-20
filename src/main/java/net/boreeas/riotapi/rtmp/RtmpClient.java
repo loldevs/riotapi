@@ -457,6 +457,7 @@ public abstract class RtmpClient {
     }
 
     public int sendAsyncRpc(String endpoint, String service, String method, Object... args) throws IOException {
+        log.debug("Async remote procedure call to " + endpoint + " :: " + service + "." + method + "() " + Arrays.toString(args));
         RemotingMessage message = createRemotingMessage(endpoint, service, method, args);
         Invoke invoke = createAmf3InvokeSkeleton(null, message);
 

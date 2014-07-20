@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,15 +26,15 @@ public enum Shard {
             "eu." + Constants.BASE_PATH,
             "chat.eu." + Constants.BASE_PATH,
             Constants.API_PATH,
-            "lq.eu." + Constants.BASE_PATH,
-            "prod.eu." + Constants.BASE_PATH,
+            "https://lq.euw1." + Constants.BASE_PATH,
+            "prod.euw1." + Constants.BASE_PATH,
             "https://spectator.eu." + Constants.BASE_PATH + ":8088",
             false),
     EUNE("eune",
             "eun1." + Constants.BASE_PATH,
             "chat.eun1." + Constants.BASE_PATH,
             Constants.API_PATH,
-            "lq.eun1." + Constants.BASE_PATH,
+            "https://lq.eun1." + Constants.BASE_PATH,
             "prod.eun1." + Constants.BASE_PATH,
             "https://spectator.eu." + Constants.BASE_PATH + ":8088",
             false),
@@ -42,7 +42,7 @@ public enum Shard {
             "na1." + Constants.BASE_PATH,
             "chat.na1." + Constants.BASE_PATH,
             Constants.API_PATH,
-            "lq.na1." + Constants.BASE_PATH,
+            "https://lq.na1." + Constants.BASE_PATH,
             "prod.na1." + Constants.BASE_PATH,
             "https://spectator.na." + Constants.BASE_PATH + ":8088",
             false),
@@ -50,7 +50,7 @@ public enum Shard {
             "br." + Constants.BASE_PATH,
             "chat.br." + Constants.BASE_PATH,
             Constants.API_PATH,
-            "lq.br." + Constants.BASE_PATH,
+            "https://lq.br." + Constants.BASE_PATH,
             "prod.br." + Constants.BASE_PATH,
             "https://spectator.br." + Constants.BASE_PATH + ":80",
             false),
@@ -58,7 +58,7 @@ public enum Shard {
             "oc1." + Constants.BASE_PATH,
             "chat.oc1." + Constants.BASE_PATH,
             Constants.API_PATH,
-            "lq.oc1." + Constants.BASE_PATH,
+            "https://lq.oc1." + Constants.BASE_PATH,
             "prod.oc1." + Constants.BASE_PATH,
             null,   // TODO: OCE spectator url
             false),
@@ -66,7 +66,7 @@ public enum Shard {
             "tr." + Constants.BASE_PATH,
             "chat.tr." + Constants.BASE_PATH,
             Constants.API_PATH,
-            "lq.tr." + Constants.BASE_PATH,
+            "https://lq.tr." + Constants.BASE_PATH,
             "prod.tr." + Constants.BASE_PATH,
             "https://spectator.tr." + Constants.BASE_PATH + ":80",
             false),
@@ -74,7 +74,7 @@ public enum Shard {
             "ru." + Constants.BASE_PATH,
             "chat.ru." + Constants.BASE_PATH,
             Constants.API_PATH,
-            "lq.ru." + Constants.BASE_PATH,
+            "https://lq.ru." + Constants.BASE_PATH,
             "prod.ru." + Constants.BASE_PATH,
             "https://spectator.eu." + Constants.BASE_PATH + ":80",
             false),
@@ -82,7 +82,7 @@ public enum Shard {
             "la1." + Constants.BASE_PATH,
             "chat.la1." + Constants.BASE_PATH,
             Constants.API_PATH,
-            "lq.la1." + Constants.BASE_PATH,
+            "https://lq.la1." + Constants.BASE_PATH,
             "prod.la1." + Constants.BASE_PATH,
             "https://spectator.br." + Constants.BASE_PATH + ":80",
             false),
@@ -90,7 +90,7 @@ public enum Shard {
             "la2." + Constants.BASE_PATH,
             "chat.la2." + Constants.BASE_PATH,
             Constants.API_PATH,
-            "lq.la2." + Constants.BASE_PATH,
+            "https://lq.la2." + Constants.BASE_PATH,
             "prod.la2." + Constants.BASE_PATH,
             "https://spectator.br." + Constants.BASE_PATH + ":80",
             false),
@@ -98,7 +98,7 @@ public enum Shard {
             "pbe1." + Constants.BASE_PATH,
             "chat.pbe1." + Constants.BASE_PATH,
             Constants.API_PATH,
-            "lq.pbe1." + Constants.BASE_PATH,
+            "https://lq.pbe1." + Constants.BASE_PATH,
             "prod.pbe1." + Constants.BASE_PATH,
             "https://spectator.pbe1." + Constants.BASE_PATH + ":8088",
             false),
@@ -106,7 +106,7 @@ public enum Shard {
             "kr." + Constants.BASE_PATH,
             "chat.kr." + Constants.BASE_PATH,
             "https://asia.api." + Constants.BASE_PATH + "/api/lol",
-            "lq.kr." + Constants.BASE_PATH,
+            "https://lq.kr." + Constants.BASE_PATH,
             "prod.kr." + Constants.BASE_PATH,
             "https://QFKR1PROXY.kassad.in:8088",
             false),
@@ -114,7 +114,7 @@ public enum Shard {
             Constants.GARENA_PATH,
             "chat." + Constants.GARENA_PATH,
             "https://asia.api." + Constants.BASE_PATH + "/api/lol",
-            "lq." + Constants.GARENA_PATH,
+            "https://lq." + Constants.GARENA_PATH,
             "prod." + Constants.GARENA_PATH,
             "https://qfsea1proxy.kassad.in:8088",
             true),
@@ -122,7 +122,7 @@ public enum Shard {
             Constants.GARENA_PATH,
             "chatth." + Constants.GARENA_PATH,
             "https://asia.api." + Constants.BASE_PATH + "/api/lol",
-            "loginqueuetw." + Constants.GARENA_PATH,
+            "https://loginqueuetw." + Constants.GARENA_PATH,
             "prodtw." + Constants.GARENA_PATH,
             "https://FQTW1PROXY.kassad.in:8088",
             true),
@@ -130,7 +130,7 @@ public enum Shard {
             Constants.GARENA_PATH,
             "chatth." + Constants.GARENA_PATH,
             "https://asia.api." + Constants.BASE_PATH + "/api/lol",
-            "lqth." + Constants.GARENA_PATH,
+            "https://lqth." + Constants.GARENA_PATH,
             "prodth." + Constants.GARENA_PATH,
             "https://qfsea1proxy.kassad.in:8088",
             true),
@@ -138,7 +138,7 @@ public enum Shard {
             Constants.GARENA_PATH,
             "chatph." + Constants.GARENA_PATH,
             "https://asia.api." + Constants.BASE_PATH + "/api/lol",
-            "lqph." + Constants.GARENA_PATH,
+            "https://lqph." + Constants.GARENA_PATH,
             "prodph." + Constants.GARENA_PATH,
             "https://qfsea1proxy.kassad.in:8088",
             true),
@@ -146,7 +146,7 @@ public enum Shard {
             Constants.GARENA_PATH,
             "chatvn." + Constants.BASE_PATH,
             "https://asia.api." + Constants.BASE_PATH + "/api/lol",
-            "lqvn." + Constants.GARENA_PATH,
+            "https://lqvn." + Constants.GARENA_PATH,
             "prodvn." + Constants.GARENA_PATH,
             "https://qfsea1proxy.kassad.in:8088",
             true);
@@ -163,7 +163,7 @@ public enum Shard {
 
     public static final int JABBER_PORT = 5223;
     public static final int RTMPS_PORT = 2099;
-    public static final String RTMPS_APP_PATH = "app:/mod_ser.dat";
+    public static final String CONN_INFO_SERVICE = "http://ll.leagueoflegends.com/services/connection_info";
 
 
     private Shard(String name, String base, String chat, String api, String loginQueue, String prod, String spectator, boolean garena) {

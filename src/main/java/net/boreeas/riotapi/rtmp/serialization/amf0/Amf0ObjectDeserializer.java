@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,8 @@ import net.boreeas.riotapi.rtmp.serialization.AmfReader;
 import net.boreeas.riotapi.rtmp.serialization.NoSerialization;
 import net.boreeas.riotapi.rtmp.serialization.SerializedName;
 
+import java.io.Externalizable;
+import java.io.ObjectInputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -39,6 +41,14 @@ public class Amf0ObjectDeserializer {
     @SneakyThrows
     public Object deserialize(AmfReader reader) {
         Object result = cls.newInstance();
+
+        if (result instanceof Externalizable) {
+            ((Externalizable) result).readExternal(new ObjectInputStream(reader));
+            return result;
+        }
+
+
+
         for (Map.Entry<String, Object> field: reader.readAmf0KeyValuePairs().entrySet()) {
             setField(result, field.getKey(), field.getValue());
         }

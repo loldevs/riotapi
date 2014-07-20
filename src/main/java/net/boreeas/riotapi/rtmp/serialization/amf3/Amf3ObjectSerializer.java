@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,16 +18,12 @@ package net.boreeas.riotapi.rtmp.serialization.amf3;
 
 import lombok.Setter;
 import lombok.SneakyThrows;
-import net.boreeas.riotapi.rtmp.serialization.AmfSerializer;
-import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
-import net.boreeas.riotapi.rtmp.serialization.FieldRef;
-import net.boreeas.riotapi.rtmp.serialization.NoSerialization;
-import net.boreeas.riotapi.rtmp.serialization.Serialization;
-import net.boreeas.riotapi.rtmp.serialization.SerializedName;
-import net.boreeas.riotapi.rtmp.serialization.TraitDefinition;
+import net.boreeas.riotapi.rtmp.serialization.*;
 
 import java.io.DataOutputStream;
+import java.io.Externalizable;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Map;
@@ -56,10 +52,17 @@ public class Amf3ObjectSerializer implements AmfSerializer {
 
             writer.serializeAmf3(traitDef.getHeader());
             writer.serializeAmf3(traitDef.getName());
+
             for (FieldRef field: traitDef.getStaticFields()) {
                 writer.serializeAmf3(field.getSerializedName());
             }
         }
+
+        if (o instanceof Externalizable) {
+            ((Externalizable) o).writeExternal(new ObjectOutputStream(out));
+            return;
+        }
+
 
         for (FieldRef ref: traitDef.getStaticFields()) {
             writer.encodeAmf3(getStaticField(o, ref));
@@ -88,29 +91,31 @@ public class Amf3ObjectSerializer implements AmfSerializer {
 
     protected TraitDefinition getTraitDefiniton(Object o) {
         Serialization serialization = o.getClass().getAnnotation(Serialization.class);
-        boolean dynamic = (serialization == null) ? false : serialization.dynamic();
-        boolean externalizable = (serialization == null) ? false : serialization.externalizable();
+        boolean dynamic = (serialization != null) && serialization.dynamic();
+        boolean externalizable = (serialization != null) && serialization.externalizable();
         String name = (serialization == null) ? "" : serialization.name();
 
         TraitDefinition traitDef = new TraitDefinition(name, dynamic, externalizable);
         Class c = o.getClass();
 
-        while (c != null) {
-            for (Field f: c.getDeclaredFields()) {
-                if (f.isAnnotationPresent(NoSerialization.class)) continue;
-                if (Modifier.isFinal(f.getModifiers()) || Modifier.isStatic(f.getModifiers())) continue;
+        if (!externalizable) {
+            while (c != null) {
+                for (Field f : c.getDeclaredFields()) {
+                    if (f.isAnnotationPresent(NoSerialization.class)) continue;
+                    if (Modifier.isFinal(f.getModifiers()) || Modifier.isStatic(f.getModifiers())) continue;
 
-                String fieldName = (f.isAnnotationPresent(SerializedName.class)) ? f.getAnnotation(SerializedName.class).name() : f.getName();
-                FieldRef fieldRef = new FieldRef(f.getName(), fieldName, c);
+                    String fieldName = (f.isAnnotationPresent(SerializedName.class)) ? f.getAnnotation(SerializedName.class).name() : f.getName();
+                    FieldRef fieldRef = new FieldRef(f.getName(), fieldName, c);
 
-                if (f.isAnnotationPresent(Dynamic.class)) {
-                    traitDef.getDynamicFields().add(fieldRef);
-                } else {
-                    traitDef.getStaticFields().add(fieldRef);
+                    if (f.isAnnotationPresent(Dynamic.class)) {
+                        traitDef.getDynamicFields().add(fieldRef);
+                    } else {
+                        traitDef.getStaticFields().add(fieldRef);
+                    }
                 }
-            }
 
-            c = c.getSuperclass();
+                c = c.getSuperclass();
+            }
         }
 
         return traitDef;

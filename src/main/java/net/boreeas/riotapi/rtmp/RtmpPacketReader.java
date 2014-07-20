@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,7 @@ package net.boreeas.riotapi.rtmp;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
+import net.boreeas.riotapi.Util;
 import net.boreeas.riotapi.rtmp.messages.control.AbortMessage;
 import net.boreeas.riotapi.rtmp.messages.control.Acknowledgement;
 import net.boreeas.riotapi.rtmp.messages.control.AudioData;
@@ -126,16 +127,20 @@ public class RtmpPacketReader implements Runnable {
 
 
     private RtmpHeader readHeader() throws IOException {
-        int headerTypeByte = reader.read();
-        int chunkStreamId = getChunkStreamId(headerTypeByte);
+        int headerByte = reader.read() & 0xff;
+        int chunkStreamId = getChunkStreamId(headerByte);
 
-        ChunkHeaderType headerType = ChunkHeaderType.values()[headerTypeByte >> 6];
+        log.debug("On chunk stream " + chunkStreamId + " (from header byte " + Integer.toBinaryString(headerByte) + ")");
+        ChunkHeaderType headerType = ChunkHeaderType.values()[headerByte >> 6];
         RtmpHeader header = new RtmpHeader(null, 0, headerType.ordinal(), chunkStreamId, 0, 0, headerType != ChunkHeaderType.FULL);
 
         RtmpHeader previous;
-        if ((previous = headers.get(chunkStreamId)) == null && headerType == ChunkHeaderType.FULL) {
+        if ((previous = headers.get(chunkStreamId)) == null && headerType != ChunkHeaderType.FULL) {
+            // If previous header is null, and we expect part of the header from a previous version, default to current
             previous = header;
         }
+
+        log.debug("Got header type " + headerType);
 
         switch (headerType) {
             case FULL:
@@ -192,6 +197,18 @@ public class RtmpPacketReader implements Runnable {
 
 
     private RtmpEvent parsePacket(RtmpPacket packet) throws IOException {
+        if (packet.getHeader().getMessageType() == null) {
+            log.debug("Error: Unset message type");
+            byte[] buffer = new byte[1024];
+            while (reader.read(buffer) != 0) {
+                for (String line: Util.hexdump(buffer)) {
+                    log.debug(line);
+                }
+            }
+
+            log.debug("End of buffer dump");
+        }
+
         switch (packet.getHeader().getMessageType()) {
             // Control message
             case SET_CHUNK_SIZE:

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,14 @@
 
 package net.boreeas.riotapi;
 
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+import lombok.SneakyThrows;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,5 +82,19 @@ public class Util {
         }
 
         return null;
+    }
+
+    @SneakyThrows(IOException.class)
+    public static String getConnectionInfoIpAddr() {
+        try (InputStreamReader reader = new InputStreamReader(new URL(Shard.CONN_INFO_SERVICE).openStream())) {
+            return new Gson().fromJson(reader, ConnInfo.class).ipAddr;
+        } catch (IOException ex) {
+            throw ex;
+        }
+    }
+
+    private static class ConnInfo {
+        @SerializedName("ip_address")
+        String ipAddr;
     }
 }

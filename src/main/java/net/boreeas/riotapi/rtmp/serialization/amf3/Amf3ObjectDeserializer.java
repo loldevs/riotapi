@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +22,10 @@ import net.boreeas.riotapi.rtmp.serialization.AmfReader;
 import net.boreeas.riotapi.rtmp.serialization.FieldRef;
 import net.boreeas.riotapi.rtmp.serialization.TraitDefinition;
 
+import java.io.DataInput;
+import java.io.Externalizable;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -37,11 +40,17 @@ public class Amf3ObjectDeserializer {
     @Setter protected Class cls;
     @Setter protected List<Object> objectRefTable;
 
-    @SneakyThrows({InstantiationException.class, IllegalAccessException.class, NoSuchFieldException.class})
+    @SneakyThrows({InstantiationException.class, IllegalAccessException.class, NoSuchFieldException.class, ClassNotFoundException.class})
     public Object deserialize(AmfReader reader, TraitDefinition def) throws IOException {
 
         Object instance = cls.newInstance();
         objectRefTable.add(instance);
+
+        if (instance instanceof Externalizable) {
+            ((Externalizable) instance).readExternal(new ObjectInputStream(reader));
+            return instance;
+        }
+
 
         for (FieldRef ref: def.getStaticFields()) {
             Object obj = reader.decodeAmf3();

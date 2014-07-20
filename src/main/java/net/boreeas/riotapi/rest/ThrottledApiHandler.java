@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,21 +20,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.boreeas.riotapi.Shard;
+import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueItem;
+import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueList;
+import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePage;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 
 /**
  * Created on 4/23/2014.
@@ -100,6 +92,7 @@ public class ThrottledApiHandler {
         thread.setDaemon(true);
         thread.start();
     }
+
 
     private boolean limitsOpen() {
         for (float f: limits) {
@@ -171,7 +164,7 @@ public class ThrottledApiHandler {
      * @return A list of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1862>Official API documentation</a>
      */
-    public Future<List<League>> getLeagues(long summoner) {
+    public Future<List<LeagueList>> getLeagues(long summoner) {
         return new ApiFuture<>(() -> handler.getLeagues(summoner));
     }
 
@@ -191,7 +184,7 @@ public class ThrottledApiHandler {
      * @return A list of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1860>Official API documentation</a>
      */
-    public Future<List<League>> getLeaguesByTeam(String teamId) {
+    public Future<List<LeagueList>> getLeaguesByTeam(String teamId) {
         return new ApiFuture<>(() -> handler.getLeaguesByTeam(teamId));
     }
 
@@ -211,7 +204,7 @@ public class ThrottledApiHandler {
      * @return The queue's challenger league
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1864>Official API documentation</a>
      */
-    public Future<League> getChallenger(QueueType queue) {
+    public Future<LeagueList> getChallenger(QueueType queue) {
         return new ApiFuture<>(() -> handler.getChallenger(queue));
     }
 
@@ -554,11 +547,11 @@ public class ThrottledApiHandler {
 
     /**
      * <p>
-     * Retrieve a specific rune
+     * Retrieve a specific runes
      * </p>
      * This method does not count towards the rate limit and is not affected by the throttle
-     * @param id The id of the rune
-     * @return The rune
+     * @param id The id of the runes
+     * @return The runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2168>Official API documentation</a>
      */
     public Item getRune(int id) {
@@ -567,12 +560,12 @@ public class ThrottledApiHandler {
 
     /**
      * <p>
-     * Retrieve a specific rune
+     * Retrieve a specific runes
      * </p>
      * This method does not count towards the rate limit and is not affected by the throttle
-     * @param id The id of the rune
+     * @param id The id of the runes
      * @param data Additional information to retrieve
-     * @return The rune
+     * @return The runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2168>Official API documentation</a>
      */
     public Item getRune(int id, ItemData data) {
@@ -581,14 +574,14 @@ public class ThrottledApiHandler {
 
     /**
      * <p>
-     * Retrieve a specific rune
+     * Retrieve a specific runes
      * </p>
      * This method does not count towards the rate limit and is not affected by the throttle
-     * @param id The id of the rune
+     * @param id The id of the runes
      * @param data Additional information to retrieve
      * @param version Data dragon version for returned data
      * @param locale Locale code for returned data
-     * @return The rune
+     * @return The runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2168>Official API documentation</a>
      */
     public Item getRune(int id, ItemData data, String version, String locale) {
@@ -844,9 +837,9 @@ public class ThrottledApiHandler {
     }
 
     /**
-     * Retrieve rune pages for multiple users
+     * Retrieve runes pages for multiple users
      * @param ids The ids of the users
-     * @return A map, mapping user ids to their respective rune pages
+     * @return A map, mapping user ids to their respective runes pages
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1932>Official API documentation</a>
      */
     public Future<Map<Integer, Set<RunePage>>> getRunePagesMultipleUsers(Integer... ids) {
@@ -854,9 +847,9 @@ public class ThrottledApiHandler {
     }
 
     /**
-     * Retrieve the rune pages of a user
+     * Retrieve the runes pages of a user
      * @param id The user's id
-     * @return The user's rune page
+     * @return The user's runes page
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1932>Official API documentation</a>
      */
     public Future<Set<RunePage>> getRunePages(int id) {
@@ -916,10 +909,10 @@ public class ThrottledApiHandler {
 
     /**
      * Stops the threads handling pending requests. No further requests will
-     * be
+     * be executed, but any running thread will complete first
      */
     public void stop() {
-
+        timer.cancel();
     }
 
 

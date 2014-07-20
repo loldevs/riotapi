@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,9 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 import net.boreeas.riotapi.rtmp.serialization.SerializedName;
 
 import java.io.DataOutputStream;
+import java.io.Externalizable;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -45,7 +47,11 @@ public class Amf0ObjectSerializer implements AmfSerializer {
             out.writeUTF(context.name());
         }
 
-        serializeAnonymous(obj, out);
+        if (obj instanceof Externalizable) {
+            ((Externalizable) obj).writeExternal(new ObjectOutputStream(out));
+        } else {
+            serializeAnonymous(obj, out);
+        }
     }
 
     @SneakyThrows(value = {IllegalAccessException.class})

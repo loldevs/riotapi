@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,7 +27,6 @@ import org.reflections.Reflections;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -36,7 +35,7 @@ import java.util.concurrent.Callable;
 /**
  * Created on 5/13/2014.
  */
-public class AmfReader {
+public class AmfReader extends InputStream {
 
     @Delegate private DataInputStream in;
     private Reflections reflections;
@@ -387,7 +386,7 @@ public class AmfReader {
     }
 
     public Object readAmf3VectorUint() throws IOException {
-        return readAmf3Vector(false, () -> ((long) in.readInt()) & 0xffffffff);
+        return readAmf3Vector(false, () -> ((long) in.readInt()) & 0xffffffffL);
     }
 
     public Object readAmf3VectorDouble() throws IOException {

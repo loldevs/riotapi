@@ -1,71 +1,49 @@
 package net.boreeas.riotapi.rtmp;
 
 import junit.framework.TestCase;
+import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j;
 import net.boreeas.riotapi.Shard;
+import net.boreeas.riotapi.loginqeue.LoginQueue;
+import net.boreeas.riotapi.rtmp.serialization.DefaultRtmpClient;
 
-import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.Properties;
 
+@Log4j
 public class RtmpClientTest extends TestCase {
 
+    private static Properties testConfig = new Properties();;
     private static Shard shard = Shard.NA;
+    private static RtmpClient client;
 
-    private RtmpClient client;
-
-    @Override
-    public void setUp() throws Exception {
-        client = new RtmpClient(shard.prodUrl, Shard.RTMPS_PORT, true) {
-            @Override
-            public void onReadException(Exception ex) {
-                fail("Exception occurred");
-            }
-
-
-            @Override
-            public void onAsyncWriteException(IOException ex) {
-                fail(ex.getMessage());
-            }
-
-
-            @Override
-            public void extendedOnPacket(RtmpEvent packet) {
-
-            }
-        };
+    static {
+        staticSetup();
     }
 
-    public void testRepeatedConnect() throws IOException, InterruptedException {
-        for (int i = 0; i < 10; i++) {
-            System.out.println("connecting");
-            client.connect();
-            client.disconnect();
-        }
-    }
+    @SneakyThrows
+    private static void staticSetup() {
 
-    public void testConnect() throws IOException, InterruptedException {
-        System.out.println("connecting");
+        testConfig.load(new InputStreamReader(new FileInputStream("testconfig.properties")));
+
+        client = new DefaultRtmpClient(shard.prodUrl, Shard.RTMPS_PORT, true);
+        //client = new DefaultRtmpClient("localhost", 8443, false);
+
+
+        String user = testConfig.getProperty("user");
+        String pass = testConfig.getProperty("pass");
+        String authKey = new LoginQueue(shard).waitInQueue(user, pass).await().getToken();
+
         client.connect();
-        assertTrue(client.isConnected());
-        client.disconnect();
+        client.authenticate(user, pass, authKey, "<invalid version>");
     }
 
-    public void testSendInvoke() throws IOException, InterruptedException {
-
-
-        System.out.println("connecting");
-        client.connect();
-
-        System.out.println("client connected");
-
-        int id = client.sendInvoke("musicalService", "findSongs");
-        System.out.println("invoke id: " + id);
-        Object o = client.waitForInvokeReply(id);
-        assertFalse(o instanceof Throwable);
-        System.out.println(o);
+    public void testSession() {
+        System.out.println(client.getSession());
     }
 
-
-    @Override
-    public void tearDown() throws Exception {
-        client.disconnect();
+    public void testLoginPacket() {
+        System.out.println(client.getLoginDataPacket());
     }
 }

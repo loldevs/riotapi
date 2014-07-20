@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.boreeas.riotapi.Util;
 import net.boreeas.riotapi.Shard;
+import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueList;
+import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueItem;
+import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePage;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -122,8 +125,8 @@ public class ApiHandler {
      * @return A list of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1862>Official API documentation</a>
      */
-    public List<League> getLeagues(long summoner) {
-        Type type = new TypeToken<List<League>>(){}.getType();
+    public List<LeagueList> getLeagues(long summoner) {
+        Type type = new TypeToken<List<LeagueList>>(){}.getType();
         WebTarget tgt = leagueInfoTarget.path("by-summoner/" + summoner);
         return gson.fromJson($(tgt), type);
     }
@@ -146,8 +149,8 @@ public class ApiHandler {
      * @return A list of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1860>Official API documentation</a>
      */
-    public List<League> getLeaguesByTeam(String teamId) {
-        Type type = new TypeToken<List<League>>(){}.getType();
+    public List<LeagueList> getLeaguesByTeam(String teamId) {
+        Type type = new TypeToken<List<LeagueList>>(){}.getType();
         WebTarget tgt = leagueInfoTarget.path("by-team").path(teamId);
         return gson.fromJson($(tgt), type);
     }
@@ -170,9 +173,9 @@ public class ApiHandler {
      * @return The queue's challenger league
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1864>Official API documentation</a>
      */
-    public League getChallenger(QueueType queue) {
+    public LeagueList getChallenger(QueueType queue) {
         WebTarget tgt = leagueInfoTarget.path("challenger").queryParam("type", queue.name);
-        return gson.fromJson($(tgt), League.class);
+        return gson.fromJson($(tgt), LeagueList.class);
     }
 
     /**
@@ -519,7 +522,7 @@ public class ApiHandler {
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2172>Official API documentation</a>
      */
     public RuneList getRuneList() {
-        WebTarget tgt = staticDataTarget.path("rune");
+        WebTarget tgt = staticDataTarget.path("runes");
         return gson.fromJson($(tgt), RuneList.class);
     }
 
@@ -533,7 +536,7 @@ public class ApiHandler {
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2172>Official API documentation</a>
      */
     public RuneList getRuneList(ItemData data) {
-        WebTarget tgt = staticDataTarget.path("rune").queryParam("runeListData", data.name);
+        WebTarget tgt = staticDataTarget.path("runes").queryParam("runeListData", data.name);
         return gson.fromJson($(tgt), RuneList.class);
     }
 
@@ -549,7 +552,7 @@ public class ApiHandler {
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2172>Official API documentation</a>
      */
     public RuneList getRuneList(ItemData data, String version, String locale) {
-        WebTarget tgt = staticDataTarget.path("rune")
+        WebTarget tgt = staticDataTarget.path("runes")
                 .queryParam("runeListData", data.name)
                 .queryParam("version", version)
                 .queryParam("locale", locale);
@@ -558,47 +561,47 @@ public class ApiHandler {
 
     /**
      * <p>
-     * Retrieve a specific rune
+     * Retrieve a specific runes
      * </p>
      * This method does not count towards the rate limit
-     * @param id The id of the rune
-     * @return The rune
+     * @param id The id of the runes
+     * @return The runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2168>Official API documentation</a>
      */
     public Item getRune(int id) {
-        WebTarget tgt = staticDataTarget.path("rune/" + id);
+        WebTarget tgt = staticDataTarget.path("runes/" + id);
         return gson.fromJson($(tgt), Item.class);
     }
 
     /**
      * <p>
-     * Retrieve a specific rune
+     * Retrieve a specific runes
      * </p>
      * This method does not count towards the rate limit
-     * @param id The id of the rune
+     * @param id The id of the runes
      * @param data Additional information to retrieve
-     * @return The rune
+     * @return The runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2168>Official API documentation</a>
      */
     public Item getRune(int id, ItemData data) {
-        WebTarget tgt = staticDataTarget.path("rune/" + id).queryParam("runeData", data.name);
+        WebTarget tgt = staticDataTarget.path("runes/" + id).queryParam("runeData", data.name);
         return gson.fromJson($(tgt), Item.class);
     }
 
     /**
      * <p>
-     * Retrieve a specific rune
+     * Retrieve a specific runes
      * </p>
      * This method does not count towards the rate limit
-     * @param id The id of the rune
+     * @param id The id of the runes
      * @param data Additional information to retrieve
      * @param version Data dragon version for returned data
      * @param locale Locale code for returned data
-     * @return The rune
+     * @return The runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2168>Official API documentation</a>
      */
     public Item getRune(int id, ItemData data, String version, String locale) {
-        WebTarget tgt = staticDataTarget.path("rune/" + id)
+        WebTarget tgt = staticDataTarget.path("runes/" + id)
                 .queryParam("runeData", data.name)
                 .queryParam("version", version)
                 .queryParam("locale", locale);
@@ -897,9 +900,9 @@ public class ApiHandler {
     }
 
     /**
-     * Retrieve rune pages for multiple users
+     * Retrieve runes pages for multiple users
      * @param ids The ids of the users
-     * @return A map, mapping user ids to their respective rune pages
+     * @return A map, mapping user ids to their respective runes pages
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1932>Official API documentation</a>
      */
     public Map<Integer, Set<RunePage>> getRunePagesMultipleUsers(Integer... ids) {
@@ -915,9 +918,9 @@ public class ApiHandler {
     }
 
     /**
-     * Retrieve the rune pages of a user
+     * Retrieve the runes pages of a user
      * @param id The user's id
-     * @return The user's rune page
+     * @return The user's runes page
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1932>Official API documentation</a>
      */
     public Set<RunePage> getRunePages(int id) {

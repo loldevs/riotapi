@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,19 +18,24 @@ package net.boreeas.riotapi.rtmp;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
+import net.boreeas.riotapi.Util;
+import net.boreeas.riotapi.com.riotgames.platform.clientfacade.domain.LoginDataPacket;
+import net.boreeas.riotapi.com.riotgames.platform.login.AuthenticationCredentials;
+import net.boreeas.riotapi.com.riotgames.platform.login.Session;
 import net.boreeas.riotapi.rtmp.messages.*;
 import net.boreeas.riotapi.rtmp.messages.control.*;
 import net.boreeas.riotapi.rtmp.serialization.AmfReader;
 import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
 import net.boreeas.riotapi.rtmp.serialization.AnonymousAmfObject;
 import net.boreeas.riotapi.rtmp.serialization.ObjectEncoding;
+import net.boreeas.riotapi.rtmp.services.*;
 
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.net.Socket;
-import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -63,15 +68,110 @@ public abstract class RtmpClient {
     private long timeOffset;
     private AtomicInteger invokeId = new AtomicInteger(1);
     private String clientId;
+    @Getter private Session session;
+    @Getter private LoginDataPacket loginDataPacket;
 
     // Async await
     private Map<Integer, InvokeCallback> callbacks = new HashMap<>();
 
+    // <editor-fold desc="Services">
+    /**
+     * Services user authentication as well as the lcds heartbeat.
+     */
+    public final LoginService loginService;
+    /**
+     * Answers account related queries.
+     */
+    public final AccountService accountService;
+    /**
+     * Contains the kudos system and login packet.
+     */
+    public final ClientFacadeService clientFacadeService;
+    /**
+     * Attach a player or a group of players to a matchmaking queue.
+     */
+    public final MatchmakerService matchmakerService;
+    /**
+     * Set account-related preferences.
+     */
+    public final PlayerPreferencesService playerPreferencesService;
+    /**
+     * Control owned champions and summoner spells.
+     */
+    public final InventoryService inventoryService;
+    /**
+     * Control owned runes.
+     */
+    public final SummonerRuneService summonerRuneService;
+    /**
+     * Control runes and mastery pages.
+     */
+    public final BookService bookService;
+    /**
+     * Query league related information.
+     */
+    public final LeaguesServiceProxy leaguesServiceProxy;
+    /**
+     * Manage ranked teams.
+     */
+    public final SummonerTeamService summonerTeamService;
+    /**
+     * Control user accounts.
+     */
+    public final SummonerService summonerService;
+    /**
+     * Retrieve stats for a player.
+     */
+    public final PlayerStatsService playerStatsService;
+    /**
+     * Reroll champions in ARAM.
+     */
+    public final LcdsRerollService lcdsRerollService;
+    /**
+     * Manage champion select and custom games.
+     */
+    public final GameService gameService;
+    /**
+     * Control summoner icons.
+     */
+    public final SummonerIconService summonerIconService;
+    /**
+     * Trade champions in ranked and aram.
+     */
+    public final LcdsChampionTradeService lcdsChampionTradeService;
+    /**
+     * Manage a group finder lobby.
+     */
+    public final LcdsServiceProxy lcdsServiceProxy;
 
-    public RtmpClient(String host, int port, boolean useSSL) throws URISyntaxException {
+    /**
+     * Manage premade teams and game invitations.
+     */
+    public final LcdsGameInvitationService lcdsGameInvitationService;
+    // </editor-fold>
+
+    public RtmpClient(String host, int port, boolean useSSL) {
         this.host = host;
         this.port = port;
         this.useSSL = useSSL;
+        this.loginService = new LoginService(this);
+        this.accountService = new AccountService(this);
+        this.clientFacadeService = new ClientFacadeService(this);
+        this.matchmakerService = new MatchmakerService(this);
+        this.playerPreferencesService = new PlayerPreferencesService(this);
+        this.inventoryService = new InventoryService(this);
+        this.summonerRuneService = new SummonerRuneService(this);
+        this.bookService = new BookService(this);
+        this.leaguesServiceProxy = new LeaguesServiceProxy(this);
+        this.summonerTeamService = new SummonerTeamService(this);
+        this.summonerService = new SummonerService(this);
+        this.playerStatsService = new PlayerStatsService(this);
+        this.lcdsRerollService = new LcdsRerollService(this);
+        this.gameService = new GameService(this);
+        this.summonerIconService = new SummonerIconService(this);
+        this.lcdsChampionTradeService = new LcdsChampionTradeService(this);
+        this.lcdsServiceProxy = new LcdsServiceProxy(this);
+        this.lcdsGameInvitationService = new LcdsGameInvitationService(this);
     }
 
     public abstract void onReadException(Exception ex);
@@ -94,7 +194,7 @@ public abstract class RtmpClient {
     }
 
     public int getTimeDelta() {
-        return (int) ((System.currentTimeMillis() - this.timeOffset) & 0xFFFFFFFF);
+        return (int) ((System.currentTimeMillis() - this.timeOffset) & 0xFFFFFFFFL);
     }
 
     public InvokeCallback getInvokeCallback(int invokeId) {
@@ -165,7 +265,8 @@ public abstract class RtmpClient {
         } else {
 
             log.info("Unknown command: " + method.getName() + "/" + Arrays.toString(method.getParams()) + "/" + method.getStatus() + "/Success=" + method.isSuccess()
-            + "\n\t\t\t" + params.getClass() + " <- " + method.getClass());
+            + "\n\t\t\tParams = " + params.getClass()
+            + "\n\t\t\tMethod = " + method.getClass());
         }
 
         if (callback != null) {
@@ -177,6 +278,50 @@ public abstract class RtmpClient {
         isConnected = false;
         reader.interrupt();
         writer.close();
+        try {
+            socket.close();
+        } catch (IOException e) {}
+    }
+
+    public void authenticate(String user, String password, String authKey, String clientVersion) {
+        authenticate(user, password, authKey, clientVersion, "en_US");
+    }
+
+    @SneakyThrows(IOException.class)
+    public Session authenticate(String user, String password, String authKey, String clientVersion, String locale) {
+        AuthenticationCredentials credentials = new AuthenticationCredentials();
+        credentials.setUsername(user);
+        credentials.setPassword(password);
+        credentials.setClientVersion(clientVersion);
+        credentials.setAuthToken(authKey);
+        credentials.setLocale(locale);
+        String addr = Util.getConnectionInfoIpAddr();
+        credentials.setIpAddress(addr);
+        credentials.setDomain("lolclient.lol.riotgames.com");
+
+        log.info("Login service call: " + user + "/*** on client version " + clientVersion + " (locale " + locale + ", connection info: " + addr + ")");
+        this.session = loginService.login(credentials);
+
+
+        String gnPrefix = "gn-" + session.getAccountSummary().getAccountId(); // Game news?
+        String cnPrefix = "cn-" + session.getAccountSummary().getAccountId(); // Client news?
+        subscribeAsync("my-rtmps", "messagingDestination", "bc", "bc-" + session.getAccountSummary().getAccountId());
+        subscribeAsync("my-rtmps", "messagingDestination", gnPrefix, gnPrefix);
+        subscribeAsync("my-rtmps", "messagingDestination", cnPrefix, cnPrefix);
+
+        log.info("Rtmp login: " + user.toLowerCase() + "/" + session.getToken());
+        login(user.toLowerCase(), session.getToken());
+
+        log.info("Retrieving data packet");
+        this.loginDataPacket = clientFacadeService.getLoginDataPacket();
+
+        String state = accountService.getAccountState();
+        log.info("Login complete - account state: " + state);
+        if (!state.equals("ENABLED")) {
+            throw new RtmpException("Invalid account state: " + state);
+        }
+
+        return session;
     }
 
     public void connect() throws IOException, InterruptedException {
@@ -197,16 +342,17 @@ public abstract class RtmpClient {
 
         try {
             int id = sendConnectInvoke(null, null, (useSSL ? "rtmps://" : "rtmp://") + host + ":" + port);
-            System.out.println("Connect invoke id = " + id);
             Object reply = waitForInvokeReply(id);
             
             if (reply instanceof FlexMessage) {
                 this.clientId = "" + ((FlexMessage) reply).getClientId();
+                log.info("Client Id: " + clientId);
             }
 
             isConnected = true;
 
         } catch (InterruptedException ex) {
+            log.error("Got interrupted, disconnecting: " + ex);
             disconnect();
         }
     }
@@ -261,45 +407,86 @@ public abstract class RtmpClient {
     }
 
 
+    private void send(Invoke invoke) throws IOException {
+        if (!isConnected()) {
+            throw new RtmpException("Not connected");
+        }
+        sendOverrideConnect(invoke);
+    }
+
+    private void sendOverrideConnect(Invoke invoke) throws IOException {
+        writer.write(invoke, INVOKE_STREAM, DEFAULT_MSG_STREAM);
+    }
+
+    private void sendAsync(Invoke invoke) {
+        if (!isConnected()) {
+            throw new RtmpException("Not connected");
+        }
+        writer.writeAsync(invoke, INVOKE_STREAM, DEFAULT_MSG_STREAM, this::onAsyncWriteException);
+    }
+
+
 
     public int sendInvoke(String service, Object... args) throws IOException {
         Invoke invoke = createAmf0InvokeSkeleton(service, args);
-        writer.write(invoke, INVOKE_STREAM, DEFAULT_MSG_STREAM);
+        send(invoke);
         return invoke.getInvokeId();
     }
-
     public int sendAsyncInvoke(String service, Object... args) {
         Invoke invoke = createAmf0InvokeSkeleton(service, args);
-        writer.writeAsync(invoke, INVOKE_STREAM, DEFAULT_MSG_STREAM, this::onAsyncWriteException);
+        sendAsync(invoke);
         return invoke.getInvokeId();
     }
 
-    public int sendRpc(String endpoint, String destination, String method, Object... args) throws IOException {
-        RemotingMessage message = createRemotingMessage(endpoint, destination, method, args);
+
+
+    public int sendRpc(String service, String method, Object... args) throws IOException {
+        return sendRpc("my-rtmps", service, method, args);
+    }
+
+    public int sendRpc(String endpoint, String service, String method, Object... args) throws IOException {
+        RemotingMessage message = createRemotingMessage(endpoint, service, method, args);
         Invoke invoke = createAmf3InvokeSkeleton(null, message);
 
-        writer.write(invoke, INVOKE_STREAM, DEFAULT_MSG_STREAM);
+        send(invoke);
         return invoke.getInvokeId();
     }
 
-    public int sendAsyncRpc(String endpoint, String destination, String method, Object... args) throws IOException {
-        RemotingMessage message = createRemotingMessage(endpoint, destination, method, args);
+    public int sendAsnycRpc(String service, String method, Object... args) throws IOException {
+        return sendAsyncRpc("my-rtmps", service, method, args);
+    }
+
+    public int sendAsyncRpc(String endpoint, String service, String method, Object... args) throws IOException {
+        RemotingMessage message = createRemotingMessage(endpoint, service, method, args);
         Invoke invoke = createAmf3InvokeSkeleton(null, message);
 
-        writer.writeAsync(invoke, INVOKE_STREAM, DEFAULT_MSG_STREAM, this::onAsyncWriteException);
+        sendAsync(invoke);
         return invoke.getInvokeId();
     }
 
-    private RemotingMessage createRemotingMessage(String endpoint, String destination, String method, Object[] args) {
+    public <T> T sendRpcAndWait(String service, String method, Object... args) {
+        try {
+            InvokeCallback callback = getInvokeCallback(sendAsnycRpc(service, method, args));
+            return (T) callback.waitForReply();
+        } catch (final InterruptedException | IOException ex) {
+            throw new RtmpException(ex);
+        }
+    }
+
+
+
+
+    private RemotingMessage createRemotingMessage(String endpoint, String service, String method, Object... args) {
         if (objectEncoding != ObjectEncoding.AMF3) {
             throw new IllegalStateException("RPC requires AMF3");
         }
 
         RemotingMessage message = new RemotingMessage(null, method);
-        message.setDestination(destination);
-        message.setBody(args);
         message.getHeaders().put(FlexMessage.ENDPOINT, endpoint);
         message.getHeaders().put(FlexMessage.LOCAL_CLIENT_ID, clientId == null ? "nil" : clientId);
+
+        message.setDestination(service);
+        message.setBody(args);
         return message;
     }
 
@@ -341,7 +528,7 @@ public abstract class RtmpClient {
 
         invoke.setConnectionParams(connParams);
 
-        writer.write(invoke, INVOKE_STREAM, DEFAULT_MSG_STREAM);
+        sendOverrideConnect(invoke);
         return invoke.getInvokeId();
     }
 

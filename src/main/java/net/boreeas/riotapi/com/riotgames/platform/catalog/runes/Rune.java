@@ -17,7 +17,7 @@
 package net.boreeas.riotapi.com.riotgames.platform.catalog.runes;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.platform.catalog.ItemEffect;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created on 7/20/2014.
  */
-@Getter
+@Data
 @EqualsAndHashCode(of = {"itemId", "tier"})
 @Serialization(name = "com.riotgames.platform.catalog.runes.Rune")
 public class Rune {

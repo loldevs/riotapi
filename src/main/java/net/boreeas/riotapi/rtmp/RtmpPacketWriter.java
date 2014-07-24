@@ -16,6 +16,7 @@
 
 package net.boreeas.riotapi.rtmp;
 
+import lombok.extern.log4j.Log4j;
 import net.boreeas.riotapi.rtmp.messages.control.SetChunkSize;
 import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
 import net.boreeas.riotapi.rtmp.serialization.ObjectEncoding;
@@ -24,12 +25,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
 /**
  * Created on 5/18/2014.
  */
-public class RtmpPacketWriter {
+@Log4j(topic = "Writer")
+public class RtmpPacketWriter implements Runnable {
 
     private int CHUNK_SIZE = 128;
 
@@ -37,13 +41,44 @@ public class RtmpPacketWriter {
     private ObjectEncoding encoding;
     private Map<Integer, RtmpHeader> previousHeaders = new HashMap<>();
     private Map<Integer, RtmpPacket> previousPackets = new HashMap<>();
+    private Consumer<IOException> onError;
 
-    public RtmpPacketWriter(AmfWriter writer, ObjectEncoding encoding) {
+    private BlockingQueue<RtmpPacket> packetQueue = new LinkedBlockingQueue<>();
+    private volatile boolean interrupted;
+
+    public RtmpPacketWriter(AmfWriter writer, ObjectEncoding encoding, Consumer<IOException> onError) {
         this.writer = writer;
         this.encoding = encoding;
+        this.onError = onError;
     }
 
-    public void write(RtmpEvent body, int streamId, int msgStreamId) throws IOException {
+    @Override
+    public void run() {
+        try {
+            while (!interrupted && !Thread.interrupted()) {
+                write(packetQueue.take());  // Waits until a packet becomes available
+            }
+        } catch (IOException e) {
+            if (!interrupted) {
+                onError.accept(e);
+            }
+        } catch (InterruptedException ex) {
+            log.warn("Writer thread interrupted");
+        } catch (Exception ex) {
+            onError.accept(new IOException(ex));
+        } finally {
+            try {
+                writer.close();
+            } catch (IOException e) {}
+        }
+    }
+
+    public void interrupt() {
+        this.interrupted = true;
+    }
+
+
+    public void write(RtmpEvent body, int streamId, int msgStreamId) {
 
         RtmpHeader header = new RtmpHeader();
         RtmpPacket packet = new RtmpPacket(header, body);
@@ -57,11 +92,15 @@ public class RtmpPacketWriter {
             header.setTimestampRelative(body.getHeader().isTimestampRelative());
         }
 
-        write(packet);
+        try {
+            packetQueue.put(packet);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void write(RtmpPacket packet) throws IOException {
 
+    private void write(RtmpPacket packet) throws IOException {
 
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         packet.getBody().writeBody(new AmfWriter(bout));
@@ -75,7 +114,6 @@ public class RtmpPacketWriter {
         previousPackets.put(header.getStreamId(), packet);
 
         writeHeader(header, previousHeader);
-
         boolean first = true; // Split off packets exceeding the chunk size
         for (int i = 0; i < header.getPacketLength(); i += CHUNK_SIZE) {
             if (!first) {
@@ -163,23 +201,9 @@ public class RtmpPacketWriter {
         }
     }
 
-    public void writeAsync(RtmpEvent evt, int streamId, int msgStreamId) {
-        writeAsync(evt, streamId, msgStreamId, e -> {
-        });
-    }
-
-    public void writeAsync(RtmpEvent evt, int streamId, int msgStreamId, Consumer<IOException> onError) {
-        new Thread(() -> {
-            try {
-                write(evt, streamId, msgStreamId);
-            } catch (IOException e) {
-                onError.accept(e);
-            }
-        }).start();
-    }
-
     public void close() {
         try {
+            interrupt();
             writer.close();
         } catch (IOException e) {}
     }

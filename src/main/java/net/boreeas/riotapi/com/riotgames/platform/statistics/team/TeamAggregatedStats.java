@@ -16,7 +16,7 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.statistics.team;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.team.TeamId;
 import net.boreeas.riotapi.rest.QueueType;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created on 7/20/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.statistics.team.TeamAggregatedStatsDTO")
 public class TeamAggregatedStats {
     private String queueType;

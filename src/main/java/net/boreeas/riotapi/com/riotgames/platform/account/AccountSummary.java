@@ -16,13 +16,13 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.account;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.account.AccountSummary")
 public class AccountSummary {
     private int groupCount;
@@ -34,4 +34,6 @@ public class AccountSummary {
     private String summonerName;
     private boolean partnerMode;
     private boolean needsPasswordReset;
+    private int dataVersion;
+    private Object futureData;
 }

@@ -16,14 +16,14 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.game;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.platform.reroll.pojo.PointSummary;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.game.PlayerParticipant")
 public class PlayerParticipant {
     // TODO inspect

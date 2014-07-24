@@ -16,13 +16,13 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.gameinvite.contract;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.gameinvite.contract.Invitee")
 public class Invitee {
     private String inviteeStateAsString;

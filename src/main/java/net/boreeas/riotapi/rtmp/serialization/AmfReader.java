@@ -17,6 +17,7 @@
 package net.boreeas.riotapi.rtmp.serialization;
 
 import lombok.*;
+import lombok.extern.log4j.Log4j;
 import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0ObjectDeserializer;
 import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0Type;
 import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3ObjectDeserializer;
@@ -35,6 +36,7 @@ import java.util.concurrent.Callable;
 /**
  * Created on 5/13/2014.
  */
+@Log4j
 public class AmfReader extends InputStream {
 
     @Delegate private DataInputStream in;
@@ -51,7 +53,7 @@ public class AmfReader extends InputStream {
     private Map<String, Amf3ObjectDeserializer> amf3ObjectDeserializers = new HashMap<>();
 
     public AmfReader(InputStream in) {
-        this(in, "net.boreeas"); // By default, look for classes from this package
+        this(in, "net.boreeas.riotapi"); // By default, look for classes from this package
     }
 
     public AmfReader(InputStream in, String... packages) {
@@ -276,12 +278,10 @@ public class AmfReader extends InputStream {
             return total;
         }
 
-        String dbg = "" + total;
 
         total = (total & 0x7f) << 7;
         // second byte
         int nextByte = in.read();
-        dbg += "," + nextByte;
 
         if (nextByte < 128) {
             total = total | nextByte;
@@ -289,14 +289,12 @@ public class AmfReader extends InputStream {
             total = (total | nextByte & 0x7f) << 7;
             // third byte
             nextByte = in.read();
-            dbg = "," + nextByte;
             if (nextByte < 128) {
                 total = total | nextByte;
             } else {
                 total = (total | nextByte & 0x7f) << 8;
                 // fourth byte
                 nextByte = in.read();
-                dbg = "," + nextByte;
                 total = total | nextByte;
             }
         }
@@ -423,14 +421,28 @@ public class AmfReader extends InputStream {
         if (header.isReference) return getAmf3Reference(header);
 
         TraitDefinition traitDef = readAmf3TraitDefinition(header.value);
-
-
         String type = traitDef.getName();
 
         Object result;
         if (amf3ObjectDeserializers.containsKey(type)) {
             result = amf3ObjectDeserializers.get(type).deserialize(this, traitDef);
-        } else if (serializableClasses.containsKey(type)) { // Read as kv-pairs
+        } else if (type.isEmpty()) {
+            AnonymousAmfObject amfObj = new AnonymousAmfObject();
+            result = amfObj;
+            amf3ObjectReferences.add(result);
+
+            for (FieldRef s: traitDef.getStaticFields()) {
+                amfObj.put(s.getName(), decodeAmf3());
+            }
+
+            if (traitDef.isDynamic()) {
+                String key;
+                while (!(key = readAmf3String()).isEmpty()) {
+                    amfObj.put(key, decodeAmf3());
+                }
+            }
+
+        } else if (serializableClasses.containsKey(type)) {
             Class<?> c = serializableClasses.get(type);
 
             Serialization context = c.getAnnotation(Serialization.class);
@@ -451,7 +463,7 @@ public class AmfReader extends InputStream {
 
             if (traitDef.isDynamic()) {
                 String key;
-                while (!(key = in.readUTF()).isEmpty()) {
+                while (!(key = readAmf3String()).isEmpty()) {
                     amfObj.set(key, decodeAmf3());
                 }
             }
@@ -474,14 +486,25 @@ public class AmfReader extends InputStream {
         TraitDefinition def = new TraitDefinition(type, dynamic, externalizable);
         String[] members = new String[flags >> 3];
 
-        Class match = serializableClasses.get(type);
+        Class match = type.isEmpty() ? AnonymousAmfObject.class : serializableClasses.get(type);
+        log.trace("Reading trait definition for '" + type + "' (" + ((match == null) ? "no match" : "has match in " + match) + ")");
+
 
         for (int i = 0; i < members.length; i++) {
             String fieldName = readAmf3String();
+            FieldRef field;
+
             if (match != null) {
-                def.getStaticFields().add(scanForField(match, fieldName));
+                field = scanForField(match, fieldName);
             } else {
-                def.getStaticFields().add(new FieldRef(fieldName, fieldName, null));
+                field = new FieldRef(fieldName, fieldName, null);
+            }
+
+            if (field == null) {
+                log.warn("No match for field " + (type.isEmpty() ? "<anonymous>" : type) + "." + fieldName + " in " + match);
+                def.getStaticFields().add(new FieldRef(null, fieldName, null));
+            } else {
+                def.getStaticFields().add(field);
             }
         }
 

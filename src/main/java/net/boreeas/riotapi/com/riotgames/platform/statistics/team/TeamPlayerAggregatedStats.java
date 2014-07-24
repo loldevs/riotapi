@@ -16,14 +16,14 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.statistics.team;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.platform.statistics.AggregatedStats;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 7/20/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.statistics.team.TeamPlayerAggregatedStatsDTO")
 public class TeamPlayerAggregatedStats {
     private double playerId;

@@ -16,13 +16,13 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.catalog;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 7/20/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.catalog.ItemEffect")
 public class ItemEffect {
     private int effectId;

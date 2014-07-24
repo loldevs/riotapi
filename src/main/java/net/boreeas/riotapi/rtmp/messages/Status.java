@@ -27,14 +27,14 @@ public class Status extends AnonymousAmfObject {
     public static final String CALL_FAILED = "NetConnection.Call.Failed";
 
     public Status(String code, String level, String description) {
-        set("code", code);
-        set("level", level);
-        set("description", description);
+        put("code", code);
+        put("level", level);
+        put("description", description);
     }
 
     public Status(String code, String level, String description, String application, double objectEncoding) {
         this(code, level, description);
-        set("application", application);
-        set("objectEncoding", objectEncoding);
+        put("application", application);
+        put("objectEncoding", objectEncoding);
     }
 }

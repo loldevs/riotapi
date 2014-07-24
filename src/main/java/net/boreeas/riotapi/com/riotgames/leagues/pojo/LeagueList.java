@@ -17,7 +17,7 @@
 package net.boreeas.riotapi.com.riotgames.leagues.pojo;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.boreeas.riotapi.rest.LeagueTier;
 import net.boreeas.riotapi.rest.QueueType;
@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Created on 4/14/2014.
  */
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Serialization(name = "com.riotgames.leagues.pojo.LeagueListDTO")

@@ -51,7 +51,7 @@ public class AnonymousAmfObject implements DynamicObject {
         return fields.get(field);
     }
 
-    public void set(String field, Object data) {
+    public void put(String field, Object data) {
         fields.put(field, data);
     }
 
@@ -89,7 +89,7 @@ public class AnonymousAmfObject implements DynamicObject {
         @Override
         protected TraitDefinition getTraitDefiniton(Object o) {
             TraitDefinition def = new TraitDefinition("", true, false);
-            for (String key: ((AmfObject) o).getFields().keySet()) {
+            for (String key: ((AnonymousAmfObject) o).getFields().keySet()) {
                 def.getDynamicFields().add(new FieldRef(key, key, o.getClass()));
             }
 
@@ -110,14 +110,14 @@ public class AnonymousAmfObject implements DynamicObject {
     public static class AmfObjectAmf0Deserializer extends Amf0ObjectDeserializer {
         @Override
         protected void setField(Object object, String name, Object value) throws NoSuchFieldException, IllegalAccessException {
-            ((AnonymousAmfObject) object).set(name, value);
+            ((AnonymousAmfObject) object).put(name, value);
         }
     }
 
     public static class AmfObjectAmf3Deserializer extends Amf3ObjectDeserializer {
         @Override
         protected void setDynamicField(Object target, Object value, FieldRef ref) throws NoSuchFieldException, IllegalAccessException {
-            ((AnonymousAmfObject) target).set(ref.getName(), value);
+            ((AnonymousAmfObject) target).put(ref.getSerializedName(), value);
         }
     }
 }

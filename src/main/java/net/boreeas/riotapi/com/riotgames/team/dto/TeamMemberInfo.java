@@ -16,7 +16,7 @@
 
 package net.boreeas.riotapi.com.riotgames.team.dto;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.Date;
@@ -24,7 +24,7 @@ import java.util.Date;
 /**
  * Created on 4/14/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.team.dto.TeamMemberInfoDTO")
 public class TeamMemberInfo {
     private Date inviteDate;

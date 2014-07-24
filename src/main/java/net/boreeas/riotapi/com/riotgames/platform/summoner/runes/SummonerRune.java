@@ -16,7 +16,7 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.summoner.runes;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.platform.catalog.runes.Rune;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
@@ -25,7 +25,7 @@ import java.util.Date;
 /**
  * Created on 7/20/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform..SummonerRune")
 public class SummonerRune {
     private Date purchased;

@@ -16,13 +16,13 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.catalog.runes;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 7/20/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.catalog.runes.RuneType")
 public class RuneType {
     private int runeTypeId;

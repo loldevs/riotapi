@@ -16,7 +16,7 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.catalog.icon;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.Date;
@@ -24,7 +24,7 @@ import java.util.Date;
 /**
  * Created on 7/20/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.catalog.icon.Icon")
 public class Icon {
     private Date purchaseDate;

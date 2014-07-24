@@ -131,7 +131,7 @@ public class AmfObject implements DynamicObject {
     public static class AmfObjectAmf3Deserializer extends Amf3ObjectDeserializer {
         @Override
         protected void setDynamicField(Object target, Object value, FieldRef ref) throws NoSuchFieldException, IllegalAccessException {
-            ((AmfObject) target).set(ref.getName(), value);
+            ((AmfObject) target).set(ref.getSerializedName(), value);
         }
     }
 }

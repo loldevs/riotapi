@@ -17,7 +17,7 @@
 package net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by malte on 7/18/2014.
  */
-@Getter
+@Data
 @EqualsAndHashCode
 @Serialization(name = "com.riotgames.platform.summoner.spellbook.SpellBookDTO")
 public class RunePageBook {

@@ -16,14 +16,14 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.game;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.platform.game.map.GameMap;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.game.PracticeGameConfig")
 public class PracticeGameConfig {
     // TODO inspect

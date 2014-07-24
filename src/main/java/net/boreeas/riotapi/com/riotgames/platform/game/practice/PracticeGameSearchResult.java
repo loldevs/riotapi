@@ -16,14 +16,14 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.game.practice;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.platform.game.PlayerParticipant;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.game.practice.PracticeGameSearchResult")
 public class PracticeGameSearchResult {
     private int spectatorCount;

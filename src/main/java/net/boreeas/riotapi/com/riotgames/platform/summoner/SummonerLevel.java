@@ -17,7 +17,7 @@
 package net.boreeas.riotapi.com.riotgames.platform.summoner;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.ToString;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 import net.boreeas.riotapi.rtmp.serialization.SerializedName;
@@ -25,7 +25,7 @@ import net.boreeas.riotapi.rtmp.serialization.SerializedName;
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @ToString
 @EqualsAndHashCode
 @Serialization(name = "com.riotgames.platform.summoner.SummonerLevel")

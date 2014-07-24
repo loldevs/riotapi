@@ -16,14 +16,14 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.statistics;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rest.Team;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.statistics.FellowPlayerInfo")
 public class FellowPlayerInfo {
     private double championId;

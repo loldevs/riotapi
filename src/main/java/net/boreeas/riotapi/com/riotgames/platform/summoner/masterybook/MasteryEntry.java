@@ -17,7 +17,7 @@
 package net.boreeas.riotapi.com.riotgames.platform.summoner.masterybook;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.Mastery;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 import net.boreeas.riotapi.rtmp.serialization.SerializedName;
@@ -25,7 +25,7 @@ import net.boreeas.riotapi.rtmp.serialization.SerializedName;
 /**
  * Created on 7/18/2014.
  */
-@Getter
+@Data
 @EqualsAndHashCode(of = {"id"})
 @Serialization(name = "com.riotgames.platform.summoner.masterybook.TalentEntry")
 public class MasteryEntry {

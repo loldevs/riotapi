@@ -18,7 +18,7 @@ package net.boreeas.riotapi.com.riotgames.platform.broadcast;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import lombok.Getter;
+import lombok.Data;
 import lombok.ToString;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
@@ -30,7 +30,7 @@ import java.io.ObjectOutput;
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @ToString
 @Serialization(name = "com.riotgames.platform.broadcast.BroadcastNotification", externalizable = true)
 public class BroadcastNotification implements Externalizable {

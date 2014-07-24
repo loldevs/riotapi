@@ -17,14 +17,14 @@
 package net.boreeas.riotapi.com.riotgames.platform.summoner;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 import net.boreeas.riotapi.rtmp.serialization.SerializedName;
 
 /**
  * Created on 7/18/2014.
  */
-@Getter
+@Data
 @EqualsAndHashCode(of = {"id"})
 @Serialization(name = "com.riotgames.platform.summoner.Talent")
 public class Mastery {

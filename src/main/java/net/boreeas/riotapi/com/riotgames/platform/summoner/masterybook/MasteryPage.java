@@ -17,7 +17,7 @@
 package net.boreeas.riotapi.com.riotgames.platform.summoner.masterybook;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 import net.boreeas.riotapi.rtmp.serialization.SerializedName;
 
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created on 7/18/2014.
  */
-@Getter
+@Data
 @EqualsAndHashCode(exclude = {"createDate", "summonerId"})
 @Serialization(name = "com.riotgames.platform.summoner.masterybook.MasteryBookPageDTO")
 public class MasteryPage {

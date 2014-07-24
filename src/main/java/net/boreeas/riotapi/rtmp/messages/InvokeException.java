@@ -25,10 +25,27 @@ public class InvokeException extends RuntimeException {
     @Getter private ErrorMessage err;
 
     public InvokeException() {
-        this(null);
+
     }
 
     public InvokeException(ErrorMessage err) {
+        super(formatErrorMessage(err),
+                err.getRootCause() instanceof Throwable ? (Throwable) err.getRootCause() : null);
         this.err = err;
+    }
+
+    private static String formatErrorMessage(ErrorMessage err) {
+        String base = err.getFaultCode() + ": " + err.getFaultString();
+        if (err.getFaultDetail() != null) {
+            base += "\nDetail:     " + err.getFaultDetail();
+        }
+        if (err.getRootCause() != null && !(err.getRootCause() instanceof  Throwable)) {
+            base += "\nRoot cause: " + err.getRootCause();
+        }
+        if (err.getExtendedData() != null) {
+            base += "\nExtended:   " + err.getExtendedData();
+        }
+
+        return base;
     }
 }

@@ -16,7 +16,7 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.clientfacade.domain;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.kudos.dto.PendingKudos;
 import net.boreeas.riotapi.com.riotgames.platform.broadcast.BroadcastNotification;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameTypeConfig;
@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Created on 7/18/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.clientfacade.domain.LoginDataPacket")
 public class LoginDataPacket {
     private PlayerStatSummaries playerStatSummaries;

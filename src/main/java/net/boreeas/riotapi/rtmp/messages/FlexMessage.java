@@ -32,9 +32,8 @@ package net.boreeas.riotapi.rtmp.messages;/*
 
 import lombok.Getter;
 import lombok.Setter;
+import net.boreeas.riotapi.rtmp.serialization.AnonymousAmfObject;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -53,10 +52,11 @@ public class FlexMessage {
     private String clientId;
     private String destination;
     private String messageId;
-    private long timestamp;
-    private long timeToLive;
+    private int timestamp;
+    private int timeToLive;
     private Object body;
-    private Map<String, Object> headers = new HashMap<>();
+    //private Map<String, Object> headers = new HashMap<>();
+    private AnonymousAmfObject headers = new AnonymousAmfObject();
 
     public FlexMessage() {
         this.messageId = UUID.randomUUID().toString();

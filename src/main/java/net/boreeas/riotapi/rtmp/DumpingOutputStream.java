@@ -32,14 +32,14 @@ public class DumpingOutputStream extends OutputStream {
 
     @Override
     public void write(int b) throws IOException {
-        System.out.println("[<<<] " + Integer.toHexString(b & 0xff));
+        System.out.printf("[>>>] %02x%n", (b & 0xff));
         base.write(b);
     }
 
     @Override
     public void write(byte[] b) throws IOException {
         for (String line: Util.hexdump(b)) {
-            System.out.println("[<<<] " + line);
+            System.out.println("[>>>] " + line);
         }
         System.out.println();
         base.write(b);
@@ -50,7 +50,7 @@ public class DumpingOutputStream extends OutputStream {
         byte[] buf = new byte[len];
         System.arraycopy(b, off, buf, 0, len);
         for (String line: Util.hexdump(buf)) {
-            System.out.println("[<<<] " + line);
+            System.out.println("[>>>] " + line);
         }
         System.out.println();
 

@@ -19,6 +19,8 @@ package net.boreeas.riotapi.com.riotgames.platform.systemstate;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Delegate;
 import lombok.Getter;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
@@ -35,11 +37,12 @@ import java.util.Map;
 /**
  * Created on 7/19/2014.
  */
+@Data
 @Serialization(name = "com.riotgames.platform.systemstate.ClientSystemStatesNotification", externalizable = true)
 public class ClientSystemStatesNotification implements Externalizable {
 
-    @Delegate private Inner inner;
-    @Getter private JsonObject json;
+    @Getter(AccessLevel.NONE) @Delegate private Inner inner;
+    private JsonObject json;
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
@@ -53,7 +56,7 @@ public class ClientSystemStatesNotification implements Externalizable {
 
     }
 
-    @Getter
+    @Data
     private class Inner {
 
         private boolean championTradeThroughLCDS;

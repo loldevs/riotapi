@@ -21,7 +21,6 @@ import net.boreeas.riotapi.Util;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * Created by malte on 7/5/2014.
@@ -33,7 +32,7 @@ public class DumpingInputStream extends InputStream {
     @Override
     public int read() throws IOException {
         int i = base.read();
-        System.out.println("[>>>] " + Integer.toHexString(i & 0xff));
+        System.out.printf("[<<<] %02x%n", (i & 0xff));
         return i;
     }
 
@@ -41,7 +40,7 @@ public class DumpingInputStream extends InputStream {
     public int read(byte[] b) throws IOException {
         int i = base.read(b);
         for (String line: Util.hexdump(b)) {
-            System.out.println("[>>>] " + line);
+            System.out.println("[<<<] " + line);
         }
         System.out.println();
 
@@ -55,7 +54,7 @@ public class DumpingInputStream extends InputStream {
         byte[] buf = new byte[len];
         System.arraycopy(b, off, buf, 0, len);
         for (String line: Util.hexdump(buf)) {
-            System.out.println("[>>>] " + line);
+            System.out.println("[<<<] " + line);
         }
         System.out.println();
 

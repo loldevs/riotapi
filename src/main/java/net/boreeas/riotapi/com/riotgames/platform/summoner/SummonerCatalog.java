@@ -16,7 +16,7 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.summoner;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.ToString;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RuneSlot;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @ToString
 @Serialization(name = "com.riotgames.platform.summoner.SummonerCatalog")
 public class SummonerCatalog {

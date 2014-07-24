@@ -17,6 +17,9 @@
 package net.boreeas.riotapi.rtmp.messages.control;
 
 import net.boreeas.riotapi.rtmp.MessageType;
+import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
+
+import java.io.IOException;
 
 /**
  * Created on 5/18/2014.
@@ -24,5 +27,11 @@ import net.boreeas.riotapi.rtmp.MessageType;
 public class InvokeAmf3 extends Invoke {
     public InvokeAmf3() {
         super(MessageType.INVOKE_AMF3);
+    }
+
+    @Override
+    public void writeBody(AmfWriter writer) throws IOException {
+        writer.write(0);
+        super.writeBody(writer);
     }
 }

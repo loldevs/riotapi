@@ -17,17 +17,15 @@
 package net.boreeas.riotapi.com.riotgames.platform.game.map;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import net.boreeas.riotapi.rest.Map;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 7/19/2014.
  */
-@Getter
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"mapId"})
 @Serialization(name = "com.riotgames.platform.game.map.GameMap")

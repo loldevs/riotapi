@@ -16,7 +16,7 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.statistics;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.statistics.AggregatedStats")
 public class AggregatedStats {
     private List<AggregatedStat> lifetimeStatistics = new ArrayList<>();

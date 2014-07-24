@@ -16,7 +16,7 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.summoner;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.ToString;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.masterybook.MasteryBook;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePageBook;
@@ -26,7 +26,7 @@ import net.boreeas.riotapi.rtmp.serialization.SerializedName;
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.summoner.AllSummonerData")
 public class AllSummonerData {
     @SerializedName(name = "spellBook")

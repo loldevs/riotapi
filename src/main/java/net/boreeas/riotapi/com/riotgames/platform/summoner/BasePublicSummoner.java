@@ -16,13 +16,13 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.summoner;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 7/20/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.summoner.BasePublicSummonerDTO")
 public class BasePublicSummoner {
     private String seasonTwoTier;

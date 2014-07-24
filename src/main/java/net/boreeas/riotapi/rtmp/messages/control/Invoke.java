@@ -37,13 +37,13 @@ public class Invoke extends Command {
         boolean isRequest = getMethod().getStatus() == CallStatus.REQUEST;
 
         if (isRequest) {
-            writer.encode(getMethod().getName(), encoding);
+            writer.encode(getMethod().getName(), ObjectEncoding.AMF0);
         } else {
-            writer.encode(getMethod().isSuccess() ? "_result" : "_error", encoding);
+            writer.encode(getMethod().isSuccess() ? "_result" : "_error", ObjectEncoding.AMF0);
         }
 
-        writer.encode(getInvokeId(), encoding);
-        writer.encode(getConnectionParams(), encoding);
+        writer.encode(getInvokeId(), ObjectEncoding.AMF0);
+        writer.encode(getConnectionParams(), ObjectEncoding.AMF0);
 
         if (isRequest) {
             for (Object obj: getMethod().getParams()) {

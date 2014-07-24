@@ -16,7 +16,7 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.leagues.client.dto;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueItem;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.leagues.client.dto.SummonerLeagueItemsDTO")
 public class SummonerLeagueItems {
     private List<LeagueItem> summonerLeagues = new ArrayList<>();

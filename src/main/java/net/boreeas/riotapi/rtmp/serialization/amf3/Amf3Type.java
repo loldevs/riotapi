@@ -20,6 +20,7 @@ import net.boreeas.riotapi.rtmp.serialization.AmfType;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created on 4/15/2014.
@@ -56,14 +57,14 @@ public enum Amf3Type {
         if (o instanceof Boolean) return ((Boolean) o) ? TRUE : FALSE;
         if (o instanceof Integer || o instanceof Byte || o instanceof Short) return INTEGER;
         if (o instanceof Long || o instanceof Double) return DOUBLE;
-        if (o instanceof String) return STRING;
-        if (o instanceof Map) return DICTIONARY;
+        if (o instanceof String || o instanceof UUID) return STRING;
+        if (o instanceof Map) return ARRAY;
         if (o instanceof Date) return DATE;
         if (o instanceof byte[]) return BYTE_ARRAY;
         if (o instanceof int[]) return VECTOR_INT;
         if (o instanceof long[]) return VECTOR_UINT;
         if (o instanceof double[]) return VECTOR_DOUBLE;
-        if (o.getClass().isArray()) return VECTOR_OBJECT; // This is dangerous
+        if (o.getClass().isArray()) return ARRAY; // This is dangerous
         return OBJECT;
     }
 }

@@ -16,14 +16,14 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.login;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.platform.account.AccountSummary;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.login.Session")
 public class Session {
     private String token;

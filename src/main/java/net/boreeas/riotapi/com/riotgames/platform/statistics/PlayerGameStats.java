@@ -16,7 +16,7 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.statistics;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rest.GameMode;
 import net.boreeas.riotapi.rest.GameType;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.statistics.PlayerGameStats")
 public class PlayerGameStats {
     // TODO inspect

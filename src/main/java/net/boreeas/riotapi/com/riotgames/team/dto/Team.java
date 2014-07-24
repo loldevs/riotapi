@@ -16,7 +16,7 @@
 
 package net.boreeas.riotapi.com.riotgames.team.dto;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.team.TeamId;
 import net.boreeas.riotapi.rest.TeamStatSummary;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created on 7/20/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.team.dto.TeamDTO")
 public class Team {
     private TeamStatSummary teamStatSummary;

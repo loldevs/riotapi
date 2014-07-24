@@ -42,6 +42,7 @@ public class Util {
     }
 
     public static List<String> hexdump(byte[] data) {
+
         List<String> result = new ArrayList<>(data.length / 16);
         for (int i = 0; i < data.length; i += 16) {
             StringBuilder builder = new StringBuilder();
@@ -63,7 +64,6 @@ public class Util {
 
             result.add(builder + " | " + asChar);
         }
-
         return result;
     }
 

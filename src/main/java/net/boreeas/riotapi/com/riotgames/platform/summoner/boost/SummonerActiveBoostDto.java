@@ -16,13 +16,13 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.summoner.boost;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.summoner.boost.SummonerActiveBoostsDTO")
 public class SummonerActiveBoostDto {
     private double xpBoostEndDate;

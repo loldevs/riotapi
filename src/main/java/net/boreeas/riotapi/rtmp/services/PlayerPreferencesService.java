@@ -18,9 +18,6 @@ package net.boreeas.riotapi.rtmp.services;
 
 import lombok.AllArgsConstructor;
 import net.boreeas.riotapi.rtmp.RtmpClient;
-import net.boreeas.riotapi.rtmp.RtmpException;
-
-import java.io.IOException;
 
 /**
  * Created by malte on 7/15/2014.
@@ -35,11 +32,7 @@ public class PlayerPreferencesService {
     }
 
     public void savePreferences(Object preferences) {
-        try {
-            client.sendRpc(SERVICE, "savePreferences", preferences);
-        } catch (IOException ex) {
-            throw new RtmpException(ex);
-        }
+        client.sendRpc(SERVICE, "savePreferences", preferences);
     }
 
     public Object setEnabled(String a, double b) {

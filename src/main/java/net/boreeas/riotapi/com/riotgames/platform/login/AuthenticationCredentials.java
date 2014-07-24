@@ -16,15 +16,17 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.login;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.Setter;
+import lombok.ToString;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created by malte on 7/15/2014.
  */
-@Getter
+@Data
 @Setter
+@ToString
 @Serialization(name = "com.riotgames.platform.login.AuthenticationCredentials")
 public class AuthenticationCredentials {
     private Object oldPassword;

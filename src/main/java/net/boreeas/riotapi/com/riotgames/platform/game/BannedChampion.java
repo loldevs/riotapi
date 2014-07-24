@@ -16,7 +16,7 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.game;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.ToString;
 import net.boreeas.riotapi.rest.Team;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
@@ -24,7 +24,7 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 /**
  * Created on 4/28/2014.
  */
-@Getter
+@Data
 @ToString
 @Serialization(name = "com.riotgames.platform.game.BannedChampion")
 public class BannedChampion {

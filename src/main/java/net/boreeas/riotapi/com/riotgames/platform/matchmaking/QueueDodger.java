@@ -16,14 +16,14 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.matchmaking;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.Summoner;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 7/19/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.matchmaking.QueueDodger")
 public class QueueDodger {
     private String reasonFailed;

@@ -20,34 +20,14 @@ import lombok.Delegate;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import net.boreeas.riotapi.Util;
-import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0DateSerializer;
-import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0MapSerializer;
-import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0NumberSerializer;
-import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0ObjectSerializer;
-import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0StringSerializer;
-import net.boreeas.riotapi.rtmp.serialization.amf0.Amf0Type;
-import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3ByteArraySerializer;
-import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3DateSerializer;
-import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3DictSerializer;
-import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3DoubleVectorSerializer;
-import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3IntVectorSerializer;
-import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3IntegerSerializer;
-import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3NumberSerializer;
-import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3ObjectSerializer;
-import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3StringSerializer;
-import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3Type;
-import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3UintVectorSerializer;
-import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3VectorSerializer;
+import net.boreeas.riotapi.rtmp.serialization.amf0.*;
+import net.boreeas.riotapi.rtmp.serialization.amf3.*;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created on 5/2/2014.
@@ -80,12 +60,10 @@ public class AmfWriter extends OutputStream {
         amf3Serializers.put(Boolean.class, (o1, o2) -> {}); // Boolean value is indicated by type marker
         amf3Serializers.put(String.class, new Amf3StringSerializer(this));
         amf3Serializers.put(Date.class, new Amf3DateSerializer(this));
-        amf3Serializers.put(HashMap.class, new Amf3DictSerializer(this));
         amf3Serializers.put(byte[].class, new Amf3ByteArraySerializer(this));
-        amf3Serializers.put(int[].class, new Amf3IntVectorSerializer(this));
-        amf3Serializers.put(long[].class, new Amf3UintVectorSerializer(this));
-        amf3Serializers.put(double[].class, new Amf3DoubleVectorSerializer(this));
-        amf3Serializers.put(ArrayList.class, new Amf3VectorSerializer(this));
+        amf3Serializers.put(ArrayList.class, (al, o) -> new Amf3ArraySerializer(this).serialize(((List)al).toArray(), o));
+        amf3Serializers.put(HashMap.class, new Amf3ArraySerializer(this));
+        amf3Serializers.put(UUID.class, (uuid, o) -> new Amf3StringSerializer(this).serialize(uuid.toString(), o));
 
         amf0Serializers.put(Integer.class, Amf0NumberSerializer.INSTANCE);
         amf0Serializers.put(Byte.class, Amf0NumberSerializer.INSTANCE);
@@ -100,6 +78,18 @@ public class AmfWriter extends OutputStream {
         amf0Serializers.put(Date.class, Amf0DateSerializer.INSTANCE);
         amf0Serializers.put(HashMap.class, new Amf0MapSerializer(this));
 
+    }
+
+    /**
+     * Enables the uses of the Vector and Dictionary type markers (defaults
+     * to array serialization otherwise).
+     */
+    public void enableExtendedSerializers() {
+        amf3Serializers.put(int[].class, new Amf3IntVectorSerializer(this));
+        amf3Serializers.put(long[].class, new Amf3UintVectorSerializer(this));
+        amf3Serializers.put(double[].class, new Amf3DoubleVectorSerializer(this));
+        amf3Serializers.put(ArrayList.class, new Amf3VectorSerializer(this));
+        amf3Serializers.put(HashMap.class, new Amf3DictSerializer(this));
     }
 
     // <editor-fold desc="Convenience">
@@ -232,16 +222,23 @@ public class AmfWriter extends OutputStream {
             return; // Null marker is enough
         }
 
+        serializeAmf3(obj, marker);
+    }
+
+    private boolean checkReferenceable(Object obj, Amf3Type marker) throws IOException {
+
         Map<Object, Integer> refTable = marker == Amf3Type.STRING ? amf3StringRefTable : amf3ObjectRefTable;
 
         if ((marker == Amf3Type.STRING && obj.toString().isEmpty()) // Never reference empty strings
-          || !marker.referencable) {
+                || !marker.referencable) {
 
-            serializeAmf3(obj);
+            return false;
         } else if (!writeRefIfAlreadyReferenced(obj, refTable)) {       // Writes ref id if exists
             refTable.put(obj, refTable.size());
-            serializeAmf3(obj);
+            return false;
         }
+
+        return true;
     }
 
     private boolean writeRefIfAlreadyReferenced(Object o, Map<Object, Integer> refTable) throws IOException {
@@ -253,13 +250,22 @@ public class AmfWriter extends OutputStream {
         return false;
     }
 
+    public void serializeAmf3(Object obj) throws IOException {
+        serializeAmf3(obj, Amf3Type.getTypeForObject(obj));
+    }
+
     /**
      * Serializes the specified object to amf3
      * @param obj The object to serialize
+     * @param marker The type of the object to check for referencability
      * @throws IOException
      */
     @SneakyThrows(value = {InstantiationException.class, IllegalAccessException.class})
-    public void serializeAmf3(Object obj) throws IOException {
+    public void serializeAmf3(Object obj, Amf3Type marker) throws IOException {
+
+        if (checkReferenceable(obj, marker)) {
+            return;
+        }
 
         Serialization context;
         if (amf3Serializers.containsKey(obj.getClass())) {
@@ -289,6 +295,8 @@ public class AmfWriter extends OutputStream {
     }
 
     private void serializeArrayAmf3(Object obj) throws IOException {
+        /*
+        // Serialization as Vec<Object>
         int length = Array.getLength(obj);
         serializeAmf3(length << 1 | 1);
         out.write(1);       // Fixed size
@@ -297,6 +305,10 @@ public class AmfWriter extends OutputStream {
         for (int i = 0; i < length; i++) {
             encodeAmf3(Array.get(obj, i));
         }
+        */
+
+        // Serialization as Object[]
+        new Amf3ArraySerializer(this).serialize(obj, out);
     }
 
     // </editor-fold>

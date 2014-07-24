@@ -16,10 +16,7 @@
 
 package net.boreeas.riotapi.rtmp.messages;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
@@ -27,10 +24,11 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
  */
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Serialization(name = "flex.messaging.messages.ErrorMessage")
-public class ErrorMessage extends FlexMessage {
+public class ErrorMessage extends AcknowledgeMessage {
     private String faultCode;
     private String faultString;
     private String faultDetail;

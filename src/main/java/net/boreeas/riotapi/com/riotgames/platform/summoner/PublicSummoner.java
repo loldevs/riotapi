@@ -16,7 +16,7 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.summoner;
 
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.Date;
@@ -24,7 +24,7 @@ import java.util.Date;
 /**
  * Created on 7/20/2014.
  */
-@Getter
+@Data
 @Serialization(name = "com.riotgames.platform.summoner.PublicSummoner")
 public class PublicSummoner {
     private String internalName;

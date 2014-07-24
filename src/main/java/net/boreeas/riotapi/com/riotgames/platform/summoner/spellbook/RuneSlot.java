@@ -17,13 +17,13 @@
 package net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created by malte on 7/18/2014.
  */
-@Getter
+@Data
 @EqualsAndHashCode
 @Serialization(name = "com.riotgames.platform.summoner.spellbook.SlotEntry")
 public class RuneSlot {

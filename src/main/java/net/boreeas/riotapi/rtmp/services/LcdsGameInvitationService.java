@@ -19,9 +19,7 @@ package net.boreeas.riotapi.rtmp.services;
 import lombok.AllArgsConstructor;
 import net.boreeas.riotapi.com.riotgames.platform.gameinvite.contract.LobbyStatus;
 import net.boreeas.riotapi.rtmp.RtmpClient;
-import net.boreeas.riotapi.rtmp.RtmpException;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -53,35 +51,20 @@ public class LcdsGameInvitationService {
     }
 
     public void grantInvitePrivileges(double summonerId) {
-        try {
-            client.sendRpc(SERVICE, "grantInvitePrivileges", summonerId);
-        } catch (IOException e) {
-            throw new RtmpException(e);
-        }
+        client.sendRpc(SERVICE, "grantInvitePrivileges", summonerId);
     }
 
     public void transferOwnership(double summonerId) {
-        try {
-            client.sendRpc(SERVICE, "transferOwnership", summonerId);
-        } catch (IOException ex) {
-            throw new RtmpException(ex);
-        }
+
+        client.sendRpc(SERVICE, "transferOwnership", summonerId);
     }
 
     public void invite(double summonerId) {
-        try {
-            client.sendRpc(SERVICE, "invite", summonerId);
-        } catch (IOException ex) {
-            throw new RtmpException(ex);
-        }
+        client.sendRpc(SERVICE, "invite", summonerId);
     }
 
     public void leave() {
-        try {
-            client.sendRpc(SERVICE, "leave");
-        } catch (IOException ex) {
-            throw new RtmpException(ex);
-        }
+        client.sendRpc(SERVICE, "leave");
     }
 
     public LobbyStatus accept(String inviteId) {
@@ -89,10 +72,6 @@ public class LcdsGameInvitationService {
     }
 
     public void decline(String inviteId) {
-        try {
-            client.sendRpc(SERVICE, "decline", inviteId);
-        } catch (IOException ex) {
-            throw new RtmpException(ex);
-        }
+        client.sendRpc(SERVICE, "decline", inviteId);
     }
 }

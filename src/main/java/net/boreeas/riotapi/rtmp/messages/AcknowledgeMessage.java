@@ -22,9 +22,11 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
  * Created on 6/10/2014.
  */
 @Serialization(name = "flex.messaging.messages.AcknowledgeMessage", noncanonicalNames = {"DSK"})
-public class AcknowledgeMessage extends FlexMessage {
+public class AcknowledgeMessage extends AsyncMessage {
 
     public AcknowledgeMessage(long timeDelta) {
-        setTimestamp(timeDelta);
+        setTimestamp((int) timeDelta);
     }
+
+    public AcknowledgeMessage() {}
 }

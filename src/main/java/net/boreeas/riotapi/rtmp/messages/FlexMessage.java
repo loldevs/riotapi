@@ -51,14 +51,10 @@ public class FlexMessage {
 
     private String clientId;
     private String destination;
-    private String messageId;
+    private String messageId = UUID.randomUUID().toString();
     private int timestamp;
     private int timeToLive;
     private Object body;
     //private Map<String, Object> headers = new HashMap<>();
     private AnonymousAmfObject headers = new AnonymousAmfObject();
-
-    public FlexMessage() {
-        this.messageId = UUID.randomUUID().toString();
-    }
 }

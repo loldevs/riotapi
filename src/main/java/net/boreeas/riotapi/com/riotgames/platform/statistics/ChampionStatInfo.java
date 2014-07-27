@@ -29,7 +29,7 @@ import java.util.List;
 @Serialization(name = "com.riotgames.platform.statistics.ChampionStatInfo")
 public class ChampionStatInfo {
     private int totalGamesPlayed;
-    private double accountId;
-    private double championId;
+    private long accountId;
+    private long championId;
     private List<AggregatedStat> stats = new ArrayList<>();
 }

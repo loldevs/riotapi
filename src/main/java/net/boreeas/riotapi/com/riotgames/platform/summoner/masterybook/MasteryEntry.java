@@ -37,5 +37,5 @@ public class MasteryEntry {
     @SerializedName(name = "talent")
     private Mastery mastery;
 
-    private double summonerId;
+    private long summonerId;
 }

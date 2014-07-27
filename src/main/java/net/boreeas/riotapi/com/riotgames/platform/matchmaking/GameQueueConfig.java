@@ -38,7 +38,7 @@ public class GameQueueConfig {
     private String queueState;
     private String type;
     private String cacheName;
-    private double id;
+    private long id;
     private String queueBonusKey;
     private String queueStateString;
     private String pointsConfigKey;
@@ -51,6 +51,10 @@ public class GameQueueConfig {
     private int maximumParticipantListSize;
     private boolean disallowFreeChampions;
     private String mapSelectionAlgorithm;
-    private double thresholdSize;
+    private long thresholdSize;
     private MatchingThrottleConfig matchingThrottleConfig;
+    private int maxSummonerLevelForFirstWinOfTheDay;
+    private boolean randomizeTeamSides;
+    private boolean botsCanSpawnOnBlueSide;
+    private List<String> gameMutators;
 }

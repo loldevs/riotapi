@@ -36,7 +36,7 @@ public class PlayerStatSummary {
     // TODO inspect
     private Object leaves;
     private String playerStatSummaryType;
-    private double userId;
+    private long userId;
     private int wins;
     private int losses;
     private int rating;

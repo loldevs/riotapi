@@ -33,5 +33,5 @@ public class MiniSeries {
     private int losses;
     private String progress;
     private int target;
-    private double timeLeftToPlayMillis;
+    private long timeLeftToPlayMillis;
 }

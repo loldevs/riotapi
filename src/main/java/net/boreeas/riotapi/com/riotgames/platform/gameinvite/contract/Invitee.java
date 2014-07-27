@@ -27,5 +27,5 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 public class Invitee {
     private String inviteeStateAsString;
     private String summonerName;
-    private double summonerId;
+    private long summonerId;
 }

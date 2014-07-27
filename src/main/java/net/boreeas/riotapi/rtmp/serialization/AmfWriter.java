@@ -23,16 +23,14 @@ import net.boreeas.riotapi.Util;
 import net.boreeas.riotapi.rtmp.serialization.amf0.*;
 import net.boreeas.riotapi.rtmp.serialization.amf3.*;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.util.*;
 
 /**
  * Created on 5/2/2014.
  */
-public class AmfWriter extends OutputStream {
+public class AmfWriter extends OutputStream implements ObjectOutput {
 
     @Delegate private DataOutputStream out;
     private ObjectEncoding encoding;
@@ -107,7 +105,7 @@ public class AmfWriter extends OutputStream {
     }
     // </editor-fold>
 
-    public void encode(Object object) throws IOException {
+    public void writeObject(Object object) throws IOException {
         encode(object, encoding);
     }
 

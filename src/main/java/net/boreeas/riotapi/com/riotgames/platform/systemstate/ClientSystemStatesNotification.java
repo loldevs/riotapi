@@ -18,7 +18,6 @@ package net.boreeas.riotapi.com.riotgames.platform.systemstate;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Delegate;
@@ -46,14 +45,17 @@ public class ClientSystemStatesNotification implements Externalizable {
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeUTF(json.toString());
+        String asString = json.toString();
+        out.writeInt(asString.length());
+        out.write(asString.getBytes("UTF-8"));
     }
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        this.json = new JsonParser().parse(in.readUTF()).getAsJsonObject();
+        byte[] buffer = new byte[in.readInt()];
+        in.read(buffer);
+        String json = new String(buffer, "UTF-8");
         this.inner = new Gson().fromJson(json, Inner.class);
-
     }
 
     @Data
@@ -99,7 +101,7 @@ public class ClientSystemStatesNotification implements Externalizable {
         private double riotDataServiceDataSendProbability;
         private boolean displayPromoGamesPlayedEnabled;
         private boolean masteryPageOnServer;
-        private boolean maxMasteryPagesOnServer;
+        private int maxMasteryPagesOnServer;
         private boolean tournamentSendStatsEnabled;
         private String replayServiceAddress;
         private boolean kudosEnabled;

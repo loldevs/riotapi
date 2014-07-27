@@ -26,6 +26,6 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @Serialization(name = "com.riotgames.platform.statistics.AggregatedStatsKey")
 public class AggregatedStatsKey {
     private String gameMode;
-    private double userId;
+    private long userId;
     private String gameModeString;
 }

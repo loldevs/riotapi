@@ -36,4 +36,5 @@ public class GameTypeConfig {
     private int maxAllowableBans;
     private int banTimerDuration;
     private int postPickTimerDuration;
+    private boolean crossTeamChampionPool;
 }

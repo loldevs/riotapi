@@ -18,12 +18,12 @@ package net.boreeas.riotapi.rtmp.serialization.amf3;
 
 import lombok.Setter;
 import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j;
 import net.boreeas.riotapi.rtmp.serialization.*;
 
 import java.io.DataOutputStream;
 import java.io.Externalizable;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Map;
@@ -31,6 +31,7 @@ import java.util.Map;
 /**
  * Created on 5/5/2014.
  */
+@Log4j
 public class Amf3ObjectSerializer implements AmfSerializer {
 
     @Setter protected Map<TraitDefinition, Integer> traitRefTable;
@@ -59,8 +60,10 @@ public class Amf3ObjectSerializer implements AmfSerializer {
         }
 
         if (o instanceof Externalizable) {
-            ((Externalizable) o).writeExternal(new ObjectOutputStream(out));
+            ((Externalizable) o).writeExternal(writer);
             return;
+        } else {
+            log.warn("Externalizable object " + traitDef.getName() + " does not implement externalizable");
         }
 
 

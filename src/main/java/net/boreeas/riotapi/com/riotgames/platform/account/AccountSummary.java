@@ -27,7 +27,7 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 public class AccountSummary {
     private int groupCount;
     private String username;
-    private double accountId;
+    private long accountId;
     private String summonerInternalName;
     private boolean admin;
     private boolean hasBetaAccess;

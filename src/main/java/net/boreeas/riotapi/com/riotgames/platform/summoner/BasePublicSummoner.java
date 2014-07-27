@@ -28,8 +28,8 @@ public class BasePublicSummoner {
     private String seasonTwoTier;
     private String internalName;
     private String seasonOneTier;
-    private double acctId;
+    private long acctId;
     private String name;
-    private double sumId;
+    private long sumId;
     private int profileIconId;
 }

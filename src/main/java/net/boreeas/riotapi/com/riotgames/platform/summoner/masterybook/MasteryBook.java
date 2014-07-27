@@ -34,5 +34,5 @@ public class MasteryBook {
     private Object bookPagesJson;
     private List<MasteryPage> bookPages = new ArrayList<>();
     private String dateString;
-    private double summonerId;
+    private long summonerId;
 }

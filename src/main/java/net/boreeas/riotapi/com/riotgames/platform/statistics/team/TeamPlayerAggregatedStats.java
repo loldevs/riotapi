@@ -26,6 +26,6 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @Data
 @Serialization(name = "com.riotgames.platform.statistics.team.TeamPlayerAggregatedStatsDTO")
 public class TeamPlayerAggregatedStats {
-    private double playerId;
+    private long playerId;
     private AggregatedStats aggregatedStats;
 }

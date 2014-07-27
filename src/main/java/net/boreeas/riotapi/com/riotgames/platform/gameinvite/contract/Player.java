@@ -26,5 +26,5 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @Serialization(name = "com.riotgames.platform.gameinvite.contract.Player")
 public class Player {
     private String summonerName;
-    private double summonerId;
+    private long summonerId;
 }

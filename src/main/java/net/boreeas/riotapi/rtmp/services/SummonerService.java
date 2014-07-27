@@ -53,7 +53,7 @@ public class SummonerService {
         return client.sendRpcAndWait(SERVICE, "getSummonerInternalNameByName", name);
     }
 
-    public Object updateProfileIconId(int iconId) {
+    public Object updateProfileIconId(long iconId) {
         return client.sendRpcAndWait(SERVICE, "updateProfileIconId", iconId);
     }
 

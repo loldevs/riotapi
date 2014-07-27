@@ -28,6 +28,6 @@ import java.util.Date;
 @Serialization(name = "com.riotgames.platform.catalog.icon.Icon")
 public class Icon {
     private Date purchaseDate;
-    private double iconId;
-    private double summonerId;
+    private long iconId;
+    private long summonerId;
 }

@@ -25,11 +25,11 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @Data
 @Serialization(name = "com.riotgames.platform.summoner.boost.SummonerActiveBoostsDTO")
 public class SummonerActiveBoostDto {
-    private double xpBoostEndDate;
+    private long xpBoostEndDate;
     private int xpBoostPerWinCount;
     private int xpLoyaltyBoost;
-    private double ipBoostEndDate;
+    private long ipBoostEndDate;
     private int ipBoostPerWinCount;
     private int ipLoyaltyBoost;
-    private double summonerId;
+    private long summonerId;
 }

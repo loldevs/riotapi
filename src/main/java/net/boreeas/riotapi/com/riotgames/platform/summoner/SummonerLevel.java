@@ -32,11 +32,11 @@ import net.boreeas.riotapi.rtmp.serialization.SerializedName;
 public class SummonerLevel {
     private double expTierMod;
     private double infTierMod;
-    private double grantRp;
-    private double expForWin;
-    private double expForLoss;
-    private double summonerTier;
-    private double expToNextLevel;
+    private long grantRp;
+    private long expForWin;
+    private long expForLoss;
+    private long summonerTier;
+    private long expToNextLevel;
     @SerializedName(name = "summonerLevel")
-    private double level;
+    private long level;
 }

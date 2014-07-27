@@ -38,7 +38,7 @@ public class PracticeGameSearchResult {
     private int maxNumPlayers;
     private int glmSecurePort;
     private String gameMode;
-    private double id;
+    private long id;
     private String name;
     private boolean privateGame;
     private PlayerParticipant owner;

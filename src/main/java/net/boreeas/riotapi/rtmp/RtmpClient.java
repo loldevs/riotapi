@@ -26,10 +26,7 @@ import net.boreeas.riotapi.com.riotgames.platform.login.AuthenticationCredential
 import net.boreeas.riotapi.com.riotgames.platform.login.Session;
 import net.boreeas.riotapi.rtmp.messages.*;
 import net.boreeas.riotapi.rtmp.messages.control.*;
-import net.boreeas.riotapi.rtmp.serialization.AmfReader;
-import net.boreeas.riotapi.rtmp.serialization.AmfWriter;
-import net.boreeas.riotapi.rtmp.serialization.AnonymousAmfObject;
-import net.boreeas.riotapi.rtmp.serialization.ObjectEncoding;
+import net.boreeas.riotapi.rtmp.serialization.*;
 import net.boreeas.riotapi.rtmp.services.*;
 
 import javax.net.ssl.SSLSocketFactory;
@@ -67,7 +64,7 @@ public abstract class RtmpClient {
     @Getter private boolean isConnected = false;
     private long timeOffset;
     private AtomicInteger invokeId = new AtomicInteger(1);
-    private String clientId;
+    private String localClientId;
     @Getter private Session session;
     @Getter private LoginDataPacket loginDataPacket;
 
@@ -297,11 +294,8 @@ public abstract class RtmpClient {
         try {
             int id = sendConnectInvoke(null, null, (useSSL ? "rtmps://" : "rtmp://") + host + ":" + port);
             Object reply = waitForInvokeReply(id);
-
-            if (reply instanceof FlexMessage) {
-                this.clientId = "" + ((FlexMessage) reply).getClientId();
-                log.info("Client Id: " + clientId);
-            }
+            localClientId = ((AmfObject) reply).get("id") + "";
+            log.info("Client Id: " + localClientId);
 
             isConnected = true;
 
@@ -501,20 +495,19 @@ public abstract class RtmpClient {
     }
 
 
-
-
     private RemotingMessage createRemotingMessage(String endpoint, String service, String method, Object... args) {
         if (objectEncoding != ObjectEncoding.AMF3) {
             throw new IllegalStateException("RPC requires AMF3");
         }
 
         RemotingMessage message = new RemotingMessage(null, method);
-        message.getHeaders().put(FlexMessage.ENDPOINT, endpoint);
-        message.getHeaders().put(FlexMessage.LOCAL_CLIENT_ID, clientId == null ? UUID.randomUUID() : clientId);
-        message.getHeaders().put(FlexMessage.REQUEST_TIMEOUT, 60);
-
         message.setDestination(service);
         message.setBody(args);
+
+        message.getHeaders().put(FlexMessage.ENDPOINT, endpoint);
+        message.getHeaders().put(FlexMessage.LOCAL_CLIENT_ID, localClientId);
+        message.getHeaders().put(FlexMessage.REQUEST_TIMEOUT, 60);
+
         return message;
     }
 
@@ -541,7 +534,12 @@ public abstract class RtmpClient {
     }
 
     private int sendConnectInvoke(String pageUrl, String swfUrl, String tcUrl) {
-        Invoke invoke = createAmf0InvokeSkeleton("connect");
+
+        CommandMessage message = getCommandMessage(null, null, null, null, CommandMessage.Operation.CLIENT_PING);
+        message.getHeaders().put(FlexMessage.LOCAL_CLIENT_ID, "my-rtmps");
+
+
+        Invoke invoke = createAmf0InvokeSkeleton("connect", false, "nil", "", message);
 
         AnonymousAmfObject connParams = new AnonymousAmfObject();
         connParams.put("pageUrl", pageUrl);
@@ -565,55 +563,49 @@ public abstract class RtmpClient {
 
 
 
-    private CommandMessage getExtendedCmdMsg(String endpoint, String destination, String subtopic, String clientId,
+    private CommandMessage getCommandMessage(String endpoint, String destination, String subtopic, String clientId,
                                              CommandMessage.Operation op) {
 
-        CommandMessage msg = getCommandMessage(destination, clientId, op);
-        msg.getHeaders().put(FlexMessage.ENDPOINT, endpoint);
-        msg.getHeaders().put(FlexMessage.LOCAL_CLIENT_ID, clientId);
-        msg.getHeaders().put(AsyncMessage.SUBTOPIC, subtopic);
-        return msg;
-    }
-
-    private CommandMessage getCommandMessage(String destination, String clientId, CommandMessage.Operation op) {
 
         CommandMessage msg = new CommandMessage();
         msg.setClientId(clientId);
-        msg.setCorrelationId(null);
         msg.setOperation(op);
         msg.setDestination(destination);
+        msg.getHeaders().put(FlexMessage.ENDPOINT, endpoint);
+        msg.getHeaders().put(FlexMessage.LOCAL_CLIENT_ID, this.localClientId);
+        msg.getHeaders().put(AsyncMessage.SUBTOPIC, subtopic);
         return msg;
     }
 
 
     public int subscribe(String endpoint, String destination, String subtopic, String clientId) {
-        return sendInvoke(null, getExtendedCmdMsg(endpoint, destination, subtopic, clientId, CommandMessage.Operation.SUBSCRIBE));
+        return sendInvoke(null, getCommandMessage(endpoint, destination, subtopic, clientId, CommandMessage.Operation.SUBSCRIBE));
     }
 
 
 
     public int unsubscribe(String endpoint, String destination, String subtopic, String clientId) {
-        return sendInvoke(null, getExtendedCmdMsg(endpoint, destination, subtopic, clientId, CommandMessage.Operation.UNSUBSCRIBE));
+        return sendInvoke(null, getCommandMessage(endpoint, destination, subtopic, clientId, CommandMessage.Operation.UNSUBSCRIBE));
     }
 
 
     @SneakyThrows(IOException.class)
     public int login(String username, String token) {
-        CommandMessage msg = getCommandMessage("auth", clientId, CommandMessage.Operation.LOGIN);
+        CommandMessage msg = getCommandMessage(null, "auth", null, null, CommandMessage.Operation.LOGIN);
         byte[] authBuffer = String.format("%s:%s", username.toLowerCase(), token).getBytes("UTF-8");
-        msg.setBody(Base64.getEncoder().encode(authBuffer));
+        msg.setBody(new String(Base64.getEncoder().encode(authBuffer), "UTF-8"));
         return sendInvoke(null, msg);
     }
 
 
     public int logout() {
-        return sendInvoke(null, getCommandMessage("auth", clientId, CommandMessage.Operation.LOGOUT));
+        return sendInvoke(null, getCommandMessage(null, "auth", null, null, CommandMessage.Operation.LOGOUT));
     }
 
 
 
     public int ping() {
-        return sendInvoke(null, getCommandMessage("", clientId, CommandMessage.Operation.CLIENT_PING));
+        return sendInvoke(null, getCommandMessage(null, null, null, null, CommandMessage.Operation.CLIENT_PING));
     }
 
 

@@ -40,7 +40,7 @@ public class LeagueItem {
     private boolean isInactive;
     @SerializedName(name = "veteran")
     private boolean isVeteran;
-    private double lastPlayed;
+    private long lastPlayed;
     private String leagueName;
     private int leaguePoints;
     private MiniSeries miniSeries;
@@ -53,8 +53,8 @@ public class LeagueItem {
 
     // Not transmitted via rest
     private int losses;
-    private double timeUntilDecay;
-    private double timeLastDecayMessageShown;
+    private long timeUntilDecay;
+    private long timeLastDecayMessageShown;
     private int previousDayLeaguePosition;
 
     public int getRank() {

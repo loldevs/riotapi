@@ -25,7 +25,7 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @Data
 @Serialization(name = "com.riotgames.team.TeamInfo")
 public class TeamInfo {
-    private double secondsUntilEligibleForDeletion;
+    private long secondsUntilEligibleForDeletion;
     private String memberStatusString;
     private String tag;
     private String name;

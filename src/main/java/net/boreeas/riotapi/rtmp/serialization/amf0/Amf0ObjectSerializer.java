@@ -23,7 +23,6 @@ import net.boreeas.riotapi.rtmp.serialization.*;
 import java.io.DataOutputStream;
 import java.io.Externalizable;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -44,7 +43,7 @@ public class Amf0ObjectSerializer implements AmfSerializer {
         }
 
         if (obj instanceof Externalizable) {
-            ((Externalizable) obj).writeExternal(new ObjectOutputStream(out));
+            ((Externalizable) obj).writeExternal(writer);
         } else {
             serializeAnonymous(obj, out);
         }

@@ -273,9 +273,10 @@ public class RtmpPacketReader implements Runnable {
     }
 
     private RtmpEvent parseInvokeOrData(AmfReader reader, Command command) throws IOException {
-        String methodName = reader.<String>decodeAmf0();
+        String methodName = reader.decodeAmf0();
 
-        command.setInvokeId(((Double) reader.decodeAmf0()).intValue());
+        Double invokeId = reader.decodeAmf0();
+        command.setInvokeId(invokeId == null ? 0 : invokeId.intValue());
         command.setConnectionParams(reader.decodeAmf0());
 
         List<Object> params = new ArrayList<>();

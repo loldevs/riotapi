@@ -16,6 +16,7 @@
 
 package net.boreeas.riotapi.rtmp;
 
+import lombok.extern.log4j.Log4j;
 import net.boreeas.riotapi.rtmp.serialization.AmfObject;
 import net.boreeas.riotapi.rtmp.serialization.AnonymousAmfObject;
 import net.boreeas.riotapi.rtmp.serialization.amf3.DynamicObject;
@@ -27,6 +28,7 @@ import java.util.*;
 /**
  * Created on 7/20/2014.
  */
+@Log4j
 public class TypeConverter {
 
     /**
@@ -43,7 +45,11 @@ public class TypeConverter {
 
         if (obj == null) {
             if (cls.isPrimitive()) {
-                throw new IllegalArgumentException("Unknown conversion null => " + cls);
+                log.warn("Converting null to primitive");
+                if (cls == boolean.class) {
+                    return false;
+                }
+                return 0;
             }
             return obj;
         }

@@ -44,6 +44,6 @@ public class Team {
     private Date lastJoinDate;
     private Date secondLastJoinDate;
     private Date thirdLastJoinDate;
-    private double secondsUntilEligibleForDeletion;
+    private long secondsUntilEligibleForDeletion;
     private List<Object> matchHistory = new ArrayList<>();
 }

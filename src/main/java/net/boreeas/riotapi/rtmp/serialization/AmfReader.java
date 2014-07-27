@@ -28,6 +28,7 @@ import org.reflections.Reflections;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInput;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -37,9 +38,10 @@ import java.util.concurrent.Callable;
  * Created on 5/13/2014.
  */
 @Log4j
-public class AmfReader extends InputStream {
+public class AmfReader extends InputStream implements ObjectInput {
 
     @Delegate private DataInputStream in;
+    @Setter private ObjectEncoding encoding;
     private Reflections reflections;
     private Map<String, Class<?>> serializableClasses;
 
@@ -53,12 +55,13 @@ public class AmfReader extends InputStream {
     private Map<String, Amf3ObjectDeserializer> amf3ObjectDeserializers = new HashMap<>();
 
     public AmfReader(InputStream in) {
-        this(in, "net.boreeas.riotapi"); // By default, look for classes from this package
+        this(in, ObjectEncoding.AMF3, "net.boreeas.riotapi"); // By default, look for classes from this package
     }
 
-    public AmfReader(InputStream in, String... packages) {
+    public AmfReader(InputStream in, ObjectEncoding encoding, String... packages) {
         this.in = new DataInputStream(in);
         this.reflections = new Reflections(packages);
+        this.encoding = encoding;
         addDeserializers();
         buildSerializableClassList();
     }
@@ -73,6 +76,7 @@ public class AmfReader extends InputStream {
         this.reflections = base.reflections;
         addDeserializers();
         this.serializableClasses = base.serializableClasses;
+        this.encoding = base.encoding;
     }
 
     private void addDeserializers() {
@@ -114,6 +118,15 @@ public class AmfReader extends InputStream {
         amf3Deserializers.add(this::readAmf3VectorDouble);
         amf3Deserializers.add(this::readAmf3VectorObject);
         amf3Deserializers.add(this::readAmf3Map);
+    }
+
+    @Override
+    public Object readObject() throws ClassNotFoundException, IOException {
+        if (this.encoding == ObjectEncoding.AMF0) {
+            return decodeAmf0();
+        } else {
+            return decodeAmf3();
+        }
     }
 
     public void addObjectDeserializer(String type, Amf3ObjectDeserializer deserializer) {
@@ -501,7 +514,11 @@ public class AmfReader extends InputStream {
             }
 
             if (field == null) {
-                log.warn("No match for field " + (type.isEmpty() ? "<anonymous>" : type) + "." + fieldName + " in " + match);
+                if (fieldName.equals("futureData") ||fieldName.equals("dataVersion")) {
+                    log.trace("No match for field " + (type.isEmpty() ? "<anonymous>" : type) + "." + fieldName + " in " + match);
+                } else {
+                    log.warn("No match for field " + (type.isEmpty() ? "<anonymous>" : type) + "." + fieldName + " in " + match);
+                }
                 def.getStaticFields().add(new FieldRef(null, fieldName, null));
             } else {
                 def.getStaticFields().add(field);

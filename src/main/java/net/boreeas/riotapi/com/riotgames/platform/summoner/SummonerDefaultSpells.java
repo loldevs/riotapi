@@ -19,7 +19,6 @@ package net.boreeas.riotapi.com.riotgames.platform.summoner;
 import lombok.Data;
 import lombok.ToString;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
-import net.boreeas.riotapi.rtmp.serialization.SerializedName;
 
 /**
  * Created on 7/19/2014.
@@ -29,8 +28,8 @@ import net.boreeas.riotapi.rtmp.serialization.SerializedName;
 @Serialization(name = "com.riotgames.platform.summoner.SummonerDefaultSpells")
 public class SummonerDefaultSpells {
     // TODO inspect
-    private Object summonerDefaultSpellJson;
+    private Object summonerDefaultSpellsJson;
     // TODO inspect
     private Object summonerDefaultSpellMap;
-    private double summonerId;
+    private long summonerId;
 }

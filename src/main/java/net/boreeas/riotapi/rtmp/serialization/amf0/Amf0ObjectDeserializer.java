@@ -18,13 +18,13 @@ package net.boreeas.riotapi.rtmp.serialization.amf0;
 
 import lombok.Setter;
 import lombok.SneakyThrows;
+import net.boreeas.riotapi.rtmp.RtmpException;
 import net.boreeas.riotapi.rtmp.TypeConverter;
 import net.boreeas.riotapi.rtmp.serialization.AmfReader;
 import net.boreeas.riotapi.rtmp.serialization.NoSerialization;
 import net.boreeas.riotapi.rtmp.serialization.SerializedName;
 
 import java.io.Externalizable;
-import java.io.ObjectInputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class Amf0ObjectDeserializer {
         Object result = cls.newInstance();
 
         if (result instanceof Externalizable) {
-            ((Externalizable) result).readExternal(new ObjectInputStream(reader));
+            ((Externalizable) result).readExternal(reader);
             return result;
         }
 
@@ -61,7 +61,11 @@ public class Amf0ObjectDeserializer {
                 if (isTargetField(field, name)) {
 
                     field.setAccessible(true);
-                    field.set(object, TypeConverter.typecast(field.getType(), value));
+                    try {
+                        field.set(object, TypeConverter.typecast(field.getType(), value));
+                    } catch (IllegalArgumentException ex) {
+                        throw new RtmpException("Field " + name + " of " + c + " (value=" + value + "): " + ex.getMessage());
+                    }
                     return;
                 }
             }

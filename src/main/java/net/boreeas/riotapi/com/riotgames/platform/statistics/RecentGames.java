@@ -33,5 +33,5 @@ public class RecentGames {
     // TODO inspect
     private Object playerGameStatsMap;
     private List<PlayerGameStats> gameStatistics = new ArrayList<>();
-    private double userId;
+    private long userId;
 }

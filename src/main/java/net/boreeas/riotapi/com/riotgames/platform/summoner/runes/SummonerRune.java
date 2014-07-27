@@ -33,5 +33,5 @@ public class SummonerRune {
     private int runeId;
     private int quantity;
     private Rune rune;
-    private double summonerId;
+    private long summonerId;
 }

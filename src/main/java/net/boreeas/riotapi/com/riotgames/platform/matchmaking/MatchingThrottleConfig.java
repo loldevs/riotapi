@@ -28,7 +28,7 @@ import java.util.List;
 @Data
 @Serialization(name = "com.riotgames.platform.matchmaking.MatchingThrottleConfig")
 public class MatchingThrottleConfig {
-    private double limit;
+    private long limit;
     // TODO inspect
     private List<Object> matchingThrottleProperties = new ArrayList<>();
     private String cacheName;

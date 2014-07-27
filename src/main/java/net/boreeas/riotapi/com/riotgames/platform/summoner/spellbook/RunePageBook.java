@@ -34,5 +34,5 @@ public class RunePageBook {
     private Object bookPagesJson;
     private List<RunePage> bookPages = new ArrayList<>();
     private String dateString;
-    private double summonerId;
+    private long summonerId;
 }

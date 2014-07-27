@@ -29,7 +29,7 @@ import java.util.Date;
 public class TeamMemberInfo {
     private Date inviteDate;
     private Date joinDate;
-    private double playerId;
+    private long playerId;
     private String status;
     private String playerName;
 }

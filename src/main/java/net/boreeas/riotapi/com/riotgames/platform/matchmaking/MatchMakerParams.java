@@ -35,8 +35,8 @@ public class MatchMakerParams {
     // TODO inspect
     private Object languages;
     private String botDifficulty;
-    private List<Integer> team = new ArrayList<>();
-    private List<Integer> queueIds = new ArrayList<>();
+    private List<Long> team = new ArrayList<>();
+    private List<Long> queueIds = new ArrayList<>();
     // TODO inspect
     private Object invitationId;
 }

@@ -27,8 +27,8 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @ToString
 @Serialization(name = "com.riotgames.platform.summoner.SummonerLevelAndPoints")
 public class SummonerLevelAndPoints {
-    private double infPoints;
-    private double expPoints;
-    private double summonerLevel;
-    private double summonerId;
+    private long infPoints;
+    private long expPoints;
+    private long summonerLevel;
+    private long summonerId;
 }

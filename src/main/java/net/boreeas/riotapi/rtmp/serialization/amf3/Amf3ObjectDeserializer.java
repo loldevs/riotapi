@@ -19,6 +19,7 @@ package net.boreeas.riotapi.rtmp.serialization.amf3;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
+import net.boreeas.riotapi.rtmp.RtmpException;
 import net.boreeas.riotapi.rtmp.TypeConverter;
 import net.boreeas.riotapi.rtmp.serialization.AmfReader;
 import net.boreeas.riotapi.rtmp.serialization.FieldRef;
@@ -26,7 +27,6 @@ import net.boreeas.riotapi.rtmp.serialization.TraitDefinition;
 
 import java.io.Externalizable;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -45,19 +45,29 @@ public class Amf3ObjectDeserializer {
         objectRefTable.add(instance);
 
         if (instance instanceof Externalizable) {
-            ((Externalizable) instance).readExternal(new ObjectInputStream(reader));
+            ((Externalizable) instance).readExternal(reader);
             return instance;
+        } else if (def.isExternalizable()) {
+            log.warn("Externalizable object " + def.getName() + " does not implement Externalizable");
         }
 
         for (FieldRef ref: def.getStaticFields()) {
-            Object obj = reader.decodeAmf3();
-            setStaticField(instance, obj, ref);
+            try {
+                Object obj = reader.decodeAmf3();
+                setStaticField(instance, obj, ref);
+            } catch (IOException ex) {
+                throw new IOException(ref + ": Error during deserialization", ex);
+            }
         }
 
         if (def.isDynamic()) {
             String name;
             while (!(name = reader.readAmf3String()).isEmpty()) {
-                setDynamicField(instance, reader.decodeAmf3(), new FieldRef(name, name, cls));
+                try {
+                    setDynamicField(instance, reader.decodeAmf3(), new FieldRef(name, name, cls));
+                } catch (IOException ex) {
+                    throw new IOException("Field" + name + " of " + cls + ": Error during deserialization", ex);
+                }
             }
         }
 
@@ -67,17 +77,29 @@ public class Amf3ObjectDeserializer {
     protected void setDynamicField(Object target, Object value, FieldRef ref) throws NoSuchFieldException, IllegalAccessException, InstantiationException {
         Field field = ref.getLocation().getDeclaredField(ref.getName());
         field.setAccessible(true);
-        field.set(target, TypeConverter.typecast(field.getType(), value));
+        try {
+            field.set(target, TypeConverter.typecast(field.getType(), value));
+        } catch (IllegalArgumentException ex) {
+            throw new RtmpException(ref + " (value=" + value + "): " + ex.getMessage());
+        }
     }
 
     protected void setStaticField(Object target, Object value, FieldRef ref) throws NoSuchFieldException, IllegalAccessException, InstantiationException {
         if (ref.getName() == null) {
-            log.warn("Skipping field with no match: " + ref.getSerializedName() + " = " + value);
+            if (ref.getSerializedName().equals("dataVersion") || ref.getSerializedName().equals("futureData")) {
+                log.trace("Skipping field with no match: " + ref.getSerializedName() + " = " + value);
+            } else {
+                log.warn("Skipping field with no match: " + ref.getSerializedName() + " = " + value);
+            }
             return;
         }
         Field field = ref.getLocation().getDeclaredField(ref.getName());
         field.setAccessible(true);
-        field.set(target, TypeConverter.typecast(field.getType(), value));
+        try {
+            field.set(target, TypeConverter.typecast(field.getType(), value));
+        } catch (IllegalArgumentException ex) {
+            throw new RtmpException(ref + " (value=" + value + "): " + ex.getMessage());
+        }
     }
 
 

@@ -42,7 +42,7 @@ public class Game {
     private List<GameObserver> observers = new ArrayList<>();
     // TODO inspect
     private Object statusOfParticipants;
-    private double id;
+    private long id;
     private PlayerParticipant ownerSummary;
     private List<Participant> teamOnw = new ArrayList<>();
     private List<Participant> teamTwo = new ArrayList<>();
@@ -55,11 +55,11 @@ public class Game {
     // TODO inspect
     private Object passbackUrl;
     private String roomPassword;
-    private double optimisticLock;
+    private long optimisticLock;
     private int maxNumPlayers;
     private int queuePosition;
     private String gameMode;
-    private double expiryTime;
+    private long expiryTime;
     private int mapId;
     private List<Integer> banOrder = new ArrayList<>();
     private int pickTurn;

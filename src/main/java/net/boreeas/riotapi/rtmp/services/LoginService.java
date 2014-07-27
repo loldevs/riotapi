@@ -54,7 +54,7 @@ public class LoginService {
      * @param heartBeatCount The amount of heartbeats that have been sent
      * @return A string
      */
-    public String performLcdsHeartBeat(int accountId, String sessionToken, int heartBeatCount) {
+    public String performLcdsHeartBeat(long accountId, String sessionToken, int heartBeatCount) {
         return performLcdsHeartBeat(accountId, sessionToken, heartBeatCount, new Date());
     }
 

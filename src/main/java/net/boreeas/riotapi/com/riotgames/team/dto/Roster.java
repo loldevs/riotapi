@@ -29,5 +29,5 @@ import java.util.List;
 @Serialization(name = "com.riotgames.team.dto.RosterDTO")
 public class Roster {
     private List<TeamMemberInfo> memberList = new ArrayList<>();
-    private double ownerId;
+    private long ownerId;
 }

@@ -28,11 +28,12 @@ import java.util.Date;
 @Serialization(name = "com.riotgames.platform.summoner.PublicSummoner")
 public class PublicSummoner {
     private String internalName;
-    private double acctId;
+    private long acctId;
     private String name;
     private int profileIconId;
     private Date revisionDate;
-    private double revisionId;
-    private double summonerLevel;
-    private double summonerId;
+    private long revisionId;
+    private long summonerLevel;
+    private long summonerId;
+    private String previousSeasonHighestTier;
 }

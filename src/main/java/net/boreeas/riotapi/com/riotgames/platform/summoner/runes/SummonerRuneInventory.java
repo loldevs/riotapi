@@ -32,5 +32,5 @@ public class SummonerRuneInventory {
     private Object summonerRunesJson;
     private String dateString;
     private List<SummonerRune> summonerRunes = new ArrayList<>();
-    private double summonerId;
+    private long summonerId;
 }

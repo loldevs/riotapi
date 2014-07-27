@@ -25,7 +25,7 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @Data
 @Serialization(name = "com.riotgames.platform.game.GameObserver")
 public class GameObserver {
-    private double accountId;
+    private long accountId;
     private String botDifficulty;
     private String summonerInternalName;
     // TODO inspect
@@ -33,10 +33,10 @@ public class GameObserver {
     private int lastSelectedSkinIndex;
     private String partnerId;
     private int profileIconId;
-    private double summonerId;
+    private long summonerId;
     private int badges;
     private int pickTurn;
-    private double originalAccountId;
+    private long originalAccountId;
     private String summonerName;
     private int pickMode;
     private String orignalPlatformId;

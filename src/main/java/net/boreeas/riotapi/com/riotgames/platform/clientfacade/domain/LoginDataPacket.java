@@ -20,6 +20,7 @@ import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.kudos.dto.PendingKudos;
 import net.boreeas.riotapi.com.riotgames.platform.broadcast.BroadcastNotification;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameTypeConfig;
+import net.boreeas.riotapi.com.riotgames.platform.game.PlatformGameLifecycle;
 import net.boreeas.riotapi.com.riotgames.platform.statistics.PlayerStatSummaries;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.AllSummonerData;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.SummonerCatalog;
@@ -42,7 +43,7 @@ public class LoginDataPacket {
     private boolean minor;
     private int maxPracticeGameSize;
     private SummonerCatalog summonerCatalog;
-    private double ipBalance;
+    private long ipBalance;
     // TODO inspect
     private Object recconectInfo;
     private List<String> languages;
@@ -52,7 +53,7 @@ public class LoginDataPacket {
     private int customMinutesLeftToday;
     private int coOpVsAiMinutesLeftToday;
     // TODO inspect
-    private Object platformGameLifecycle;
+    private PlatformGameLifecycle platformGameLifecycleDTO;
     // TODO inspect
     private Object bingeData;
     private boolean inGhostGame;
@@ -61,21 +62,23 @@ public class LoginDataPacket {
     private int pendingBadges;
     private BroadcastNotification broadcastNotification;
     private int minutesUntilMidnight;
-    private double timeUntilFirstWinOfDay;
-    private double coOpVsAiMsecsUntilReset;
+    private long timeUntilFirstWinOfDay;
+    private long coOpVsAiMsecsUntilReset;
     private ClientSystemStatesNotification clientSystemStates;
-    private double bingeMinutesRemaining;
-    private PendingKudos pendingKudos;
-    private double leaverBusterPenaltyTime;
+    private long bingeMinutesRemaining;
+    private PendingKudos pendingKudosDTO;
+    private long leaverBusterPenaltyTime;
     private String platformId;
     private boolean matchMakingEnabled;
     private boolean minutesUntilShutdownEnabled;
-    private double rpBalance;
+    private long rpBalance;
     private List<GameTypeConfig> gameTypeConfigs = new ArrayList<>();
     @SerializedName(name = "bingeIsPlayerInBingePreventionWindow")
     private boolean isPlayerInBingePreventionWindow;
     private boolean minorShutdownEnforced;
-    private String competetiveRegion;
-    private double customMsecsUntilReset;
-
+    private String competitiveRegion;
+    private long customMsecsUntilReset;
+    private Object reconnectInfo;
+    private Object emailStatus;
+    private boolean showEmailVerificationPopup;
 }

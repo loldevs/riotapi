@@ -36,9 +36,9 @@ public class MasteryPage {
     @SerializedName(name = "talentEntries")
     private List<MasteryEntry> masteries = new ArrayList<>();
 
-    private double pageId;
+    private long pageId;
     private String name;
     private boolean current;
     private Date createDate;
-    private double summonerId;
+    private long summonerId;
 }

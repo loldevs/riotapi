@@ -30,9 +30,9 @@ public class PlayerParticipant {
     private Object timeAddedToQueue;
     private int index;
     private int queueRating;
-    private double accountId;
+    private long accountId;
     private String botDifficulty;
-    private double originalAccountNumber;
+    private long originalAccountNumber;
     private String summonerInternalName;
     private boolean minor;
     // TODO inspect
@@ -41,7 +41,7 @@ public class PlayerParticipant {
     private String partnerId;
     private int profileIconId;
     private boolean teamOwner;
-    private double summonerId;
+    private long summonerId;
     private int badges;
     private int pickTurn;
     private boolean clientInSynch;

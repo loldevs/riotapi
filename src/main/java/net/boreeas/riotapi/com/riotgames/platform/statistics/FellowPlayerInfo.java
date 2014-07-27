@@ -26,9 +26,9 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @Data
 @Serialization(name = "com.riotgames.platform.statistics.FellowPlayerInfo")
 public class FellowPlayerInfo {
-    private double championId;
+    private long championId;
     private int teamId;
-    private double summonerId;
+    private long summonerId;
 
     public Team getTeam() {
         return Team.getById(teamId);

@@ -30,7 +30,7 @@ public class PlayerLifetimeStats {
     private PlayerStatSummaries playerStatSummaries;
     private LeaverPenaltyStats leaverPenaltyStats;
     private Date previousFirstWinOfDay;
-    private double userId;
+    private long userId;
     private int dodgeStreak;
     // TODO inspect
     private Object dodgePenaltyDate;

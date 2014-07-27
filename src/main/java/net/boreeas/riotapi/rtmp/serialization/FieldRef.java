@@ -18,16 +18,19 @@ package net.boreeas.riotapi.rtmp.serialization;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 /**
  * Created on 5/26/2014.
  */
 @Getter
 @RequiredArgsConstructor
-@ToString
 public class FieldRef {
     private final String name;
     private final String serializedName;
     private final Class<?> location;
+
+    public String toString() {
+        return "Field " + name + "/" + serializedName + " of " + location;
+    }
+
 }

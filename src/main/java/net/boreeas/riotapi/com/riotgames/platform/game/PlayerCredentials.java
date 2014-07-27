@@ -29,16 +29,16 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 public class PlayerCredentials {
     private String encryptionKey;
     private String observerEncryptionKey;
-    private double gameId;
+    private long gameId;
     private int lastSelectedSkinIndex;
     private String serverIp;
     private int serverPort;
     private boolean observer;
     private String observerServerIp;
     private int observerServerPort;
-    private double summonerId;
+    private long summonerId;
     private String summonerName;
     private String handshakeToken;
-    private double playerId;
+    private long playerId;
     private int championId;
 }

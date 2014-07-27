@@ -28,8 +28,8 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @Serialization(name = "com.riotgames.platform.game.PlayerChampionSelectionDTO")
 public class PlayerChampionSelection {
     private String summonerInternalName;
-    private double spell1Id;
-    private double spell2Id;
+    private long spell1Id;
+    private long spell2Id;
     private int selectedSkinIndex;
     private int championId;
 }

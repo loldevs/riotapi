@@ -25,7 +25,7 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @Data
 @Serialization(name = "com.riotgames.platform.matchmaking.QueueInfo")
 public class QueueInfo {
-    private double waitTime;
-    private double queueId;
+    private long waitTime;
+    private long queueId;
     private int queueLength;
 }

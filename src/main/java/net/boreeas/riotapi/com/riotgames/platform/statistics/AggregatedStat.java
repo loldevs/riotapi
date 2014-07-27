@@ -26,7 +26,7 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @Serialization(name = "com.riotgames.platform.statistics.AggregatedStat")
 public class AggregatedStat {
     private String statType;
-    private double count;
-    private double value;
-    private double championId;
+    private long count;
+    private long value;
+    private long championId;
 }

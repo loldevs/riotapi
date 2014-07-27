@@ -16,6 +16,7 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.broadcast;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.Data;
@@ -35,16 +36,21 @@ import java.io.ObjectOutput;
 @Serialization(name = "com.riotgames.platform.broadcast.BroadcastNotification", externalizable = true)
 public class BroadcastNotification implements Externalizable {
     // TODO inspect
-    private JsonObject object;
+    private JsonObject json;
 
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeUTF(object.toString());
+        String asString = json.toString();
+        out.writeInt(asString.length());
+        out.write(asString.getBytes("UTF-8"));
     }
 
-    public void readExternal(ObjectInput input) throws IOException {
-        String json = input.readUTF();
-        this.object = new JsonParser().parse(json).getAsJsonObject();
+    public void readExternal(ObjectInput in) throws IOException {
+        byte[] buffer = new byte[in.readInt()];
+        in.read(buffer);
+        String json = new String(buffer, "UTF-8");
+        JsonElement elem = new JsonParser().parse(json);
+        this.json = elem == null || elem.isJsonNull() ? null : elem.getAsJsonObject();
     }
 }

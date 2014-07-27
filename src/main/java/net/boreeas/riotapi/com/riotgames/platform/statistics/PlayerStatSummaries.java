@@ -19,6 +19,7 @@ package net.boreeas.riotapi.com.riotgames.platform.statistics;
 import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +28,8 @@ import java.util.List;
 @Data
 @Serialization(name = "com.riotgames.platform.statistics.PlayerStatSummaries")
 public class PlayerStatSummaries {
-    private List<PlayerStatSummary> playerStatSummarySet;
-    private double userId;
+    // TODO inspect
+    private List<PlayerStatSummary> playerStatSummarySet = new ArrayList<>();
+    private long userId;
+    private int season;
 }

@@ -38,7 +38,7 @@ public class RunePage {
     private String name;
 
     @SerializedName(name = "pageId")
-    private String id;
+    private long id;
     private boolean current;
 
 

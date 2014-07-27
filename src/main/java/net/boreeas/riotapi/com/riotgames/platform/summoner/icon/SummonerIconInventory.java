@@ -29,6 +29,6 @@ import java.util.List;
 @Data
 @Serialization(name = "com.riotgames.platform.summoner.icon.SummonerIconInventoryDTO")
 public class SummonerIconInventory {
-    private double summonerId;
+    private long summonerId;
     private List<Icon> summonerIcons = new ArrayList<>();
 }

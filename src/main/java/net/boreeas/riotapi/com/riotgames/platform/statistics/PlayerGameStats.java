@@ -37,7 +37,7 @@ public class PlayerGameStats {
     private int skinIndex;
     private List<FellowPlayerInfo> fellowPlayers = new ArrayList<>();
     private String gameType;
-    private double experienceEarned;
+    private long experienceEarned;
     // TODO inspect
     private Object rawStatsJson;
     private boolean eligibleFirstWinOfDay;
@@ -45,38 +45,38 @@ public class PlayerGameStats {
     private Object difficulty;
     private int gameMapId;
     private boolean leaver;
-    private double spell1;
-    private double spell2;
+    private long spell1;
+    private long spell2;
     private String gameTypeEnum;
-    private double teamId;
-    private double summonerId;
+    private long teamId;
+    private long summonerId;
     private List<RawStat> statistics = new ArrayList<>();
     private boolean afk;
     // TODO inspect
     private Object id;
-    private double boostXpEarned;
-    private double level;
+    private long boostXpEarned;
+    private long level;
     private boolean invalid;
-    private double userId;
+    private long userId;
     private Date createDate;
     private int userServerPing;
     private int adjustedRating;
     private int premadeSize;
-    private double boostIpEarned;
-    private double gameId;
+    private long boostIpEarned;
+    private long gameId;
     private int timeInQueue;
-    private double ipEarned;
+    private long ipEarned;
     private int eloChange;
     private String gameMode;
     private String difficultyString;
-    private double kCoefficient;
+    private long kCoefficient;
     private int teamRating;
     private String subType;
     private String queueType;
     private boolean premadeTeam;
-    private double predictedWinPct;
-    private double rating;
-    private double championId;
+    private long predictedWinPct;
+    private long rating;
+    private long championId;
 
     public GameType getGameType() {
         return GameType.getByName(gameType);

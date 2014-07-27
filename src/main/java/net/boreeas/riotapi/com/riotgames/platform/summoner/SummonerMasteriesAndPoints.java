@@ -34,5 +34,5 @@ public class SummonerMasteriesAndPoints {
     private int masteryPoints;
     private Date modifyDate;
     private Date createDate;
-    private double summonerId;
+    private long summonerId;
 }

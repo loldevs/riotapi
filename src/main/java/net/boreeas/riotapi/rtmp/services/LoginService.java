@@ -66,7 +66,7 @@ public class LoginService {
      * @param date The time of the heart beat
      * @return A string
      */
-    public String performLcdsHeartBeat(int accountId, String sessionToken, int heartBeatCount, Date date) {
+    public String performLcdsHeartBeat(long accountId, String sessionToken, int heartBeatCount, Date date) {
         return client.sendRpcAndWait(SERVICE, "performLCDSHeartBeat", accountId, sessionToken, heartBeatCount, format.format(date));
     }
 

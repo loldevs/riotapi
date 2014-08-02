@@ -14,23 +14,35 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.com.riotgames.platform.summoner.icon;
+package net.boreeas.riotapi.com.riotgames.platform.messaging;
 
 import lombok.Data;
-import net.boreeas.riotapi.com.riotgames.platform.catalog.icon.Icon;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 
 /**
- * Created on 7/20/2014.
+ * Created on 8/2/2014.
  */
 @Data
-@Serialization(name = "com.riotgames.platform.summoner.icon.SummonerIconInventoryDTO")
-public class SummonerIconInventory {
-    private long summonerId;
-    private String dateString;
-    private List<Icon> summonerIcons = new ArrayList<>();
-    private Object summonerIconJson;
+@Serialization(name = "com.riotgames.platform.messaging.UnexpectedServiceException")
+public class UnexpectedServiceException extends RuntimeException {
+    private String rootCauseClassName;
+    private String stackTraceString;
+
+    @Override
+    public void printStackTrace() {
+        printStackTrace(System.err);
+    }
+
+    @Override
+    public void printStackTrace(PrintStream s) {
+        printStackTrace(new PrintWriter(s));
+    }
+
+    @Override
+    public void printStackTrace(PrintWriter s) {
+        s.write(stackTraceString);
+    }
 }

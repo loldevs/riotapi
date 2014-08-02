@@ -29,15 +29,16 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @ToString
 @Serialization(name = "com.riotgames.platform.login.AuthenticationCredentials")
 public class AuthenticationCredentials {
+    private String locale;
+    private String macAddress;
     private Object oldPassword;
+    private String domain;
+    private String clientVersion;
+    private String operatingSystem;
+    private String authToken;
+    private Object partnerCredentials;
+    private String password;
     private String username;
     private Object securityAnswer;
-    private String password;
-    private Object partnerCredentials;
-    private String domain;
-    private String ipAddress;
-    private String clientVersion;
-    private String locale;
-    private String authToken;
-    private String operatingSystem;
+    //private String ipAddress;
 }

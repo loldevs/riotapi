@@ -17,6 +17,8 @@
 package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
+import net.boreeas.riotapi.com.riotgames.team.TeamId;
+import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,9 @@ import java.util.List;
  * Created on 4/14/2014.
  */
 @Getter
+@Serialization(name="com.riotgames.team.stats.TeamStatSummary")
 public class TeamStatSummary {
-    private String fullId;
+    private TeamId teamId;
+    private String teamIdString;
     private List<TeamStatDetails> teamStatDetails = new ArrayList<>();
 }

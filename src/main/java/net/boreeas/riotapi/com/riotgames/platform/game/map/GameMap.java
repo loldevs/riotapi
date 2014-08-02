@@ -105,4 +105,16 @@ public class GameMap {
             6,
             "???"
     );
+
+    /**
+     * Not accessible to clients
+     */
+    public static final GameMap DEBUG_AMP = new GameMap(
+            "Debug Map",
+            "DebugMap",
+            0,
+            0,
+            0,
+            "???"
+    );
 }

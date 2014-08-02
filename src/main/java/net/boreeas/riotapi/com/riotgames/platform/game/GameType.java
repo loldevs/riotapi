@@ -14,29 +14,23 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rest;
+package net.boreeas.riotapi.com.riotgames.platform.game;
+
+import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 4/12/2014.
  */
-public enum GameMode {
-    CLASSIC("CLASSIC"),
-    DOMINION("ODIN"),
-    ARAM("ARAM"),
-    TUTORIAL("TUTORIAL"),
-    ONE_FOR_ALL("ONEFORALL"),
-    FIRST_BLOOD("FIRSTBLOOD");
+@Serialization(name = "com.riotgames.platform.game.GameType")
+public enum GameType {
+    CUSTOM_GAME,
+    TUTORIAL_GAME,
+    MATCHED_GAME;
 
-    public final String name;
-
-    private GameMode(String name) {
-        this.name = name;
-    }
-
-    public static GameMode getByName(String name) {
-        for (GameMode mode: values()) {
-            if (mode.name.equals(name)) {
-                return mode;
+    public static GameType getByName(String name) {
+        for (GameType type: values()) {
+            if (type.name().equals(name)) {
+                return type;
             }
         }
 

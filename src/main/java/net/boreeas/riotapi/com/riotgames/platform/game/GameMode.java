@@ -14,19 +14,30 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.loginqeue;
+package net.boreeas.riotapi.com.riotgames.platform.game;
 
-import java.io.IOException;
+import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
- * Created by malte on 7/11/2014.
+ * Created on 4/12/2014.
  */
-public class LoginException extends RuntimeException {
-    public LoginException(String s) {
-        super(s);
-    }
+@Serialization(name = "com.riotgames.platform.game.GameMode")
+public enum GameMode {
+    CLASSIC,
+    ODIN,
+    ARAM,
+    TUTORIAL,
+    ONEFORALL,
+    ASCENSION,
+    FIRSTBLOOD;
 
-    public LoginException(String s, Exception ex) {
-        super(s, ex);
+    public static GameMode getByName(String name) {
+        for (GameMode mode: values()) {
+            if (mode.name().equals(name)) {
+                return mode;
+            }
+        }
+
+        return null;
     }
 }

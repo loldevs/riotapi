@@ -34,6 +34,7 @@ public class Team {
     private TeamStatSummary teamStatSummary;
     private String status;
     private String tag;
+    private String name;
     private Roster roster;
     // TODO inspect
     private Object messageOfDay;

@@ -17,8 +17,8 @@
 package net.boreeas.riotapi.com.riotgames.platform.statistics;
 
 import lombok.Data;
-import net.boreeas.riotapi.rest.GameMode;
-import net.boreeas.riotapi.rest.GameType;
+import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
+import net.boreeas.riotapi.com.riotgames.platform.game.GameType;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.ArrayList;

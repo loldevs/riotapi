@@ -17,7 +17,7 @@
 package net.boreeas.riotapi.com.riotgames.platform.login.impl;
 
 import lombok.Data;
-import net.boreeas.riotapi.rtmp.RtmpExceptionWrapper;
+import net.boreeas.riotapi.com.riotgames.platform.messaging.PlatformException;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
@@ -25,18 +25,18 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
  */
 @Data
 @Serialization(name = "com.riotgames.platform.login.impl.ClientVersionMismatchException")
-public class ClientVersionMismatchException extends RtmpExceptionWrapper {
+public class ClientVersionMismatchException extends PlatformException {
 
     public String toString() {
         String s = getClass().getName();
         String message = getLocalizedMessage();
         if (message == null) message = "";
-        String provided = getSubstitutionArguments().get(0);
-        String correct = getSubstitutionArguments().get(1);
+        String provided = getSubstitutionArguments().get(0).toString();
+        String correct = getSubstitutionArguments().get(1).toString();
         return s + ": " + message + " (Provided: " + provided + ", expected: " + correct + ")";
     }
 
     public String getCurrentVersion() {
-        return getSubstitutionArguments().get(1);
+        return getSubstitutionArguments().get(1).toString();
     }
 }

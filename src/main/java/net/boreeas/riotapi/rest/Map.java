@@ -28,6 +28,7 @@ public enum Map {
     TWISTED_TREELINE_ORIG(4, "Twisted Treeline (Original)", GameMap.TWISTED_TREELINE_OLD),
     CRYSTAL_SCAR(8, "The Crystal Scar", GameMap.CRYSTAL_SCAR),
     TWISTED_TREELINE_CURR(10, "Twisted Treeline (Current)", GameMap.TWISTED_TREELINE),
+    DEBUG_MAP(11, "Debug Map", null),
     HOWLING_ABYSS(12, "Howling Abyss", GameMap.HOWLING_ABYSS);
 
 

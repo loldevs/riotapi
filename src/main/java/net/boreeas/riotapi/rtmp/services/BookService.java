@@ -31,7 +31,7 @@ public class BookService {
     private static final String MASTERY_BOOK_SERVICE = "masteryBookService";
     private RtmpClient client;
 
-    public RunePageBook getSpellBook(double summonerId) {
+    public RunePageBook getSpellBook(long summonerId) {
         return client.sendRpcAndWait(SPELL_BOOK_SERVICE, "getSpellBook", summonerId);
     }
 
@@ -44,7 +44,7 @@ public class BookService {
         return client.sendRpcAndWait(SPELL_BOOK_SERVICE, "saveSpellBook", spellBook);
     }
 
-    public MasteryBook getMasteryBook(double summonerId) {
+    public MasteryBook getMasteryBook(long summonerId) {
         return client.sendRpcAndWait(MASTERY_BOOK_SERVICE, "getMasteryBook", summonerId);
     }
 

@@ -17,8 +17,8 @@
 package net.boreeas.riotapi.rtmp.services;
 
 import lombok.AllArgsConstructor;
+import net.boreeas.riotapi.com.riotgames.platform.catalog.champion.Champion;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.boost.SummonerActiveBoostDto;
-import net.boreeas.riotapi.rest.Champion;
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
 import java.util.List;

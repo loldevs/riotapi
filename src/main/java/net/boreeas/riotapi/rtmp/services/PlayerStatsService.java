@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 import net.boreeas.riotapi.com.riotgames.platform.statistics.*;
 import net.boreeas.riotapi.com.riotgames.platform.statistics.team.TeamAggregatedStats;
 import net.boreeas.riotapi.com.riotgames.team.TeamId;
-import net.boreeas.riotapi.rest.GameMode;
+import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
 import net.boreeas.riotapi.rest.Season;
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
@@ -39,15 +39,15 @@ public class PlayerStatsService {
     }
 
     public PlayerLifetimeStats retrievePlayerStatsByAccountId(double accountId, Season season) {
-        return client.sendRpcAndWait(SERVICE, "retrievePlayerStatsByAccountId", accountId, season.name);
+        return client.sendRpcAndWait(SERVICE, "retrievePlayerStatsByAccountId", accountId, season);
     }
 
     public List<ChampionStatInfo> retrieveTopPlayedChampions(double accId, GameMode mode) {
-        return client.sendRpcAndWait(SERVICE, "retrieveTopPlayedChampions", accId, mode.name);
+        return client.sendRpcAndWait(SERVICE, "retrieveTopPlayedChampions", accId, mode);
     }
 
     public AggregatedStats getAggregatedStats(double id, Season season, GameMode gameMode) {
-        return client.sendRpcAndWait(SERVICE, "getAggregatedStats", id, season.name, gameMode.name);
+        return client.sendRpcAndWait(SERVICE, "getAggregatedStats", id, season, gameMode);
     }
 
     public RecentGames getRecentGames(double accId) {

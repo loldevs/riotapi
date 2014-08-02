@@ -19,21 +19,23 @@ package net.boreeas.riotapi.com.riotgames.platform.account;
 import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created on 7/19/2014.
  */
 @Data
 @Serialization(name = "com.riotgames.platform.account.AccountSummary")
 public class AccountSummary {
+    private List<Object> items = new ArrayList<>();
     private int groupCount;
-    private String username;
-    private long accountId;
-    private String summonerInternalName;
-    private boolean admin;
-    private boolean hasBetaAccess;
     private String summonerName;
     private boolean partnerMode;
+    private boolean admin;
+    private boolean hasBetaAccess;
+    private long accountId;
+    private String username;
     private boolean needsPasswordReset;
-    private int dataVersion;
-    private Object futureData;
+    private String summonerInternalName;
 }

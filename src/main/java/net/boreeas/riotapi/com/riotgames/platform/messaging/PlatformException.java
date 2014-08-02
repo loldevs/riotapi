@@ -14,24 +14,33 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rtmp;
+package net.boreeas.riotapi.com.riotgames.platform.messaging;
 
-import lombok.Getter;
+import lombok.Data;
+import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created on 7/21/2014.
+ * Created on 8/2/2014.
  */
-@Getter
-public class RtmpExceptionWrapper extends RuntimeException {
-    private List<String> substitutionArguments = new ArrayList<>();
-    private String localizedMessage;
-    private String rootCauseClassname;
-    private Object cause;
+@Data
+@Serialization(name = "com.riotgames.platform.messaging.PlatformException")
+public class PlatformException extends RuntimeException {
     private String errorCode;
-    private String message;
+    private List<Object> substitutionArguments;
+    private String rootCauseClassName;
+    private Object cause;
+
+    public PlatformException() {}
+
+    public PlatformException(String s) {
+        super(s);
+    }
+
+    public PlatformException(String s, Throwable cause) {
+        super(s, cause);
+    }
 
     public Throwable getCause() {
         return (cause instanceof Throwable) ? (Throwable) cause : super.getCause();

@@ -17,7 +17,7 @@
 package net.boreeas.riotapi.com.riotgames.platform.login;
 
 import lombok.Data;
-import net.boreeas.riotapi.rtmp.RtmpExceptionWrapper;
+import net.boreeas.riotapi.com.riotgames.platform.messaging.PlatformException;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.Date;
@@ -27,6 +27,6 @@ import java.util.Date;
  */
 @Data
 @Serialization(name = "com.riotgames.platform.login.LoginFailedException")
-public class LoginFailedException extends RtmpExceptionWrapper {
+public class LoginFailedException extends PlatformException {
     private Date bannedUntilDate;
 }

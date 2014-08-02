@@ -22,6 +22,8 @@ import net.boreeas.riotapi.rtmp.serialization.AnonymousAmfObject;
 import net.boreeas.riotapi.rtmp.serialization.amf3.DynamicObject;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
@@ -194,6 +196,25 @@ public class TypeConverter {
             } else if (cls == Character.class) {
                 return (char) obj;
             }
+        }
+
+        if (cls.isEnum() && obj instanceof String) {
+            try {
+                Method method = cls.getMethod("getByName", String.class);
+                T result = (T) method.invoke(null, obj);
+                if (result != null) {
+                    return result;
+                }
+            } catch (NoSuchMethodException e) {
+                for (T t: cls.getEnumConstants()) {
+                    if (((Enum) t).name().equals(obj)) {
+                        return t;
+                    }
+                }
+            } catch (InvocationTargetException e) {
+                throw new IllegalStateException(e);
+            }
+
         }
 
         throw new IllegalArgumentException("Unknown conversion " + obj.getClass() + " => " + cls);

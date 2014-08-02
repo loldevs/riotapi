@@ -20,7 +20,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
-import net.boreeas.riotapi.Util;
+import net.boreeas.riotapi.com.riotgames.platform.account.impl.AccountState;
 import net.boreeas.riotapi.com.riotgames.platform.clientfacade.domain.LoginDataPacket;
 import net.boreeas.riotapi.com.riotgames.platform.login.AuthenticationCredentials;
 import net.boreeas.riotapi.com.riotgames.platform.login.Session;
@@ -274,11 +274,11 @@ public abstract class RtmpClient {
         this.socket = useSSL ? SSLSocketFactory.getDefault().createSocket(host, port) : new Socket(host, port);
 
         // Debug stuff
-        //AmfWriter writer = new AmfWriter(new DumpingOutputStream(socket.getOutputStream()));
-        //AmfReader reader = new AmfReader(new DumpingInputStream(socket.getInputStream()));
+        AmfWriter writer = new AmfWriter(new DumpingOutputStream(socket.getOutputStream()));
+        AmfReader reader = new AmfReader(new DumpingInputStream(socket.getInputStream()));
 
-        AmfWriter writer = new AmfWriter(socket.getOutputStream());
-        AmfReader reader = new AmfReader(socket.getInputStream());
+        //AmfWriter writer = new AmfWriter(socket.getOutputStream());
+        //AmfReader reader = new AmfReader(socket.getInputStream());
 
         doHandshake(writer, reader);
 
@@ -384,12 +384,12 @@ public abstract class RtmpClient {
         credentials.setClientVersion(clientVersion);
         credentials.setAuthToken(authKey);
         credentials.setLocale(locale);
-        String addr = Util.getConnectionInfoIpAddr();
-        credentials.setIpAddress(addr);
+        //String addr = Util.getConnectionInfoIpAddr();
+        //credentials.setIpAddress(addr);
         credentials.setDomain("lolclient.lol.riotgames.com");
         credentials.setOperatingSystem("LoLRTMPSClient");
 
-        log.info("Login service call: " + user + "/***/" + authKey + " on client version " + clientVersion + " (locale " + locale + ", connection info: " + addr + ")");
+        log.info("Login service call: " + user + "/***/" + authKey + " on client version " + clientVersion + " (locale " + locale + ")");
 
         this.session = loginService.login(credentials);
 
@@ -406,9 +406,9 @@ public abstract class RtmpClient {
         log.info("Retrieving data packet");
         this.loginDataPacket = clientFacadeService.getLoginDataPacket();
 
-        String state = accountService.getAccountState();
+        AccountState state = accountService.getAccountState();
         log.info("Login complete - account state: " + state);
-        if (!state.equals("ENABLED")) {
+        if (state != AccountState.ENABLED   ) {
             throw new RtmpException("Invalid account state: " + state);
         }
 

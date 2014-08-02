@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import lombok.AllArgsConstructor;
 import net.boreeas.riotapi.com.riotgames.platform.gameinvite.contract.LobbyStatus;
-import net.boreeas.riotapi.rest.GameMode;
+import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
 /**
@@ -36,7 +36,7 @@ public class LcdsServiceProxy {
     }
 
     public Object call(String uuid, GameMode mode, String procCall, JsonObject object) {
-        return client.sendRpcAndWait(SERVICE, "call", uuid, mode.name, procCall, object.toString());
+        return client.sendRpcAndWait(SERVICE, "call", uuid, mode.name(), procCall, object.toString());
     }
 
     public LcdsHandle createHandle(String uuid, GameMode mode) {

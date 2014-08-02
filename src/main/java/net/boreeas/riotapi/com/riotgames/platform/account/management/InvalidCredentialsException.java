@@ -14,23 +14,16 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.com.riotgames.platform.summoner.icon;
+package net.boreeas.riotapi.com.riotgames.platform.account.management;
 
-import lombok.Data;
-import net.boreeas.riotapi.com.riotgames.platform.catalog.icon.Icon;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Created on 7/20/2014.
+ * Created by malte on 7/11/2014.
  */
-@Data
-@Serialization(name = "com.riotgames.platform.summoner.icon.SummonerIconInventoryDTO")
-public class SummonerIconInventory {
-    private long summonerId;
-    private String dateString;
-    private List<Icon> summonerIcons = new ArrayList<>();
-    private Object summonerIconJson;
+@Serialization(name = "com.riotgames.platform.account.management.InvalidCredentialsException")
+public class InvalidCredentialsException extends AccountManagementException {
+    public InvalidCredentialsException(String s) {
+        super(s);
+    }
 }

@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
 
 /**
  * Created on 4/14/2014.

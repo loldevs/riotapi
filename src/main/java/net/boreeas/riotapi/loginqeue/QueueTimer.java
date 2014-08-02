@@ -16,9 +16,8 @@
 
 package net.boreeas.riotapi.loginqeue;
 
-import net.boreeas.riotapi.rest.ThrottledApiHandler;
+import net.boreeas.riotapi.com.riotgames.platform.account.management.AccountManagementException;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -36,7 +35,7 @@ public class QueueTimer extends Thread {
     private CountDownLatch latch = new CountDownLatch(1);
     private boolean isError = false;
     private AuthResult result;
-    private LoginException ex;
+    private AccountManagementException ex;
 
     public QueueTimer(LoginQueue loginQueue, String user, String password) {
         super("Queue Timer for " + user);
@@ -87,12 +86,12 @@ public class QueueTimer extends Thread {
                     try {
                         Thread.sleep(overrideDelay > 0 ? overrideDelay : result.getDelay());
                     } catch (InterruptedException ex) {
-                        throw new LoginException("Queue interrupted", ex);
+                        throw new AccountManagementException("Queue interrupted", ex);
                     }
                 }
 
 
-            } catch (LoginException ex) {
+            } catch (AccountManagementException ex) {
                 this.ex = ex;
                 isError = true;
                 latch.countDown();

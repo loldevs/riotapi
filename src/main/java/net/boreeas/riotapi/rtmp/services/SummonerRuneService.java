@@ -31,9 +31,4 @@ public class SummonerRuneService {
     public SummonerRuneInventory getSummonerRuneInventory(double summonerId) {
         return client.sendRpcAndWait(SERVICE, "getSummonerRuneInventory", summonerId);
     }
-
-    // TODO inspect
-    public Object getSummonerRunes(double summonerId) {
-        return client.sendRpcAndWait(SERVICE, "getSummonerRunes", summonerId);
-    }
 }

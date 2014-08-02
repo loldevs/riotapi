@@ -17,13 +17,12 @@
 package net.boreeas.riotapi.loginqeue;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import jdk.nashorn.internal.parser.JSONParser;
 import net.boreeas.riotapi.Shard;
-import org.apache.cxf.jaxrs.client.WebClient;
+import net.boreeas.riotapi.com.riotgames.platform.account.management.AccountManagementException;
+import net.boreeas.riotapi.com.riotgames.platform.account.management.InvalidCredentialsException;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -55,7 +54,7 @@ public class LoginQueue {
         if (response.getStatus() == 403) {
             throw new InvalidCredentialsException("Invalid username or password");
         } else if (response.getStatus() != 200) {
-            throw new LoginException("Error " + response.getStatus());
+            throw new AccountManagementException("Error " + response.getStatus());
         }
 
 
@@ -63,13 +62,13 @@ public class LoginQueue {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader((InputStream) response.getEntity()))) {
             json = reader.readLine();
         } catch (IOException ex) {
-            throw new LoginException("Error reading JSON", ex);
+            throw new AccountManagementException("Error reading JSON", ex);
         }
 
         JsonObject result = new JsonParser().parse(json).getAsJsonObject();
         switch (result.get("status").getAsString()) {
             case "FAILED":
-                throw new LoginException("Login failed: " + result.get("reason").getAsString());
+                throw new AccountManagementException("Login failed: " + result.get("reason").getAsString());
             case "LOGIN":
                 IngameCredentials credentials = new Gson().fromJson(result.get("inGameCredentials"), IngameCredentials.class);
                 return new AuthResult(result.get("token").getAsString(), credentials);
@@ -78,7 +77,7 @@ public class LoginQueue {
                 List<Ticker> tickers = new Gson().fromJson(result.get("tickers"), type);
                 return new AuthResult(result.get("delay").getAsInt(), result.get("node").getAsInt(), tickers);
             default:
-                throw new LoginException(result.toString());
+                throw new AccountManagementException(result.toString());
         }
     }
 

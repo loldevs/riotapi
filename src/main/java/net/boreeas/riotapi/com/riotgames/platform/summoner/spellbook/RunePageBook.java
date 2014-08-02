@@ -16,8 +16,8 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook;
 
-import lombok.EqualsAndHashCode;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.ArrayList;

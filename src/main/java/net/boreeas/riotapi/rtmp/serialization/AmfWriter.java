@@ -106,7 +106,11 @@ public class AmfWriter extends OutputStream implements ObjectOutput {
     // </editor-fold>
 
     public void writeObject(Object object) throws IOException {
-        encode(object, encoding);
+        if (encoding == ObjectEncoding.AMF3) {
+            encodeAmf3(object); // Skip AMF0 -> AMF3 marker
+        } else {
+            encodeAmf0(object);
+        }
     }
 
     public void encode(Object obj, ObjectEncoding encoding) throws IOException {
@@ -166,6 +170,8 @@ public class AmfWriter extends OutputStream implements ObjectOutput {
         } else if (obj.getClass().isArray()) {
             // Arrays require special handling
             serializeArrayAmf0(obj);
+        } else if (obj instanceof Enum) {
+            serializeAmf0(((Enum) obj).name());
         } else {
             Amf0ObjectSerializer serializer = new Amf0ObjectSerializer();
             serializer.setWriter(this);
@@ -280,6 +286,8 @@ public class AmfWriter extends OutputStream implements ObjectOutput {
         } else if (obj.getClass().isArray()) {
             // Arrays require special handling
             serializeArrayAmf3(obj);
+        } else if (obj instanceof Enum) {
+            serializeAmf3(((Enum) obj).name());
         } else {
 
             Amf3ObjectSerializer serializer = new Amf3ObjectSerializer();

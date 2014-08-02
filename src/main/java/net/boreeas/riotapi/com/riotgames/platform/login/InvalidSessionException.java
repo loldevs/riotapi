@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.loginqeue;
+package net.boreeas.riotapi.com.riotgames.platform.login;
+
+import net.boreeas.riotapi.com.riotgames.platform.messaging.PlatformException;
+import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
- * Created by malte on 7/11/2014.
+ * Created on 8/2/2014.
  */
-public class InvalidCredentialsException extends LoginException {
-    public InvalidCredentialsException(String s) {
-        super(s);
-    }
+@Serialization(name = "com.riotgames.platform.login.InvalidSessionException")
+public class InvalidSessionException extends PlatformException {
 }

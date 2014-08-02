@@ -22,46 +22,50 @@ import net.boreeas.riotapi.com.riotgames.team.TeamId;
 import net.boreeas.riotapi.com.riotgames.team.dto.Team;
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
+import javax.annotation.Nonnull;
+
 /**
  * Created by malte on 7/18/2014.
  */
 @AllArgsConstructor
+@Nonnull
 public class SummonerTeamService {
+    private static final String SERVICE = "summonerTeamService";
     private RtmpClient client;
 
     public Player createPlayer() {
-        return client.sendRpcAndWait("summonerTeamService", "createPlayer");
+        return client.sendRpcAndWait(SERVICE, "createPlayer");
     }
 
     public Team findTeamById(TeamId teamId) {
-        return client.sendRpcAndWait("summonerTeamService", "findTeamById", teamId);
+        return client.sendRpcAndWait(SERVICE, "findTeamById", teamId);
     }
 
     public Team findTeamByName(String name) {
-        return client.sendRpcAndWait("summonerTeamService", "findTeamByName", name);
+        return client.sendRpcAndWait(SERVICE, "findTeamByName", name);
     }
 
     public Object disbandTeam(TeamId teamId) {
-        return client.sendRpcAndWait("summonerTeamService", "disbandTeam", teamId);
+        return client.sendRpcAndWait(SERVICE, "disbandTeam", teamId);
     }
 
     public boolean isNameValidAndAvailable(String name) {
-        return client.sendRpcAndWait("summonerTeamService", "isNameValidAndAvailable", name);
+        return client.sendRpcAndWait(SERVICE, "isNameValidAndAvailable", name);
     }
 
     public boolean isTagValidAndAvailable(String tag) {
-        return client.sendRpcAndWait("summonerTeamService", "isTagValidAndAvailable", tag);
+        return client.sendRpcAndWait(SERVICE, "isTagValidAndAvailable", tag);
     }
 
     public Team createTeam(String name, String tag) {
-        return client.sendRpcAndWait("summonerTeamService", "createTeam", name, tag);
+        return client.sendRpcAndWait(SERVICE, "createTeam", name, tag);
     }
 
     public Team invitePlayer(double summonerId, TeamId teamId) {
-        return client.sendRpcAndWait("summonerTeamService", "invitePlayer", summonerId, teamId);
+        return client.sendRpcAndWait(SERVICE, "invitePlayer", summonerId, teamId);
     }
 
     public Team kickPlayer(double summonerId, TeamId teamId) {
-        return client.sendRpcAndWait("summonerTeamService", "kickPlayer", summonerId, teamId);
+        return client.sendRpcAndWait(SERVICE, "kickPlayer", summonerId, teamId);
     }
 }

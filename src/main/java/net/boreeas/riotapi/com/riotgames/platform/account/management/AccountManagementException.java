@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.com.riotgames.platform.summoner.icon;
+package net.boreeas.riotapi.com.riotgames.platform.account.management;
 
-import lombok.Data;
-import net.boreeas.riotapi.com.riotgames.platform.catalog.icon.Icon;
+import lombok.NoArgsConstructor;
+import net.boreeas.riotapi.com.riotgames.platform.messaging.PlatformException;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Created on 7/20/2014.
+ * Created by malte on 7/11/2014.
  */
-@Data
-@Serialization(name = "com.riotgames.platform.summoner.icon.SummonerIconInventoryDTO")
-public class SummonerIconInventory {
-    private long summonerId;
-    private String dateString;
-    private List<Icon> summonerIcons = new ArrayList<>();
-    private Object summonerIconJson;
+@NoArgsConstructor
+@Serialization(name = "com.riotgames.platform.account.management.AccountManagementException")
+public class AccountManagementException extends PlatformException {
+    public AccountManagementException(String s) {
+        super(s);
+    }
+
+    public AccountManagementException(String s, Exception ex) {
+        super(s, ex);
+    }
 }

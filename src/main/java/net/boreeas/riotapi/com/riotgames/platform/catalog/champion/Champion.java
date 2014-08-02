@@ -14,23 +14,31 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.com.riotgames.platform.summoner.icon;
+package net.boreeas.riotapi.com.riotgames.platform.catalog.champion;
 
 import lombok.Data;
-import net.boreeas.riotapi.com.riotgames.platform.catalog.icon.Icon;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
- * Created on 7/20/2014.
+ * Created on 7/29/2014.
  */
 @Data
-@Serialization(name = "com.riotgames.platform.summoner.icon.SummonerIconInventoryDTO")
-public class SummonerIconInventory {
-    private long summonerId;
-    private String dateString;
-    private List<Icon> summonerIcons = new ArrayList<>();
-    private Object summonerIconJson;
+@Serialization(name = "com.riotgames.platform.catalog.champion.ChampionDTO")
+public class Champion {
+    private double purchased;
+    private List<ChampionSkin> championSkins = new ArrayList<>();
+    private boolean rankedPlayEnabled;
+    private Date purchaseDate;
+    private int winCountRemaining;
+    private boolean botEnabled;
+    private boolean active;
+    private Date endDate;
+    private boolean freeToPlay;
+    private int championId;
+    private boolean freeToPlayReward;
+    private boolean owned;
 }

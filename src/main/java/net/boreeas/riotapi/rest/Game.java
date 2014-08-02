@@ -19,6 +19,8 @@ package net.boreeas.riotapi.rest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
+import net.boreeas.riotapi.com.riotgames.platform.game.GameType;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -17,7 +17,6 @@
 package net.boreeas.riotapi.rtmp.services;
 
 import lombok.AllArgsConstructor;
-import net.boreeas.riotapi.com.riotgames.platform.gameinvite.contract.Player;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.AllPublicSummonerData;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.AllSummonerData;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.PublicSummoner;
@@ -33,9 +32,6 @@ public class SummonerService {
     private static final String SERVICE = "summonerService";
     private RtmpClient client;
 
-    public Player findPlayer(double id) {
-        return client.sendRpcAndWait(SERVICE, "findPlayer", id);
-    }
 
     public AllSummonerData getAllSummonerDataByAccount(double accId) {
         return client.sendRpcAndWait(SERVICE, "getAllSummonerDataByAccount", accId);

@@ -90,6 +90,11 @@ public class RtmpPacketReader implements Runnable {
         } catch (IOException e) {}
     }
 
+    private void errorClose(Exception ex) {
+        onError.accept(ex);
+        interrupt();
+    }
+
     private void readPacket() throws IOException {
         RtmpHeader header = readHeader();
         headers.put(header.getStreamId(), header);
@@ -103,7 +108,11 @@ public class RtmpPacketReader implements Runnable {
         int remainingLength = packet.getLength() + (header.getTimestamp() >= 0xffffff ? 4 : 0) - packet.getCurrentPos();
         int bufferSize = Math.min(remainingLength, chunkSize);
         byte[] buffer = new byte[bufferSize];
-        reader.read(buffer);
+
+        int count = 0;
+        do {
+            count += reader.read(buffer, count, bufferSize - count);
+        } while (count != bufferSize);
 
         packet.append(buffer);
 
@@ -128,7 +137,7 @@ public class RtmpPacketReader implements Runnable {
         int headerByte = reader.read() & 0xff;
 
         if (headerByte == 0b11111111) {
-            throw new EOFException();
+            errorClose(new EOFException());
         }
 
         int chunkStreamId = getChunkStreamId(headerByte);
@@ -283,7 +292,7 @@ public class RtmpPacketReader implements Runnable {
         while (reader.available() > 0) {
             Object obj = reader.decodeAmf0();
             params.add(obj);
-            break;
+            //break;
         }
 
         command.setMethod(new Command.Method(methodName, params.toArray()));

@@ -59,6 +59,7 @@ public enum Amf0Type {
         if (obj instanceof Boolean) return BOOLEAN;
         if (obj instanceof String) return ((String)obj).length() >= 0xFFFF ? LONG_STRING : STRING;
         if (obj instanceof UUID) return STRING;
+        if (obj instanceof Enum) return STRING;
         if (obj instanceof Map) return ECMA_ARRAY;
         if (obj instanceof Date) return DATE;
         if (obj.getClass().isArray()) return STRICT_ARRAY;

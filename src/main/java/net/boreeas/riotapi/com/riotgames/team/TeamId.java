@@ -30,4 +30,5 @@ import java.util.List;
 public class TeamId {
     // TODO inspect
     private List<Object> broadcastMessages = new ArrayList<>();
+    private String fullId;
 }

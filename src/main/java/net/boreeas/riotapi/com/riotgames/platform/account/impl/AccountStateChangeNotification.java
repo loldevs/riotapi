@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.com.riotgames.platform.summoner.icon;
+package net.boreeas.riotapi.com.riotgames.platform.account.impl;
 
 import lombok.Data;
-import net.boreeas.riotapi.com.riotgames.platform.catalog.icon.Icon;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 /**
- * Created on 7/20/2014.
+ * Created on 8/2/2014.
  */
 @Data
-@Serialization(name = "com.riotgames.platform.summoner.icon.SummonerIconInventoryDTO")
-public class SummonerIconInventory {
-    private long summonerId;
-    private String dateString;
-    private List<Icon> summonerIcons = new ArrayList<>();
-    private Object summonerIconJson;
+@Serialization(name = "com.riotgames.platform.account.impl.AccountStateChangeEventImpl")
+public class AccountStateChangeNotification {
+    private Date eventDate;
+    private long accountId;
+    private AccountState oldState;
+    private String context;
+    private AccountState newState;
 }

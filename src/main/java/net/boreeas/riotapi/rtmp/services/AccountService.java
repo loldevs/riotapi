@@ -17,6 +17,7 @@
 package net.boreeas.riotapi.rtmp.services;
 
 import lombok.AllArgsConstructor;
+import net.boreeas.riotapi.com.riotgames.platform.account.impl.AccountState;
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
 /**
@@ -31,7 +32,7 @@ public class AccountService {
      * Retrieve the account state for the current user
      * @return The account state
      */
-    public String getAccountState() {
-        return client.sendRpcAndWait(SERVICE, "getAccountStateForCurrentSession");
+    public AccountState getAccountState() {
+        return AccountState.getByName(client.sendRpcAndWait(SERVICE, "getAccountStateForCurrentSession"));
     }
 }

@@ -14,29 +14,10 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rest;
+package net.boreeas.riotapi.com.riotgames.platform.game;
 
 /**
- * Created on 4/12/2014.
+ * Created on 8/2/2014.
  */
-public enum GameType {
-    CUSTOM("CUSTOM_GAME"),
-    TUTORIAL("TUTORIAL_GAME"),
-    MATCHED("MATCHED_GAME");
-
-    public final String name;
-
-    private GameType(String name) {
-        this.name = name;
-    }
-
-    public static GameType getByName(String name) {
-        for (GameType type: values()) {
-            if (type.name.equals(name)) {
-                return type;
-            }
-        }
-
-        return null;
-    }
+public class GameMutator {
 }

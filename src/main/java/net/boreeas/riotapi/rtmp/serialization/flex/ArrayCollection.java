@@ -31,14 +31,14 @@ import java.util.List;
 /**
  * Created on 7/26/2014.
  */
-@Serialization(name = "flex.messaging.io.ArrayCollection")
+@Serialization(name = "flex.messaging.io.ArrayCollection", externalizable = true)
 public class ArrayCollection<E> extends ArrayList<E> implements Externalizable {
     @Delegate
     private ArrayList<E> source = new ArrayList<>();
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeObject(source);
+        out.writeObject(source.toArray());
     }
 
     @Override

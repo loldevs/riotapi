@@ -57,7 +57,7 @@ public enum Amf3Type {
         if (o instanceof Boolean) return ((Boolean) o) ? TRUE : FALSE;
         if (o instanceof Integer || o instanceof Byte || o instanceof Short) return INTEGER;
         if (o instanceof Long || o instanceof Double) return DOUBLE;
-        if (o instanceof String || o instanceof UUID) return STRING;
+        if (o instanceof String || o instanceof UUID || o instanceof Enum) return STRING;
         if (o instanceof Map) return ARRAY;
         if (o instanceof Date) return DATE;
         if (o instanceof byte[]) return BYTE_ARRAY;

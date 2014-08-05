@@ -17,6 +17,7 @@
 package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
+import net.boreeas.riotapi.com.riotgames.team.stats.TeamStatSummary;
 import net.boreeas.riotapi.com.riotgames.team.dto.Roster;
 
 import java.util.ArrayList;

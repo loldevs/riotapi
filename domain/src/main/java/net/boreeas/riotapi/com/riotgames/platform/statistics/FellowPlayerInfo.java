@@ -17,7 +17,7 @@
 package net.boreeas.riotapi.com.riotgames.platform.statistics;
 
 import lombok.Data;
-import net.boreeas.riotapi.rest.Team;
+import net.boreeas.riotapi.PlayerSide;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
@@ -30,7 +30,7 @@ public class FellowPlayerInfo {
     private int teamId;
     private long summonerId;
 
-    public Team getTeam() {
-        return Team.getById(teamId);
+    public PlayerSide getTeam() {
+        return PlayerSide.getById(teamId);
     }
 }

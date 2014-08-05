@@ -19,13 +19,14 @@ package net.boreeas.riotapi.rest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.boreeas.riotapi.QueueType;
+import net.boreeas.riotapi.Season;
 import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueItem;
 import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueList;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePage;
 
 import java.util.*;
-import java.util.Map;
 import java.util.concurrent.*;
 
 /**

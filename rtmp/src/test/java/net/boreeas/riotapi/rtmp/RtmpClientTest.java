@@ -3,7 +3,10 @@ package net.boreeas.riotapi.rtmp;
 import junit.framework.TestCase;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
+import net.boreeas.riotapi.QueueType;
+import net.boreeas.riotapi.Season;
 import net.boreeas.riotapi.Shard;
+import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
 import net.boreeas.riotapi.com.riotgames.platform.login.impl.ClientVersionMismatchException;
 import net.boreeas.riotapi.com.riotgames.platform.matchmaking.GameQueueConfig;
 import net.boreeas.riotapi.com.riotgames.platform.matchmaking.MatchMakerParams;
@@ -11,10 +14,6 @@ import net.boreeas.riotapi.com.riotgames.platform.matchmaking.SearchingForMatchN
 import net.boreeas.riotapi.com.riotgames.platform.summoner.runes.SummonerRuneInventory;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePageBook;
 import net.boreeas.riotapi.loginqeue.LoginQueue;
-import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
-import net.boreeas.riotapi.rest.QueueType;
-import net.boreeas.riotapi.rest.Season;
-import net.boreeas.riotapi.rtmp.serialization.DefaultRtmpClient;
 
 import java.io.FileInputStream;
 import java.io.InputStreamReader;

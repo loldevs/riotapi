@@ -17,7 +17,8 @@
 package net.boreeas.riotapi.spectator;
 
 import lombok.Getter;
-import net.boreeas.riotapi.rest.Team;
+import net.boreeas.riotapi.PlayerSide;
+
 
 /**
  * Created on 4/28/2014.
@@ -45,7 +46,7 @@ public class FeaturedPlayer {
     private String summonerName;
     private boolean bot;
 
-    public Team getTeam() {
-        return Team.getById(teamId);
+    public PlayerSide getTeam() {
+        return PlayerSide.getById(teamId);
     }
 }

@@ -18,7 +18,7 @@ package net.boreeas.riotapi.com.riotgames.platform.game;
 
 import lombok.Data;
 import lombok.ToString;
-import net.boreeas.riotapi.rest.Team;
+import net.boreeas.riotapi.PlayerSide;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
@@ -32,7 +32,7 @@ public class BannedChampion {
     private int teamId;
     private int pickTurn;
 
-    public Team getTeam() {
-        return Team.getById(teamId);
+    public PlayerSide getTeam() {
+        return PlayerSide.getById(teamId);
     }
 }

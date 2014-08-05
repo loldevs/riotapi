@@ -18,10 +18,9 @@ package net.boreeas.riotapi.rest;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import net.boreeas.riotapi.Util;
-import net.boreeas.riotapi.Shard;
-import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueList;
+import net.boreeas.riotapi.*;
 import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueItem;
+import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueList;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePage;
 
 import javax.ws.rs.client.Client;
@@ -31,12 +30,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

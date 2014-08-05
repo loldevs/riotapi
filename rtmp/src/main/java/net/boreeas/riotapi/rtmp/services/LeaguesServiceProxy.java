@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueList;
 import net.boreeas.riotapi.com.riotgames.platform.leagues.client.dto.SummonerLeagueItems;
 import net.boreeas.riotapi.com.riotgames.platform.leagues.client.dto.SummonerLeagues;
-import net.boreeas.riotapi.rest.QueueType;
+import net.boreeas.riotapi.QueueType;
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
 /**

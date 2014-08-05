@@ -19,7 +19,7 @@ package net.boreeas.riotapi.spectator;
 import com.google.gson.Gson;
 import lombok.SneakyThrows;
 import net.boreeas.riotapi.Shard;
-import net.boreeas.riotapi.rest.RequestException;
+import net.boreeas.riotapi.RequestException;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;

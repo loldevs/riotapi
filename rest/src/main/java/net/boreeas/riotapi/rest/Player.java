@@ -19,6 +19,7 @@ package net.boreeas.riotapi.rest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.boreeas.riotapi.PlayerSide;
 
 /**
  * Created on 4/14/2014.
@@ -31,7 +32,7 @@ public class Player {
     private long summonerId;
     private int teamId;
 
-    public Team getTeam() {
-        return Team.getById(teamId);
+    public PlayerSide getTeam() {
+        return PlayerSide.getById(teamId);
     }
 }

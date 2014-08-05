@@ -19,7 +19,7 @@ package net.boreeas.riotapi.rtmp.services;
 import lombok.AllArgsConstructor;
 import net.boreeas.riotapi.com.riotgames.platform.game.*;
 import net.boreeas.riotapi.com.riotgames.platform.game.practice.PracticeGameSearchResult;
-import net.boreeas.riotapi.rest.Team;
+import net.boreeas.riotapi.PlayerSide;
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
 import java.util.List;
@@ -60,7 +60,7 @@ public class GameService {
         return client.sendRpcAndWait(SERVICE, "switchPlayerToObserver", id);
     }
 
-    public boolean switchToPlayer(double id, Team team) {
+    public boolean switchToPlayer(double id, PlayerSide team) {
         return client.sendRpcAndWait(SERVICE, "switchObserverToPlayer", id, team.id);
     }
 

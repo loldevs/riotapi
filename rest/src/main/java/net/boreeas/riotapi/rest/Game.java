@@ -19,6 +19,8 @@ package net.boreeas.riotapi.rest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.boreeas.riotapi.PlayerSide;
+import net.boreeas.riotapi.QueueType;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameType;
 
@@ -61,7 +63,7 @@ public class Game {
         return QueueType.getByName(subType);
     }
 
-    public Team getTeam() {
-        return Team.getById(teamId);
+    public PlayerSide getTeam() {
+        return PlayerSide.getById(teamId);
     }
 }

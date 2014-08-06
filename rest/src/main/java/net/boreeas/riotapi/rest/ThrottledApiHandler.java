@@ -247,10 +247,6 @@ public class ThrottledApiHandler {
         return new ApiFuture<>(() -> handler.getLeagueEntries(teamIds));
     }
 
-    // </editor-fold>
-
-    // <editor-fold desc="Static Data">
-
     /**
      * Get the region's challenger league
      * @param queue The queue type for which to retrieve the league information
@@ -261,13 +257,18 @@ public class ThrottledApiHandler {
         return new ApiFuture<>(() -> handler.getChallenger(queue));
     }
 
+
+    // </editor-fold>
+
+    // <editor-fold desc="Static Data">
+
     /**
      * Get champion information for all champions
      * @return Champion information for all champions
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2171>Official API documentation</a>
      */
-    public ChampionList getChampionListDto() {
-        return handler.getChampionListDto();
+    public Future<ChampionList> getChampionListDto() {
+        return new DummyFuture<>(handler.getChampionListDto());
     }
 
     /**
@@ -279,8 +280,8 @@ public class ThrottledApiHandler {
      * @return The information for all champions
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2171>Official API documentation</a>
      */
-    public ChampionList getChampionListDto(ChampData champData) {
-        return handler.getChampionListDto(champData);
+    public Future<ChampionList> getChampionListDto(ChampData champData) {
+        return new DummyFuture<>(handler.getChampionListDto(champData));
     }
 
     /**
@@ -295,8 +296,8 @@ public class ThrottledApiHandler {
      * @return The information for all champions
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2171>Official API documentation</a>
      */
-    public ChampionList getChampionListDto(String locale, String version, boolean dataById, ChampData champData) {
-        return handler.getChampionListDto(locale, version, dataById, champData);
+    public Future<ChampionList> getChampionListDto(String locale, String version, boolean dataById, ChampData champData) {
+        return new DummyFuture<>(handler.getChampionListDto(locale, version, dataById, champData));
     }
 
     /**
@@ -306,8 +307,8 @@ public class ThrottledApiHandler {
      * This method does not count towards the rate limit and is not affected by the throttle
      * @return All champions in the game
      */
-    public Collection<Champion> getChampions() {
-        return handler.getChampions();
+    public Future<Collection<Champion>> getChampions() {
+        return new DummyFuture<>(handler.getChampions());
     }
 
     /**
@@ -318,8 +319,8 @@ public class ThrottledApiHandler {
      * @param champData Additional information to retrieve
      * @return All champions in the game
      */
-    public Collection<Champion> getChampions(ChampData champData) {
-        return handler.getChampions(champData);
+    public Future<Collection<Champion>> getChampions(ChampData champData) {
+        return new DummyFuture<>(handler.getChampions(champData));
     }
 
     /**
@@ -333,8 +334,8 @@ public class ThrottledApiHandler {
      * @param champData Additional information to retrieve
      * @return All champions in the game
      */
-    public Collection<Champion> getChampions(ChampData champData, String version, String locale, boolean dataById) {
-        return handler.getChampions(champData, version, locale, dataById);
+    public Future<Collection<Champion>> getChampions(ChampData champData, String version, String locale, boolean dataById) {
+        return new DummyFuture<>(handler.getChampions(champData, version, locale, dataById));
     }
 
     /**
@@ -346,8 +347,8 @@ public class ThrottledApiHandler {
      * @return The champion
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2169>Official API documentation</a>
      */
-    public Champion getChampion(int id) {
-        return handler.getChampion(id);
+    public Future<Champion> getChampion(int id) {
+        return new DummyFuture<>(handler.getChampion(id));
     }
 
     /**
@@ -360,8 +361,8 @@ public class ThrottledApiHandler {
      * @return The champion
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2169>Official API documentation</a>
      */
-    public Champion getChampion(int id, ChampData champData) {
-        return handler.getChampion(id, champData);
+    public Future<Champion> getChampion(int id, ChampData champData) {
+        return new DummyFuture<>(handler.getChampion(id, champData));
     }
 
     /**
@@ -376,8 +377,8 @@ public class ThrottledApiHandler {
      * @return The champion
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2169>Official API documentation</a>
      */
-    public Champion getChampion(int id, ChampData champData, String version, String locale) {
-        return handler.getChampion(id, champData, version, locale);
+    public Future<Champion> getChampion(int id, ChampData champData, String version, String locale) {
+        return new DummyFuture<>(handler.getChampion(id, champData, version, locale));
     }
 
     /**
@@ -388,8 +389,8 @@ public class ThrottledApiHandler {
      * @return The list of items
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2166>Official API documentation</a>
      */
-    public ItemList getItemList() {
-        return handler.getItemList();
+    public Future<ItemList> getItemList() {
+        return new DummyFuture<>(handler.getItemList());
     }
 
     /**
@@ -401,8 +402,8 @@ public class ThrottledApiHandler {
      * @return The list of items
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2166>Official API documentation</a>
      */
-    public ItemList getItemList(ItemData data) {
-        return handler.getItemList(data);
+    public Future<ItemList> getItemList(ItemData data) {
+        return new DummyFuture<>(handler.getItemList(data));
     }
 
     /**
@@ -416,8 +417,8 @@ public class ThrottledApiHandler {
      * @return The list of items
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2166>Official API documentation</a>
      */
-    public ItemList getItemList(ItemData data, String version, String locale) {
-        return handler.getItemList(data, version, locale);
+    public Future<ItemList> getItemList(ItemData data, String version, String locale) {
+        return new DummyFuture<>(handler.getItemList(data, version, locale));
     }
 
     /**
@@ -429,8 +430,8 @@ public class ThrottledApiHandler {
      * @return The item
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2176>Official API documentation</a>
      */
-    public Item getItem(int id) {
-        return handler.getItem(id);
+    public Future<Item> getItem(int id) {
+        return new DummyFuture<>(handler.getItem(id));
     }
 
     /**
@@ -443,8 +444,8 @@ public class ThrottledApiHandler {
      * @return The item
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2176>Official API documentation</a>
      */
-    public Item getItem(int id, ItemData data) {
-        return handler.getItem(id, data);
+    public Future<Item> getItem(int id, ItemData data) {
+        return new DummyFuture<>(handler.getItem(id, data));
     }
 
     /**
@@ -459,8 +460,8 @@ public class ThrottledApiHandler {
      * @return The item
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2176>Official API documentation</a>
      */
-    public Item getItem(int id, ItemData data, String version, String locale) {
-        return handler.getItem(id, data, version, locale);
+    public Future<Item> getItem(int id, ItemData data, String version, String locale) {
+        return new DummyFuture<>(handler.getItem(id, data, version, locale));
     }
 
     /**
@@ -471,8 +472,8 @@ public class ThrottledApiHandler {
      * @return The masteries
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2173>Official API documentation</a>
      */
-    public MasteryList getMasteries() {
-        return handler.getMasteries();
+    public Future<MasteryList> getMasteries() {
+        return new DummyFuture<>(handler.getMasteries());
     }
 
     /**
@@ -484,8 +485,8 @@ public class ThrottledApiHandler {
      * @return The masteries
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2173>Official API documentation</a>
      */
-    public MasteryList getMasteries(MasteryData data) {
-        return handler.getMasteries(data);
+    public Future<MasteryList> getMasteries(MasteryData data) {
+        return new DummyFuture<>(handler.getMasteries(data));
     }
 
     /**
@@ -499,8 +500,8 @@ public class ThrottledApiHandler {
      * @return The masteries
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2173>Official API documentation</a>
      */
-    public MasteryList getMasteries(MasteryData data, String version, String locale) {
-        return handler.getMasteries(data, version, locale);
+    public Future<MasteryList> getMasteries(MasteryData data, String version, String locale) {
+        return new DummyFuture<>(handler.getMasteries(data, version, locale));
     }
 
     /**
@@ -512,8 +513,8 @@ public class ThrottledApiHandler {
      * @return The mastery
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2175>Official API documentation</a>
      */
-    public Mastery getMastery(int id) {
-        return handler.getMastery(id);
+    public Future<Mastery> getMastery(int id) {
+        return new DummyFuture<>(handler.getMastery(id));
     }
 
     /**
@@ -526,8 +527,8 @@ public class ThrottledApiHandler {
      * @return The mastery
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2175>Official API documentation</a>
      */
-    public Mastery getMastery(int id, MasteryData data) {
-        return handler.getMastery(id, data);
+    public Future<Mastery> getMastery(int id, MasteryData data) {
+        return new DummyFuture<>(handler.getMastery(id, data));
     }
 
     /**
@@ -542,8 +543,8 @@ public class ThrottledApiHandler {
      * @return The mastery
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2175>Official API documentation</a>
      */
-    public Mastery getMastery(int id, MasteryData data, String version, String locale) {
-        return handler.getMastery(id, data, version, locale);
+    public Future<Mastery> getMastery(int id, MasteryData data, String version, String locale) {
+        return new DummyFuture<>(handler.getMastery(id, data, version, locale));
     }
 
     /**
@@ -554,8 +555,8 @@ public class ThrottledApiHandler {
      * @return Realm information
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2170>Official API documentation</a>
      */
-    public Realm getRealm() {
-        return handler.getRealm();
+    public Future<Realm> getRealm() {
+        return new DummyFuture<>(handler.getRealm());
     }
 
     /**
@@ -566,8 +567,8 @@ public class ThrottledApiHandler {
      * @return All runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2172>Official API documentation</a>
      */
-    public RuneList getRuneList() {
-        return handler.getRuneList();
+    public Future<RuneList> getRuneList() {
+        return new DummyFuture<>(handler.getRuneList());
     }
 
     /**
@@ -579,8 +580,8 @@ public class ThrottledApiHandler {
      * @return All runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2172>Official API documentation</a>
      */
-    public RuneList getRuneList(ItemData data) {
-        return handler.getRuneList(data);
+    public Future<RuneList> getRuneList(ItemData data) {
+        return new DummyFuture<>(handler.getRuneList(data));
     }
 
     /**
@@ -594,8 +595,8 @@ public class ThrottledApiHandler {
      * @return All runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2172>Official API documentation</a>
      */
-    public RuneList getRuneList(ItemData data, String version, String locale) {
-        return handler.getRuneList(data, version, locale);
+    public Future<RuneList> getRuneList(ItemData data, String version, String locale) {
+        return new DummyFuture<>(handler.getRuneList(data, version, locale));
     }
 
     /**
@@ -607,8 +608,8 @@ public class ThrottledApiHandler {
      * @return The runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2168>Official API documentation</a>
      */
-    public Item getRune(int id) {
-        return handler.getRune(id);
+    public Future<Item> getRune(int id) {
+        return new DummyFuture<>(handler.getRune(id));
     }
 
     /**
@@ -621,8 +622,8 @@ public class ThrottledApiHandler {
      * @return The runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2168>Official API documentation</a>
      */
-    public Item getRune(int id, ItemData data) {
-        return handler.getRune(id, data);
+    public Future<Item> getRune(int id, ItemData data) {
+        return new DummyFuture<>(handler.getRune(id, data));
     }
 
     /**
@@ -637,8 +638,8 @@ public class ThrottledApiHandler {
      * @return The runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2168>Official API documentation</a>
      */
-    public Item getRune(int id, ItemData data, String version, String locale) {
-        return handler.getRune(id, data, version, locale);
+    public Future<Item> getRune(int id, ItemData data, String version, String locale) {
+        return new DummyFuture<>(handler.getRune(id, data, version, locale));
     }
 
     /**
@@ -649,8 +650,8 @@ public class ThrottledApiHandler {
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
      */
-    public SummonerSpellList getSummonerSpellListDto() {
-        return handler.getSummonerSpellListDto();
+    public Future<SummonerSpellList> getSummonerSpellListDto() {
+        return new DummyFuture<>(handler.getSummonerSpellListDto());
     }
 
     /**
@@ -662,8 +663,8 @@ public class ThrottledApiHandler {
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
      */
-    public SummonerSpellList getSummonerSpellListDto(SpellData data) {
-        return handler.getSummonerSpellListDto(data);
+    public Future<SummonerSpellList> getSummonerSpellListDto(SpellData data) {
+        return new DummyFuture<>(handler.getSummonerSpellListDto(data));
     }
 
     /**
@@ -678,8 +679,8 @@ public class ThrottledApiHandler {
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
      */
-    public SummonerSpellList getSummonerSpellListDro(SpellData data, String version, String locale, boolean dataById) {
-        return handler.getSummonerSpellListDro(data, version, locale, dataById);
+    public Future<SummonerSpellList> getSummonerSpellListDro(SpellData data, String version, String locale, boolean dataById) {
+        return new DummyFuture<>(handler.getSummonerSpellListDro(data, version, locale, dataById));
     }
 
     /**
@@ -690,8 +691,8 @@ public class ThrottledApiHandler {
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
      */
-    public Collection<SummonerSpell> getSummonerSpells() {
-        return handler.getSummonerSpells();
+    public Future<Collection<SummonerSpell>> getSummonerSpells() {
+        return new DummyFuture<>(handler.getSummonerSpells());
     }
 
     /**
@@ -703,8 +704,8 @@ public class ThrottledApiHandler {
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
      */
-    public Collection<SummonerSpell> getSummonerSpells(SpellData data) {
-        return handler.getSummonerSpells(data);
+    public Future<Collection<SummonerSpell>> getSummonerSpells(SpellData data) {
+        return new DummyFuture<>(handler.getSummonerSpells(data));
     }
 
     /**
@@ -719,8 +720,8 @@ public class ThrottledApiHandler {
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
      */
-    public Collection<SummonerSpell> getSummonerSpells(SpellData data, String version, String locale, boolean dataById) {
-        return handler.getSummonerSpells(data, version, locale, dataById);
+    public Future<Collection<SummonerSpell>> getSummonerSpells(SpellData data, String version, String locale, boolean dataById) {
+        return new DummyFuture<>(handler.getSummonerSpells(data, version, locale, dataById));
     }
 
     /**
@@ -732,8 +733,8 @@ public class ThrottledApiHandler {
      * @return The spell
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2167>Official API documentation</a>
      */
-    public SummonerSpell getSummonerSpell(int id) {
-        return handler.getSummonerSpell(id);
+    public Future<SummonerSpell> getSummonerSpell(int id) {
+        return new DummyFuture<>(handler.getSummonerSpell(id));
     }
 
     /**
@@ -746,8 +747,8 @@ public class ThrottledApiHandler {
      * @return The spell
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2167>Official API documentation</a>
      */
-    public SummonerSpell getSummonerSpell(int id, SpellData data) {
-        return handler.getSummonerSpell(id, data);
+    public Future<SummonerSpell> getSummonerSpell(int id, SpellData data) {
+        return new DummyFuture<>(handler.getSummonerSpell(id, data));
     }
 
     /**
@@ -762,8 +763,8 @@ public class ThrottledApiHandler {
      * @return The spell
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2167>Official API documentation</a>
      */
-    public SummonerSpell getSummonerSpell(int id, SpellData data, String version, String locale) {
-        return handler.getSummonerSpell(id, data, version, locale);
+    public Future<SummonerSpell> getSummonerSpell(int id, SpellData data, String version, String locale) {
+        return new DummyFuture<>(handler.getSummonerSpell(id, data, version, locale));
     }
 
     // </editor-fold>
@@ -1064,6 +1065,40 @@ public class ThrottledApiHandler {
 
         public Exception getErr() {
             return err;
+        }
+    }
+
+    private class DummyFuture<T> implements Future<T> {
+
+        private T value;
+
+        private DummyFuture(T value) {
+            this.value = value;
+        }
+
+        @Override
+        public boolean cancel(boolean mayInterruptIfRunning) {
+            return false;
+        }
+
+        @Override
+        public boolean isCancelled() {
+            return false;
+        }
+
+        @Override
+        public boolean isDone() {
+            return true;
+        }
+
+        @Override
+        public T get() throws InterruptedException, ExecutionException {
+            return value;
+        }
+
+        @Override
+        public T get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+            return value;
         }
     }
 

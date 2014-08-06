@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import lombok.SneakyThrows;
 import net.boreeas.riotapi.RequestException;
 import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.com.riotgames.platform.account.management.InvalidCredentialsException;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -46,8 +48,9 @@ public class LoginQueue {
         tgt = ClientBuilder.newClient().target(shard.loginQueue).path("login-queue/rest/queue/authenticate");
     }
 
+    @SneakyThrows
     public AuthResult getAuthToken(String user, String password) {
-        String payload = String.format("payload=user=%s,password=%s", user, password);
+        String payload = String.format("payload=user=%s,password=%s", URLEncoder.encode(user, "UTF-8"), URLEncoder.encode(password, "UTF-8"));
         Response response = tgt.request().post(Entity.entity(payload, MediaType.APPLICATION_FORM_URLENCODED));
 
 

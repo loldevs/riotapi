@@ -18,8 +18,10 @@ package net.boreeas.riotapi.rtmp.serialization.flex;
 
 import lombok.Delegate;
 import lombok.SneakyThrows;
-import net.boreeas.riotapi.rtmp.serialization.TypeConverter;
+import net.boreeas.riotapi.rtmp.serialization.AmfType;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
+import net.boreeas.riotapi.rtmp.serialization.TypeConverter;
+import net.boreeas.riotapi.rtmp.serialization.amf3.Amf3Type;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,6 +33,7 @@ import java.util.List;
 /**
  * Created on 7/26/2014.
  */
+@AmfType(amf3Type = Amf3Type.OBJECT)
 @Serialization(name = "flex.messaging.io.ArrayCollection", externalizable = true)
 public class ArrayCollection<E> extends ArrayList<E> implements Externalizable {
     @Delegate

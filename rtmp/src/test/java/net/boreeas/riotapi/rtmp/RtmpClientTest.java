@@ -11,8 +11,10 @@ import net.boreeas.riotapi.com.riotgames.platform.login.impl.ClientVersionMismat
 import net.boreeas.riotapi.com.riotgames.platform.matchmaking.GameQueueConfig;
 import net.boreeas.riotapi.com.riotgames.platform.matchmaking.MatchMakerParams;
 import net.boreeas.riotapi.com.riotgames.platform.matchmaking.SearchingForMatchNotification;
+import net.boreeas.riotapi.com.riotgames.platform.summoner.SummonerSkillLevel;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.runes.SummonerRuneInventory;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePageBook;
+import net.boreeas.riotapi.com.riotgames.team.dto.Team;
 import net.boreeas.riotapi.loginqeue.LoginQueue;
 
 import java.io.FileInputStream;
@@ -75,8 +77,7 @@ public class RtmpClientTest extends TestCase {
     }
 
     public void testSaveSpellbook() {
-        System.out.println("Inspect: BookService.saveSpellBook");
-        System.out.println(client.bookService.saveSpellBook(client.bookService.getSpellBook(summonerId)));
+        client.bookService.saveSpellBook(client.bookService.getSpellBook(summonerId));
     }
 
     public void testSelectDefaultSpellBookPage() {
@@ -155,12 +156,12 @@ public class RtmpClientTest extends TestCase {
 
     public void testProcessEloQuestionaire() {
         System.out.println("Inspect: playerStatsService.processEloQuestionaire");
-        Object obj = client.playerStatsService.processEloQuestionaire("NOVICE");
+        Object obj = client.playerStatsService.processEloQuestionaire(SummonerSkillLevel.BEGINNER);
         System.out.println(obj);
     }
 
     public void testGetAggregatedStats() {
-        client.playerStatsService.getAggregatedStats(accountId, Season.SEASON4, GameMode.CLASSIC);
+        client.playerStatsService.getAggregatedStats(accountId, GameMode.CLASSIC, Season.SEASON4);
     }
 
     public void testGetRecentGames() {
@@ -168,7 +169,8 @@ public class RtmpClientTest extends TestCase {
     }
 
     public void testGetTeamAggregatedStats() {
-        client.playerStatsService.getTeamAggregatedStats(client.summonerTeamService.findTeamByName(testConfig.getProperty("lookupTeamname")).getTeamId());
+        Team team = client.summonerTeamService.findTeamByName(testConfig.getProperty("lookupTeamname"));
+        client.playerStatsService.getTeamAggregatedStats(team.getTeamId());
     }
 
     public void testGetSummonerIconInventory() {

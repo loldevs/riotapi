@@ -36,6 +36,7 @@ public @interface Serialization {
     public String[] noncanonicalNames() default {};
     public boolean dynamic() default false;
     public boolean externalizable() default false;
+    public boolean deserializeOnly() default false;
     public Class<? extends Amf3ObjectSerializer> amf3Serializer() default Amf3ObjectSerializer.class;
     public Class<? extends Amf0ObjectSerializer> amf0Serializer() default Amf0ObjectSerializer.class;
     public Class<? extends Amf3ObjectDeserializer> amf3Deserializer() default Amf3ObjectDeserializer.class;

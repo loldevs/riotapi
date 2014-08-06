@@ -274,11 +274,11 @@ public abstract class RtmpClient {
         this.socket = useSSL ? SSLSocketFactory.getDefault().createSocket(host, port) : new Socket(host, port);
 
         // Debug stuff
-        AmfWriter writer = new AmfWriter(new DumpingOutputStream(socket.getOutputStream()));
-        AmfReader reader = new AmfReader(new DumpingInputStream(socket.getInputStream()));
+        //AmfWriter writer = new AmfWriter(new DumpingOutputStream(socket.getOutputStream()));
+        //AmfReader reader = new AmfReader(new DumpingInputStream(socket.getInputStream()));
 
-        //AmfWriter writer = new AmfWriter(socket.getOutputStream());
-        //AmfReader reader = new AmfReader(socket.getInputStream());
+        AmfWriter writer = new AmfWriter(socket.getOutputStream());
+        AmfReader reader = new AmfReader(socket.getInputStream());
 
         doHandshake(writer, reader);
 

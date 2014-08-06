@@ -14,30 +14,17 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.com.riotgames.platform.game;
+package net.boreeas.riotapi.com.riotgames.platform.summoner;
 
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
- * Created on 4/12/2014.
+ * Created on 8/5/2014.
  */
-@Serialization(name = "com.riotgames.platform.game.GameMode", deserializeOnly = true)
-public enum GameMode {
-    CLASSIC,
-    ODIN,
-    ARAM,
-    TUTORIAL,
-    ONEFORALL,
-    ASCENSION,
-    FIRSTBLOOD;
-
-    public static GameMode getByName(String name) {
-        for (GameMode mode: values()) {
-            if (mode.name().equals(name)) {
-                return mode;
-            }
-        }
-
-        return null;
-    }
+@Serialization(name = "com.riotgames.platform.summoner.SummonerSkillLevel", deserializeOnly = true)
+public enum SummonerSkillLevel {
+    BEGINNER,
+    RTS_PLAYER,
+    VETERAN,
+    EXPERT
 }

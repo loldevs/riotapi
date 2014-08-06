@@ -39,8 +39,7 @@ public class BookService {
         return client.sendRpcAndWait(SPELL_BOOK_SERVICE, "selectDefaultSpellBookPage", page);
     }
 
-    // TODO inspect
-    public Object saveSpellBook(RunePageBook spellBook) {
+    public RunePageBook saveSpellBook(RunePageBook spellBook) {
         return client.sendRpcAndWait(SPELL_BOOK_SERVICE, "saveSpellBook", spellBook);
     }
 

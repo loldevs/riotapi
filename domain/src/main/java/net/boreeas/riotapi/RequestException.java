@@ -22,6 +22,18 @@ package net.boreeas.riotapi;
 public class RequestException extends RuntimeException {
     private ErrorType error;
 
+    public RequestException(String msg) {
+        super(msg);
+    }
+
+    public RequestException(String msg, Throwable cause) {
+        super(msg, cause);
+    }
+
+    public RequestException(int responseCode) {
+        this(responseCode, ErrorType.getByCode(responseCode));
+    }
+
     public RequestException(int responseCode, ErrorType error) {
         super(responseCode + "/" + error + " error during request");
         this.error = error;

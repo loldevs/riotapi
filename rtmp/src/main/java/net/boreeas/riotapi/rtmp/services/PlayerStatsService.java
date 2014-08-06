@@ -19,6 +19,7 @@ package net.boreeas.riotapi.rtmp.services;
 import lombok.AllArgsConstructor;
 import net.boreeas.riotapi.com.riotgames.platform.statistics.*;
 import net.boreeas.riotapi.com.riotgames.platform.statistics.team.TeamAggregatedStats;
+import net.boreeas.riotapi.com.riotgames.platform.summoner.SummonerSkillLevel;
 import net.boreeas.riotapi.com.riotgames.team.TeamId;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
 import net.boreeas.riotapi.Season;
@@ -34,7 +35,7 @@ public class PlayerStatsService {
     private static final String SERVICE = "playerStatsService";
     private RtmpClient client;
 
-    public Object processEloQuestionaire(String skill) {
+    public Object processEloQuestionaire(SummonerSkillLevel skill) {
         return client.sendRpcAndWait(SERVICE, "processEloQuestionaire", skill);
     }
 
@@ -46,8 +47,8 @@ public class PlayerStatsService {
         return client.sendRpcAndWait(SERVICE, "retrieveTopPlayedChampions", accId, mode);
     }
 
-    public AggregatedStats getAggregatedStats(double id, Season season, GameMode gameMode) {
-        return client.sendRpcAndWait(SERVICE, "getAggregatedStats", id, season, gameMode);
+    public AggregatedStats getAggregatedStats(double id, GameMode gameMode, Season season) {
+        return client.sendRpcAndWait(SERVICE, "getAggregatedStats", id, gameMode, season.numeric);
     }
 
     public RecentGames getRecentGames(double accId) {

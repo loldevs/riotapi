@@ -267,6 +267,7 @@ public class AmfWriter extends OutputStream implements ObjectOutput {
     @SneakyThrows(value = {InstantiationException.class, IllegalAccessException.class})
     public void serializeAmf3(Object obj, Amf3Type marker) throws IOException {
 
+
         if (checkReferenceable(obj, marker)) {
             return;
         }
@@ -275,7 +276,7 @@ public class AmfWriter extends OutputStream implements ObjectOutput {
         if (amf3Serializers.containsKey(obj.getClass())) {
             amf3Serializers.get(obj.getClass()).serialize(obj, out);
 
-        } else if ((context = Util.searchClassHierarchy(obj.getClass(), Serialization.class)) != null) {
+        } else if ((context = Util.searchClassHierarchy(obj.getClass(), Serialization.class)) != null && !context.deserializeOnly()) {
 
             Amf3ObjectSerializer serializer = context.amf3Serializer().newInstance();
 
@@ -287,6 +288,7 @@ public class AmfWriter extends OutputStream implements ObjectOutput {
             // Arrays require special handling
             serializeArrayAmf3(obj);
         } else if (obj instanceof Enum) {
+            // Enums are written by name
             serializeAmf3(((Enum) obj).name());
         } else {
 

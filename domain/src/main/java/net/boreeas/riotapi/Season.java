@@ -20,12 +20,14 @@ package net.boreeas.riotapi;
  * Created on 4/14/2014.
  */
 public enum Season {
-    SEASON3("SEASON3"),
-    SEASON4("SEASON4");
+    SEASON3("SEASON3", 3),
+    SEASON4("SEASON4", 4);
 
     public final String name;
+    public final int numeric;
 
-    private Season(String name) {
+    private Season(String name, int numeric) {
         this.name = name;
+        this.numeric = numeric;
     }
 }

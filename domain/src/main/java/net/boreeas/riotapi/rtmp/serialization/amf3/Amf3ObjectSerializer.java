@@ -60,11 +60,6 @@ public class Amf3ObjectSerializer implements AmfSerializer {
         }
 
 
-        if (traitDef.isExternalizable()) {
-            System.out.println("Externalizable " + traitDef);
-        }
-
-
         if (o instanceof Externalizable) {
             ((Externalizable) o).writeExternal(writer);
             return;

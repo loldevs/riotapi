@@ -16,9 +16,8 @@
 
 package net.boreeas.riotapi.rtmp.serialization;
 
+import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j;
-import net.boreeas.riotapi.rtmp.serialization.AmfObject;
-import net.boreeas.riotapi.rtmp.serialization.AnonymousAmfObject;
 import net.boreeas.riotapi.rtmp.serialization.amf3.DynamicObject;
 
 import java.lang.reflect.Array;
@@ -37,10 +36,10 @@ public class TypeConverter {
      * There may be type mismatched caused by the serialization process which we try to fix here
      * @param cls The target field type
      * @param obj The object which is to be assigned to the field
-     * @param <T>
+     * @param json Attempt to deserialize objects as json
      * @return An object assignable to fields with that type, or the original object if no type conversion exists
      */
-    public static <T> Object typecast(Class<T> cls, Object obj) throws InstantiationException, IllegalAccessException {
+    public static <T> Object typecast(Class<T> cls, Object obj, boolean json) throws InstantiationException, IllegalAccessException {
         if (cls.isInstance(obj)) {
             return cls.cast(obj);
         }
@@ -214,7 +213,10 @@ public class TypeConverter {
             } catch (InvocationTargetException e) {
                 throw new IllegalStateException(e);
             }
+        }
 
+        if (json && obj instanceof String) {
+            return new Gson().fromJson((String) obj, cls);
         }
 
         throw new IllegalArgumentException("Unknown conversion " + obj.getClass() + " => " + cls);

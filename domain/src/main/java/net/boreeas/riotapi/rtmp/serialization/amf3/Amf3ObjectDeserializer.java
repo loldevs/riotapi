@@ -74,7 +74,7 @@ public class Amf3ObjectDeserializer {
         Field field = ref.getLocation().getDeclaredField(ref.getName());
         field.setAccessible(true);
         try {
-            field.set(target, TypeConverter.typecast(field.getType(), value));
+            field.set(target, TypeConverter.typecast(field.getType(), value, field.isAnnotationPresent(JsonSerialization.class)));
         } catch (IllegalArgumentException ex) {
             throw new SerializationException(ref + " (value=" + value + "): " + ex.getMessage());
         }
@@ -92,7 +92,7 @@ public class Amf3ObjectDeserializer {
         Field field = ref.getLocation().getDeclaredField(ref.getName());
         field.setAccessible(true);
         try {
-            field.set(target, TypeConverter.typecast(field.getType(), value));
+            field.set(target, TypeConverter.typecast(field.getType(), value, field.isAnnotationPresent(JsonSerialization.class)));
         } catch (IllegalArgumentException ex) {
             throw new SerializationException(ref + " (value=" + value + "): " + ex.getMessage());
         }

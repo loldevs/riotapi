@@ -58,7 +58,7 @@ public class Amf0ObjectDeserializer {
 
                     field.setAccessible(true);
                     try {
-                        field.set(object, TypeConverter.typecast(field.getType(), value));
+                        field.set(object, TypeConverter.typecast(field.getType(), value, field.isAnnotationPresent(JsonSerialization.class)));
                     } catch (IllegalArgumentException ex) {
                         throw new SerializationException("Field " + name + " of " + c + " (value=" + value + "): " + ex.getMessage());
                     }

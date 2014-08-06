@@ -47,6 +47,6 @@ public class ArrayCollection<E> extends ArrayList<E> implements Externalizable {
     @Override
     @SneakyThrows(value = {InstantiationException.class, IllegalAccessException.class})
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        source.addAll((List) TypeConverter.typecast(List.class, in.readObject()));
+        source.addAll((List) TypeConverter.typecast(List.class, in.readObject(), false));
     }
 }

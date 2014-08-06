@@ -16,6 +16,7 @@
 
 package net.boreeas.riotapi.rtmp.serialization.amf3;
 
+import com.google.gson.Gson;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
@@ -84,13 +85,13 @@ public class Amf3ObjectSerializer implements AmfSerializer {
     protected Object getStaticField(Object o, FieldRef ref) throws NoSuchFieldException, IllegalAccessException {
         Field f = ref.getLocation().getDeclaredField(ref.getName());
         f.setAccessible(true);
-        return f.get(o);
+        return f.isAnnotationPresent(JsonSerialization.class) ? new Gson().toJson(f.get(o)) : f.get(o);
     }
 
     protected Object getDynamicField(Object o, FieldRef ref) throws NoSuchFieldException, IllegalAccessException {
         Field f = ref.getLocation().getDeclaredField(ref.getName());
         f.setAccessible(true);
-        return f.get(o);
+        return f.isAnnotationPresent(JsonSerialization.class) ? new Gson().toJson(f.get(o)) : f.get(o);
     }
 
     protected TraitDefinition getTraitDefiniton(Object o) {

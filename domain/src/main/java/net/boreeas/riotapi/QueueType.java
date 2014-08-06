@@ -20,34 +20,37 @@ package net.boreeas.riotapi;
  * Created on 4/12/2014.
  */
 public enum QueueType {
-    NONE("NONE"),
-    NORMAL_5v5("NORMAL"),
-    NORMAL_3v3("NORMAL_3x3"),
-    DOMINION("ODIN_UNRANKED"),
-    ARAM("ARAM_UNRANKED_5x5"),
-    BOT("BOT"),
-    BOT_3v3("BOT_3x3"),
-    RANKED_SOLO_5v5("RANKED_SOLO_5x5"),
-    RANKED_TEAM_3v3("RANKED_TEAM_3x3"),
-    RANKED_TEAM_5v5("RANKED_TEAM_5x5"),
-    ONE_FOR_ALL("ONEFORALL_5x5"),
-    FIRSTBLOOD_1v1("FIRSTBLOOD_1x1"),
-    FIRSTBLOOD_2v2("FIRSTBLOOD_2x2"),
-    HEXAKILL("SR_6x6"),
-    TEAMBUILDER("CAP_5x5"),
-    URF("URF"),
-    URF_BOT("URF_BOT");
+    ARAM,
+    ARAM_UNRANKED_5x5,
+    BOT,
+    BOT_3x3,
+    CAP_5x5,
+    CLASSIC,
+    FIRSTBLOOD,
+    FIRSTBLOOD_1x1,
+    FIRSTBLOOD_2x2,
+    NIGHTMARE_BOT,
+    NONE,
+    NORMAL,
+    NORMAL_3x3,
+    ODIN,
+    ODIN_UNRANKED,
+    ONEFORALL,
+    ONEFORALL_5x5,
+    RANKED_PREMADE_3x3,
+    RANKED_PREMADE_5x5,
+    RANKED_SOLO_5x5,
+    RANKED_TEAM_3x3,
+    RANKED_TEAM_5x5,
+    SR_6x6,
+    TUTORIAL,
+    URF,
+    URF_BOT;
 
-
-    public final String name;
-
-    private QueueType(String name) {
-        this.name = name;
-    }
 
     public static QueueType getByName(String name) {
         for (QueueType type: values()) {
-            if (type.name.equals(name)) {
+            if (type.name().equals(name)) {
                 return type;
             }
         }

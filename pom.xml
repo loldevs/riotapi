@@ -4,9 +4,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!--
+    Aggregator and shared parent for entire project
+    -->
+
     <groupId>net.boreeas</groupId>
     <artifactId>riotapi</artifactId>
-    <version>1.0.2</version>
+    <name>aggregator</name>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+
+    <modules>
+        <module>rest</module>
+        <module>domain</module>
+        <module>rtmp</module>
+        <module>loginqueue</module>
+        <module>spectator</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -68,5 +82,20 @@
             <artifactId>gson</artifactId>
             <version>2.2.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.9-RC1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+
+        <!-- Other libraries needed for a complete ecosystem -->
+
     </dependencies>
 </project>

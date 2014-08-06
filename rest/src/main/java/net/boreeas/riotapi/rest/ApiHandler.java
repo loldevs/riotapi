@@ -19,8 +19,8 @@ package net.boreeas.riotapi.rest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.boreeas.riotapi.*;
-import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueItem;
 import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueList;
+import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueItem;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePage;
 
 import javax.ws.rs.client.Client;
@@ -74,6 +74,8 @@ public class ApiHandler {
         staticDataTarget    = defaultStaticTarget.path("v1.2");
     }
 
+    // <editor-fold desc="Champion v1.2">
+
     /**
      * Get basic champion data (id, freeToPlay) for all champions
      * @return Basic champion data
@@ -103,6 +105,10 @@ public class ApiHandler {
         return gson.fromJson($(championInfoTarget.path(""+id)), BasicChampData.class);
     }
 
+    // </editor-fold>
+
+    // <editor-fold desc="Game v1.3">
+
     /**
      * Get a listing of recent games for the summoner
      * @param summoner The id of the summoner
@@ -114,17 +120,36 @@ public class ApiHandler {
         return gson.fromJson($(tgt), RecentGamesDto.class).games;
     }
 
+    // </editor-fold>
+
+    // <editor-fold desc="League v2.4">
+
     /**
-     * Get a listing of leagues for the the summoner
+     * Get a listing of leagues for the summoner
      * @param summoner The id of the summoner
      * @return A list of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1862>Official API documentation</a>
      */
     public List<LeagueList> getLeagues(long summoner) {
+        return getLeaguesVarArgs(summoner).get(summoner);
+    }
+
+    /**
+     * Get a listing of leagues for the specified summoners
+     * @param summoners The ids of the summoners
+     * @return A list of leagues
+     * @see <a href=https://developer.riotgames.com/api/methods#!/593/1862>Official API documentation</a>
+     */
+    public Map<Long, List<LeagueList>> getLeagues(long... summoners) {
+        return getLeaguesVarArgs(summoners);
+    }
+
+    private Map<Long, List<LeagueList>> getLeaguesVarArgs(long... summoners) {
         Type type = new TypeToken<List<LeagueList>>(){}.getType();
-        WebTarget tgt = leagueInfoTarget.path("by-summoner/" + summoner);
+        WebTarget tgt = leagueInfoTarget.path("by-summoner/" + concat(summoners));
         return gson.fromJson($(tgt), type);
     }
+
 
     /**
      * Get a listing of all league entries in the summoner's leagues
@@ -133,10 +158,26 @@ public class ApiHandler {
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1863>Official API documentation</a>
      */
     public List<LeagueItem> getLeagueEntries(long summoner) {
-        Type type = new TypeToken<List<LeagueItem>>(){}.getType();
-        WebTarget tgt = leagueInfoTarget.path("by-summoner/" + summoner).path("entry");
+        return getLeagueItemsVarArgs(summoner).get(summoner);
+    }
+
+    /**
+     * Get a listing of all league entries in the summoners' leagues
+     * @param summoners The ids of the summoners
+     * @return A map, mapping summoner ids to lists of league entries for that summoner
+     * @see <a href=https://developer.riotgames.com/api/methods#!/593/1863>Official API documentation</a>
+     */
+    public Map<Long, List<LeagueItem>> getLeagueEntries(long... summoners) {
+        return getLeagueItemsVarArgs(summoners);
+    }
+
+    private Map<Long, List<LeagueItem>> getLeagueItemsVarArgs(long... summoners) {
+        Type type = new TypeToken<Map<Long, List<LeagueItem>>>(){}.getType();
+        WebTarget tgt = leagueInfoTarget.path("by-summoner/" + concat(summoners)).path("entry");
         return gson.fromJson($(tgt), type);
     }
+
+
 
     /**
      * Get a listing of leagues for the specified team
@@ -144,11 +185,27 @@ public class ApiHandler {
      * @return A list of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1860>Official API documentation</a>
      */
-    public List<LeagueList> getLeaguesByTeam(String teamId) {
-        Type type = new TypeToken<List<LeagueList>>(){}.getType();
-        WebTarget tgt = leagueInfoTarget.path("by-team").path(teamId);
+    public List<LeagueList> getLeagues(String teamId) {
+        return getTeamLeaguesVarargs(teamId).get(teamId);
+    }
+
+    /**
+     * Get a listing of leagues for the specified teams
+     * @param teamIds The ids of the team
+     * @return A mapping of team ids to lists of leagues
+     * @see <a href=https://developer.riotgames.com/api/methods#!/593/1860>Official API documentation</a>
+     */
+    public Map<String, List<LeagueList>> getLeagues(String... teamIds) {
+        return getTeamLeaguesVarargs(teamIds);
+    }
+
+    private Map<String, List<LeagueList>> getTeamLeaguesVarargs(String... teamIds) {
+        Type type = new TypeToken<Map<String, List<LeagueList>>>(){}.getType();
+        WebTarget tgt = leagueInfoTarget.path("by-team").path(concat(teamIds));
         return gson.fromJson($(tgt), type);
     }
+
+
 
     /**
      * Get a listing of all league entries in the team's leagues
@@ -156,11 +213,27 @@ public class ApiHandler {
      * @return A list of league entries
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1861>Official API documentation</a>
      */
-    public List<LeagueItem> getLeagueEntriesByTeam(String teamId) {
-        Type type = new TypeToken<List<LeagueItem>>(){}.getType();
-        WebTarget tgt = leagueInfoTarget.path("by-team").path(teamId).path("entry");
+    public List<LeagueItem> getLeagueEntries(String teamId) {
+        return getTeamLeagueItemsVarargs(teamId).get(teamId);
+    }
+
+    /**
+     * Get a listing of all league entries in the teams' leagues
+     * @param teamIds The ids of the teams
+     * @return A mapping of teamIds to lists of league entries
+     * @see <a href=https://developer.riotgames.com/api/methods#!/593/1861>Official API documentation</a>
+     */
+    public Map<String, List<LeagueItem>> getLeagueEntries(String... teamIds) {
+        return getTeamLeagueItemsVarargs(teamIds);
+    }
+
+    private Map<String, List<LeagueItem>> getTeamLeagueItemsVarargs(String... teamIds) {
+        Type type = new TypeToken<Map<String, List<LeagueItem>>>(){}.getType();
+        WebTarget tgt = leagueInfoTarget.path("by-team").path(concat(teamIds)).path("entry");
         return gson.fromJson($(tgt), type);
     }
+
+
 
     /**
      * Get the region's challenger league
@@ -172,6 +245,10 @@ public class ApiHandler {
         WebTarget tgt = leagueInfoTarget.path("challenger").queryParam("type", queue.name);
         return gson.fromJson($(tgt), LeagueList.class);
     }
+
+    // </editor-fold>
+
+    // <editor-fold desc="Static Data v1.2">
 
     /**
      * Get champion information for all champions
@@ -743,6 +820,24 @@ public class ApiHandler {
     }
 
     /**
+     * <p>
+     * Retrieve currently supported game versions.
+     * </p>
+     * This method does not count towards the rate limit
+     * @return A list of supported game versions
+     * @see <a href=https://developer.riotgames.com/api/methods#!/710/2527>Official API documentation</a>
+     */
+    public List<String> getVersions() {
+        Type type = new TypeToken<List<String>>(){}.getType();
+        WebTarget tgt = staticDataTarget.path("versions");
+        return gson.fromJson($(tgt), type);
+    }
+
+    // </editor-fold>
+
+    // <editor-fold desc="Stats v1.3">
+
+    /**
      * Get ranked stats for a player
      * @param summoner The id of the summoner
      * @return Ranked stats
@@ -787,6 +882,10 @@ public class ApiHandler {
         WebTarget tgt = statsTarget.path(summoner + "/summary").queryParam("season", season);
         return gson.fromJson($(tgt), PlayerStatsSummaryListDto.class).playerStatSummaries;
     }
+
+    // </editor-fold>
+
+    // <editor-fold desc="Summoner v1.4">
 
     /**
      * Get summoner information for the summoners with the specified names
@@ -922,17 +1021,41 @@ public class ApiHandler {
         return getRunePagesMultipleUsers(id).get(id);
     }
 
+    // </editor-fold>
+
+    // <editor-fold desc="Team v2.3">
+
     /**
      * Retrieve the ranked teams of a user
      * @param id The user's id
      * @return The ranked teams of the user
      * @see <a href=https://developer.riotgames.com/api/methods#!/594/1865>Official API documentation</a>
      */
-    public List<RankedTeam> getTeams(int id) {
-        Type type = new TypeToken<List<RankedTeam>>(){}.getType();
-        WebTarget tgt = teamInfoTarget.path("by-summoner/" + id);
+    public List<RankedTeam> getTeamsBySummoner(long id) {
+        return getTeamsBySummoners(id).get(id);
+    }
+
+    /**
+     * Retrieve the ranked teams of the specified users
+     * @param ids The users' ids
+     * @return The ranked teams of the users
+     * @see <a href=https://developer.riotgames.com/api/methods#!/594/1865>Official API documentation</a>
+     */
+    public Map<Long, List<RankedTeam>> getTeamsBySummoners(long... ids) {
+        Type type = new TypeToken<Map<Long, List<RankedTeam>>>(){}.getType();
+        WebTarget tgt = teamInfoTarget.path("by-summoner/" + concat(ids));
 
         return gson.fromJson($(tgt), type);
+    }
+
+    /**
+     * Retrieve information for the specified ranked team
+     * @param teamId The team to retrieve
+     * @return Information about the specified team
+     * @see <a href=https://developer.riotgames.com/api/methods#!/594/1866>Official API documentation</a>
+     */
+    public RankedTeam getTeam(String teamId) {
+        return getTeams(teamId).get(teamId);
     }
 
     /**
@@ -947,6 +1070,11 @@ public class ApiHandler {
 
         return gson.fromJson($(tgt), type);
     }
+
+    // </editor-fold>
+
+
+    // <editor-fold desc="Utility">
 
     /**
      * Retrieve summoner ids for the specified names
@@ -967,19 +1095,8 @@ public class ApiHandler {
         return getSummoner(name).getId();
     }
 
-    /**
-     * <p>
-     * Retrieve currently supported game versions.
-     * </p>
-     * This method does not count towards the rate limit
-     * @return A list of supported game versions
-     * @see <a href=https://developer.riotgames.com/api/methods#!/710/2527>Official API documentation</a>
-     */
-    public List<String> getVersions() {
-        Type type = new TypeToken<List<String>>(){}.getType();
-        WebTarget tgt = staticDataTarget.path("versions");
-        return gson.fromJson($(tgt), type);
-    }
+    // </editor-fold>
+
 
 
     /**
@@ -995,6 +1112,10 @@ public class ApiHandler {
         }
 
         return new InputStreamReader((java.io.InputStream) response.getEntity());
+    }
+
+    private <A> String concat(A... values) {
+        return String.join(",", Arrays.asList(values).parallelStream().map(Object::toString).collect(Collectors.toList()));
     }
 
     /**

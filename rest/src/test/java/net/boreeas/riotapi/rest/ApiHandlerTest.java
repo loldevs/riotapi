@@ -103,7 +103,7 @@ public class ApiHandlerTest extends TestCase {
     public void testGetLeaguesByTeam() throws Exception {
         try {
             Thread.sleep(1500);
-            handler.getLeaguesByTeam(TEAM_ID);
+            handler.getLeagues(TEAM_ID);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
             System.out.println(ex.getMessage());
@@ -113,7 +113,7 @@ public class ApiHandlerTest extends TestCase {
     public void testGetLeagueEntriesByTeam() throws Exception {
         try {
             Thread.sleep(1500);
-            handler.getLeagueEntriesByTeam(TEAM_ID);
+            handler.getLeagueEntries(TEAM_ID);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
             System.out.println(ex.getMessage());
@@ -325,8 +325,8 @@ public class ApiHandlerTest extends TestCase {
     public void testGetTeams() throws InterruptedException {
         try {
             Thread.sleep(1500);
-            handler.getTeams(SUMMONER_ID_1);
-            handler.getTeams(TEAM_ID);
+            handler.getTeamsBySummoner(SUMMONER_ID_1);
+            handler.getTeamsBySummoner(TEAM_ID);
         } catch (RequestException ex) {
             System.out.println("### PASS with RequestException");
             System.out.println(ex.getMessage());

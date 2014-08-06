@@ -22,8 +22,8 @@ import lombok.Setter;
 import net.boreeas.riotapi.QueueType;
 import net.boreeas.riotapi.Season;
 import net.boreeas.riotapi.Shard;
-import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueList;
 import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueItem;
+import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueList;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePage;
 
 import java.util.*;
@@ -183,7 +183,7 @@ public class ThrottledApiHandler {
      * @return A list of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1862>Official API documentation</a>
      */
-    public Future<Map<Long, List<LeagueList>>> getLeagues(long... summoners) {
+    public Future<Map<Long, List<League>>> getLeagues(long... summoners) {
         return new ApiFuture<>(() -> handler.getLeagues(summoners));
     }
 
@@ -213,7 +213,11 @@ public class ThrottledApiHandler {
      * @return A list of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1860>Official API documentation</a>
      */
+<<<<<<< HEAD:rest/src/main/java/net/boreeas/riotapi/rest/ThrottledApiHandler.java
     public Future<List<LeagueList>> getLeaguesByTeam(String teamId) {
+        return new ApiFuture<>(() -> handler.getLeaguesByTeam(teamId));
+=======
+    public Future<List<League>> getLeaguesByTeam(String teamId) {
         return new ApiFuture<>(() -> handler.getLeagues(teamId));
     }
 
@@ -223,8 +227,9 @@ public class ThrottledApiHandler {
      * @return A mapping of team ids to lists of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1860>Official API documentation</a>
      */
-    public Future<Map<String, List<LeagueList>>> getLeaguesByTeam(String... teamIds) {
+    public Future<Map<String, List<League>>> getLeaguesByTeam(String... teamIds) {
         return new ApiFuture<>(() -> handler.getLeagues(teamIds));
+>>>>>>> master:src/main/java/net/boreeas/riotapi/rest/ThrottledApiHandler.java
     }
 
     /**
@@ -989,7 +994,11 @@ public class ThrottledApiHandler {
 
     /**
      * Stops the threads handling pending requests. No further requests will
+<<<<<<< HEAD:rest/src/main/java/net/boreeas/riotapi/rest/ThrottledApiHandler.java
      * be executed, but any running thread will complete first
+=======
+     * be executed.
+>>>>>>> master:src/main/java/net/boreeas/riotapi/rest/ThrottledApiHandler.java
      */
     public void stop() {
         timer.cancel();

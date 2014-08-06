@@ -1,8 +1,9 @@
 .idea/*
-target/*
+*/target/
 *iml
 *rofl
 *testconfig*
 logs/
 src/
 out/
+*.class

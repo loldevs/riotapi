@@ -66,10 +66,10 @@ public class ApiHandler {
 
         championInfoTarget  = defaultTarget.path("v1.2").path("champion");
         gameInfoTarget      = defaultTarget.path("v1.3").path("game/by-summoner");
-        leagueInfoTarget    = defaultTarget.path("v2.3").path("league");
+        leagueInfoTarget    = defaultTarget.path("v2.4").path("league");
         statsTarget         = defaultTarget.path("v1.3").path("stats/by-summoner");
         summonerInfoTarget  = defaultTarget.path("v1.4").path("summoner");
-        teamInfoTarget      = defaultTarget.path("v2.2").path("team");
+        teamInfoTarget      = defaultTarget.path("v2.3").path("team");
 
         staticDataTarget    = defaultStaticTarget.path("v1.2");
     }

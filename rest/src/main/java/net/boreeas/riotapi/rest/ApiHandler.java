@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  */
 public class ApiHandler {
 
-    private static final String API_BASE_URL = "https://prod.api.pvp.net/api/lol";
+    private static final String API_BASE_URL = "https://global.api.pvp.net/api/lol";
 
     private Gson gson = new Gson();
     private WebTarget championInfoTarget;

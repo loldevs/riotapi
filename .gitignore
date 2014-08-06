@@ -3,5 +3,6 @@ target/*
 *iml
 *rofl
 *testconfig*
-logs/*
-src/test/
+logs/
+src/
+out/

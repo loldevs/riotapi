@@ -242,7 +242,7 @@ public class ApiHandler {
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1864>Official API documentation</a>
      */
     public LeagueList getChallenger(QueueType queue) {
-        WebTarget tgt = leagueInfoTarget.path("challenger").queryParam("type", queue.name);
+        WebTarget tgt = leagueInfoTarget.path("challenger").queryParam("type", queue.name());
         return gson.fromJson($(tgt), LeagueList.class);
     }
 

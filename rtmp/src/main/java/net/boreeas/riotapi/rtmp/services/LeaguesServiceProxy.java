@@ -36,7 +36,7 @@ public class LeaguesServiceProxy {
     }
 
     public LeagueList getChallengerLeague(QueueType type) {
-        return client.sendRpcAndWait(SERVICE, "getChallengerLeague", type.name);
+        return client.sendRpcAndWait(SERVICE, "getChallengerLeague", type);
     }
 
     public SummonerLeagues getAllMyLeagues() {

@@ -21,6 +21,9 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Log4j
@@ -31,17 +34,30 @@ public class RtmpClientTest extends TestCase {
     private static RtmpClient client;
     private static long summonerId;
     private static long accountId;
+    private static AsyncMessageReceiver asyncMessageReceiver;
+
+    @Log4j
+    private static class AsyncMessageReceiver implements Consumer<AsyncMessageEvent> {
+
+        private CountDownLatch asynMessageReceived = new CountDownLatch(1);
+
+        public void accept(AsyncMessageEvent event) {
+            asynMessageReceived.countDown();
+        }
+    }
 
     static {
-        staticSetup();
+        staticSetup(); // Because @BeforeClass apparently isn't working
     }
 
     @SneakyThrows
-    private static void staticSetup() {
+    public static void staticSetup() {
 
         testConfig.load(new InputStreamReader(new FileInputStream("testconfig.properties")));
 
         client = new DefaultRtmpClient(shard.prodUrl, Shard.RTMPS_PORT, true);
+        asyncMessageReceiver = new AsyncMessageReceiver();
+        client.addAsyncChannelListener(asyncMessageReceiver);
         //client = new DefaultRtmpClient("localhost", 2099, true);
 
         String user = testConfig.getProperty("user");
@@ -58,6 +74,12 @@ public class RtmpClientTest extends TestCase {
 
         summonerId = client.getLoginDataPacket().getAllSummonerData().getSummoner().getSumId();
         accountId = client.getLoginDataPacket().getAllSummonerData().getSummoner().getAcctId();
+    }
+
+    public void testAsyncMessageReceived() throws InterruptedException {
+        if (!asyncMessageReceiver.asynMessageReceived.await(2, TimeUnit.SECONDS)) {
+            fail("No async message received");
+        }
     }
 
     public void testGetAccountState() {
@@ -105,7 +127,7 @@ public class RtmpClientTest extends TestCase {
     }
 
     public void testGetChallengerLeague() {
-        client.leaguesServiceProxy.getChallengerLeague(QueueType.RANKED_SOLO_5v5);
+        client.leaguesServiceProxy.getChallengerLeague(QueueType.RANKED_SOLO_5x5);
     }
 
     public void testGetMyLeaguePositions() {

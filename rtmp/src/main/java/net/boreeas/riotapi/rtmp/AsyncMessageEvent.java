@@ -17,11 +17,13 @@
 package net.boreeas.riotapi.rtmp;
 
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * Created on 6/11/2014.
  */
 @Getter
+@ToString
 public class AsyncMessageEvent {
     private String clientId;
     private String subtopic;

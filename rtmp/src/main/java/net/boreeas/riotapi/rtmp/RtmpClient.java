@@ -34,7 +34,10 @@ import java.io.IOException;
 import java.net.ProtocolException;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * Created on 5/24/2014.
@@ -59,6 +62,9 @@ public abstract class RtmpClient {
     private Thread readerThread;
     private Thread writerThread;
     @Getter @Setter private ObjectEncoding objectEncoding = ObjectEncoding.AMF3;
+
+    // Async messages
+    private Map<Consumer<AsyncMessageEvent>, Predicate<AsyncMessageEvent>> asyncMessageListeners = new ConcurrentHashMap<>();
 
     // Connection data
     @Getter private boolean isConnected = false;
@@ -253,6 +259,7 @@ public abstract class RtmpClient {
             Object body = async.getBody();
 
             result = new AsyncMessageEvent(clientId, subtopic, body);
+            onAsyncMessageEvent((AsyncMessageEvent) result);
         } else if (method.getName().equals("onstatus")) {
 
             log.info("Onstatus: " + Objects.toString(method.getParams()) + "/" + method.getStatus() + "/Success=" + method.isSuccess());
@@ -266,6 +273,42 @@ public abstract class RtmpClient {
         if (callback != null) {
             callback.release(result);
         }
+    }
+
+    private void onAsyncMessageEvent(AsyncMessageEvent event) {
+        boolean hit = false;
+        for (Map.Entry<Consumer<AsyncMessageEvent>, Predicate<AsyncMessageEvent>> listener: asyncMessageListeners.entrySet()) {
+            if (listener.getValue().test(event)) {
+
+                Consumer<AsyncMessageEvent> consumer = listener.getKey();
+                consumer.accept(event);
+                hit = true;
+            }
+        }
+
+        if (!hit) {
+            log.warn("Unhandled async message " + event);
+        }
+    }
+
+    public void addAsyncChannelListener(Consumer<AsyncMessageEvent> consumer, Predicate<AsyncMessageEvent> filter) {
+        asyncMessageListeners.put(consumer, filter);
+    }
+
+    public void addAsyncChannelListener(Consumer<AsyncMessageEvent> consumer) {
+        addAsyncChannelListener(consumer, msg -> true);
+    }
+
+    public void addAsyncChannelListener(Consumer<AsyncMessageEvent> consumer, String channel) {
+        addAsyncChannelListener(consumer, msg -> msg.getClientId().equals(channel));
+    }
+
+    public void addAsyncChannelListener(Consumer<AsyncMessageEvent> consumer, String channel, Predicate<AsyncMessageEvent> filter) {
+        addAsyncChannelListener(consumer, filter.and(msg -> msg.getClientId().equals(channel)));
+    }
+
+    public void removeAsyncChannelListener(Consumer<AsyncMessageEvent> consumer) {
+        asyncMessageListeners.remove(consumer);
     }
     // </editor-fold>
 

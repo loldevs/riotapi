@@ -16,7 +16,8 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.messaging;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.List;
@@ -24,7 +25,8 @@ import java.util.List;
 /**
  * Created on 8/2/2014.
  */
-@Data
+@Getter
+@Setter
 @Serialization(name = "com.riotgames.platform.messaging.PlatformException")
 public class PlatformException extends RuntimeException {
     private String errorCode;
@@ -45,4 +47,5 @@ public class PlatformException extends RuntimeException {
     public Throwable getCause() {
         return (cause instanceof Throwable) ? (Throwable) cause : super.getCause();
     }
+
 }

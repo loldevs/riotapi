@@ -27,7 +27,7 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @ToString
 @Serialization(name = "com.riotgames.platform.reroll.pojo.PointSummary")
 public class PointSummary {
-    private long pointsToNextReroll;
+    private long pointsToNextRoll;
     private long maxRolls;
     private int numberOfRolls;
     private long pointsCostToRoll;

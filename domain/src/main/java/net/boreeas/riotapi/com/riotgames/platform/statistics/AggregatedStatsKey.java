@@ -17,6 +17,7 @@
 package net.boreeas.riotapi.com.riotgames.platform.statistics;
 
 import lombok.Data;
+import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
@@ -25,7 +26,8 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @Data
 @Serialization(name = "com.riotgames.platform.statistics.AggregatedStatsKey")
 public class AggregatedStatsKey {
-    private String gameMode;
+    private GameMode gameMode;
     private long userId;
     private String gameModeString;
+    private int season;
 }

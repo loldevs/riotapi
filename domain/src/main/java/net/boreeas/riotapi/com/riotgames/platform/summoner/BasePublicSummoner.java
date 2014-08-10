@@ -17,6 +17,7 @@
 package net.boreeas.riotapi.com.riotgames.platform.summoner;
 
 import lombok.Data;
+import net.boreeas.riotapi.LeagueTier;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
@@ -25,9 +26,10 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @Data
 @Serialization(name = "com.riotgames.platform.summoner.BasePublicSummonerDTO")
 public class BasePublicSummoner {
-    private String seasonTwoTier;
+    private LeagueTier seasonOneTier;
+    private LeagueTier seasonTwoTier;
+    private LeagueTier previousSeasonHighestTier;
     private String internalName;
-    private String seasonOneTier;
     private long acctId;
     private String name;
     private long sumId;

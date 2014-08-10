@@ -25,7 +25,8 @@ public enum LeagueTier {
     PLATINUM,
     GOLD,
     SILVER,
-    BRONZE;
+    BRONZE,
+    UNRANKED;
 
     public static LeagueTier getByName(String name) {
         return valueOf(name);

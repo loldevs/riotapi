@@ -56,6 +56,8 @@ public class LeagueItem {
     private long timeUntilDecay;
     private long timeLastDecayMessageShown;
     private int previousDayLeaguePosition;
+    private boolean displayDecayWarning;
+    private int demotionWarning;
 
     public int getRank() {
         switch (rank) {

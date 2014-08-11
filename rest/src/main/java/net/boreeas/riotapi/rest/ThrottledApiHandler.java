@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Malte Schütze
+ * Copyright 2014 The LolDevs team (https://github.com/loldevs)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1054,7 +1054,9 @@ public class ThrottledApiHandler {
                 throw new ExecutionException("Task was cancelled", null);
             }
 
-            signal.await(timeout, unit);
+            if (!signal.await(timeout, unit)) {
+                throw new TimeoutException("Wait time for reply exceeded " + timeout + " " + unit);
+            }
 
             if (err != null) {
                 throw new ExecutionException(err);

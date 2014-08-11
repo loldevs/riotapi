@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Malte Schütze
+ * Copyright 2014 The LolDevs team (https://github.com/loldevs)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ public enum Shard {
             Constants.API_PATH,
             "https://lq.euw1." + Constants.BASE_PATH,
             "prod.euw1." + Constants.BASE_PATH,
-            "https://spectator.eu." + Constants.BASE_PATH + ":8088",
+            "http://spectator.eu." + Constants.BASE_PATH + ":8088",
             false),
     EUNE("eune",
             "eun1." + Constants.BASE_PATH,

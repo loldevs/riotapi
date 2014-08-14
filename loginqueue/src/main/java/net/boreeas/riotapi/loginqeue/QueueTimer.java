@@ -45,15 +45,16 @@ public class QueueTimer extends Thread {
     }
 
 
-    public AuthResult await() throws InterruptedException {
+    public String await() throws InterruptedException {
         this.latch.await();
-        return getResultOrError();
+        return getResultOrError().getToken();
     }
 
     public AuthResult await(long timeout, TimeUnit unit) throws InterruptedException {
         this.latch.await(timeout, unit);
         return getResultOrError();
     }
+
 
     private AuthResult getResultOrError() {
         if (isError) {
@@ -73,6 +74,10 @@ public class QueueTimer extends Thread {
 
     public long getPosition() {
         return result.getPosition();
+    }
+
+    public boolean isFinished() {
+        return latch.getCount() == 0;
     }
 
     public void run() {

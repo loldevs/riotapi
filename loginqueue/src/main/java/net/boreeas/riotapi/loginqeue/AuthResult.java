@@ -58,4 +58,12 @@ public class AuthResult {
         Ticker ticker = tickers.stream().filter(t -> t.getNode() == node).findFirst().get();
         return ticker.getId() - ticker.getCurrent();
     }
+
+    public String getToken() {
+        if (status == Status.OK) {
+            return token;
+        }
+
+        throw new IllegalStateException("Still in queue");
+    }
 }

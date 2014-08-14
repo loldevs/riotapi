@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Malte Schütze
+ * Copyright 2014 The LolDevs team (https://github.com/loldevs)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,25 +21,19 @@ package net.boreeas.riotapi.spectator;
  * Created on 4/28/2014.
  */
 public enum Platform {
-    EUW("EUW1"),
-    EUNE("EUN1"),
-    NA("NA1"),
-    OCE("OC1"),
-    BR("BR1"),
-    LA1("LA1"),
-    LA2("LA2"),
-    TR("TR"),
-    PBE("PBE1");
-
-    public final String name;
-
-    private Platform(String name) {
-        this.name = name;
-    }
+    EUW1,
+    EUN1,
+    NA1,
+    OC1,
+    BR1,
+    LA1,
+    LA2,
+    TR,
+    PBE;
 
     public static final Platform byName(String name) {
         for (Platform platform: values()) {
-            if (platform.name.equals(name)) {
+            if (platform.name().equals(name)) {
                 return platform;
             }
         }

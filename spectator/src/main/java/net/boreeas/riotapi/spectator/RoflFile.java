@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Malte Schütze
+ * Copyright 2014 The LolDevs team (https://github.com/loldevs)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,26 +17,30 @@
 package net.boreeas.riotapi.spectator;
 
 import com.google.gson.Gson;
+import lombok.Getter;
+import lombok.SneakyThrows;
+import lombok.Synchronized;
+import net.boreeas.riotapi.spectator.rest.GameMetaData;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created on 4/29/2014.
  */
-public class RoflFile implements SpectatorSource {
+public class RoflFile implements SpectatedGame {
 
     private static final int SIGNATURE_POS              = 6;
     private static final int HEADER_LEN_POS             = SIGNATURE_POS         + 256;
@@ -47,17 +51,17 @@ public class RoflFile implements SpectatorSource {
     private static final int PAYLOAD_HEADER_LEN_POS     = PAYLOAD_HEADER_OFFSET_POS + 4;
     private static final int PAYLOAD_OFFSET_POS         = PAYLOAD_HEADER_LEN_POS + 4;
 
-    private Cipher cipher;
+
+    @Getter private GameEncryptionData gameEncryptionData;
 
     private byte[] data;
     private ByteBuffer buffer;
     private GameMetaData metaData;
-    private byte[] encryptionKey;
-    private List<byte[]> chunks = new ArrayList<>();
-    private List<byte[]> keyframes = new ArrayList<>();
+    private List<Chunk> chunks = new ArrayList<>();
+    private List<KeyFrame> keyframes = new ArrayList<>();
 
-    public RoflFile(File f) throws IOException, GeneralSecurityException {
-        cipher = Cipher.getInstance("Blowfish/ECB/PKCS5Padding");
+    @SneakyThrows(value = {TimeoutException.class, InterruptedException.class})
+    public RoflFile(File f, long timeout, TimeUnit timeUnit) throws IOException, GeneralSecurityException {
 
         RandomAccessFile file = new RandomAccessFile(f, "r");
         long length = file.length();
@@ -71,40 +75,68 @@ public class RoflFile implements SpectatorSource {
         // Assert we are actually reading a ROFL file
         assertHeader("RIOT\0\0".getBytes());
 
-        // Get metadata
-        byte[] metaDataBuf = new byte[(int) getMetaDataLength()];
-        buffer.position(getMetaDataOffset());
-        buffer.get(metaDataBuf);
-        String json = new String(metaDataBuf, "UTF-8");
-        metaData = new Gson().fromJson(new String(metaDataBuf, "UTF-8"), GameMetaData.class);
+        loadMetadata();
+        loadEncryptionKey();
 
-        // Get encryption key
-        byte[] encryptionKeyBuf = new byte[getEncryptionKeyLength()];
-        buffer.position(getPayloadHeaderOffset() + 34);
-        buffer.get(encryptionKeyBuf);
-        encryptionKey = DatatypeConverter.parseBase64Binary(new String(encryptionKeyBuf, "UTF-8"));
-        encryptionKey = decrypt(encryptionKey, ("" + metaData.getGameId()).getBytes());
+
+        ExecutorService pool = Executors.newCachedThreadPool();
 
         // Load and decrypt chunks
         for (int i = 0; i < getChunkCount(); i++) {
-            ChunkOrKeyFrameHeader header = getChunkHeader(i);
-            chunks.add(decryptPayloadEntry(header));
+            int ii = i; // Effectively final for passing to concurrent task
+            pool.execute(() -> {
+                ChunkOrKeyFrameHeader header = getChunkHeader(ii);
+                chunks.add(new Chunk(decryptPayloadEntry(header)));
+            });
         }
 
         // Load and decrypt keyframes
         for (int i = 0; i < getKeyFrameCount(); i++) {
-            ChunkOrKeyFrameHeader header = getKeyFrameHeader(i);
-            keyframes.add(decryptPayloadEntry(header));
+            int ii = i; // Effectively final for passing to concurrent task
+            pool.execute(() -> {
+                ChunkOrKeyFrameHeader header = getKeyFrameHeader(ii);
+                keyframes.add(new KeyFrame(decryptPayloadEntry(header)));
+            });
+        }
+
+        pool.shutdown();
+        if (!pool.awaitTermination(timeout, timeUnit)) {
+            throw new TimeoutException("Chunk and keyframe encryption took more than " + timeout + " " + timeUnit);
         }
     }
 
-    private byte[] decryptPayloadEntry(ChunkOrKeyFrameHeader header) throws GeneralSecurityException, IOException {
+    private void loadEncryptionKey() throws UnsupportedEncodingException, GeneralSecurityException {
+        /**
+         * Decryption process:
+         * - Decode encryption key using base64         => buf
+         * - Decrypt buf using gameId as key            => encryptionKey
+         */
+        byte[] encryptionKeyBuf = new byte[getEncryptionKeyLength()];
+        buffer.position(getPayloadHeaderOffset() + 34);
+        buffer.get(encryptionKeyBuf);
+
+        byte[] encryptionKey = DatatypeConverter.parseBase64Binary(new String(encryptionKeyBuf, "UTF-8"));
+        encryptionKey = new GameEncryptionData(("" + metaData.getGameId()).getBytes()).decrypt(encryptionKey);
+        this.gameEncryptionData = new GameEncryptionData(encryptionKey);
+    }
+
+    private void loadMetadata() throws UnsupportedEncodingException {
+        byte[] metaDataBuf = new byte[getMetaDataLength()];
+        buffer.position(getMetaDataOffset());
+        buffer.get(metaDataBuf);
+        String json = new String(metaDataBuf, "UTF-8");
+        metaData = new Gson().fromJson(json, GameMetaData.class);
+    }
+
+    @SneakyThrows
+    @Synchronized
+    private byte[] decryptPayloadEntry(ChunkOrKeyFrameHeader header) {
 
         byte[] keyFrame = new byte[(int) header.getLength()];
         buffer.position(getPayloadEntryOffset() + header.getOffset());
         buffer.get(keyFrame);
 
-        return decompress(decrypt(keyFrame, encryptionKey));
+        return SpectatedGame.decompress(gameEncryptionData.decrypt(keyFrame));
     }
 
     // <editor-fold>
@@ -197,23 +229,14 @@ public class RoflFile implements SpectatorSource {
         return metaData;
     }
 
-    public byte[] getEncryptionKey() {
-        return encryptionKey;
-    }
-
     public ChunkOrKeyFrameHeader getChunkHeader(int id) {
         if (id >= getChunkCount()) {
             throw new IndexOutOfBoundsException("Chunk id (" + id + ") exceeded chunk count (" + getChunkCount() + ")");
         }
 
-        buffer.position(getPayloadOffset() + (id * 17));
-        int cid = buffer.getInt();
-        int type = buffer.get();
-        long length = getUint();
-        int nextCid = buffer.getInt();
-        int offset = buffer.getInt();
+        int position = getPayloadOffset() + (id * 17);
 
-        return new ChunkOrKeyFrameHeader(cid, type, length, nextCid, offset);
+        return readChunkOrKeyframeHeader(position);
     }
 
     public ChunkOrKeyFrameHeader getKeyFrameHeader(int id) {
@@ -221,23 +244,28 @@ public class RoflFile implements SpectatorSource {
             throw new IndexOutOfBoundsException("Keyframe id (" + id + ") exceeded keyframe count (" + getChunkCount() + ")");
         }
 
-        buffer.position(getPayloadOffset() + (getChunkCount() * 17) + (id * 17));
-        int cid = buffer.getInt();
-        int type = buffer.get();
-        long length = getUint();
-        int nextCid = buffer.getInt();
-        int offset = buffer.getInt();
+        int position = getPayloadOffset() + (getChunkCount() * 17) + (id * 17);
+
+        return readChunkOrKeyframeHeader(position);
+    }
+
+    private ChunkOrKeyFrameHeader readChunkOrKeyframeHeader(int position) {
+        int cid = buffer.getInt(position);
+        int type = buffer.get(position + 4);
+        long length = buffer.getInt(position + 5);
+        int nextCid = buffer.getInt(position + 9);
+        int offset = buffer.getInt(position + 13);
 
         return new ChunkOrKeyFrameHeader(cid, type, length, nextCid, offset);
     }
 
     @Override
-    public byte[] getChunk(int i) {
+    public Chunk getChunk(int i) {
         return chunks.get(i);
     }
 
     @Override
-    public byte[] getKeyFrame(int i) {
+    public KeyFrame getKeyFrame(int i) {
         return keyframes.get(i);
     }
     // </editor-fold>
@@ -257,33 +285,6 @@ public class RoflFile implements SpectatorSource {
         return ((long) buffer.getInt()) & 0xFFFFFFFFL;
     }
 
-    private byte[] decrypt(byte[] data, byte[] key) throws GeneralSecurityException {
-        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "Blowfish"));
-        return cipher.doFinal(data);
-    }
-
-    private byte[] decompress(byte[] data) throws IOException {
-        try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(data))) {
-            ByteArrayOutputStream bout = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int read = 0;
-
-            do {
-                read = in.read(buffer);
-                if (read == buffer.length) {
-                    bout.write(buffer);
-                } else {
-                    bout.write(buffer, 0, read);
-                }
-            } while (read == buffer.length);
-
-            return bout.toByteArray();
-        } catch (IOException ex) {
-            throw new RuntimeException("Failure during decompression", ex);
-        }
-
-    }
-
 
     private void assertHeader(byte[] bytes) {
         for (int i = 0; i < bytes.length; i++) {
@@ -292,5 +293,4 @@ public class RoflFile implements SpectatorSource {
             }
         }
     }
-
 }

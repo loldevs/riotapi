@@ -92,6 +92,6 @@ public class LoginQueue {
 
     @SneakyThrows
     public String waitInQueueBlocking(String user, String password) {
-        return waitInQueue(user, password).await().getToken();
+        return waitInQueue(user, password).await();
     }
 }

@@ -89,4 +89,9 @@ public class LoginQueue {
         timer.start();
         return timer;
     }
+
+    @SneakyThrows
+    public String waitInQueueBlocking(String user, String password) {
+        return waitInQueue(user, password).await().getToken();
+    }
 }

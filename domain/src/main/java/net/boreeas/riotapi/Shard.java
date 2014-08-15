@@ -210,4 +210,14 @@ public enum Shard {
         static String GARENA_PATH = "lol.garenanow.com";
         static String API_PATH= "https://prod.api." + Constants.BASE_PATH + "/api/lol";
     }
+
+    public static Shard getBySpectatorPlatform(String name) {
+        for (Shard shard: values()) {
+            if (shard.spectatorPlatformName.equals(name)) {
+                return shard;
+            }
+        }
+
+        return null;
+    }
 }

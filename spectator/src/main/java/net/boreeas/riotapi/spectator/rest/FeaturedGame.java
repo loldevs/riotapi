@@ -20,10 +20,10 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.com.riotgames.platform.game.BannedChampion;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameType;
-import net.boreeas.riotapi.spectator.Platform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class FeaturedGame {
     private int gameTypeConfigId;
     private List<FeaturedPlayer> participants = new ArrayList<>();
     @Getter(AccessLevel.NONE) private ObserverData observers;
-    private Platform platformId;
+    private String platformId;
     private List<BannedChampion> bannedChampions = new ArrayList<>();
     private long gameStartTime;
     private long gameLength;
@@ -57,5 +57,9 @@ public class FeaturedGame {
      */
     private class ObserverData {
         private String encryptionKey;
+    }
+
+    public Shard getPlatformId() {
+        return Shard.getBySpectatorPlatform(platformId);
     }
 }

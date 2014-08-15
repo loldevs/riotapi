@@ -78,13 +78,13 @@ public class SpectatorApiHandler {
         return getFeaturedGameListDto().getGameList();
     }
 
-    public GameMetaData getGameMetaData(Platform platform, long gameId) {
-        WebTarget tgt = consumerTarget.path("getGameMetaData").path(platform.name()).path("" + gameId).path("1").path(TOKEN);
+    public GameMetaData getGameMetaData(Shard platform, long gameId) {
+        WebTarget tgt = consumerTarget.path("getGameMetaData").path(platform.spectatorPlatformName).path("" + gameId).path("1").path(TOKEN);
         return gson.fromJson($(tgt), GameMetaData.class);
     }
 
-    public ChunkInfo getLastChunkInfo(Platform platform, long gameId) {
-        WebTarget tgt = consumerTarget.path("getLastChunkInfo").path(platform.name()).path("" + gameId).path("1").path(TOKEN);
+    public ChunkInfo getLastChunkInfo(Shard platform, long gameId) {
+        WebTarget tgt = consumerTarget.path("getLastChunkInfo").path(platform.spectatorPlatformName).path("" + gameId).path("1").path(TOKEN);
         return gson.fromJson($(tgt), ChunkInfo.class);
     }
 
@@ -95,8 +95,8 @@ public class SpectatorApiHandler {
      * @param chunkId The target chunk
      * @return The chunk, encrypted and zip-compressed
      */
-    public byte[] getEncryptedChunk(Platform platform, long gameId, int chunkId) {
-        WebTarget tgt = consumerTarget.path("getGameDataChunk").path(platform.name()).path(gameId + "/" + chunkId).path(TOKEN);
+    public byte[] getEncryptedChunk(Shard platform, long gameId, int chunkId) {
+        WebTarget tgt = consumerTarget.path("getGameDataChunk").path(platform.spectatorPlatformName).path(gameId + "/" + chunkId).path(TOKEN);
         return readAsByteArray(tgt);
     }
 
@@ -107,12 +107,12 @@ public class SpectatorApiHandler {
      * @param keyframeId The target chunk
      * @return The chunk, encrypted and zip-compressed
      */
-    public byte[] getEncryptedKeyframe(Platform platform, long gameId, int keyframeId) {
-        WebTarget tgt = consumerTarget.path("getKeyFrame").path(platform.name()).path(gameId + "/" + keyframeId).path(TOKEN);
+    public byte[] getEncryptedKeyframe(Shard platform, long gameId, int keyframeId) {
+        WebTarget tgt = consumerTarget.path("getKeyFrame").path(platform.spectatorPlatformName).path(gameId + "/" + keyframeId).path(TOKEN);
         return readAsByteArray(tgt);
     }
 
-    public InProgressGame openGame(Platform platform, long gameId, String encryptionKey) {
+    public InProgressGame openGame(Shard platform, long gameId, String encryptionKey) {
         return new InProgressGame(this, platform, gameId, encryptionKey);
     }
 

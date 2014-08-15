@@ -20,7 +20,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.ToString;
-import net.boreeas.riotapi.spectator.Platform;
+import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.spectator.SpectatorApiHandler;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class GameMetaData {
 
     @Getter(AccessLevel.NONE) private GameKey gameKey;
     private int gameId;
-    private Platform platformId;
+    private String platformId;
     private String gameServerAddress;
     private int port;
     private String encryptionKey;
@@ -98,13 +98,13 @@ public class GameMetaData {
         return gameKey == null ? gameId : gameKey.gameId;
     }
 
-    public Platform getPlatform() {
-        return gameKey == null ? platformId : gameKey.platformId;
+    public Shard getPlatform() {
+        return Shard.getBySpectatorPlatform(gameKey == null ? platformId : gameKey.platformId);
     }
 
 
     private class GameKey {
         private long gameId;
-        private Platform platformId;
+        private String platformId;
     }
 }

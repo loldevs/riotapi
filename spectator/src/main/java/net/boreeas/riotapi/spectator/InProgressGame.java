@@ -33,7 +33,7 @@ import java.util.concurrent.Future;
 public class InProgressGame implements SpectatedGame {
 
     private SpectatorApiHandler handler;
-    private Platform platform;
+    private Shard platform;
     private long gameId;
 
     @Getter private GameEncryptionData gameEncryptionData;
@@ -46,11 +46,11 @@ public class InProgressGame implements SpectatedGame {
     @Getter private int firstAvailableKeyFrame;
     @Getter private int lastAvailableKeyFrame;
 
-    public InProgressGame(Shard region, Platform platform, long gameId, String initialEncryptionKey) {
+    public InProgressGame(Shard region, Shard platform, long gameId, String initialEncryptionKey) {
         this(new SpectatorApiHandler(region), platform, gameId, initialEncryptionKey);
     }
 
-    public InProgressGame(SpectatorApiHandler handler, Platform platform, long gameId, String initialEncryptionKey) {
+    public InProgressGame(SpectatorApiHandler handler, Shard platform, long gameId, String initialEncryptionKey) {
         this.handler = handler;
         this.platform = platform;
         this.gameId = gameId;

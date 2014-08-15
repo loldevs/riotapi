@@ -32,7 +32,7 @@ import java.util.concurrent.*;
 /**
  * Created on 4/23/2014.
  */
-public class ThrottledApiHandler {
+public class ThrottledApiHandler implements AutoCloseable {
 
     public static final int PERIOD = 50; // 0.05s
 
@@ -992,7 +992,7 @@ public class ThrottledApiHandler {
      * Stops the threads handling pending requests. No further requests will
      * be executed, but any running thread will complete first
      */
-    public void stop() {
+    public void close() {
         timer.cancel();
     }
 

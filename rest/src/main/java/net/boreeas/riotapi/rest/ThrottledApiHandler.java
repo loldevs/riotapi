@@ -999,9 +999,9 @@ public class ThrottledApiHandler {
 
     @AllArgsConstructor
     public static class Limit {
+        public final int maxValue;
         public final int timeDeltaToMax;
         public final TimeUnit unit;
-        public final int maxValue;
     }
 
     private class ApiFuture<T> implements Future<T> {
@@ -1114,7 +1114,7 @@ public class ThrottledApiHandler {
      */
     public static ThrottledApiHandler developmentDefault(Shard shard, String token) {
         return new ThrottledApiHandler(shard, token,
-                new Limit(10, TimeUnit.SECONDS, 10),
-                new Limit(10, TimeUnit.MINUTES, 500));
+                new Limit(10, 10, TimeUnit.SECONDS),
+                new Limit(500, 10, TimeUnit.MINUTES));
     }
 }

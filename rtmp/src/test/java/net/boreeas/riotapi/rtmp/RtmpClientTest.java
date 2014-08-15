@@ -78,14 +78,14 @@ public class RtmpClientTest extends TestCase {
 
         String user = testConfig.getProperty("user");
         String pass = testConfig.getProperty("pass");
-        String authKey = new LoginQueue(shard).waitInQueue(user, pass).await().getToken();
+        String authKey = new LoginQueue(shard).waitInQueue(user, pass).await();
 
         try {
             client.connect();
             client.authenticate(user, pass, authKey, "4.13.14_07_25_15_10");
         } catch (ClientVersionMismatchException ex) {
             log.info("Reconnecting with version " + ex.getCurrentVersion());
-            client.authenticate(user, pass, new LoginQueue(shard).waitInQueue(user, pass).await().getToken(), ex.getCurrentVersion());
+            client.authenticate(user, pass, new LoginQueue(shard).waitInQueue(user, pass).await(), ex.getCurrentVersion());
         }
 
         summonerId = client.getLoginDataPacket().getAllSummonerData().getSummoner().getSumId();

@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
 public class RtmpClientTest extends TestCase {
 
     private static Properties testConfig = new Properties();;
-    private static Shard shard = Shard.EUW;
+    private static Shard shard = Shard.ID;
     private static RtmpClient client;
     private static long summonerId;
     private static long accountId;

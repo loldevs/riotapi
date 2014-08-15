@@ -58,10 +58,8 @@ public class RtmpPacketTest extends TestCase {
 
     public void testReserializeAuth() throws InterruptedException, IOException {
         AuthenticationCredentials cred = new AuthenticationCredentials();
-        cred.setUsername("riotapitestacc1");
-        cred.setPassword("riotapitestacc1");
         cred.setClientVersion("4.12.FOO");
-        cred.setAuthToken(new LoginQueue(Shard.NA).waitInQueue("riotapitestacc1", "riotapitestacc1").await().getToken());
+        cred.setAuthToken(new LoginQueue(Shard.NA).waitInQueue("riotapitestacc1", "riotapitestacc1").await());
         cred.setLocale("en_US");
         //String addr = Util.getConnectionInfoIpAddr();
         //cred.setIpAddress(addr);

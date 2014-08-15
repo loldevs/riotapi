@@ -65,6 +65,9 @@ public abstract class RtmpClient {
 
     // Async messages
     private Map<Consumer<AsyncMessageEvent>, Predicate<AsyncMessageEvent>> asyncMessageListeners = new ConcurrentHashMap<>();
+    @Getter private String broadcastChannel;
+    @Getter private String gameNewsChannel;
+    @Getter private String clientNewsChannel;
 
     // Connection data
     @Getter private boolean isConnected = false;
@@ -439,11 +442,13 @@ public abstract class RtmpClient {
         log.info("Rtmp login: " + user.toLowerCase() + "/" + session.getToken());
         login(user.toLowerCase(), session.getToken());
 
-        String gnPrefix = "gn-" + session.getAccountSummary().getAccountId(); // Game news?
-        String cnPrefix = "cn-" + session.getAccountSummary().getAccountId(); // Client news?
-        subscribe("my-rtmps", "messagingDestination", "bc", "bc-" + session.getAccountSummary().getAccountId());
-        subscribe("my-rtmps", "messagingDestination", gnPrefix, gnPrefix);
-        subscribe("my-rtmps", "messagingDestination", cnPrefix, cnPrefix);
+
+        this.broadcastChannel = "bc-" + session.getAccountSummary().getAccountId();
+        this.gameNewsChannel = "gn-" + session.getAccountSummary().getAccountId(); // Game news?
+        this.clientNewsChannel = "cn-" + session.getAccountSummary().getAccountId(); // Client news?
+        subscribe("my-rtmps", "messagingDestination", "bc", broadcastChannel);
+        subscribe("my-rtmps", "messagingDestination", gameNewsChannel, gameNewsChannel);
+        subscribe("my-rtmps", "messagingDestination", clientNewsChannel, clientNewsChannel);
 
 
         log.info("Retrieving data packet");

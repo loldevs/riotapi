@@ -5,6 +5,5 @@ target/
 *rofl
 *testconfig*
 logs/
-src/
 out/
 *.class

@@ -18,6 +18,7 @@ package net.boreeas.riotapi.spectator;
 
 import junit.framework.TestCase;
 import net.boreeas.riotapi.Shard;
+import net.boreeas.riotapi.Util;
 
 /**
  * @author Malte Schütze
@@ -28,5 +29,17 @@ public class KeyframeAndChunkDecodingTest extends TestCase {
     public InProgressGame game = apiHandler.openFeaturedGame(apiHandler.getFeaturedGames().get(0));
     public GamePool pool = GamePool.singleton(game);
 
+    public void testDumpChunk() {
+        game.waitForEndOfGame();
+        pool.shutdown();
 
+        Util.hexdump(game.getChunk(1).getBuffer()).forEach(System.out::println);
+    }
+
+    public void testDumpKeyframe() {
+        game.waitForEndOfGame();
+        pool.shutdown();
+
+        Util.hexdump(game.getKeyFrame(1).getBuffer()).forEach(System.out::println);
+    }
 }

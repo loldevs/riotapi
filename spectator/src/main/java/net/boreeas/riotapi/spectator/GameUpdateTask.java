@@ -108,7 +108,6 @@ public class GameUpdateTask implements Runnable {
     }
 
     private void pullAllAvailable() {
-        System.out.println("First pull");
         ExecutorService service = Executors.newCachedThreadPool();
 
         ChunkInfo chunkInfo = game.getLastChunkInfo();

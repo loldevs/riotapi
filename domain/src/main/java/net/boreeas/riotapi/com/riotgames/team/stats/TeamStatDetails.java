@@ -18,7 +18,7 @@ package net.boreeas.riotapi.com.riotgames.team.stats;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.boreeas.riotapi.QueueType;
+import net.boreeas.riotapi.com.riotgames.platform.game.QueueType;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**

@@ -19,8 +19,8 @@ package net.boreeas.riotapi.rest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.boreeas.riotapi.PlayerSide;
-import net.boreeas.riotapi.QueueType;
+import net.boreeas.riotapi.constants.PlayerSide;
+import net.boreeas.riotapi.com.riotgames.platform.game.QueueType;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameType;
 

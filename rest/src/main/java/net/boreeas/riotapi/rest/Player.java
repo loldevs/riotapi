@@ -19,7 +19,7 @@ package net.boreeas.riotapi.rest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.boreeas.riotapi.PlayerSide;
+import net.boreeas.riotapi.constants.PlayerSide;
 
 /**
  * Created on 4/14/2014.

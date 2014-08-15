@@ -17,7 +17,7 @@
 package net.boreeas.riotapi.com.riotgames.platform.summoner;
 
 import lombok.Data;
-import net.boreeas.riotapi.LeagueTier;
+import net.boreeas.riotapi.constants.LeagueTier;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**

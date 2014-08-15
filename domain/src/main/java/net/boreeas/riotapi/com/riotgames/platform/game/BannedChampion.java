@@ -18,7 +18,7 @@ package net.boreeas.riotapi.com.riotgames.platform.game;
 
 import lombok.Data;
 import lombok.ToString;
-import net.boreeas.riotapi.PlayerSide;
+import net.boreeas.riotapi.constants.PlayerSide;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**

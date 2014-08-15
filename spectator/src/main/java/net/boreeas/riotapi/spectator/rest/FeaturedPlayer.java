@@ -17,7 +17,7 @@
 package net.boreeas.riotapi.spectator.rest;
 
 import lombok.Getter;
-import net.boreeas.riotapi.PlayerSide;
+import net.boreeas.riotapi.constants.PlayerSide;
 
 
 /**

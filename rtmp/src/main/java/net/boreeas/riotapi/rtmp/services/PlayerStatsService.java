@@ -22,7 +22,7 @@ import net.boreeas.riotapi.com.riotgames.platform.statistics.team.TeamAggregated
 import net.boreeas.riotapi.com.riotgames.platform.summoner.SummonerSkillLevel;
 import net.boreeas.riotapi.com.riotgames.team.TeamId;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
-import net.boreeas.riotapi.Season;
+import net.boreeas.riotapi.constants.Season;
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
 import java.util.List;

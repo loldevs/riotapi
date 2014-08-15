@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi;
+package net.boreeas.riotapi.constants;
 
 /**
  * Created on 4/14/2014.
  */
-public enum LeagueTier {
-    CHALLENGER,
-    DIAMOND,
-    PLATINUM,
-    GOLD,
-    SILVER,
-    BRONZE,
-    UNRANKED;
+public enum Season {
+    SEASON3("SEASON3", 3),
+    SEASON4("SEASON4", 4);
 
-    public static LeagueTier getByName(String name) {
-        return valueOf(name);
+    public final String name;
+    public final int numeric;
+
+    private Season(String name, int numeric) {
+        this.name = name;
+        this.numeric = numeric;
     }
 }

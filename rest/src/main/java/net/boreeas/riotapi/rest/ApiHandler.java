@@ -21,7 +21,9 @@ import com.google.gson.reflect.TypeToken;
 import net.boreeas.riotapi.*;
 import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueList;
 import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueItem;
+import net.boreeas.riotapi.com.riotgames.platform.game.QueueType;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePage;
+import net.boreeas.riotapi.constants.Season;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;

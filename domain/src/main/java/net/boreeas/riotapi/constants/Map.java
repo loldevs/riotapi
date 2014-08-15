@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi;
+package net.boreeas.riotapi.constants;
 
 import net.boreeas.riotapi.com.riotgames.platform.game.map.GameMap;
 

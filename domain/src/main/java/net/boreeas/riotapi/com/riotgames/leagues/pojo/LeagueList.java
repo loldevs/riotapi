@@ -19,8 +19,8 @@ package net.boreeas.riotapi.com.riotgames.leagues.pojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.boreeas.riotapi.LeagueTier;
-import net.boreeas.riotapi.QueueType;
+import net.boreeas.riotapi.constants.LeagueTier;
+import net.boreeas.riotapi.com.riotgames.platform.game.QueueType;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.ArrayList;

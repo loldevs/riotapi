@@ -18,7 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.boreeas.riotapi.Map;
+import net.boreeas.riotapi.constants.Map;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
 
 /**

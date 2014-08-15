@@ -19,7 +19,7 @@ package net.boreeas.riotapi.com.riotgames.platform.game.map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import net.boreeas.riotapi.Map;
+import net.boreeas.riotapi.constants.Map;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**

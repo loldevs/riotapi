@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi;
+package net.boreeas.riotapi.constants;
 
 /**
  * Created on 4/14/2014.

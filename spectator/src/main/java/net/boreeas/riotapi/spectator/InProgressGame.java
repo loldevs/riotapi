@@ -24,6 +24,7 @@ import net.boreeas.riotapi.spectator.rest.ChunkInfo;
 import net.boreeas.riotapi.spectator.rest.GameMetaData;
 
 import java.util.Base64;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
 
 /**
@@ -40,6 +41,7 @@ public class InProgressGame implements SpectatedGame {
     private MappedDataCache<Integer, Chunk> chunks = new MappedDataCache<>();
     private MappedDataCache<Integer, KeyFrame> keyframes = new MappedDataCache<>();
     private GameMetaData cachedMetaData;
+    private CountDownLatch endOfGame = new CountDownLatch(1);
 
     @Getter private int firstAvailableChunk;
     @Getter private int lastAvailableChunk;
@@ -149,6 +151,8 @@ public class InProgressGame implements SpectatedGame {
 
         if (id > lastAvailableChunk) lastAvailableChunk = id;
         if (id < firstAvailableChunk || firstAvailableChunk == 0) firstAvailableChunk = id;
+
+        if (id == getLastChunkInfo().getEndGameChunkId()) endOfGame.countDown();
     }
 
     public void pullKeyFrame(int id) {
@@ -171,5 +175,10 @@ public class InProgressGame implements SpectatedGame {
 
     public ChunkInfo getLastChunkInfo() {
         return handler.getLastChunkInfo(platform, gameId);
+    }
+
+    @SneakyThrows
+    public void waitForEndOfGame() {
+        endOfGame.await();
     }
 }

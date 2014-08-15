@@ -1001,8 +1001,7 @@ public class ApiHandler {
      */
     public Map<Integer, Set<RunePage>> getRunePagesMultipleUsers(Integer... ids) {
         Type type = new TypeToken<Map<String, RunePagesDto>>(){}.getType();
-        String idString = Arrays.asList(ids).toString().replaceAll("[\\[\\] ]", "");
-        WebTarget tgt = summonerInfoTarget.path(idString).path("runes");
+        WebTarget tgt = summonerInfoTarget.path(concat(ids)).path("runes");
 
         Map<String, RunePagesDto> tmpResult = gson.fromJson($(tgt), type);
         Map<Integer, Set<RunePage>> result = new HashMap<>();
@@ -1082,7 +1081,7 @@ public class ApiHandler {
      * @return Their respective ids
      */
     public List<Long> getSummonerIds(String... names) {
-        return getSummoners(names).values().stream().<Long>map((s) -> s.getId()).collect(Collectors.toList());
+        return getSummoners(names).values().stream().<Long>map(Summoner::getId).collect(Collectors.toList());
     }
 
     /**

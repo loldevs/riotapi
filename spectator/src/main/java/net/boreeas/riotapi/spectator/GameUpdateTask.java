@@ -18,8 +18,13 @@ package net.boreeas.riotapi.spectator;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
+import net.boreeas.riotapi.RequestException;
 import net.boreeas.riotapi.spectator.rest.ChunkInfo;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
@@ -36,12 +41,15 @@ import java.util.function.Consumer;
 @Log4j
 public class GameUpdateTask implements Runnable {
 
+    private static final int DEFAULT_MAX_RETRIES = 3;
+
     private Consumer<Exception> onError;
     private InProgressGame game;
 
     @Setter private ScheduledFuture self;
 
     private boolean firstRun = true;
+    private Map<Integer, Integer> retries = new HashMap<>();
 
     public GameUpdateTask(InProgressGame game) {
         this(game, err -> {});
@@ -86,6 +94,8 @@ public class GameUpdateTask implements Runnable {
         }
 
         if (chunkInfo.getEndGameChunkId() != 0) {
+            log.debug("[" + game.getGameId() + "] End of game reached at chunk " + chunkInfo.getEndGameChunkId());
+            game.markEndReached();
             cancel();
         }
     }
@@ -103,7 +113,38 @@ public class GameUpdateTask implements Runnable {
         log.debug("[" + game.getGameId() + "] " + (maxId - game.getLastAvailableChunk()) + " new chunks (" + (game.getLastAvailableChunk() + 1) + " to " + maxId + ")");
 
         for (int id = game.getLastAvailableChunk() + 1; id <= maxId; id++) {
+            try {
+                game.pullChunk(id);
+            } catch (RequestException ex) {
+                if (ex.getErrorType() == RequestException.ErrorType.INTERNAL_SERVER_ERROR) {
+                    retries.put(id, 1);
+                } else {
+                    throw ex;
+                }
+            }
+        }
+
+        Set<Integer> removeMarkers = new HashSet<>();
+        for (Map.Entry<Integer, Integer> retryData: retries.entrySet()) {
+            retryChunk(removeMarkers, retryData.getKey(), retryData.getValue());
+        }
+
+        removeMarkers.forEach(retries::remove);
+    }
+
+    private void retryChunk(Set<Integer> remove, int id, int retries) {
+        try {
             game.pullChunk(id);
+        } catch (RequestException ex) {
+            if (ex.getErrorType() == RequestException.ErrorType.INTERNAL_SERVER_ERROR) {
+                if (retries < DEFAULT_MAX_RETRIES) {
+                    this.retries.put(id, retries + 1);
+                } else {
+                    remove.add(id);
+                }
+            } else {
+                throw ex;
+            }
         }
     }
 

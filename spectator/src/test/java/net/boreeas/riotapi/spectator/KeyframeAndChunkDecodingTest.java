@@ -25,9 +25,9 @@ import net.boreeas.riotapi.Util;
  */
 public class KeyframeAndChunkDecodingTest extends TestCase {
 
-    public SpectatorApiHandler apiHandler = new SpectatorApiHandler(Shard.EUW);
-    public InProgressGame game = apiHandler.openFeaturedGame(apiHandler.getFeaturedGames().get(0));
-    public GamePool pool = GamePool.singleton(game);
+    public static SpectatorApiHandler apiHandler = new SpectatorApiHandler(Shard.EUW);
+    public static InProgressGame game = apiHandler.openFeaturedGame(apiHandler.getFeaturedGames().get(0));
+    public static GamePool pool = GamePool.singleton(game, Throwable::printStackTrace);
 
     public void testDumpChunk() {
         game.waitForEndOfGame();
@@ -41,5 +41,27 @@ public class KeyframeAndChunkDecodingTest extends TestCase {
         pool.shutdown();
 
         Util.hexdump(game.getKeyFrame(1).getBuffer()).forEach(System.out::println);
+    }
+
+    public void testDumpAllKeyFrames() {
+        game.waitForEndOfGame();
+        pool.shutdown();
+
+        for (int i = game.getFirstAvailableKeyFrame(); i <= game.getLastAvailableKeyFrame(); i++) {
+            System.out.println("[ Keyframe " + i + " ]");
+            Util.hexdump(game.getKeyFrame(i).getBuffer()).forEach(System.out::println);
+            System.out.println();
+        }
+    }
+
+    public void testDumpAllChunks() {
+        game.waitForEndOfGame();
+        pool.shutdown();
+
+        for (int i = game.getFirstAvailableChunk(); i <= game.getLastAvailableChunk(); i++) {
+            System.out.println("[ Chunk " + i + " ]");
+            Util.hexdump(game.getChunk(i).getBuffer()).forEach(System.out::println);
+            System.out.println();
+        }
     }
 }

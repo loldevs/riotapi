@@ -151,8 +151,6 @@ public class InProgressGame implements SpectatedGame {
 
         if (id > lastAvailableChunk) lastAvailableChunk = id;
         if (id < firstAvailableChunk || firstAvailableChunk == 0) firstAvailableChunk = id;
-
-        if (id == getLastChunkInfo().getEndGameChunkId()) endOfGame.countDown();
     }
 
     public void pullKeyFrame(int id) {
@@ -180,5 +178,9 @@ public class InProgressGame implements SpectatedGame {
     @SneakyThrows
     public void waitForEndOfGame() {
         endOfGame.await();
+    }
+
+    public void markEndReached() {
+        endOfGame.countDown();
     }
 }

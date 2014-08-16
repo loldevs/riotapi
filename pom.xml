@@ -24,11 +24,28 @@
     Aggregator and shared parent for entire project
     -->
 
+
     <groupId>net.boreeas</groupId>
     <artifactId>riotapi</artifactId>
-    <name>aggregator</name>
+    <name>net.boreeas:riotapi</name>
+    <description>A general purpose library for interfacing with various LoL services. This artifact is an aggregator for all submodules</description>
+    <url>https://github.com/loldevs/riotapi</url>
     <packaging>pom</packaging>
     <version>1.0.0</version>
+
+    <developers>
+        <developer>
+            <name>Malte Schuetze</name>
+            <email>malte.schuetze@fgms.de</email>
+            <url>https://github.com/boreeas</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:loldevs/riotapi.git</connection>
+        <developerConnection>scm:git:git@github.com:loldevs/riotapi.git</developerConnection>
+        <url>git@github.com:loldevs/riotapi.git</url>
+    </scm>
 
     <modules>
         <module>rest</module>
@@ -37,6 +54,13 @@
         <module>loginqueue</module>
         <module>spectator</module>
     </modules>
+
+    <licenses>
+        <license>
+            <name>Apache 2.0</name>
+            <url>http://opensource.org/licenses/Apache-2.0</url>
+        </license>
+    </licenses>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

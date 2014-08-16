@@ -26,6 +26,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>riotapi.rtmp</artifactId>
+    <name>net.boreeas:riotapi.rtmp</name>
+    <description>Lobby client / server communication</description>
 
     <dependencies>
         <dependency>

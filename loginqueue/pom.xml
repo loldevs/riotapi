@@ -26,6 +26,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>riotapi.loginqueue</artifactId>
+    <name>net.boreeas:riotapi.loginqueue</name>
+    <description>Login to a server.</description>
 
     <dependencies>
         <dependency>

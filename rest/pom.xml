@@ -26,6 +26,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>riotapi.rest</artifactId>
+    <name>net.boreeas:riotapi.rest</name>
+    <description>Interface to the official rest API provided by Riot. Includes an unthrottled handler as well as a throttled, asynchronous handler with configurable rate limits</description>
 
     <dependencies>
         <dependency>

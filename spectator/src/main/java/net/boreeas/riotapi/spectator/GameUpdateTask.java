@@ -41,7 +41,7 @@ import java.util.function.Consumer;
 @Log4j
 public class GameUpdateTask implements Runnable {
 
-    private static final int DEFAULT_MAX_RETRIES = 3;
+    private static final int DEFAULT_MAX_RETRIES = 5;
 
     private Consumer<Exception> onError;
     private InProgressGame game;
@@ -49,7 +49,8 @@ public class GameUpdateTask implements Runnable {
     @Setter private ScheduledFuture self;
 
     private boolean firstRun = true;
-    private Map<Integer, Integer> retries = new HashMap<>();
+    private Map<Integer, Integer> retriesChunks = new HashMap<>();
+    private Map<Integer, Integer> retriesKeyframes = new HashMap<>();
 
     public GameUpdateTask(InProgressGame game) {
         this(game, err -> {});
@@ -80,23 +81,26 @@ public class GameUpdateTask implements Runnable {
         if (chunkInfo.getChunkId() < game.getLastAvailableChunk()) {
             cancelWithError(new IllegalStateException("Last available chunk id reverted (" + game.getLastAvailableChunk() + " -> " + chunkInfo.getChunkId() + ")"));
         } else if (chunkInfo.getChunkId() > game.getLastAvailableChunk()) {
-            pullAllSinceLast(chunkInfo.getChunkId());
+            pullNewChunks(chunkInfo.getChunkId());
         }
 
         if (chunkInfo.getKeyFrameId() != game.getLastAvailableKeyFrame()) {
-            // Since we update every chunk, and keyframes don't appear as often as chunks,
-            // assume at most one new keyframe
-            try {
-                game.pullKeyFrame(chunkInfo.getKeyFrameId());
-            } catch (Exception ex) {
-                onError.accept(ex);
-            }
+            pullNewKeyframes(chunkInfo);
+
         }
 
+        doRetriesKeyframes();
+        doRetriesChunk();
+
         if (chunkInfo.getEndGameChunkId() != 0) {
-            log.debug("[" + game.getGameId() + "] End of game reached at chunk " + chunkInfo.getEndGameChunkId());
-            game.markEndReached();
-            cancel();
+
+            if (chunkInfo.getEndGameChunkId() == chunkInfo.getChunkId() && retriesKeyframes.isEmpty() && retriesChunks.isEmpty()) {
+                log.debug("[" + game.getGameId() + "] End of game reached at chunk " + chunkInfo.getEndGameChunkId());
+                game.markEndReached();
+                cancel();
+            } else {
+                log.debug("[" + game.getGameId() + "] Notified of end of game at chunk " + chunkInfo.getEndGameChunkId() + " (" + (chunkInfo.getEndGameChunkId() - chunkInfo.getChunkId()) + " chunks from now)");
+            }
         }
     }
 
@@ -109,7 +113,13 @@ public class GameUpdateTask implements Runnable {
         cancel();
     }
 
-    private void pullAllSinceLast(int maxId) {
+    private void pullNewKeyframes(ChunkInfo chunkInfo) {
+        // Since we update every chunk, and keyframes don't appear as often as chunks,
+        // assume at most one new keyframe
+        game.pullKeyFrame(chunkInfo.getKeyFrameId());
+    }
+
+    private void pullNewChunks(int maxId) {
         log.debug("[" + game.getGameId() + "] " + (maxId - game.getLastAvailableChunk()) + " new chunks (" + (game.getLastAvailableChunk() + 1) + " to " + maxId + ")");
 
         // Time between chunks is occasionally less than the chunk time interval
@@ -117,44 +127,98 @@ public class GameUpdateTask implements Runnable {
         for (int id = game.getLastAvailableChunk() + 1; id <= maxId; id++) {
             pullChunk(id);
         }
+    }
 
-        Set<Integer> removeMarkers = new HashSet<>();
-        for (Map.Entry<Integer, Integer> retryData: retries.entrySet()) {
-            retryChunk(removeMarkers, retryData.getKey(), retryData.getValue());
+    private void doRetriesKeyframes() {
+        Set<Integer> retriesExceeded = new HashSet<>();
+        Set<Integer> retrySuccessful = new HashSet<>();
+        for (Map.Entry<Integer, Integer> retryData: retriesKeyframes.entrySet()) {
+            retryKeyframe(retriesExceeded, retrySuccessful, retryData.getKey(), retryData.getValue());
         }
 
-        if (!removeMarkers.isEmpty()) {
-            removeMarkers.forEach(retries::remove);
-            throw new RequestException("Unreachable chunks: " + removeMarkers);
+        if (!retriesExceeded.isEmpty()) {
+            retriesExceeded.forEach(retriesKeyframes::remove);
+            throw new RequestException("Unreachable keyframe: " + retriesExceeded);
+        }
+
+        if (!retrySuccessful.isEmpty()) {
+            retrySuccessful.forEach(retriesKeyframes::remove);
         }
     }
 
-    private void retryChunk(Set<Integer> remove, int id, int retries) {
-        try {
-            log.debug("[" + game.getGameId() + "] Reattempting to pull chunk " + id + " (attempt " + retries + "/" + DEFAULT_MAX_RETRIES + ")");
-            game.pullChunk(id);
-        } catch (RequestException ex) {
-            if (ex.getErrorType() == RequestException.ErrorType.INTERNAL_SERVER_ERROR) {
-                if (retries < DEFAULT_MAX_RETRIES) {
-                    this.retries.put(id, retries + 1);
-                } else {
-                    remove.add(id);
-                }
-            } else {
-                throw ex;
-            }
+    private void doRetriesChunk() {
+        Set<Integer> retriesExceeded = new HashSet<>();
+        Set<Integer> retrySuccessful = new HashSet<>();
+        for (Map.Entry<Integer, Integer> retryData: retriesChunks.entrySet()) {
+            retryChunk(retriesExceeded, retrySuccessful, retryData.getKey(), retryData.getValue());
+        }
+
+        if (!retriesExceeded.isEmpty()) {
+            retriesExceeded.forEach(retriesChunks::remove);
+            throw new RequestException("Unreachable chunk: " + retriesExceeded);
+        }
+
+        if (!retrySuccessful.isEmpty()) {
+            retrySuccessful.forEach(retriesChunks::remove);
         }
     }
+
 
     private void pullChunk(int id) {
         try {
             game.pullChunk(id);
         } catch (RequestException ex) {
             if (ex.getErrorType() == RequestException.ErrorType.INTERNAL_SERVER_ERROR) {
-                retries.put(id, 1);
+                retriesChunks.put(id, 1);
             } else {
                 throw ex;
             }
+        }
+    }
+
+
+    private void retryChunk(Set<Integer> bad, Set<Integer> good, int id, int retries) {
+        try {
+            log.debug("[" + game.getGameId() + "] Reattempting to pull chunk " + id + " (attempt " + retries + "/" + DEFAULT_MAX_RETRIES + ")");
+            game.pullChunk(id);
+            good.add(id);   // Notify of success
+        } catch (RequestException ex) {
+            checkEligibleForRetry(bad, id, retries, ex, this.retriesChunks);
+        }
+    }
+
+    private void pullKeyframe(int id) {
+        try {
+            game.pullKeyFrame(id);
+        } catch (RequestException ex) {
+            if (ex.getErrorType() == RequestException.ErrorType.INTERNAL_SERVER_ERROR) {
+                retriesKeyframes.put(id, 1);
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+
+    private void retryKeyframe(Set<Integer> bad, Set<Integer> good, int id, int retries) {
+        try {
+            log.debug("[" + game.getGameId() + "] Reattempting to pull keyframe " + id + " (attempt " + retries + "/" + DEFAULT_MAX_RETRIES + ")");
+            game.pullKeyFrame(id);
+            good.add(id);   // Notify of success
+        } catch (RequestException ex) {
+            checkEligibleForRetry(bad, id, retries, ex, this.retriesKeyframes);
+        }
+    }
+
+    private void checkEligibleForRetry(Set<Integer> ifBad, int id, int retries, RequestException ex, Map<Integer, Integer> retryCounts) {
+        if (ex.getErrorType() == RequestException.ErrorType.INTERNAL_SERVER_ERROR) {
+            if (retries < DEFAULT_MAX_RETRIES) {
+                retryCounts.put(id, retries + 1);
+            } else {
+                ifBad.add(id); // Notify of attempts exceeded
+            }
+        } else {
+            throw ex;
         }
     }
 
@@ -178,7 +242,7 @@ public class GameUpdateTask implements Runnable {
             int ii = i;
             service.submit(() -> {
                 try {
-                    game.pullKeyFrame(ii);
+                    pullKeyframe(ii);
                 } catch (Exception ex) {
                     onError.accept(ex);
                 }

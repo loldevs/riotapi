@@ -49,7 +49,6 @@ public class GameEncryptionData {
      * Decrypts the data with the specified key.
      * @param in The data to decrypt.
      * @return The decrypted data.
-     * @throws GeneralSecurityException
      */
     @SneakyThrows
     public byte[] decrypt(byte[] in) {

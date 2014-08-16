@@ -19,10 +19,9 @@ package net.boreeas.riotapi.rtmp;
 import junit.framework.TestCase;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
-import net.boreeas.riotapi.com.riotgames.platform.game.QueueType;
-import net.boreeas.riotapi.constants.Season;
 import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
+import net.boreeas.riotapi.com.riotgames.platform.game.QueueType;
 import net.boreeas.riotapi.com.riotgames.platform.login.impl.ClientVersionMismatchException;
 import net.boreeas.riotapi.com.riotgames.platform.matchmaking.GameQueueConfig;
 import net.boreeas.riotapi.com.riotgames.platform.matchmaking.MatchMakerParams;
@@ -31,6 +30,7 @@ import net.boreeas.riotapi.com.riotgames.platform.summoner.SummonerSkillLevel;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.runes.SummonerRuneInventory;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePageBook;
 import net.boreeas.riotapi.com.riotgames.team.dto.Team;
+import net.boreeas.riotapi.constants.Season;
 import net.boreeas.riotapi.loginqueue.LoginQueue;
 
 import java.io.FileInputStream;
@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
 public class RtmpClientTest extends TestCase {
 
     private static Properties testConfig = new Properties();;
-    private static Shard shard = Shard.ID;
+    private static Shard shard = Shard.EUW;
     private static RtmpClient client;
     private static long summonerId;
     private static long accountId;

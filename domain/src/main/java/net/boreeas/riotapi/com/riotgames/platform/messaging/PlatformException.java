@@ -31,8 +31,10 @@ import java.util.List;
 public class PlatformException extends RuntimeException {
     private String errorCode;
     private List<Object> substitutionArguments;
-    private String rootCauseClassName;
+    private String rootCauseClassname;
     private Object cause;
+    private String message;
+    private String localizedMessage;
 
     public PlatformException() {}
 

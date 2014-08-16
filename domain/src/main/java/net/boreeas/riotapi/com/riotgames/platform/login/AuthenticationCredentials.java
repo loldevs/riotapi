@@ -40,5 +40,5 @@ public class AuthenticationCredentials {
     private String password;
     private String username;
     private Object securityAnswer;
-    //private String ipAddress;
+    private String ipAddress;
 }

@@ -56,6 +56,7 @@
                         </goals>
                     </execution>
                 </executions>
+                <version>2.2.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -68,6 +69,7 @@
                         </goals>
                     </execution>
                 </executions>
+                <version>2.9.1</version>
             </plugin>
         </plugins>
     </build>

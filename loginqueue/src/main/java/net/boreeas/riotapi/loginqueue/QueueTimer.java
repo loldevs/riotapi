@@ -59,8 +59,10 @@ public class QueueTimer extends Thread {
     private AuthResult getResultOrError() {
         if (isError) {
             throw ex;
-        } else {
+        } else if (result != null) {
             return result;
+        } else {
+            throw new IllegalStateException("Await timed out before first run");
         }
     }
 

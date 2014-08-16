@@ -34,9 +34,17 @@ public class LoginQueueTest extends TestCase {
 
     public void testQueueWait() throws Exception {
         try {
-            AuthResult result = new LoginQueue(Shard.NA).waitInQueue("foo", "").await(500, TimeUnit.MILLISECONDS);
+            AuthResult result = new LoginQueue(Shard.NA).waitInQueue("foo", "").await(2, TimeUnit.SECONDS);
             fail();
         } catch (InvalidCredentialsException ex) {
+        }
+    }
+
+    public void testQueueEarlyReturn() throws Exception {
+        try {
+            AuthResult result = new LoginQueue(Shard.NA).waitInQueue("foo", "").await(0, TimeUnit.SECONDS);
+            fail();
+        } catch (IllegalStateException ex) {
         }
     }
 }

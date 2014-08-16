@@ -27,6 +27,7 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @Serialization(name = "com.riotgames.platform.login.impl.ClientVersionMismatchException")
 public class ClientVersionMismatchException extends PlatformException {
 
+
     public String toString() {
         String s = getClass().getName();
         String message = getLocalizedMessage();

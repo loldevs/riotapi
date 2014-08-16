@@ -33,18 +33,18 @@ public class KeyframeAndChunkDecodingTest extends TestCase {
     public static InProgressGame game = apiHandler.openFeaturedGame(apiHandler.getFeaturedGames().get(0));
     public static GamePool pool = GamePool.singleton(game, Throwable::printStackTrace);
 
-    public void testDumpChunk() {
+    public void testDumpChunk() throws InterruptedException, ExecutionException, TimeoutException {
         game.waitForEndOfGame();
         pool.shutdown();
 
-        Util.hexdump(game.getChunk(1).getBuffer()).forEach(System.out::println);
+        Util.hexdump(game.getFutureChunk(1).get(100, TimeUnit.MILLISECONDS).getBuffer()).forEach(System.out::println);
     }
 
-    public void testDumpKeyframe() {
+    public void testDumpKeyframe() throws InterruptedException, ExecutionException, TimeoutException {
         game.waitForEndOfGame();
         pool.shutdown();
 
-        Util.hexdump(game.getKeyFrame(1).getBuffer()).forEach(System.out::println);
+        Util.hexdump(game.getFutureKeyFrame(1).get(100, TimeUnit.MILLISECONDS).getBuffer()).forEach(System.out::println);
     }
 
     public void testDumpAllKeyFrames() {
@@ -75,5 +75,9 @@ public class KeyframeAndChunkDecodingTest extends TestCase {
             }
             System.out.println();
         }
+    }
+
+    private void analyzeChunk(Chunk c) {
+
     }
 }

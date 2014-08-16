@@ -20,6 +20,10 @@ import junit.framework.TestCase;
 import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.Util;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 /**
  * @author Malte Schütze
  */
@@ -49,7 +53,11 @@ public class KeyframeAndChunkDecodingTest extends TestCase {
 
         for (int i = game.getFirstAvailableKeyFrame(); i <= game.getLastAvailableKeyFrame(); i++) {
             System.out.println("[ Keyframe " + i + " ]");
-            Util.hexdump(game.getKeyFrame(i).getBuffer()).forEach(System.out::println);
+            try {
+                Util.hexdump(game.getFutureKeyFrame(i).get(20, TimeUnit.MILLISECONDS).getBuffer()).forEach(System.out::println);
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                e.printStackTrace();
+            }
             System.out.println();
         }
     }
@@ -60,7 +68,11 @@ public class KeyframeAndChunkDecodingTest extends TestCase {
 
         for (int i = game.getFirstAvailableChunk(); i <= game.getLastAvailableChunk(); i++) {
             System.out.println("[ Chunk " + i + " ]");
-            Util.hexdump(game.getChunk(i).getBuffer()).forEach(System.out::println);
+            try {
+                Util.hexdump(game.getFutureChunk(i).get(20, TimeUnit.MILLISECONDS).getBuffer()).forEach(System.out::println);
+            } catch (InterruptedException | TimeoutException | ExecutionException e) {
+                e.printStackTrace();
+            }
             System.out.println();
         }
     }

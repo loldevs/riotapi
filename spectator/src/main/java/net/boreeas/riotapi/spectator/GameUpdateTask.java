@@ -112,16 +112,10 @@ public class GameUpdateTask implements Runnable {
     private void pullAllSinceLast(int maxId) {
         log.debug("[" + game.getGameId() + "] " + (maxId - game.getLastAvailableChunk()) + " new chunks (" + (game.getLastAvailableChunk() + 1) + " to " + maxId + ")");
 
+        // Time between chunks is occasionally less than the chunk time interval
+        // So we check for all missed chunks here
         for (int id = game.getLastAvailableChunk() + 1; id <= maxId; id++) {
-            try {
-                game.pullChunk(id);
-            } catch (RequestException ex) {
-                if (ex.getErrorType() == RequestException.ErrorType.INTERNAL_SERVER_ERROR) {
-                    retries.put(id, 1);
-                } else {
-                    throw ex;
-                }
-            }
+            pullChunk(id);
         }
 
         Set<Integer> removeMarkers = new HashSet<>();
@@ -129,11 +123,15 @@ public class GameUpdateTask implements Runnable {
             retryChunk(removeMarkers, retryData.getKey(), retryData.getValue());
         }
 
-        removeMarkers.forEach(retries::remove);
+        if (!removeMarkers.isEmpty()) {
+            removeMarkers.forEach(retries::remove);
+            throw new RequestException("Unreachable chunks: " + removeMarkers);
+        }
     }
 
     private void retryChunk(Set<Integer> remove, int id, int retries) {
         try {
+            log.debug("[" + game.getGameId() + "] Reattempting to pull chunk " + id + " (attempt " + retries + "/" + DEFAULT_MAX_RETRIES + ")");
             game.pullChunk(id);
         } catch (RequestException ex) {
             if (ex.getErrorType() == RequestException.ErrorType.INTERNAL_SERVER_ERROR) {
@@ -142,6 +140,18 @@ public class GameUpdateTask implements Runnable {
                 } else {
                     remove.add(id);
                 }
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    private void pullChunk(int id) {
+        try {
+            game.pullChunk(id);
+        } catch (RequestException ex) {
+            if (ex.getErrorType() == RequestException.ErrorType.INTERNAL_SERVER_ERROR) {
+                retries.put(id, 1);
             } else {
                 throw ex;
             }
@@ -157,8 +167,8 @@ public class GameUpdateTask implements Runnable {
             int ii = i;
             service.submit(() -> {
                 try {
-                    game.pullChunk(ii);
-                } catch (Exception ex) {
+                    pullChunk(ii);
+                } catch (RequestException ex) {
                     onError.accept(ex);
                 }
             });

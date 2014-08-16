@@ -31,7 +31,7 @@ import net.boreeas.riotapi.com.riotgames.platform.summoner.SummonerSkillLevel;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.runes.SummonerRuneInventory;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePageBook;
 import net.boreeas.riotapi.com.riotgames.team.dto.Team;
-import net.boreeas.riotapi.loginqeue.LoginQueue;
+import net.boreeas.riotapi.loginqueue.LoginQueue;
 
 import java.io.FileInputStream;
 import java.io.InputStreamReader;

@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.loginqeue;
+package net.boreeas.riotapi.loginqueue;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 /**

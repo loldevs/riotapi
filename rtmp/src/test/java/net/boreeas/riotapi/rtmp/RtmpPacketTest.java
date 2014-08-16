@@ -19,7 +19,7 @@ package net.boreeas.riotapi.rtmp;
 import junit.framework.TestCase;
 import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.com.riotgames.platform.login.AuthenticationCredentials;
-import net.boreeas.riotapi.loginqeue.LoginQueue;
+import net.boreeas.riotapi.loginqueue.LoginQueue;
 import net.boreeas.riotapi.rtmp.messages.FlexMessage;
 import net.boreeas.riotapi.rtmp.messages.RemotingMessage;
 import net.boreeas.riotapi.rtmp.messages.control.Command;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.loginqeue;
+package net.boreeas.riotapi.loginqueue;
 
 import junit.framework.TestCase;
 import net.boreeas.riotapi.Shard;

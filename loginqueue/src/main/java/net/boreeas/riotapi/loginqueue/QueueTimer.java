@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.loginqeue;
+package net.boreeas.riotapi.loginqueue;
 
 import net.boreeas.riotapi.com.riotgames.platform.account.management.AccountManagementException;
 

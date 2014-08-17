@@ -6,3 +6,4 @@
 logs/
 out/
 *.class
+settings.xml

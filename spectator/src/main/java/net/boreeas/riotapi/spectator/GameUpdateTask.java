@@ -80,6 +80,7 @@ public class GameUpdateTask implements Runnable {
         ChunkInfo chunkInfo = game.getLastChunkInfo();
         if (chunkInfo.getChunkId() < game.getLastAvailableChunk()) {
             cancelWithError(new IllegalStateException("Last available chunk id reverted (" + game.getLastAvailableChunk() + " -> " + chunkInfo.getChunkId() + ")"));
+            return;
         } else if (chunkInfo.getChunkId() > game.getLastAvailableChunk()) {
             pullNewChunks(chunkInfo.getChunkId());
         }

@@ -93,13 +93,10 @@ public class GameUpdateTask implements Runnable {
         doRetriesKeyframes();
         doRetriesChunk();
 
-        if (chunkInfo.getEndGameChunkId() != 0) {
-
-            if (chunkInfo.getEndGameChunkId() == chunkInfo.getChunkId() && retriesKeyframes.isEmpty() && retriesChunks.isEmpty()) {
-                log.debug("[" + game.getGameId() + "] End of game reached at chunk " + chunkInfo.getEndGameChunkId());
-                game.markEndReached();
-                cancel();
-            }
+        if (chunkInfo.getEndGameChunkId() != 0 && chunkInfo.getEndGameChunkId() == chunkInfo.getChunkId() && retriesKeyframes.isEmpty() && retriesChunks.isEmpty()) {
+            log.debug("[" + game.getGameId() + "] End of game reached at chunk " + chunkInfo.getEndGameChunkId());
+            game.markEndReached();
+            cancel();
         }
     }
 

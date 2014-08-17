@@ -99,8 +99,6 @@ public class GameUpdateTask implements Runnable {
                 log.debug("[" + game.getGameId() + "] End of game reached at chunk " + chunkInfo.getEndGameChunkId());
                 game.markEndReached();
                 cancel();
-            } else {
-                log.debug("[" + game.getGameId() + "] Notified of end of game at chunk " + chunkInfo.getEndGameChunkId() + " (" + (chunkInfo.getEndGameChunkId() - chunkInfo.getChunkId()) + " chunks from now)");
             }
         }
     }

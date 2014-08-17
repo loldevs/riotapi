@@ -25,7 +25,7 @@ public enum Shard {
     EUW("euw",
             "EUW1",
             "eu." + Constants.BASE_PATH,
-            "chat.eu." + Constants.BASE_PATH,
+            "chat.euw1." + Constants.BASE_PATH,
             Constants.API_PATH,
             "https://lq.euw1." + Constants.BASE_PATH,
             "prod.euw1." + Constants.BASE_PATH,

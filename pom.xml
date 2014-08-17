@@ -36,6 +36,7 @@
         <module>rtmp</module>
         <module>loginqueue</module>
         <module>spectator</module>
+        <module>xmpp</module>
     </modules>
 
     <properties>

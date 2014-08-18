@@ -1,7 +1,5 @@
 package net.boreeas.xmpp;
 
-import lombok.Getter;
-
 public enum GameStatus {
 	OUT_OF_GAME("outOfGame"),
 	IN_QUEUE("inQueue"),
@@ -10,7 +8,7 @@ public enum GameStatus {
 	IN_GAME("inGame"),
 	HOSTING_PRACTICE_GAME("hostingPracticeGame");
 	
-	private @Getter String status;
+	public final String status;
 	
 	private GameStatus(String status) {
 		this.status = status;

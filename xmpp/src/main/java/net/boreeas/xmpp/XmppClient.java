@@ -3,8 +3,8 @@ package net.boreeas.xmpp;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import javax.net.ssl.SSLSocketFactory;
 
@@ -22,7 +22,7 @@ import org.jivesoftware.smackx.muc.MultiUserChat;
 
 public class XmppClient extends XMPPTCPConnection {
 
-	private ArrayList<MultiUserChat> chatRooms;
+	private HashMap<String, MultiUserChat> chatRooms;
 
 	private @Getter Shard server;
 	private @Getter String user;
@@ -33,7 +33,7 @@ public class XmppClient extends XMPPTCPConnection {
 		this.server = server;
 		this.user = user;
 		this.pass = pass;
-		chatRooms = new ArrayList<MultiUserChat>();
+		chatRooms = new HashMap<String, MultiUserChat>();
 	}
 
 	@Override
@@ -57,32 +57,28 @@ public class XmppClient extends XMPPTCPConnection {
 		return connConf;
 	}
 	
-	public void sendMessage(String to, String message) throws Exception {
-		if (to.contains("~")) {
-			for (MultiUserChat muc : chatRooms) {
-				if (muc.getRoom().equals(to)) {
-					muc.sendMessage(message);
-				}
-			}
-		} else {
-			Message aEnviar = new Message(to);
-			aEnviar.setBody(message);
-			aEnviar.setType(Message.Type.chat);
-			aEnviar.setFrom(getUser().split("/")[0]);
-			sendPacket(aEnviar);
-		}
+	public void sendToUser(String to, String message) throws Exception {
+		Message aEnviar = new Message(to);
+		aEnviar.setBody(message);
+		aEnviar.setType(Message.Type.chat);
+		aEnviar.setFrom(getUser().split("/")[0]);
+		sendPacket(aEnviar);
+	}
+	
+	public void sendToChannel(String roomName, String message) throws Exception {
+		chatRooms.get(roomName).sendMessage(message);
 	}
 
 	public void joinChannel(String channelName, ChatType type, String password) {
 		try {
-			MultiUserChat muc = new MultiUserChat(this, getChatRoomJID(channelName, type, password, password==null));
-			chatRooms.add(muc);
+			MultiUserChat room = new MultiUserChat(this, getChatRoomJID(channelName, type, password, password==null));
+			chatRooms.put(channelName, room);
 			if (password == null) {
 				try {
-					muc.join(getUser());
+					room.join(getUser());
 				} catch (NoResponseException e) {}
 			} else {
-				muc.join(getUser(), password);
+				room.join(getUser(), password);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,7 +87,7 @@ public class XmppClient extends XMPPTCPConnection {
 
 	private String getRoomName(String roomName, ChatType type) throws Exception {
 		String sha = sha1(roomName);
-		return type.getType() + "~" + sha;
+		return type.type + "~" + sha;
 	}
 
 	private String getChatRoomJID(String roomName, ChatType type, String password, boolean isPublic) throws Exception {

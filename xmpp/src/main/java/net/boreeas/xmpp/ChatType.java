@@ -1,7 +1,5 @@
 package net.boreeas.xmpp;
 
-import lombok.Getter;
-
 public enum ChatType {
 
 	ARRANGING_PRACTICE("ap"),
@@ -17,7 +15,7 @@ public enum ChatType {
 	CTA("cta"),
 	POST_GAME("pg");
 
-	private @Getter String type;
+	public final String type;
 
 	private ChatType(String type) {
 		this.type = type;

@@ -5,6 +5,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.net.ssl.SSLSocketFactory;
 
@@ -57,12 +60,20 @@ public class XmppClient extends XMPPTCPConnection {
 		return connConf;
 	}
 	
+	public Set<MultiUserChat> getJoinedRooms() {
+		Set<MultiUserChat> rooms = new HashSet<MultiUserChat>();
+		for (Entry<String, MultiUserChat> roomEntry : chatRooms.entrySet()) {
+			rooms.add(roomEntry.getValue());
+		}
+		return rooms;
+	}
+	
 	public void sendToUser(String to, String message) throws Exception {
-		Message aEnviar = new Message(to);
-		aEnviar.setBody(message);
-		aEnviar.setType(Message.Type.chat);
-		aEnviar.setFrom(getUser().split("/")[0]);
-		sendPacket(aEnviar);
+		Message packet = new Message(to);
+		packet.setBody(message);
+		packet.setType(Message.Type.chat);
+		packet.setFrom(getUser().split("/")[0]);
+		sendPacket(packet);
 	}
 	
 	public void sendToChannel(String roomName, String message) throws Exception {

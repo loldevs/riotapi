@@ -1,10 +1,13 @@
 package net.boreeas.xmpp;
 
+import java.io.StringReader;
+
+import javax.xml.bind.JAXB;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import net.boreeas.xmpp.XmppClient.ChatType;
 import lombok.Data;
-import lombok.Getter;
+
+import org.jivesoftware.smack.packet.Presence;
 
 @Data
 @XmlRootElement(name = "body")
@@ -28,27 +31,7 @@ public class RiotStatus {
 	private String gameStatus;
 	private String statusMsg;
 	
-	public enum GameStatus {
-		OUT_OF_GAME("outOfGame"),
-		IN_QUEUE("inQueue"),
-		SPECTATING("spectating"),
-		CHAMPION_SELECT("championSelect"),
-		IN_GAME("inGame"),
-		HOSTING_PRACTICE_GAME("hostingPracticeGame");
-		
-		private @Getter String status;
-		
-		private GameStatus(String status) {
-			this.status = status;
-		}
-		
-		public GameStatus resolve(String status) {
-			for (GameStatus t : values()) {
-				if (t.status.equals(status)) {
-					return t;
-				}
-			}
-			return null;
-		}
+	public static RiotStatus parsePresence(Presence presence) {
+		return JAXB.unmarshal(new StringReader(presence.getStatus()), RiotStatus.class);
 	}
 }

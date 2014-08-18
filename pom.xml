@@ -39,6 +39,12 @@
             <email>malte.schuetze@fgms.de</email>
             <url>https://github.com/boreeas</url>
         </developer>
+
+        <developer>
+            <name>Javier Díaz-Cano Martín-Albo</name>
+            <email>javierdiazcanom@gmail.com</email>
+            <url>https://github.com/jdiazcano</url>
+        </developer>
     </developers>
 
     <scm>

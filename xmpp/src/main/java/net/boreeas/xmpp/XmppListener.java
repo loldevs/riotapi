@@ -1,4 +1,4 @@
-package riotapi.xmpp.com.jdiaz.xmpp;
+package net.boreeas.xmpp;
 
 import org.jivesoftware.smack.packet.Message;
 

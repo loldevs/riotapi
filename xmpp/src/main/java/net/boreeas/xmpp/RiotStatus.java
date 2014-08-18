@@ -1,8 +1,8 @@
-package riotapi.xmpp.com.jdiaz.xmpp;
+package net.boreeas.xmpp;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import riotapi.xmpp.com.jdiaz.xmpp.XmppClient.ChatType;
+import net.boreeas.xmpp.XmppClient.ChatType;
 import lombok.Data;
 import lombok.Getter;
 

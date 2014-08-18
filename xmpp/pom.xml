@@ -4,9 +4,9 @@
 	<parent>
 		<groupId>net.boreeas</groupId>
 		<artifactId>riotapi</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>xmpp</artifactId>
+	<artifactId>riotapi.xmpp</artifactId>
 	<name>XmppWrapper</name>
 	<description>An xmpp wrapper for riot</description>
 	<dependencies>

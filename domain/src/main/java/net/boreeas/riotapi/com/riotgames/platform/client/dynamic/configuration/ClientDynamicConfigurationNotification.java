@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
 @Data
 @Serialization(name = "com.riotgames.platform.client.dynamic.configuration.ClientDynamicConfigurationNotification")
 public class ClientDynamicConfigurationNotification {
-    @Delegate
     @Setter(AccessLevel.NONE)
     @Getter(AccessLevel.NONE)
     @JsonSerialization

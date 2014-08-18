@@ -43,14 +43,6 @@ public class XmppClient extends XMPPTCPConnection {
 	public void connect() throws SmackException, IOException, XMPPException {
 		super.connect();
 		login(user, "AIR_" + pass, "xiff");
-
-		Collection<RosterEntry> entries = getRoster().getEntries();
-		for (RosterEntry entry : entries) {
-			String name = entry.getUser();
-			String nam = entry.getName();
-
-			System.out.println("User: "+name+"\tName: "+nam);
-		}
 	}
 
 	private static ConnectionConfiguration buildConnectionConfiguration(Shard shard) {

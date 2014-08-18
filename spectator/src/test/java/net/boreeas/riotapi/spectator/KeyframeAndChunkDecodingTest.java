@@ -16,7 +16,6 @@
 
 package net.boreeas.riotapi.spectator;
 
-import junit.framework.TestCase;
 import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.Util;
 
@@ -27,7 +26,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * @author Malte Schütze
  */
-public class KeyframeAndChunkDecodingTest extends TestCase {
+public class KeyframeAndChunkDecodingTest /*extends TestCase*/ {
 
     public static SpectatorApiHandler apiHandler = new SpectatorApiHandler(Shard.EUW);
     public static InProgressGame game = apiHandler.openFeaturedGame(apiHandler.getFeaturedGames().get(0));

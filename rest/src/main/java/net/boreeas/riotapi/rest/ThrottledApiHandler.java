@@ -769,6 +769,16 @@ public class ThrottledApiHandler implements AutoCloseable {
 
     // </editor-fold>
 
+    // <editor-fold desc="Match">
+    public Future<MatchDetail> getMatch(int matchId) {
+        return new ApiFuture<>(() -> handler.getMatch(matchId));
+    }
+
+    public Future<MatchDetail> getMatch(int matchId, boolean includeTimeline) {
+        return new ApiFuture<>(() -> handler.getMatch(matchId, includeTimeline));
+    }
+    // </editor-fold>
+
     // <editor-fold desc="Stats">
 
     /**

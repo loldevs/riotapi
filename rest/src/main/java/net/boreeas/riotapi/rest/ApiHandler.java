@@ -857,7 +857,7 @@ public class ApiHandler {
      * @param includeTimeline Whether or not the event timeline should be retrieved.
      * @return The match details.
      */
-    private MatchDetail getMatch(long matchId, boolean includeTimeline) {
+    public MatchDetail getMatch(long matchId, boolean includeTimeline) {
         WebTarget tgt = matchInfoTarget.path("" + matchId).queryParam("includeTimeline", includeTimeline);
         return gson.fromJson($(tgt), MatchDetail.class);
     }

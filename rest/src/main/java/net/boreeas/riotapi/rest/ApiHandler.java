@@ -49,6 +49,7 @@ public class ApiHandler {
     private WebTarget gameInfoTarget;
     private WebTarget leagueInfoTarget;
     private WebTarget matchInfoTarget;
+    private WebTarget matchHistoryInfoTarget;
     private WebTarget staticDataTarget;
     private WebTarget statsTarget;
     private WebTarget summonerInfoTarget;
@@ -71,6 +72,7 @@ public class ApiHandler {
         gameInfoTarget      = defaultTarget.path("v1.3").path("game/by-summoner");
         leagueInfoTarget    = defaultTarget.path("v2.4").path("league");
         matchInfoTarget     = defaultTarget.path("v2.2").path("match");
+        matchHistoryInfoTarget = defaultTarget.path("v2.2").path("matchhistory");
         statsTarget         = defaultTarget.path("v1.3").path("stats/by-summoner");
         summonerInfoTarget  = defaultTarget.path("v1.4").path("summoner");
         teamInfoTarget      = defaultTarget.path("v2.3").path("team");
@@ -846,6 +848,7 @@ public class ApiHandler {
      * Equivalent to <code>getMatch(matchId, true);</code>
      * @param matchId The id of the match.
      * @return The match details.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
      */
     public MatchDetail getMatch(long matchId) {
         return getMatch(matchId);
@@ -856,10 +859,26 @@ public class ApiHandler {
      * @param matchId The id of the match.
      * @param includeTimeline Whether or not the event timeline should be retrieved.
      * @return The match details.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
      */
     public MatchDetail getMatch(long matchId, boolean includeTimeline) {
         WebTarget tgt = matchInfoTarget.path("" + matchId).queryParam("includeTimeline", includeTimeline);
         return gson.fromJson($(tgt), MatchDetail.class);
+    }
+    // </editor-fold>
+
+    // <editor-fold desc="Matchhistory v2.2">
+
+    /**
+     * Retrieve a player's match history.
+     * @param playerId The id of the player.
+     * @return The match history of the player.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">Official API Documentation</a>
+     */
+    public List<MatchSummary> getMatchHistory(long playerId) {
+        Type type = new TypeToken<List<MatchSummary>>(){}.getType();
+        WebTarget tgt = matchHistoryInfoTarget.path("" + playerId);
+        return gson.fromJson($(tgt), type);
     }
     // </editor-fold>
 

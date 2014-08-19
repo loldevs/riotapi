@@ -17,16 +17,24 @@
 package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
+import net.boreeas.riotapi.com.riotgames.platform.game.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
- * A match history entry.
  * @author Malte Schütze
  */
 @Getter
-public class MatchDetail extends Match {
-    private List<PostMatchTeamOverview> teams = new ArrayList<>();
-    private MatchTimeline timeline;
+public class Match {
+    private long mapId;
+    private Date matchCreation;
+    private long matchDuration;
+    private long matchId;
+    private String matchVersion;
+    private List<ParticipantIdentity> participantIdentities = new ArrayList<>();
+    private List<net.boreeas.riotapi.com.riotgames.platform.game.Participant> participants = new ArrayList<>();
+    private QueueType queueType;
+    private String region;
 }

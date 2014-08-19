@@ -770,12 +770,38 @@ public class ThrottledApiHandler implements AutoCloseable {
     // </editor-fold>
 
     // <editor-fold desc="Match">
+    /**
+     * Retrieves the specified match, including timeline.
+     * Equivalent to <code>getMatch(matchId, true);</code>
+     * @param matchId The id of the match.
+     * @return The match details.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
+     */
     public Future<MatchDetail> getMatch(int matchId) {
         return new ApiFuture<>(() -> handler.getMatch(matchId));
     }
 
+    /**
+     * Retrieves the specified match.
+     * @param matchId The id of the match.
+     * @param includeTimeline Whether or not the event timeline should be retrieved.
+     * @return The match details.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
+     */
     public Future<MatchDetail> getMatch(int matchId, boolean includeTimeline) {
         return new ApiFuture<>(() -> handler.getMatch(matchId, includeTimeline));
+    }
+    // </editor-fold>
+
+    // <editor-fold desc="Matchhistory">
+    /**
+     * Retrieve a player's match history.
+     * @param playerId The id of the player.
+     * @return The match history of the player.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">Official API Documentation</a>
+     */
+    public Future<List<MatchSummary>> getMatchHistory(long playerId) {
+        return new ApiFuture<>(() -> handler.getMatchHistory(playerId));
     }
     // </editor-fold>
 

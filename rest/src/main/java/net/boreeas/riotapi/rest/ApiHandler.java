@@ -48,6 +48,7 @@ public class ApiHandler {
     private WebTarget championInfoTarget;
     private WebTarget gameInfoTarget;
     private WebTarget leagueInfoTarget;
+    private WebTarget matchInfoTarget;
     private WebTarget staticDataTarget;
     private WebTarget statsTarget;
     private WebTarget summonerInfoTarget;
@@ -69,6 +70,7 @@ public class ApiHandler {
         championInfoTarget  = defaultTarget.path("v1.2").path("champion");
         gameInfoTarget      = defaultTarget.path("v1.3").path("game/by-summoner");
         leagueInfoTarget    = defaultTarget.path("v2.4").path("league");
+        matchInfoTarget     = defaultTarget.path("v2.2").path("match");
         statsTarget         = defaultTarget.path("v1.3").path("stats/by-summoner");
         summonerInfoTarget  = defaultTarget.path("v1.4").path("summoner");
         teamInfoTarget      = defaultTarget.path("v2.3").path("team");
@@ -835,6 +837,30 @@ public class ApiHandler {
         return gson.fromJson($(tgt), type);
     }
 
+    // </editor-fold>
+
+    // <editor-fold desc="Match v2.2">
+
+    /**
+     * Retrieves the specified match, including timeline.
+     * Equivalent to <code>getMatch(matchId, true);</code>
+     * @param matchId The id of the match.
+     * @return The match details.
+     */
+    public MatchDetail getMatch(long matchId) {
+        return getMatch(matchId);
+    }
+
+    /**
+     * Retrieves the specified match.
+     * @param matchId The id of the match.
+     * @param includeTimeline Whether or not the event timeline should be retrieved.
+     * @return The match details.
+     */
+    private MatchDetail getMatch(long matchId, boolean includeTimeline) {
+        WebTarget tgt = matchInfoTarget.path("" + matchId).queryParam("includeTimeline", includeTimeline);
+        return gson.fromJson($(tgt), MatchDetail.class);
+    }
     // </editor-fold>
 
     // <editor-fold desc="Stats v1.3">

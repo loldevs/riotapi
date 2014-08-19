@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.com.riotgames.platform.game;
+package net.boreeas.riotapi.rest;
 
-import lombok.Data;
-import net.boreeas.riotapi.rtmp.serialization.Serialization;
+import lombok.Getter;
+
+import java.util.List;
+import java.util.ArrayList;
 
 /**
- * Created on 7/19/2014.
+ * @author Malte Schütze
  */
-@Data
-@Serialization(name = "com.riotgames.platform.game.Participant")
-public class Participant {
-
+@Getter
+public class MatchTimeline {
+    private long frameInterval;
+    private List<Frame> frames = new ArrayList<>();
 }

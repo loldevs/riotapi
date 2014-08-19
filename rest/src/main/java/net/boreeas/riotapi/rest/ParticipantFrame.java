@@ -14,16 +14,23 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.com.riotgames.platform.game;
+package net.boreeas.riotapi.rest;
 
-import lombok.Data;
-import net.boreeas.riotapi.rtmp.serialization.Serialization;
+import lombok.Getter;
+
+import java.awt.*;
 
 /**
- * Created on 7/19/2014.
+ * @author Malte Schütze
  */
-@Data
-@Serialization(name = "com.riotgames.platform.game.Participant")
-public class Participant {
-
+@Getter
+public class ParticipantFrame {
+    private int currentGold;
+    private int jungleMinionsKilled;
+    private int level;
+    private int minionsKilled;
+    private int participantId;
+    private Point position;
+    private int totalGold;
+    private int xp;
 }

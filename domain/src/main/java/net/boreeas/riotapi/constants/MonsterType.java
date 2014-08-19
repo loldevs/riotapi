@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.com.riotgames.platform.game;
-
-import lombok.Data;
-import net.boreeas.riotapi.rtmp.serialization.Serialization;
+package net.boreeas.riotapi.constants;
 
 /**
- * Created on 7/19/2014.
+ * @author Malte Schütze
  */
-@Data
-@Serialization(name = "com.riotgames.platform.game.Participant")
-public class Participant {
-
+public enum MonsterType {
+    BARON_NASHOR,
+    DRAGON,
+    VILEMAW,
+    BLUE_GOLEM,
+    RED_LIZARD,
 }

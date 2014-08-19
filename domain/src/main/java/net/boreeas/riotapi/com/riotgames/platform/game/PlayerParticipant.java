@@ -25,7 +25,7 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
  */
 @Data
 @Serialization(name = "com.riotgames.platform.game.PlayerParticipant")
-public class PlayerParticipant {
+public class PlayerParticipant extends Participant {
     // TODO inspect
     private Object timeAddedToQueue;
     private int index;

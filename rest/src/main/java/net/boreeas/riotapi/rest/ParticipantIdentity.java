@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.com.riotgames.platform.game;
+package net.boreeas.riotapi.rest;
 
-import lombok.Data;
-import net.boreeas.riotapi.rtmp.serialization.Serialization;
+import lombok.Getter;
 
 /**
- * Created on 7/19/2014.
+ * @author Malte Schütze
  */
-@Data
-@Serialization(name = "com.riotgames.platform.game.Participant")
-public class Participant {
-
+@Getter
+public class ParticipantIdentity {
+    private int participantId;
+    private ParticipantPlayer player;
 }

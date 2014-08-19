@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.com.riotgames.platform.game;
+package net.boreeas.riotapi.rest;
 
-import lombok.Data;
-import net.boreeas.riotapi.rtmp.serialization.Serialization;
+import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Created on 7/19/2014.
+ * @author Malte Schütze
  */
-@Data
-@Serialization(name = "com.riotgames.platform.game.Participant")
-public class Participant {
-
+@Getter
+public class Frame {
+    private List<Event> events = new ArrayList<>();
+    private Map<String, ParticipantFrame> participantFrames = new HashMap<>();
+    private long timestamp;
 }

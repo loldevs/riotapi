@@ -17,17 +17,13 @@
 package net.boreeas.riotapi.constants;
 
 /**
- * Created on 4/14/2014.
+ * @author Malte Schütze
  */
-public enum Season {
-    PRESEASON3(3),
-    SEASON3(3),
-    PRESEASON4(4),
-    SEASON4(4);
-
-    public final int numeric;
-
-    private Season(int numeric) {
-        this.numeric = numeric;
-    }
+public enum WardType {
+    SIGHT_WARD,
+    VISION_WARD,
+    TEEMO_MUSHROOM,
+    UNDEFINED,
+    YELLOW_TRINKET_WARD,
+    YELLOW_TRINKET_UPGRADE
 }

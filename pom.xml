@@ -31,7 +31,7 @@
     <description>A general purpose library for interfacing with various LoL services. This artifact is an aggregator for all submodules</description>
     <url>https://github.com/loldevs/riotapi</url>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 
     <developers>
         <developer>
@@ -139,8 +139,6 @@
 
     <build>
         <plugins>
-
-
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -149,10 +147,9 @@
                 <configuration>
                     <serverId>ossrh</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 

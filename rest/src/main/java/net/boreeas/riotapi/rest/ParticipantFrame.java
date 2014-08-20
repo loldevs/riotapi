@@ -14,20 +14,23 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.constants;
+package net.boreeas.riotapi.rest;
+
+import lombok.Getter;
+
+import java.awt.*;
 
 /**
- * Created on 4/14/2014.
+ * @author Malte Schütze
  */
-public enum Season {
-    PRESEASON3(3),
-    SEASON3(3),
-    PRESEASON4(4),
-    SEASON4(4);
-
-    public final int numeric;
-
-    private Season(int numeric) {
-        this.numeric = numeric;
-    }
+@Getter
+public class ParticipantFrame {
+    private int currentGold;
+    private int jungleMinionsKilled;
+    private int level;
+    private int minionsKilled;
+    private int participantId;
+    private Point position;
+    private int totalGold;
+    private int xp;
 }

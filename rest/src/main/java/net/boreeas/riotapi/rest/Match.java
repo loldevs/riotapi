@@ -14,20 +14,27 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.constants;
+package net.boreeas.riotapi.rest;
+
+import lombok.Getter;
+import net.boreeas.riotapi.com.riotgames.platform.game.QueueType;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
- * Created on 4/14/2014.
+ * @author Malte Schütze
  */
-public enum Season {
-    PRESEASON3(3),
-    SEASON3(3),
-    PRESEASON4(4),
-    SEASON4(4);
-
-    public final int numeric;
-
-    private Season(int numeric) {
-        this.numeric = numeric;
-    }
+@Getter
+public class Match {
+    private long mapId;
+    private Date matchCreation;
+    private long matchDuration;
+    private long matchId;
+    private String matchVersion;
+    private List<ParticipantIdentity> participantIdentities = new ArrayList<>();
+    private List<Participant> participants = new ArrayList<>();
+    private QueueType queueType;
+    private String region;
 }

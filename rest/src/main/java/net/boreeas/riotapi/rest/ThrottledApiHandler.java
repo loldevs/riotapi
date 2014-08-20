@@ -213,7 +213,7 @@ public class ThrottledApiHandler implements AutoCloseable {
      * @return A list of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1860>Official API documentation</a>
      */
-    public Future<List<LeagueList>> getLeaguesByTeam(String teamId) {
+    public Future<List<LeagueList>> getLeagues(String teamId) {
         return new ApiFuture<>(() -> handler.getLeagues(teamId));
     }
 
@@ -223,7 +223,7 @@ public class ThrottledApiHandler implements AutoCloseable {
      * @return A mapping of team ids to lists of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1860>Official API documentation</a>
      */
-    public Future<Map<String, List<LeagueList>>> getLeaguesByTeam(String... teamIds) {
+    public Future<Map<String, List<LeagueList>>> getLeagues(String... teamIds) {
         return new ApiFuture<>(() -> handler.getLeagues(teamIds));
     }
 
@@ -233,7 +233,7 @@ public class ThrottledApiHandler implements AutoCloseable {
      * @return A list of league entries
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1861>Official API documentation</a>
      */
-    public Future<List<LeagueItem>> getLeagueEntriesByTeam(String teamId) {
+    public Future<List<LeagueItem>> getLeagueEntries(String teamId) {
         return new ApiFuture<>(() -> handler.getLeagueEntries(teamId));
     }
 
@@ -243,7 +243,7 @@ public class ThrottledApiHandler implements AutoCloseable {
      * @return A mapping of teamIds to lists of league entries
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1861>Official API documentation</a>
      */
-    public Future<Map<String, List<LeagueItem>>> getLeagueEntriesByTeam(String... teamIds) {
+    public Future<Map<String, List<LeagueItem>>> getLeagueEntries(String... teamIds) {
         return new ApiFuture<>(() -> handler.getLeagueEntries(teamIds));
     }
 
@@ -769,6 +769,42 @@ public class ThrottledApiHandler implements AutoCloseable {
 
     // </editor-fold>
 
+    // <editor-fold desc="Match">
+    /**
+     * Retrieves the specified match, including timeline.
+     * Equivalent to <code>getMatch(matchId, true);</code>
+     * @param matchId The id of the match.
+     * @return The match details.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
+     */
+    public Future<MatchDetail> getMatch(long matchId) {
+        return new ApiFuture<>(() -> handler.getMatch(matchId));
+    }
+
+    /**
+     * Retrieves the specified match.
+     * @param matchId The id of the match.
+     * @param includeTimeline Whether or not the event timeline should be retrieved.
+     * @return The match details.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
+     */
+    public Future<MatchDetail> getMatch(long matchId, boolean includeTimeline) {
+        return new ApiFuture<>(() -> handler.getMatch(matchId, includeTimeline));
+    }
+    // </editor-fold>
+
+    // <editor-fold desc="Matchhistory">
+    /**
+     * Retrieve a player's match history.
+     * @param playerId The id of the player.
+     * @return The match history of the player.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">Official API Documentation</a>
+     */
+    public Future<List<MatchSummary>> getMatchHistory(long playerId) {
+        return new ApiFuture<>(() -> handler.getMatchHistory(playerId));
+    }
+    // </editor-fold>
+
     // <editor-fold desc="Stats">
 
     /**
@@ -904,7 +940,7 @@ public class ThrottledApiHandler implements AutoCloseable {
      * @return A map, mapping user ids to their respective runes pages
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1932>Official API documentation</a>
      */
-    public Future<Map<Integer, Set<RunePage>>> getRunePagesMultipleUsers(Integer... ids) {
+    public Future<Map<Integer, Set<RunePage>>> getRunePagesMultipleUsers(int... ids) {
         return new ApiFuture<>(() -> handler.getRunePagesMultipleUsers(ids));
     }
 

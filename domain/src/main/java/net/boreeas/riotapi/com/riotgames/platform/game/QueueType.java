@@ -19,47 +19,135 @@ package net.boreeas.riotapi.com.riotgames.platform.game;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
+ * All queue types. May contain overlaps, since different names are used by different parts of the API.
  * Created on 4/12/2014.
  */
-@Serialization(name = "com.riotgames.platform.game.GameMode", deserializeOnly = true)
+@Serialization(name = "com.riotgames.platform.game.QueueType", deserializeOnly = true)
 public enum QueueType {
-    ARAM,
-    ARAM_UNRANKED_1x1,
-    ARAM_UNRANKED_2x2,
-    ARAM_UNRANKED_3x3,
-    ARAM_UNRANKED_5x5,
-    ARAM_UNRANKED_6x6,
-    BOT,
-    BOT_3x3,
-    CAP1x1,
-    CAP5x5,
+    ARAM                    (Flags.ARAM),
+    ARAM_5x5                (Flags.ARAM),
+    ARAM_UNRANKED_1x1       (Flags.ARAM),
+    ARAM_UNRANKED_2x2       (Flags.ARAM),
+    ARAM_UNRANKED_3x3       (Flags.ARAM),
+    ARAM_UNRANKED_5x5       (Flags.ARAM),
+    ARAM_UNRANKED_6x6       (Flags.ARAM),
+    BOT                     (Flags.BOT),
+    BOT_3x3                 (Flags.BOT),
+    BOT_5x5                 (Flags.BOT),
+    BOT_5x5_BEGINNER        (Flags.BOT),
+    BOT_5x5_INTERMEDIATE    (Flags.BOT),
+    BOT_5x5_INTRO           (Flags.BOT),
+    BOT_ODIN_5x5            (Flags.BOT | Flags.DOMINION),
+    BOT_TT_3x3              (Flags.BOT),
+    BOT_URF_5x5             (Flags.BOT),
+    CAP1x1                  (Flags.TEAM_BUILDER),
+    CAP5x5                  (Flags.TEAM_BUILDER),
     CLASSIC,
-    FEATURED,
-    FEATURED_BOT,
-    FIRSTBLOOD,
-    FIRSTBLOOD_1x1,
-    FIRSTBLOOD_2x2,
-    NIGHTMARE_BOT,
+    CUSTOM,
+    FEATURED                (Flags.FEATURED),
+    FEATURED_BOT            (Flags.BOT | Flags.FEATURED),
+    FIRSTBLOOD              (Flags.FEATURED),
+    FIRSTBLOOD_1x1          (Flags.FEATURED),
+    FIRSTBLOOD_2x2          (Flags.FEATURED),
+    GROUP_FINDER_5x5        (Flags.TEAM_BUILDER),
+    NIGHTMARE_BOT           (Flags.BOT | Flags.FEATURED),
+    NIGHTMARE_BOT_5x5_RANK1 (Flags.BOT | Flags.FEATURED),
+    NIGHTMARE_BOT_5x5_RANK2 (Flags.BOT | Flags.FEATURED),
+    NIGHTMARE_BOT_5x5_RANK5 (Flags.BOT | Flags.FEATURED),
     NONE,
     NORMAL,
     NORMAL_3x3,
-    ODIN,
-    ODIN_RANKED_PREMADE,
-    ODIN_RANKED_SOLO,
-    ODIN_UNRANKED,
-    ONEFORALL,
-    ONEFORALL_5x5,
-    RANKED_PREMADE_3x3,
-    RANKED_PREMADE_5x5,
-    RANKED_SOLO_1x1,
-    RANKED_SOLO_3x3,
-    RANKED_SOLO_5x5,
-    RANKED_TEAM_3x3,
-    RANKED_TEAM_5x5,
-    SR_6x6,
+    NORMAL_5x5_BLIND,
+    NORMAL_5x5_DRAFT        (Flags.DRAFT),
+    ODIN                    (Flags.DOMINION),
+    ODIN_5x5_BLIND          (Flags.DOMINION),
+    ODIN_5x5_DRAFT          (Flags.DOMINION | Flags.DRAFT),
+    ODIN_RANKED_PREMADE     (Flags.RANKED | Flags.DRAFT | Flags.PREMADE | Flags.DOMINION),
+    ODIN_RANKED_SOLO        (Flags.RANKED | Flags.DRAFT | Flags.DOMINION),
+    ODIN_UNRANKED           (Flags.DOMINION),
+    ONEFORALL               (Flags.FEATURED),
+    ONEFORALL_5x5           (Flags.FEATURED),
+    RANKED_PREMADE_3x3      (Flags.RANKED | Flags.DRAFT | Flags.PREMADE),
+    RANKED_PREMADE_5x5      (Flags.RANKED | Flags.DRAFT | Flags.PREMADE),
+    RANKED_SOLO_1x1         (Flags.RANKED | Flags.DRAFT),
+    RANKED_SOLO_3x3         (Flags.RANKED | Flags.DRAFT),
+    RANKED_SOLO_5x5         (Flags.RANKED | Flags.DRAFT),
+    RANKED_TEAM_3x3         (Flags.RANKED | Flags.DRAFT | Flags.PREMADE),
+    RANKED_TEAM_5x5         (Flags.RANKED | Flags.DRAFT | Flags.PREMADE),
+    SR_6x6                  (Flags.FEATURED),
     TUTORIAL,
-    URF,
-    URF_BOT;
+    URF(Flags.FEATURED),
+    URF_5x5(Flags.FEATURED),
+    URF_BOT(Flags.FEATURED | Flags.BOT);
+
+    private final int flags;
+
+    private QueueType() {
+        this(0);
+    }
+
+    private QueueType(int flags) {
+        this.flags = flags;
+    }
+
+    /**
+     * @return Whether this queue is played against bots.
+     */
+    public boolean isBots() {
+        return (flags & Flags.BOT) != 0;
+    }
+
+    /**
+     * @return Whether this queue is ranked.
+     */
+    public boolean isRanked() {
+        return (flags & Flags.RANKED) != 0;
+    }
+
+    /**
+     * @return Whether the pick mode for this game mode is draft.
+     */
+    public boolean isDraft() {
+        return (flags & Flags.DRAFT) != 0;
+    }
+
+    /**
+     * @return Whether this is a featured, limited-time queue.
+     */
+    public boolean isFeatured() {
+        return (flags & Flags.FEATURED) != 0;
+    }
+
+    /**
+     * @return Whether this is an ARAM queue.
+     */
+    public boolean isAram() {
+        return (flags & Flags.ARAM) != 0;
+    }
+
+    /**
+     * @return Whether this is a teambuilder queue.
+     */
+    public boolean isTeambuilder() {
+        return (flags & Flags.TEAM_BUILDER) != 0;
+    }
+
+    /**
+     * @return Whether this is a dominion queue.
+     */
+    public boolean isDominion() {
+        return (flags & Flags.DOMINION) != 0;
+    }
+
+    /**
+     * Tests whether this queue has all specified flags set.
+     * @see net.boreeas.riotapi.com.riotgames.platform.game.QueueType.Flags
+     * @param flags The flags to test.
+     * @return <code>false</code> if at least one specified flag has not been set, <code>true</code> otherwise.
+     */
+    public boolean hasFlags(int flags) {
+        return (this.flags & flags) >= flags;
+    }
 
 
     public static QueueType getByName(String name) {
@@ -70,5 +158,16 @@ public enum QueueType {
         }
 
         return null;
+    }
+
+    public static class Flags {
+        public static final int BOT         = 1;
+        public static final int RANKED      = 1 << 1;
+        public static final int DRAFT       = 1 << 2;
+        public static final int FEATURED    = 1 << 3;
+        public static final int ARAM        = 1 << 4;
+        public static final int PREMADE     = 1 << 5;
+        public static final int DOMINION    = 1 << 6;
+        public static final int TEAM_BUILDER= 1 << 7;
     }
 }

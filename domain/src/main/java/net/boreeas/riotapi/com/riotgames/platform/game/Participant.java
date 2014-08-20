@@ -25,4 +25,5 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @Data
 @Serialization(name = "com.riotgames.platform.game.Participant")
 public class Participant {
+
 }

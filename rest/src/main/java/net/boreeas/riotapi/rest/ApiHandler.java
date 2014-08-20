@@ -16,11 +16,14 @@
 
 package net.boreeas.riotapi.rest;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import net.boreeas.riotapi.*;
-import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueList;
+import lombok.extern.log4j.Log4j;
+import net.boreeas.riotapi.RequestException;
+import net.boreeas.riotapi.Shard;
+import net.boreeas.riotapi.Util;
 import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueItem;
+import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueList;
 import net.boreeas.riotapi.com.riotgames.platform.game.QueueType;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePage;
 import net.boreeas.riotapi.constants.Season;
@@ -33,21 +36,31 @@ import javax.ws.rs.core.Response;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * Handles sending GET request to the riot api server
  * Created on 4/12/2014.
  */
+@Log4j
 public class ApiHandler {
 
-    private static final String API_BASE_URL = "https://global.api.pvp.net/api/lol";
+    private static final GsonBuilder builder = new GsonBuilder();
 
-    private Gson gson = new Gson();
+    static {
+        // Register an adapter to manage the date types as long values
+        builder.registerTypeAdapter(Date.class, (JsonDeserializer<Date>) (json, typeOfT, context) -> new Date(json.getAsJsonPrimitive().getAsLong()));
+    }
+
+
+    private static final String API_GLOBAL_URL = "https://global.api.pvp.net/api/lol";
+
+    private Gson gson  = builder.create();
     private WebTarget championInfoTarget;
     private WebTarget gameInfoTarget;
     private WebTarget leagueInfoTarget;
+    private WebTarget matchInfoTarget;
+    private WebTarget matchHistoryInfoTarget;
     private WebTarget staticDataTarget;
     private WebTarget statsTarget;
     private WebTarget summonerInfoTarget;
@@ -60,18 +73,30 @@ public class ApiHandler {
      */
     public ApiHandler(Shard shard, String token) {
 
+        if (token == null || token.isEmpty()) {
+            throw new IllegalArgumentException("Need token");
+        }
+
         String region = shard.name;
-
         Client c = ClientBuilder.newClient();
-        WebTarget defaultTarget = c.target(shard.apiUrl).queryParam("api_key", token).path(region);
-        WebTarget defaultStaticTarget = c.target(API_BASE_URL).queryParam("api_key", token).path("static-data").path(region);
 
-        championInfoTarget  = defaultTarget.path("v1.2").path("champion");
-        gameInfoTarget      = defaultTarget.path("v1.3").path("game/by-summoner");
-        leagueInfoTarget    = defaultTarget.path("v2.4").path("league");
-        statsTarget         = defaultTarget.path("v1.3").path("stats/by-summoner");
-        summonerInfoTarget  = defaultTarget.path("v1.4").path("summoner");
-        teamInfoTarget      = defaultTarget.path("v2.3").path("team");
+        if (shard.isGarena) {
+
+            log.warn("Garena doesn't support a public API. Only static-data is supported for this shard.");
+        } else {
+            WebTarget defaultTarget = c.target(shard.apiUrl).queryParam("api_key", token).path(region);
+
+            championInfoTarget = defaultTarget.path("v1.2").path("champion");
+            gameInfoTarget = defaultTarget.path("v1.3").path("game/by-summoner");
+            leagueInfoTarget = defaultTarget.path("v2.4").path("league");
+            matchInfoTarget = defaultTarget.path("v2.2").path("match");
+            matchHistoryInfoTarget = defaultTarget.path("v2.2").path("matchhistory");
+            statsTarget = defaultTarget.path("v1.3").path("stats/by-summoner");
+            summonerInfoTarget = defaultTarget.path("v1.4").path("summoner");
+            teamInfoTarget = defaultTarget.path("v2.3").path("team");
+        }
+
+        WebTarget defaultStaticTarget = c.target(API_GLOBAL_URL).queryParam("api_key", token).path("static-data").path(region);
 
         staticDataTarget    = defaultStaticTarget.path("v1.2");
     }
@@ -147,9 +172,14 @@ public class ApiHandler {
     }
 
     private Map<Long, List<LeagueList>> getLeaguesVarArgs(long... summoners) {
-        Type type = new TypeToken<List<LeagueList>>(){}.getType();
+        Type type = new TypeToken<Map<String, List<LeagueList>>>(){}.getType();
         WebTarget tgt = leagueInfoTarget.path("by-summoner/" + concat(summoners));
-        return gson.fromJson($(tgt), type);
+
+        Map<String, List<LeagueList>> query = gson.fromJson($(tgt), type);
+        Map<Long, List<LeagueList>> result = new HashMap<>();
+        query.forEach((k, v) -> result.put(Long.parseLong(k), v));
+
+        return result;
     }
 
 
@@ -610,7 +640,7 @@ public class ApiHandler {
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2172>Official API documentation</a>
      */
     public RuneList getRuneList(ItemData data) {
-        WebTarget tgt = staticDataTarget.path("runes").queryParam("runeListData", data.name);
+        WebTarget tgt = staticDataTarget.path("rune").queryParam("runeListData", data.name);
         return gson.fromJson($(tgt), RuneList.class);
     }
 
@@ -626,7 +656,7 @@ public class ApiHandler {
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2172>Official API documentation</a>
      */
     public RuneList getRuneList(ItemData data, String version, String locale) {
-        WebTarget tgt = staticDataTarget.path("runes")
+        WebTarget tgt = staticDataTarget.path("rune")
                 .queryParam("runeListData", data.name)
                 .queryParam("version", version)
                 .queryParam("locale", locale);
@@ -658,7 +688,7 @@ public class ApiHandler {
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2168>Official API documentation</a>
      */
     public Item getRune(int id, ItemData data) {
-        WebTarget tgt = staticDataTarget.path("runes/" + id).queryParam("runeData", data.name);
+        WebTarget tgt = staticDataTarget.path("rune/" + id).queryParam("runeData", data.name);
         return gson.fromJson($(tgt), Item.class);
     }
 
@@ -675,7 +705,7 @@ public class ApiHandler {
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2168>Official API documentation</a>
      */
     public Item getRune(int id, ItemData data, String version, String locale) {
-        WebTarget tgt = staticDataTarget.path("runes/" + id)
+        WebTarget tgt = staticDataTarget.path("rune/" + id)
                 .queryParam("runeData", data.name)
                 .queryParam("version", version)
                 .queryParam("locale", locale);
@@ -835,6 +865,48 @@ public class ApiHandler {
         return gson.fromJson($(tgt), type);
     }
 
+    // </editor-fold>
+
+    // <editor-fold desc="Match v2.2">
+
+    /**
+     * Retrieves the specified match, including timeline.
+     * Equivalent to <code>getMatch(matchId, true);</code>
+     * @param matchId The id of the match.
+     * @return The match details.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
+     */
+    public MatchDetail getMatch(long matchId) {
+        return getMatch(matchId, true);
+    }
+
+    /**
+     * Retrieves the specified match.
+     * @param matchId The id of the match.
+     * @param includeTimeline Whether or not the event timeline should be retrieved.
+     * @return The match details.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
+     */
+    public MatchDetail getMatch(long matchId, boolean includeTimeline) {
+        WebTarget tgt = matchInfoTarget.path("" + matchId).queryParam("includeTimeline", includeTimeline);
+        JsonParser parser = new JsonParser();
+        JsonElement parse = parser.parse($(tgt));
+        return gson.fromJson($(tgt), MatchDetail.class);
+    }
+    // </editor-fold>
+
+    // <editor-fold desc="Matchhistory v2.2">
+
+    /**
+     * Retrieve a player's match history.
+     * @param playerId The id of the player.
+     * @return The match history of the player.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">Official API Documentation</a>
+     */
+    public List<MatchSummary> getMatchHistory(long playerId) {
+        WebTarget tgt = matchHistoryInfoTarget.path("" + playerId);
+        return gson.fromJson($(tgt), PlayerHistory.class).matches;
+    }
     // </editor-fold>
 
     // <editor-fold desc="Stats v1.3">
@@ -1001,7 +1073,7 @@ public class ApiHandler {
      * @return A map, mapping user ids to their respective runes pages
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1932>Official API documentation</a>
      */
-    public Map<Integer, Set<RunePage>> getRunePagesMultipleUsers(Integer... ids) {
+    public Map<Integer, Set<RunePage>> getRunePagesMultipleUsers(int... ids) {
         Type type = new TypeToken<Map<String, RunePagesDto>>(){}.getType();
         WebTarget tgt = summonerInfoTarget.path(concat(ids)).path("runes");
 
@@ -1045,7 +1117,6 @@ public class ApiHandler {
     public Map<Long, List<RankedTeam>> getTeamsBySummoners(long... ids) {
         Type type = new TypeToken<Map<Long, List<RankedTeam>>>(){}.getType();
         WebTarget tgt = teamInfoTarget.path("by-summoner/" + concat(ids));
-
         return gson.fromJson($(tgt), type);
     }
 
@@ -1115,8 +1186,42 @@ public class ApiHandler {
         return new InputStreamReader((java.io.InputStream) response.getEntity());
     }
 
-    private <A> String concat(A... values) {
-        return String.join(",", Arrays.asList(values).parallelStream().map(Object::toString).collect(Collectors.toList()));
+    private String concat(long... values) {
+        StringBuilder builder = new StringBuilder();
+        boolean first = true;
+
+        for (long v: values) {
+            if (first) {
+                first = false;
+            } else {
+                builder.append(",");
+            }
+
+            builder.append(v);
+        }
+
+        return builder.toString();
+    }
+
+    private String concat(int... values) {
+        StringBuilder builder = new StringBuilder();
+        boolean first = true;
+
+        for (int v: values) {
+            if (first) {
+                first = false;
+            } else {
+                builder.append(",");
+            }
+
+            builder.append(v);
+        }
+
+        return builder.toString();
+    }
+
+    private String concat(String... values) {
+        return String.join(",", values);
     }
 
     /**
@@ -1151,5 +1256,9 @@ public class ApiHandler {
     private class RunePagesDto {
         Set<RunePage> pages;
         long summonerId;
+    }
+
+    private class PlayerHistory {
+        private List<MatchSummary> matches;
     }
 }

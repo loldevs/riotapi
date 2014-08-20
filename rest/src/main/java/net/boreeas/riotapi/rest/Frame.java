@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.constants;
+package net.boreeas.riotapi.rest;
+
+import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Created on 4/14/2014.
+ * @author Malte Schütze
  */
-public enum Season {
-    PRESEASON3(3),
-    SEASON3(3),
-    PRESEASON4(4),
-    SEASON4(4);
-
-    public final int numeric;
-
-    private Season(int numeric) {
-        this.numeric = numeric;
-    }
+@Getter
+public class Frame {
+    private List<Event> events = new ArrayList<>();
+    private Map<String, ParticipantFrame> participantFrames = new HashMap<>();
+    private long timestamp;
 }

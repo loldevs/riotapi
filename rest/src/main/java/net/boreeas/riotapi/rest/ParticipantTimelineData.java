@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.constants;
+package net.boreeas.riotapi.rest;
+
+import lombok.Getter;
 
 /**
- * Created on 4/14/2014.
+ * @author Malte Schütze
  */
-public enum Season {
-    PRESEASON3(3),
-    SEASON3(3),
-    PRESEASON4(4),
-    SEASON4(4);
-
-    public final int numeric;
-
-    private Season(int numeric) {
-        this.numeric = numeric;
-    }
+@Getter
+public class ParticipantTimelineData {
+    private double zeroToTen;
+    private double tenToTwenty;
+    private double twentyToThiry;
+    private double thirtyToEnd;
 }

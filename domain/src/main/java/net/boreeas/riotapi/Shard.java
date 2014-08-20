@@ -16,6 +16,17 @@
 
 package net.boreeas.riotapi;
 
+import org.apache.log4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Properties;
+
 /**
  * Constants for the different regions
  * Created on 4/12/2014.
@@ -23,107 +34,106 @@ package net.boreeas.riotapi;
 public enum Shard {
 
     EUW("euw",
+            String.format(Constants.API_PATH_TEMPLATE, "euw"),
+            // Alt values if loading fails
+            "euw",
             "EUW1",
-            "eu." + Constants.BASE_PATH,
             "chat.euw1." + Constants.BASE_PATH,
-            String.format(Constants.API_PATH_FMT, "euw"),
             "https://lq.euw1." + Constants.BASE_PATH,
             "prod.euw1." + Constants.BASE_PATH,
-            "http://spectator.eu." + Constants.BASE_PATH + ":8088",
-            false),
+            "http://spectator.eu." + Constants.BASE_PATH + ":8088"),
     EUNE("eune",
+            String.format(Constants.API_PATH_TEMPLATE, "eune"),
+            // Alt values if loading fails
+            "eune",
             "EUN1",
-            "eun1." + Constants.BASE_PATH,
             "chat.eun1." + Constants.BASE_PATH,
-            String.format(Constants.API_PATH_FMT, "eune"),
             "https://lq.eun1." + Constants.BASE_PATH,
             "prod.eun1." + Constants.BASE_PATH,
-            "http://spectator.eu." + Constants.BASE_PATH + ":8088",
-            false),
+            "http://spectator.eu." + Constants.BASE_PATH + ":8088"),
     NA("na",
+            String.format(Constants.API_PATH_TEMPLATE, "na"),
+            // Alt values if loading fails
+            "na",
             "NA1",
-            "na1." + Constants.BASE_PATH,
             "chat.na1." + Constants.BASE_PATH,
-            String.format(Constants.API_PATH_FMT, "na"),
             "https://lq.na1." + Constants.BASE_PATH,
             "prod.na1." + Constants.BASE_PATH,
-            "http://spectator.na." + Constants.BASE_PATH,
-            false),
+            "http://spectator.na." + Constants.BASE_PATH),
     BR("br",
+            String.format(Constants.API_PATH_TEMPLATE, "br"),
+            // Alt values if loading fails
+            "br",
             "BR1",
-            "br." + Constants.BASE_PATH,
             "chat.br." + Constants.BASE_PATH,
-            String.format(Constants.API_PATH_FMT, "br"),
             "https://lq.br." + Constants.BASE_PATH,
             "prod.br." + Constants.BASE_PATH,
-            "http://spectator.br." + Constants.BASE_PATH,
-            false),
-    OCE("oce",
+            "http://spectator.br." + Constants.BASE_PATH),
+    OCE("oc1",
+            String.format(Constants.API_PATH_TEMPLATE, "oce"),
+            // Alt values if loading fails
+            "oce",
             "OC1",
-            "oc1." + Constants.BASE_PATH,
             "chat.oc1." + Constants.BASE_PATH,
-            String.format(Constants.API_PATH_FMT, "oce"),
             "https://lq.oc1." + Constants.BASE_PATH,
             "prod.oc1." + Constants.BASE_PATH,
-            "http://spectator.oc1." + Constants.BASE_PATH,
-            false),
+            "http://spectator.oc1." + Constants.BASE_PATH),
     TR("tr",
+            String.format(Constants.API_PATH_TEMPLATE, "tr"),
+            // Alt values if loading fails
+            "tr",
             "TR1",
-            "tr." + Constants.BASE_PATH,
             "chat.tr." + Constants.BASE_PATH,
-            String.format(Constants.API_PATH_FMT, "tr"),
             "https://lq.tr." + Constants.BASE_PATH,
             "prod.tr." + Constants.BASE_PATH,
-            "http://spectator.tr." + Constants.BASE_PATH,
-            false),
+            "http://spectator.tr." + Constants.BASE_PATH),
     RU("ru",
+            String.format(Constants.API_PATH_TEMPLATE, "ru"),
+            // Alt values if loading fails
+            "ru",
             "RU",
-            "ru." + Constants.BASE_PATH,
             "chat.ru." + Constants.BASE_PATH,
-            String.format(Constants.API_PATH_FMT, "ru"),
             "https://lq.ru." + Constants.BASE_PATH,
             "prod.ru." + Constants.BASE_PATH,
-            "http://spectator.eu." + Constants.BASE_PATH,
-            false),
-    LAN("lan",
+            "http://spectator.eu." + Constants.BASE_PATH),
+    LAN("la1",
+            String.format(Constants.API_PATH_TEMPLATE, "lan"),
+            // Alt values if loading fails
+            "lan",
             "LA1",
-            "la1." + Constants.BASE_PATH,
             "chat.la1." + Constants.BASE_PATH,
-            String.format(Constants.API_PATH_FMT, "lan"),
             "https://lq.la1." + Constants.BASE_PATH,
             "prod.la1." + Constants.BASE_PATH,
-            "http://spectator.br." + Constants.BASE_PATH,
-            false),
-    LAS("las",
+            "http://spectator.br." + Constants.BASE_PATH),
+    LAS("la2",
+            String.format(Constants.API_PATH_TEMPLATE, "las"),
+            // Alt values if loading fails
+            "las",
             "LA2",
-            "la2." + Constants.BASE_PATH,
             "chat.la2." + Constants.BASE_PATH,
-            String.format(Constants.API_PATH_FMT, "las"),
             "https://lq.la2." + Constants.BASE_PATH,
             "prod.la2." + Constants.BASE_PATH,
-            "http://spectator.br." + Constants.BASE_PATH,
-            false),
+            "http://spectator.br." + Constants.BASE_PATH),
+
+    // The following shards apparently don't specify a properties listing
     PBE("pbe",
             "PBE1",
-            "pbe1." + Constants.BASE_PATH,
             "chat.pbe1." + Constants.BASE_PATH,
-            Constants.API_PATH_FMT,
+            Constants.API_PATH_TEMPLATE,
             "https://lq.pbe1." + Constants.BASE_PATH,
             "prod.pbe1." + Constants.BASE_PATH,
             "http://spectator.pbe1." + Constants.BASE_PATH + ":8088",
             false),
     KR("kr",
             "KR",
-            "kr." + Constants.BASE_PATH,
             "chat.kr." + Constants.BASE_PATH,
-            String.format(Constants.API_PATH_FMT, "kr"),
+            String.format(Constants.API_PATH_TEMPLATE, "kr"),
             "https://lq.kr." + Constants.BASE_PATH,
             "prod.kr." + Constants.BASE_PATH,
             "QFKR1PROXY.kassad.in:8088",
             false),
     SG("sg",
             "SG",
-            Constants.GARENA_PATH,
             "chat." + Constants.GARENA_PATH,
             null,
             "https://lq." + Constants.GARENA_PATH,
@@ -132,7 +142,6 @@ public enum Shard {
             true),
     TW("tw",
             "TW",
-            Constants.GARENA_PATH,
             "chatth." + Constants.GARENA_PATH,
             null,
             "https://loginqueuetw." + Constants.GARENA_PATH,
@@ -141,7 +150,6 @@ public enum Shard {
             true),
     TH("th",
             "TH",
-            Constants.GARENA_PATH,
             "chatth." + Constants.GARENA_PATH,
             null,
             "https://lqth." + Constants.GARENA_PATH,
@@ -150,7 +158,6 @@ public enum Shard {
             true),
     PH("ph",
             "PH",
-            Constants.GARENA_PATH,
             "chatph." + Constants.GARENA_PATH,
             null,
             "https://lqph." + Constants.GARENA_PATH,
@@ -159,7 +166,6 @@ public enum Shard {
             true),
     VN("vn",
             "VN",
-            Constants.GARENA_PATH,
             "chatvn." + Constants.BASE_PATH,
             null,
             "https://lqvn." + Constants.GARENA_PATH,
@@ -168,7 +174,6 @@ public enum Shard {
             true),
     ID("id",
             "ID",
-            Constants.GARENA_PATH,
             "chatid." + Constants.BASE_PATH,
             null,
             "https://lqid." + Constants.GARENA_PATH,
@@ -179,7 +184,6 @@ public enum Shard {
 
     public final String name;
     public final String spectatorPlatformName;
-    public final String baseUrl;
     public final String chatUrl;
     public final String prodUrl;
     public final String loginQueue;
@@ -187,28 +191,88 @@ public enum Shard {
     public final String spectatorUrl;
     public final boolean isGarena;
 
+    public final Version version;
+
     public static final int JABBER_PORT = 5223;
     public static final int RTMPS_PORT = 2099;
     public static final String CONN_INFO_SERVICE = "http://ll.leagueoflegends.com/services/connection_info";
 
+    private Shard(String cdnTag, String api,
+                  String altName, String altSpectatorPlatformName, String altChat, String altLoginQueue, String altProd, String altSpectator) {
 
-    private Shard(String name, String spectatorPlatformName, String base, String chat, String api, String loginQueue, String prod, String spectator, boolean garena) {
+        Properties properties = new Properties();
+        Version version = new Version("0");
+        try {
+            version = loadCurrentVersion(cdnTag);
+            properties = loadShardData(cdnTag, version.getVersionString());
+
+        } catch (IOException e) {
+            Logger.getLogger(Shard.class).fatal("Failed to load shard data for " + cdnTag, e);
+        }
+
+        this.version = version;
+
+        this.prodUrl = properties.getProperty("host", altProd);
+        this.chatUrl = properties.getProperty("xmpp_server", altChat);
+        this.loginQueue = properties.getProperty("lq_uri", altLoginQueue);
+        this.name = properties.getProperty("regionTag", altName);
+        this.spectatorPlatformName = properties.getProperty("platformId", altSpectatorPlatformName);
+
+
+        String spectator = properties.getProperty("featuredGamesUrl");
+        if (spectator == null || spectator.isEmpty()) {
+            spectator = altSpectator;
+        } else {
+            try {
+                URI spectatorUri = new URI(spectator);
+                spectator = spectatorUri.getScheme() + "://" + spectatorUri.getHost() + ":" + spectatorUri.getPort();
+            } catch (URISyntaxException ex) {
+                spectator = altSpectator;
+            }
+        }
+        this.spectatorUrl = spectator;
+
+        this.isGarena = false;
+        this.apiUrl = api;
+    }
+
+    private Shard(String name, String spectatorPlatformName, String chat, String api, String loginQueue, String prod, String spectator, boolean garena) {
+
         this.name = name;
         this.spectatorPlatformName = spectatorPlatformName;
-        this.baseUrl = base;
         this.chatUrl = chat;
         this.apiUrl = api;
         this.prodUrl = prod;
         this.loginQueue = loginQueue;
         this.spectatorUrl = spectator;
         this.isGarena = garena;
+        this.version = new Version("0");
+    }
+
+    private Version loadCurrentVersion(String name) throws IOException {
+        URL versionData = new URL(String.format(Constants.VERSION_LISTING_TEMPLATE, name, name.toUpperCase()));
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(versionData.openStream()))) {
+            return new Version(reader.readLine().trim());
+        }
+    }
+
+    private Properties loadShardData(String cdnTag, String version) throws IOException {
+        Properties properties = new Properties();
+        try (InputStream stream = new URL(String.format(Constants.PROPERTIES_TEMPLATE, cdnTag, version)).openStream()) {
+            properties.load(stream);
+        }
+
+        return properties;
     }
 
 
     private static class Constants {
         static String BASE_PATH = "lol.riotgames.com";
         static String GARENA_PATH = "lol.garenanow.com";
-        static String API_PATH_FMT = "https://%s.api.pvp.net/api/lol";
+        static String API_PATH_TEMPLATE = "https://%s.api.pvp.net/api/lol";
+
+        static String VERSION_LISTING_TEMPLATE = "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client_config_%s/releases/releaselisting_%s";
+        static String PROPERTIES_TEMPLATE = "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client_config_%s/releases/%s/files/lol.properties";
     }
 
     public static Shard getBySpectatorPlatform(String name) {

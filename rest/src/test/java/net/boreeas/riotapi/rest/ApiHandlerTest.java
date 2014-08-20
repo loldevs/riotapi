@@ -209,7 +209,7 @@ public class ApiHandlerTest extends TestCase {
 
     public void testConcat() {
         assertEquals("1", concat(1));
-        assertEquals("1,2,3", concat(1,2,3));
+        assertEquals("1,2,3", concat(1, 2, 3));
     }
 
     private String concat(long... values) {

@@ -23,6 +23,6 @@ import net.boreeas.riotapi.constants.Season;
  * @author Malte Schütze
  */
 @Getter
-public class MatchSummary {
+public class MatchSummary extends Match {
     private Season season;
 }

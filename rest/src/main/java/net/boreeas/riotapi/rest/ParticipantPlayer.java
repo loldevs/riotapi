@@ -25,5 +25,5 @@ import lombok.Getter;
 public class ParticipantPlayer {
     private String matchHistoryUri;
     private int profileIconId;
-    private long summonerName;
+    private String summonerName;
 }

@@ -27,13 +27,13 @@ import java.util.List;
 @Getter
 public class Spell {
     private List<Image> altImages = new ArrayList<>();
-    private List<Integer> cooldown = new ArrayList<>();
+    private List<Double> cooldown = new ArrayList<>();
     private String cooldownBurn;
     private List<Integer> cost = new ArrayList<>();
     private String costBurn;
     private String costType;
     private String description;
-    private List<List<Integer>> effect = new ArrayList<>();
+    private List<List<Double>> effect = new ArrayList<>();
     private List<String> effectBurn = new ArrayList<>();
     private Image image;
     private String key;

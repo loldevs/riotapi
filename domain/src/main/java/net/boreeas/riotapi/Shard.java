@@ -114,6 +114,17 @@ public enum Shard {
             "https://lq.la2." + Constants.BASE_PATH,
             "prod.la2." + Constants.BASE_PATH,
             "http://spectator.br." + Constants.BASE_PATH),
+    KR("kr",
+            "http://legendspatch-lol.x-cdn.com/KR_CBT/projects/lol_air_client_config_%s/releases/releaselisting_%s",
+            "http://legendspatch-lol.x-cdn.com/KR_CBT/projects/lol_air_client_config_%s/releases/%s/files/lol.properties",
+            String.format(Constants.API_PATH_TEMPLATE, "kr"),
+            // Alt values if loading fails
+            "kr",
+            "KR",
+            "chat.kr." + Constants.BASE_PATH,
+            "https://lq.kr." + Constants.BASE_PATH,
+            "prod.kr." + Constants.BASE_PATH,
+            "QFKR1PROXY.kassad.in:8088"),
 
     // The following shards apparently don't specify a properties listing
     PBE("pbe",
@@ -123,14 +134,6 @@ public enum Shard {
             "https://lq.pbe1." + Constants.BASE_PATH,
             "prod.pbe1." + Constants.BASE_PATH,
             "http://spectator.pbe1." + Constants.BASE_PATH + ":8088",
-            false),
-    KR("kr",
-            "KR",
-            "chat.kr." + Constants.BASE_PATH,
-            String.format(Constants.API_PATH_TEMPLATE, "kr"),
-            "https://lq.kr." + Constants.BASE_PATH,
-            "prod.kr." + Constants.BASE_PATH,
-            "QFKR1PROXY.kassad.in:8088",
             false),
     SG("sg",
             "SG",
@@ -200,11 +203,18 @@ public enum Shard {
     private Shard(String cdnTag, String api,
                   String altName, String altSpectatorPlatformName, String altChat, String altLoginQueue, String altProd, String altSpectator) {
 
+        this(cdnTag, Constants.VERSION_LISTING_TEMPLATE, Constants.PROPERTIES_TEMPLATE,
+                api, altName, altSpectatorPlatformName, altChat, altLoginQueue, altProd, altSpectator);
+    }
+
+    private Shard(String cdnTag, String versionListingTemplate, String propertiesTemplate, String api,
+                  String altName, String altSpectatorPlatformName, String altChat, String altLoginQueue, String altProd, String altSpectator) {
+
         Properties properties = new Properties();
         Version version = new Version("0");
         try {
-            version = loadCurrentVersion(cdnTag);
-            properties = loadShardData(cdnTag, version.getVersionString());
+            version = loadCurrentVersion(versionListingTemplate, cdnTag);
+            properties = loadShardData(propertiesTemplate, cdnTag, version.getVersionString());
 
         } catch (IOException e) {
             Logger.getLogger(Shard.class).fatal("Failed to load shard data for " + cdnTag, e);
@@ -249,16 +259,18 @@ public enum Shard {
         this.version = new Version("0");
     }
 
-    private Version loadCurrentVersion(String name) throws IOException {
-        URL versionData = new URL(String.format(Constants.VERSION_LISTING_TEMPLATE, name, name.toUpperCase()));
+
+
+    private Version loadCurrentVersion(String template, String name) throws IOException {
+        URL versionData = new URL(String.format(template, name, name.toUpperCase()));
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(versionData.openStream()))) {
             return new Version(reader.readLine().trim());
         }
     }
 
-    private Properties loadShardData(String cdnTag, String version) throws IOException {
+    private Properties loadShardData(String template, String cdnTag, String version) throws IOException {
         Properties properties = new Properties();
-        try (InputStream stream = new URL(String.format(Constants.PROPERTIES_TEMPLATE, cdnTag, version)).openStream()) {
+        try (InputStream stream = new URL(String.format(template, cdnTag, version)).openStream()) {
             properties.load(stream);
         }
 

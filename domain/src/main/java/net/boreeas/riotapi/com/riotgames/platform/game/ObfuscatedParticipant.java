@@ -16,17 +16,36 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.game;
 
+import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
  * Created on 7/19/2014.
  */
-@Serialization(name = "com.riotgames.platform.game.IParticipant")
-public interface Participant {
+@Data
+@Serialization(name = "com.riotgames.platform.game.ObfuscatedParticipant")
+public class ObfuscatedParticipant implements Participant {
+    private int badges;
+    private int gameUniqueId;
+    private boolean clientInSynch;
+    private int pickMode;
 
-    int getPickTurn();
-    int getBadges();
-    GameParticipant.PickMode getPickMode();
-    String getSummonerInternalName();
-    String getSummonerName();
+    @Override
+    public int getPickTurn() {
+        return 0;
+    }
+
+    public GameParticipant.PickMode getPickMode() {
+        return GameParticipant.PickMode.byId(pickMode);
+    }
+
+    @Override
+    public String getSummonerInternalName() {
+        return "";
+    }
+
+    @Override
+    public String getSummonerName() {
+        return "";
+    }
 }

@@ -16,39 +16,48 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.game;
 
-import lombok.Data;
-import net.boreeas.riotapi.com.riotgames.platform.reroll.pojo.PointSummary;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
+
+import java.util.ArrayList;
 
 /**
  * Created on 7/19/2014.
  */
-@Data
+@Getter
+@Setter
+@ToString
 @Serialization(name = "com.riotgames.platform.game.PlayerParticipant")
-public class PlayerParticipant extends Participant {
+public class PlayerParticipant extends GameParticipant {
+    private int profileIconId;
+    private int summonerLevel;
+    private long accountId;
+    private boolean clientInSynch;
+    private long summonerId;
+    // TODO inspect (generic type)
+    private ArrayList lifetimeStatistics = new ArrayList<>();
+
+    /*
+
+    According to the client files, those fields don't exists anymore
+
     // TODO inspect
     private Object timeAddedToQueue;
     private int index;
     private int queueRating;
-    private long accountId;
     private String botDifficulty;
     private long originalAccountNumber;
-    private String summonerInternalName;
     private boolean minor;
     // TODO inspect
     private Object locale;
     private int lastSelectedSkinIndex;
     private String partnerId;
-    private int profileIconId;
     private boolean teamOwner;
-    private long summonerId;
-    private int badges;
-    private int pickTurn;
-    private boolean clientInSynch;
-    private String summonerName;
-    private int pickMode;
     private String originalPlatformId;
     // TODO inspect
     private Object teamParticipantId;
     private PointSummary pointSummary;
+    */
 }

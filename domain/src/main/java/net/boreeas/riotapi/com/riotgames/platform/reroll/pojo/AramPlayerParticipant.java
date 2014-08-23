@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.com.riotgames.platform.game;
+package net.boreeas.riotapi.com.riotgames.platform.reroll.pojo;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import net.boreeas.riotapi.com.riotgames.platform.game.PlayerParticipant;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
- * Created on 7/19/2014.
+ * @author Malte Schütze
  */
-@Serialization(name = "com.riotgames.platform.game.IParticipant")
-public interface Participant {
-
-    int getPickTurn();
-    int getBadges();
-    GameParticipant.PickMode getPickMode();
-    String getSummonerInternalName();
-    String getSummonerName();
+@Getter
+@Setter
+@ToString
+@Serialization(name = "com.riotgames.platform.reroll.pojo.AramPlayerParticipant")
+public class AramPlayerParticipant extends PlayerParticipant {
+    private int pointSummary;
 }

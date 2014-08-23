@@ -1,6 +1,6 @@
 # RiotAPI
 
-Current version: 1.1.0
+Current version: 1.2.0
 
 This is a Java 8 project designed to offer a simple binding to most League of Legends services. Right now this includes:
 

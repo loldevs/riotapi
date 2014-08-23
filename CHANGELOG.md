@@ -4,6 +4,7 @@
 ##### Domain
 * Dynamic loading for shard constants
 * Removed: Shard.baseUrl
+* Bugfix: Added missing Participant subclasses
 
 ## 1.1.0
 ##### Domain

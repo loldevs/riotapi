@@ -5,6 +5,7 @@
 * Dynamic loading for shard constants
 * Removed: Shard.baseUrl
 * Bugfix: Added missing Participant subclasses
+* Bugfix: Fixed bug where extra spaces at the end of Shard constants resulted in illegal URIs
 
 ## 1.1.0
 ##### Domain

@@ -222,11 +222,11 @@ public enum Shard {
 
         this.version = version;
 
-        this.prodUrl = properties.getProperty("host", altProd);
-        this.chatUrl = properties.getProperty("xmpp_server", altChat);
-        this.loginQueue = properties.getProperty("lq_uri", altLoginQueue);
-        this.name = properties.getProperty("regionTag", altName);
-        this.spectatorPlatformName = properties.getProperty("platformId", altSpectatorPlatformName);
+        this.prodUrl = properties.getProperty("host", altProd).trim();
+        this.chatUrl = properties.getProperty("xmpp_server", altChat).trim();
+        this.loginQueue = properties.getProperty("lq_uri", altLoginQueue).trim();
+        this.name = properties.getProperty("regionTag", altName).trim();
+        this.spectatorPlatformName = properties.getProperty("platformId", altSpectatorPlatformName).trim();
 
 
         String spectator = properties.getProperty("featuredGamesUrl");
@@ -234,7 +234,7 @@ public enum Shard {
             spectator = altSpectator;
         } else {
             try {
-                URI spectatorUri = new URI(spectator);
+                URI spectatorUri = new URI(spectator.trim());
                 spectator = spectatorUri.getScheme() + "://" + spectatorUri.getHost() + ":" + spectatorUri.getPort();
             } catch (URISyntaxException ex) {
                 spectator = altSpectator;

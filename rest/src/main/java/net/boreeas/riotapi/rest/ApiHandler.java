@@ -892,8 +892,6 @@ public class ApiHandler {
      */
     public MatchDetail getMatch(long matchId, boolean includeTimeline) {
         WebTarget tgt = matchInfoTarget.path("" + matchId).queryParam("includeTimeline", includeTimeline);
-        JsonParser parser = new JsonParser();
-        JsonElement parse = parser.parse($(tgt));
         return gson.fromJson($(tgt), MatchDetail.class);
     }
     // </editor-fold>

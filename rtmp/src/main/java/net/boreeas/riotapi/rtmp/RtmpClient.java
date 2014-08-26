@@ -402,7 +402,7 @@ public abstract class RtmpClient {
 
     public void disconnect() {
         isConnected = false;
-        reader.interrupt();
+        reader.close();
         writer.close();
         try {
             socket.close();

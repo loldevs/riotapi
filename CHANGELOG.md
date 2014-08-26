@@ -1,5 +1,16 @@
 # Changelog
 ---------
+## 1.3.0
+##### Domain
+* Fixed incorrect chat urls for the Vietnam and Indonesian regions 
+
+##### Rtmp
+* Bugfix: Closing RtmpClient now also closes the underlying writer thread instead of just interrupting it
+
+##### Rest
+* Added support for gzip-encoding
+* Bugfix: Removed double API call in getMatch()
+
 ## 1.2.0
 ##### Domain
 * Dynamic loading for shard constants

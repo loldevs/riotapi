@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rest;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
 import net.boreeas.riotapi.RequestException;
 import net.boreeas.riotapi.Shard;
@@ -33,10 +34,12 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.zip.GZIPInputStream;
 
 /**
  * Handles sending GET request to the riot api server
@@ -1176,14 +1179,19 @@ public class ApiHandler {
      * @param target the web target to access
      * @return the reader for the message body
      */
+    @SneakyThrows(IOException.class)
     private InputStreamReader $(WebTarget target) {
 
-        Response response = target.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
+        Response response = target.request().accept(MediaType.APPLICATION_JSON_TYPE).acceptEncoding("gzip").get();
         if (response.getStatus() != 200) {
             throw new RequestException(response.getStatus(), RequestException.ErrorType.getByCode(response.getStatus()));
         }
 
-        return new InputStreamReader((java.io.InputStream) response.getEntity());
+        if (response.getHeaderString("Content-Encoding").equals("gzip")) {
+            return new InputStreamReader(new GZIPInputStream((java.io.InputStream) response.getEntity()));
+        } else {
+            return new InputStreamReader((java.io.InputStream) response.getEntity());
+        }
     }
 
     private String concat(long... values) {

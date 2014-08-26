@@ -1,6 +1,6 @@
 # Changelog
 ---------
-## 1.3.0
+## *pending* 1.3.0
 ##### Domain
 * Fixed incorrect chat urls for the Vietnam and Indonesian regions 
 

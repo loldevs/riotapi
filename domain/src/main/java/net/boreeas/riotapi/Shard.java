@@ -18,13 +18,12 @@ package net.boreeas.riotapi;
 
 import org.apache.log4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -213,8 +212,11 @@ public enum Shard {
         Properties properties = new Properties();
         Version version = new Version("0");
         try {
-            version = loadCurrentVersion(versionListingTemplate, cdnTag);
-            properties = loadShardData(propertiesTemplate, cdnTag, version.getVersionString());
+            List<Version> versions = loadCurrentVersions(versionListingTemplate, cdnTag);
+
+            PropertyData propertyData = new PropertyData(cdnTag, propertiesTemplate, properties, version, versions).invoke();
+            version = propertyData.getVersion();
+            properties = propertyData.getProperties();
 
         } catch (IOException e) {
             Logger.getLogger(Shard.class).fatal("Failed to load shard data for " + cdnTag, e);
@@ -261,20 +263,18 @@ public enum Shard {
 
 
 
-    private Version loadCurrentVersion(String template, String name) throws IOException {
+    private List<Version> loadCurrentVersions(String template, String name) throws IOException {
+        List<Version> result = new ArrayList<>();
+
         URL versionData = new URL(String.format(template, name, name.toUpperCase()));
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(versionData.openStream()))) {
-            return new Version(reader.readLine().trim());
-        }
-    }
-
-    private Properties loadShardData(String template, String cdnTag, String version) throws IOException {
-        Properties properties = new Properties();
-        try (InputStream stream = new URL(String.format(template, cdnTag, version)).openStream()) {
-            properties.load(stream);
+            String in;
+            while ((in = reader.readLine()) != null) {
+                result.add(new Version(in.trim()));
+            }
         }
 
-        return properties;
+        return result;
     }
 
 
@@ -285,6 +285,8 @@ public enum Shard {
 
         static String VERSION_LISTING_TEMPLATE = "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client_config_%s/releases/releaselisting_%s";
         static String PROPERTIES_TEMPLATE = "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client_config_%s/releases/%s/files/lol.properties";
+
+        static int MAX_VERSION_FALLBACK = 3;
     }
 
     public static Shard getBySpectatorPlatform(String name) {
@@ -295,5 +297,54 @@ public enum Shard {
         }
 
         return null;
+    }
+
+    private class PropertyData {
+        private String cdnTag;
+        private String propertiesTemplate;
+        private Properties properties;
+        private Version version;
+        private List<Version> versions;
+
+        public PropertyData(String cdnTag, String propertiesTemplate, Properties properties, Version version, List<Version> versions) {
+            this.cdnTag = cdnTag;
+            this.propertiesTemplate = propertiesTemplate;
+            this.properties = properties;
+            this.version = version;
+            this.versions = versions;
+        }
+
+        public Properties getProperties() {
+            return properties;
+        }
+
+        public Version getVersion() {
+            return version;
+        }
+
+        public Shard.PropertyData invoke() throws IOException {
+            for (int i = 0; i < Constants.MAX_VERSION_FALLBACK; i++) {
+                try {
+                    properties = loadShardData(propertiesTemplate, cdnTag, versions.get(i).getVersionString());
+                    version = versions.get(i);
+                    return this;
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(Shard.class).error("No shard data listing for " + cdnTag + "/" + versions.get(i).getVersionString());
+                }
+            }
+
+            Logger.getLogger(Shard.class).error("No shard data listing found for the last " + Constants.MAX_VERSION_FALLBACK + " versions, falling back to default values");
+
+            return this;
+        }
+
+        private Properties loadShardData(String template, String cdnTag, String version) throws IOException {
+            Properties properties = new Properties();
+            try (InputStream stream = new URL(String.format(template, cdnTag, version)).openStream()) {
+                properties.load(stream);
+            }
+
+            return properties;
+        }
     }
 }

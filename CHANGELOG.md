@@ -2,7 +2,8 @@
 ---------
 ## *pending* 1.3.0
 ##### Domain
-* Fixed incorrect chat urls for the Vietnam and Indonesian regions 
+* Bugfix: Fixed incorrect chat urls for the Vietnam and Indonesian regions 
+* Added fallback loading of older versions.
 
 ##### Rtmp
 * Bugfix: Closing RtmpClient now also closes the underlying writer thread instead of just interrupting it

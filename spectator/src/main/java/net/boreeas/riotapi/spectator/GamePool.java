@@ -30,28 +30,32 @@ public class GamePool {
         return thread;
     });
 
-    public void submit(InProgressGame game) {
+    public GameUpdateTask submit(InProgressGame game) {
 
-        submit(game, err -> {});
+        return submit(game, err -> {});
     }
 
-    public void submit(InProgressGame game, Consumer<Exception> errorCallback) {
+    public GameUpdateTask submit(InProgressGame game, Consumer<Exception> errorCallback) {
 
         GameUpdateTask task = new GameUpdateTask(game, errorCallback);
         // Run once to pull all pending chunks, then run once
         task.run();
         ScheduledFuture<?> self = pool.scheduleAtFixedRate(task, game.getLastChunkInfo().getNextAvailableChunk(), game.getChunkInterval(), TimeUnit.MILLISECONDS);
         task.setSelf(self);
+
+        return task;
     }
 
     public void shutdown() {
         pool.shutdown();
     }
 
+    @Deprecated
     public static GamePool singleton(InProgressGame game) {
         return singleton(game, err -> {});
     }
 
+    @Deprecated
     public static GamePool singleton(InProgressGame game, Consumer<Exception> callback) {
         GamePool pool = new GamePool();
         pool.submit(game, callback);

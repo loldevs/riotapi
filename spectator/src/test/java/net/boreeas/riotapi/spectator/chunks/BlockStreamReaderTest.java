@@ -37,9 +37,8 @@ public class BlockStreamReaderTest extends TestCase {
         SpectatorApiHandler handler = new SpectatorApiHandler(Shard.EUW);
         InProgressGame game = handler.openFeaturedGame(handler.getFeaturedGames().get(0));
         GamePool pool = GamePool.singleton(game);
-        pool.shutdown();
 
-        BlockStreamReader reader = new BlockStreamReader(game.getKeyFrame(1).getBuffer());
+        BlockStreamReader reader = new BlockStreamReader(game.getKeyFrame(game.getFirstAvailableKeyFrame()).getBuffer());
         while (reader.hasNext()) {
             blocks.add(reader.next());
         }

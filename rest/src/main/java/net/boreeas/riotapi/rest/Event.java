@@ -47,6 +47,11 @@ public class Event {
         CHAMPION_KILL,
         ELITE_MONSTER_KILL,
         WARD_KILL,
-        WARD_PLACED
+        WARD_PLACED,
+        ITEM_DESTROYED,
+        ITEM_PURCHASED,
+        ITEM_SOLD,
+        ITEM_UNDO,
+        SKILL_LEVEL_UP
     }
 }

@@ -9,7 +9,10 @@
 * Bugfix: Closing RtmpClient now also closes the underlying writer thread instead of just interrupting it
 
 ##### Rest
+* Updated league to v2.5
 * Added support for gzip-encoding
+* Added new filter options for matchhistory calls
+* Added new event types for match timelines
 * Bugfix: Removed double API call in getMatch()
 
 ## 1.2.0

@@ -16,7 +16,9 @@
 
 package net.boreeas.riotapi.rest;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
 import com.google.gson.reflect.TypeToken;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
@@ -58,7 +60,7 @@ public class ApiHandler {
 
     private static final String API_GLOBAL_URL = "https://global.api.pvp.net/api/lol";
 
-    private Gson gson  = builder.create();
+    private Gson gson = builder.create();
     private WebTarget championInfoTarget;
     private WebTarget gameInfoTarget;
     private WebTarget leagueInfoTarget;
@@ -71,6 +73,7 @@ public class ApiHandler {
 
     /**
      * Create a new ApiHandler object
+     *
      * @param shard The target region
      * @param token The api key
      */
@@ -91,7 +94,7 @@ public class ApiHandler {
 
             championInfoTarget = defaultTarget.path("v1.2").path("champion");
             gameInfoTarget = defaultTarget.path("v1.3").path("game/by-summoner");
-            leagueInfoTarget = defaultTarget.path("v2.4").path("league");
+            leagueInfoTarget = defaultTarget.path("v2.5").path("league");
             matchInfoTarget = defaultTarget.path("v2.2").path("match");
             matchHistoryInfoTarget = defaultTarget.path("v2.2").path("matchhistory");
             statsTarget = defaultTarget.path("v1.3").path("stats/by-summoner");
@@ -101,13 +104,14 @@ public class ApiHandler {
 
         WebTarget defaultStaticTarget = c.target(API_GLOBAL_URL).queryParam("api_key", token).path("static-data").path(region);
 
-        staticDataTarget    = defaultStaticTarget.path("v1.2");
+        staticDataTarget = defaultStaticTarget.path("v1.2");
     }
 
     // <editor-fold desc="Champion v1.2">
 
     /**
      * Get basic champion data (id, freeToPlay) for all champions
+     *
      * @return Basic champion data
      * @see <a href=https://developer.riotgames.com/api/methods#!/617/1923>Official API documentation</a>
      */
@@ -117,6 +121,7 @@ public class ApiHandler {
 
     /**
      * Get basic champion data for all free-to-play champions
+     *
      * @return Basic champion data
      * @see <a href=https://developer.riotgames.com/api/methods#!/617/1923>Official API documentation</a>
      */
@@ -127,12 +132,13 @@ public class ApiHandler {
 
     /**
      * Get basic champion data for the selected champion
+     *
      * @param id The id of the champion
      * @return Basic champion data
      * @see <a href=https://developer.riotgames.com/api/methods#!/617/1922>Official API documentation</a>
      */
     public BasicChampData getBasicChampData(int id) {
-        return gson.fromJson($(championInfoTarget.path(""+id)), BasicChampData.class);
+        return gson.fromJson($(championInfoTarget.path("" + id)), BasicChampData.class);
     }
 
     // </editor-fold>
@@ -141,6 +147,7 @@ public class ApiHandler {
 
     /**
      * Get a listing of recent games for the summoner
+     *
      * @param summoner The id of the summoner
      * @return A list of recently played games
      * @see <a href=https://developer.riotgames.com/api/methods#!/618/1924>Official API documentation</a>
@@ -156,6 +163,7 @@ public class ApiHandler {
 
     /**
      * Get a listing of leagues for the summoner
+     *
      * @param summoner The id of the summoner
      * @return A list of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1862>Official API documentation</a>
@@ -166,6 +174,7 @@ public class ApiHandler {
 
     /**
      * Get a listing of leagues for the specified summoners
+     *
      * @param summoners The ids of the summoners
      * @return A list of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1862>Official API documentation</a>
@@ -175,7 +184,8 @@ public class ApiHandler {
     }
 
     private Map<Long, List<LeagueList>> getLeaguesVarArgs(long... summoners) {
-        Type type = new TypeToken<Map<String, List<LeagueList>>>(){}.getType();
+        Type type = new TypeToken<Map<String, List<LeagueList>>>() {
+        }.getType();
         WebTarget tgt = leagueInfoTarget.path("by-summoner/" + concat(summoners));
 
         Map<String, List<LeagueList>> query = gson.fromJson($(tgt), type);
@@ -188,6 +198,7 @@ public class ApiHandler {
 
     /**
      * Get a listing of all league entries in the summoner's leagues
+     *
      * @param summoner The id of the summoner
      * @return A list of league entries
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1863>Official API documentation</a>
@@ -198,6 +209,7 @@ public class ApiHandler {
 
     /**
      * Get a listing of all league entries in the summoners' leagues
+     *
      * @param summoners The ids of the summoners
      * @return A map, mapping summoner ids to lists of league entries for that summoner
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1863>Official API documentation</a>
@@ -207,15 +219,16 @@ public class ApiHandler {
     }
 
     private Map<Long, List<LeagueItem>> getLeagueItemsVarArgs(long... summoners) {
-        Type type = new TypeToken<Map<Long, List<LeagueItem>>>(){}.getType();
+        Type type = new TypeToken<Map<Long, List<LeagueItem>>>() {
+        }.getType();
         WebTarget tgt = leagueInfoTarget.path("by-summoner/" + concat(summoners)).path("entry");
         return gson.fromJson($(tgt), type);
     }
 
 
-
     /**
      * Get a listing of leagues for the specified team
+     *
      * @param teamId The id of the team
      * @return A list of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1860>Official API documentation</a>
@@ -226,6 +239,7 @@ public class ApiHandler {
 
     /**
      * Get a listing of leagues for the specified teams
+     *
      * @param teamIds The ids of the team
      * @return A mapping of team ids to lists of leagues
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1860>Official API documentation</a>
@@ -235,15 +249,17 @@ public class ApiHandler {
     }
 
     private Map<String, List<LeagueList>> getTeamLeaguesVarargs(String... teamIds) {
-        Type type = new TypeToken<Map<String, List<LeagueList>>>(){}.getType();
+        Type type = new TypeToken<Map<String, List<LeagueList>>>() {
+        }.getType();
         WebTarget tgt = leagueInfoTarget.path("by-team").path(concat(teamIds));
+        log.warn("Team - League - " + tgt.getUri());
         return gson.fromJson($(tgt), type);
     }
 
 
-
     /**
      * Get a listing of all league entries in the team's leagues
+     *
      * @param teamId The id of the team
      * @return A list of league entries
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1861>Official API documentation</a>
@@ -254,6 +270,7 @@ public class ApiHandler {
 
     /**
      * Get a listing of all league entries in the teams' leagues
+     *
      * @param teamIds The ids of the teams
      * @return A mapping of teamIds to lists of league entries
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1861>Official API documentation</a>
@@ -263,15 +280,17 @@ public class ApiHandler {
     }
 
     private Map<String, List<LeagueItem>> getTeamLeagueItemsVarargs(String... teamIds) {
-        Type type = new TypeToken<Map<String, List<LeagueItem>>>(){}.getType();
+        Type type = new TypeToken<Map<String, List<LeagueItem>>>() {
+        }.getType();
         WebTarget tgt = leagueInfoTarget.path("by-team").path(concat(teamIds)).path("entry");
+        System.out.println("Team - League Items - " + tgt.getUri());
         return gson.fromJson($(tgt), type);
     }
 
 
-
     /**
      * Get the region's challenger league
+     *
      * @param queue The queue type for which to retrieve the league information
      * @return The queue's challenger league
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1864>Official API documentation</a>
@@ -287,6 +306,7 @@ public class ApiHandler {
 
     /**
      * Get champion information for all champions
+     *
      * @return Champion information for all champions
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2171>Official API documentation</a>
      */
@@ -300,6 +320,7 @@ public class ApiHandler {
      * Get champion information for all champions.
      * </p>
      * This method does not count towards the rate limit
+     *
      * @param champData Additional information to retrieve
      * @return The information for all champions
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2171>Official API documentation</a>
@@ -314,9 +335,10 @@ public class ApiHandler {
      * Get champion information for all champions
      * </p>
      * This method does not count towards the rate limit
-     * @param locale Locale code for returned data
-     * @param version Data dragon version for returned data
-     * @param dataById If specified as true, the returned data map will use the champions' IDs as the keys.
+     *
+     * @param locale    Locale code for returned data
+     * @param version   Data dragon version for returned data
+     * @param dataById  If specified as true, the returned data map will use the champions' IDs as the keys.
      * @param champData Additional information to retrieve
      * @return The information for all champions
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2171>Official API documentation</a>
@@ -335,6 +357,7 @@ public class ApiHandler {
      * All champions in the game.
      * </p>
      * This method does not count towards the rate limit
+     *
      * @return All champions in the game
      */
     public Collection<Champion> getChampions() {
@@ -346,6 +369,7 @@ public class ApiHandler {
      * All champions in the game.
      * </p>
      * This method does not count towards the rate limit
+     *
      * @param champData Additional information to retrieve
      * @return All champions in the game
      */
@@ -358,9 +382,10 @@ public class ApiHandler {
      * All champions in the game.
      * </p>
      * This method does not count towards the rate limit
-     * @param locale Locale code for returned data
-     * @param version Data dragon version for returned data
-     * @param dataById If specified as true, the returned data map will use the champions' IDs as the keys.
+     *
+     * @param locale    Locale code for returned data
+     * @param version   Data dragon version for returned data
+     * @param dataById  If specified as true, the returned data map will use the champions' IDs as the keys.
      * @param champData Additional information to retrieve
      * @return All champions in the game
      */
@@ -373,6 +398,7 @@ public class ApiHandler {
      * Get information about the specified champion
      * </p>
      * This method does not count towards the rate limit
+     *
      * @param id The id of the champion
      * @return The champion
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2169>Official API documentation</a>
@@ -387,7 +413,8 @@ public class ApiHandler {
      * Get information about the specified champion
      * </p>
      * This method does not count towards the rate limit
-     * @param id The id of the champion
+     *
+     * @param id        The id of the champion
      * @param champData Additional information to retrieve
      * @return The champion
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2169>Official API documentation</a>
@@ -402,9 +429,10 @@ public class ApiHandler {
      * Get information about the specified champion
      * </p>
      * This method does not count towards the rate limit
-     * @param locale Locale code for returned data
-     * @param version Data dragon version for returned data
-     * @param id The id of the champion
+     *
+     * @param locale    Locale code for returned data
+     * @param version   Data dragon version for returned data
+     * @param id        The id of the champion
      * @param champData Additional information to retrieve
      * @return The champion
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2169>Official API documentation</a>
@@ -422,6 +450,7 @@ public class ApiHandler {
      * Get a listing of items in the game
      * </p>
      * This method does not count towards the rate limit
+     *
      * @return The list of items
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2166>Official API documentation</a>
      */
@@ -435,6 +464,7 @@ public class ApiHandler {
      * Get a listing of items in the game
      * </p>
      * This method does not count towards the rate limit
+     *
      * @param data Additional information to retrieve
      * @return The list of items
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2166>Official API documentation</a>
@@ -449,9 +479,10 @@ public class ApiHandler {
      * Get a listing of items in the game
      * </p>
      * This method does not count towards the rate limit
+     *
      * @param version Data dragon version for returned data
-     * @param locale Locale code for returned data
-     * @param data Additional information to retrieve
+     * @param locale  Locale code for returned data
+     * @param data    Additional information to retrieve
      * @return The list of items
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2166>Official API documentation</a>
      */
@@ -468,6 +499,7 @@ public class ApiHandler {
      * Retrieve a specific item
      * </p>
      * This method does not count towards the rate limit
+     *
      * @param id The id of the item
      * @return The item
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2176>Official API documentation</a>
@@ -482,7 +514,8 @@ public class ApiHandler {
      * Retrieve a specific item
      * </p>
      * This method does not count towards the rate limit
-     * @param id The id of the item
+     *
+     * @param id   The id of the item
      * @param data Additional information to retrieve
      * @return The item
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2176>Official API documentation</a>
@@ -497,10 +530,11 @@ public class ApiHandler {
      * Retrieve a specific item
      * </p>
      * This method does not count towards the rate limit
-     * @param id The id of the item
-     * @param data Additional information to retrieve
+     *
+     * @param id      The id of the item
+     * @param data    Additional information to retrieve
      * @param version Data dragon version for returned data
-     * @param locale Locale code for returned data
+     * @param locale  Locale code for returned data
      * @return The item
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2176>Official API documentation</a>
      */
@@ -517,6 +551,7 @@ public class ApiHandler {
      * Get a listing of all masteries
      * </p>
      * This method does not count towards the rate limit
+     *
      * @return The masteries
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2173>Official API documentation</a>
      */
@@ -530,6 +565,7 @@ public class ApiHandler {
      * Get a listing of all masteries
      * </p>
      * This method does not count towards the rate limit
+     *
      * @param data Additional information to retrieve
      * @return The masteries
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2173>Official API documentation</a>
@@ -544,9 +580,10 @@ public class ApiHandler {
      * Get a listing of all masteries
      * </p>
      * This method does not count towards the rate limit
-     * @param data Additional information to retrieve
+     *
+     * @param data    Additional information to retrieve
      * @param version Data dragon version for returned data
-     * @param locale Locale code for returned data
+     * @param locale  Locale code for returned data
      * @return The masteries
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2173>Official API documentation</a>
      */
@@ -563,6 +600,7 @@ public class ApiHandler {
      * Get a specific mastery
      * </p>
      * This method does not count towards the rate limit
+     *
      * @param id The id of the mastery
      * @return The mastery
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2175>Official API documentation</a>
@@ -577,7 +615,8 @@ public class ApiHandler {
      * Get a specific mastery
      * </p>
      * This method does not count towards the rate limit
-     * @param id The id of the mastery
+     *
+     * @param id   The id of the mastery
      * @param data Additional information to retrieve
      * @return The mastery
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2175>Official API documentation</a>
@@ -592,10 +631,11 @@ public class ApiHandler {
      * Get a specific mastery
      * </p>
      * This method does not count towards the rate limit
-     * @param id The id of the mastery
-     * @param data Additional information to retrieve
+     *
+     * @param id      The id of the mastery
+     * @param data    Additional information to retrieve
      * @param version Data dragon version for returned data
-     * @param locale Locale code for returned data
+     * @param locale  Locale code for returned data
      * @return The mastery
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2175>Official API documentation</a>
      */
@@ -612,6 +652,7 @@ public class ApiHandler {
      * Get realm information for this region
      * </p>
      * This method does not count towards the rate limit
+     *
      * @return Realm information
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2170>Official API documentation</a>
      */
@@ -625,6 +666,7 @@ public class ApiHandler {
      * Get a list of all runes
      * </p>
      * This method does not count towards the rate limit
+     *
      * @return All runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2172>Official API documentation</a>
      */
@@ -638,6 +680,7 @@ public class ApiHandler {
      * Get a list of all runes
      * </p>
      * This method does not count towards the rate limit
+     *
      * @param data Additional information to retrieve
      * @return All runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2172>Official API documentation</a>
@@ -652,9 +695,10 @@ public class ApiHandler {
      * Get a list of all runes
      * </p>
      * This method does not count towards the rate limit
-     * @param data Additional information to retrieve
+     *
+     * @param data    Additional information to retrieve
      * @param version Data dragon version for returned data
-     * @param locale Locale code for returned data
+     * @param locale  Locale code for returned data
      * @return All runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2172>Official API documentation</a>
      */
@@ -671,6 +715,7 @@ public class ApiHandler {
      * Retrieve a specific runes
      * </p>
      * This method does not count towards the rate limit
+     *
      * @param id The id of the runes
      * @return The runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2168>Official API documentation</a>
@@ -685,7 +730,8 @@ public class ApiHandler {
      * Retrieve a specific runes
      * </p>
      * This method does not count towards the rate limit
-     * @param id The id of the runes
+     *
+     * @param id   The id of the runes
      * @param data Additional information to retrieve
      * @return The runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2168>Official API documentation</a>
@@ -700,10 +746,11 @@ public class ApiHandler {
      * Retrieve a specific runes
      * </p>
      * This method does not count towards the rate limit
-     * @param id The id of the runes
-     * @param data Additional information to retrieve
+     *
+     * @param id      The id of the runes
+     * @param data    Additional information to retrieve
      * @param version Data dragon version for returned data
-     * @param locale Locale code for returned data
+     * @param locale  Locale code for returned data
      * @return The runes
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2168>Official API documentation</a>
      */
@@ -720,6 +767,7 @@ public class ApiHandler {
      * Get a list of all summoner spells as returned by the API
      * </p>
      * This method does not count towards the rate limit
+     *
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
      */
@@ -733,6 +781,7 @@ public class ApiHandler {
      * Get a list of all summoner spells as returned by the API
      * </p>
      * This method does not count towards the rate limit
+     *
      * @param data Additional information to retrieve
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
@@ -748,9 +797,10 @@ public class ApiHandler {
      * Get a list of all summoner spells as returned by the API
      * </p>
      * This method does not count towards the rate limit
-     * @param data Additional information to retrieve
-     * @param version Data dragon version for returned data
-     * @param locale Locale code for returned data
+     *
+     * @param data     Additional information to retrieve
+     * @param version  Data dragon version for returned data
+     * @param locale   Locale code for returned data
      * @param dataById If specified as true, the returned data map will use the spells' IDs as the keys.
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
@@ -769,6 +819,7 @@ public class ApiHandler {
      * Get a list of all summoner spells as Java Collection
      * </p>
      * This method does not count towards the rate limit
+     *
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
      */
@@ -781,6 +832,7 @@ public class ApiHandler {
      * Get a list of all summoner spells as Java Collection
      * </p>
      * This method does not count towards the rate limit
+     *
      * @param data Additional information to retrieve
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
@@ -794,9 +846,10 @@ public class ApiHandler {
      * Get a list of all summoner spells as Java Collection
      * </p>
      * This method does not count towards the rate limit
-     * @param data Additional information to retrieve
-     * @param version Data dragon version for returned data
-     * @param locale Locale code for returned data
+     *
+     * @param data     Additional information to retrieve
+     * @param version  Data dragon version for returned data
+     * @param locale   Locale code for returned data
      * @param dataById If specified as true, the returned data map will use the spells' IDs as the keys.
      * @return The summoner spells
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2174>Official API documentation</a>
@@ -810,6 +863,7 @@ public class ApiHandler {
      * Retrieve a specific summoner spell
      * </p>
      * This method does not count towards the rate limit
+     *
      * @param id The id of the spell
      * @return The spell
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2167>Official API documentation</a>
@@ -824,7 +878,8 @@ public class ApiHandler {
      * Retrieve a specific summoner spell
      * </p>
      * This method does not count towards the rate limit
-     * @param id The id of the spell
+     *
+     * @param id   The id of the spell
      * @param data Additional information to retrieve
      * @return The spell
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2167>Official API documentation</a>
@@ -839,10 +894,11 @@ public class ApiHandler {
      * Retrieve a specific summoner spell
      * </p>
      * This method does not count towards the rate limit
-     * @param id The id of the spell
-     * @param data Additional information to retrieve
+     *
+     * @param id      The id of the spell
+     * @param data    Additional information to retrieve
      * @param version Data dragon version for returned data
-     * @param locale Locale code for returned data
+     * @param locale  Locale code for returned data
      * @return The spell
      * @see <a href=https://developer.riotgames.com/api/methods#!/649/2167>Official API documentation</a>
      */
@@ -859,11 +915,13 @@ public class ApiHandler {
      * Retrieve currently supported game versions.
      * </p>
      * This method does not count towards the rate limit
+     *
      * @return A list of supported game versions
      * @see <a href=https://developer.riotgames.com/api/methods#!/710/2527>Official API documentation</a>
      */
     public List<String> getVersions() {
-        Type type = new TypeToken<List<String>>(){}.getType();
+        Type type = new TypeToken<List<String>>() {
+        }.getType();
         WebTarget tgt = staticDataTarget.path("versions");
         return gson.fromJson($(tgt), type);
     }
@@ -875,6 +933,7 @@ public class ApiHandler {
     /**
      * Retrieves the specified match, including timeline.
      * Equivalent to <code>getMatch(matchId, true);</code>
+     *
      * @param matchId The id of the match.
      * @return The match details.
      * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
@@ -885,7 +944,8 @@ public class ApiHandler {
 
     /**
      * Retrieves the specified match.
-     * @param matchId The id of the match.
+     *
+     * @param matchId         The id of the match.
      * @param includeTimeline Whether or not the event timeline should be retrieved.
      * @return The match details.
      * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
@@ -900,6 +960,7 @@ public class ApiHandler {
 
     /**
      * Retrieve a player's match history.
+     *
      * @param playerId The id of the player.
      * @return The match history of the player.
      * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">Official API Documentation</a>
@@ -908,12 +969,94 @@ public class ApiHandler {
         WebTarget tgt = matchHistoryInfoTarget.path("" + playerId);
         return gson.fromJson($(tgt), PlayerHistory.class).matches;
     }
+
+    /**
+     * Retrieve a player's match history.
+     *
+     * @param playerId    The id of the player.
+     * @param championIds The championIds to use for retrieval.
+     * @return The match history of the player.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">Official API Documentation</a>
+     */
+    public List<MatchSummary> getMatchHistory(long playerId, String... championIds) {
+        WebTarget tgt = matchHistoryInfoTarget.path("" + playerId).queryParam("championIds", concat(championIds));
+        return gson.fromJson($(tgt), PlayerHistory.class).matches;
+    }
+
+
+    /**
+     * Retrieve a player's match history, filtering out all games not in the specified queues.
+     *
+     * @param playerId    The id of the player.
+     * @param championIds The championIds to use for retrieval.
+     * @param queueTypes  The queue types to retrieve (must be one of RANKED_SOLO_5x5, RANKED_TEAM_3x3 or
+     *                    RANKED_TEAM_5x5).
+     * @return The match history of the player.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">Official API Documentation</a>
+     */
+    public List<MatchSummary> getMatchHistory(long playerId, String[] championIds, QueueType... queueTypes) {
+        String rankedQueues = concatRankedQueues(queueTypes);
+
+        WebTarget tgt = matchHistoryInfoTarget.path("" + playerId)
+                .queryParam("championIds", concat(championIds))
+                .queryParam("rankedQueues", rankedQueues);
+
+        return gson.fromJson($(tgt), PlayerHistory.class).matches;
+    }
+
+
+    /**
+     * Retrieve a player's match history, filtering out all games not in the specified queues.
+     * This method only returns games starting with beginIndex and ending at endIndex.
+     *
+     * @param playerId    The id of the player.
+     * @param championIds The championIds to use for retrieval.
+     * @param queueTypes  The queue types to retrieve (must be one of RANKED_SOLO_5x5, RANKED_TEAM_3x3 or
+     *                    RANKED_TEAM_5x5).
+     * @param beginIndex  The index of the first game that should be retrieved.
+     * @param endIndex    The index of the last game the should be retrieved.
+     * @return The match history of the player.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">Official API Documentation</a>
+     */
+    public List<MatchSummary> getMatchHistory(long playerId, String[] championIds, QueueType[] queueTypes, int beginIndex, int endIndex) {
+        String rankedQueues = concatRankedQueues(queueTypes);
+
+        WebTarget tgt = matchHistoryInfoTarget.path("" + playerId)
+                .queryParam("championIds", concat(championIds))
+                .queryParam("rankedQueues", rankedQueues)
+                .queryParam("beginIndex", beginIndex)
+                .queryParam("endIndex", endIndex);
+
+        return gson.fromJson($(tgt), PlayerHistory.class).matches;
+    }
+
+    private String concatRankedQueues(QueueType[] types) {
+        StringBuilder builder = new StringBuilder();
+        boolean first = true;
+
+        for (QueueType type : types) {
+            if (type != QueueType.RANKED_SOLO_5x5 && type != QueueType.RANKED_TEAM_3x3 && type != QueueType.RANKED_TEAM_5x5) {
+                throw new IllegalArgumentException("Queue type must be one of RANKED_SOLO_5x5, RANKED_TEAM_3x3 or RANKED_TEAM_5x5, but was " + type);
+            }
+
+            if (first) {
+                first = false;
+            } else {
+                builder.append(',');
+            }
+
+            builder.append(type.name());
+        }
+
+        return builder.toString();
+    }
     // </editor-fold>
 
     // <editor-fold desc="Stats v1.3">
 
     /**
      * Get ranked stats for a player
+     *
      * @param summoner The id of the summoner
      * @return Ranked stats
      * @see <a href=https://developer.riotgames.com/api/methods#!/622/1937>Official API documentation</a>
@@ -925,8 +1068,9 @@ public class ApiHandler {
 
     /**
      * Get ranked stats for a player in a specific season
+     *
      * @param summoner The id of the summoner
-     * @param season The season
+     * @param season   The season
      * @return Ranked stats
      * @see <a href=https://developer.riotgames.com/api/methods#!/622/1937>Official API documentation</a>
      */
@@ -937,6 +1081,7 @@ public class ApiHandler {
 
     /**
      * Get player stats for the player
+     *
      * @param summoner The id of the summoner
      * @return The player's stats
      * @see <a href=https://developer.riotgames.com/api/methods#!/622/1938>Official API documentation</a>
@@ -948,8 +1093,9 @@ public class ApiHandler {
 
     /**
      * Get player stats for the player
+     *
      * @param summoner The id of the summoner
-     * @param season The season
+     * @param season   The season
      * @return The player's stats
      * @see <a href=https://developer.riotgames.com/api/methods#!/622/1938>Official API documentation</a>
      */
@@ -964,19 +1110,22 @@ public class ApiHandler {
 
     /**
      * Get summoner information for the summoners with the specified names
+     *
      * @param names The names of the players
      * @return A map, mapping standardized player names to summoner information
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1930>Official API documentation</a>
      * @see net.boreeas.riotapi.Util#standardizeSummonerName(java.lang.String)
      */
     public Map<String, Summoner> getSummoners(String... names) {
-        Type type = new TypeToken<Map<String, Summoner>>(){}.getType();
+        Type type = new TypeToken<Map<String, Summoner>>() {
+        }.getType();
         WebTarget tgt = summonerInfoTarget.path("by-name").path(String.join(",", names));
         return gson.fromJson($(tgt), type);
     }
 
     /**
      * Get summoner information for the specified summoner
+     *
      * @param name The name of the summoner
      * @return Summoner information
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1930>Official API documentation</a>
@@ -987,12 +1136,14 @@ public class ApiHandler {
 
     /**
      * Get summoner information for the summoners with the specified ids
+     *
      * @param ids The ids of the summoners
      * @return A map, mapping player ids to summoner information
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1931>Official API documentation</a>
      */
     public Map<Integer, Summoner> getSummoners(Integer... ids) {
-        Type type = new TypeToken<Map<String, Summoner>>(){}.getType();
+        Type type = new TypeToken<Map<String, Summoner>>() {
+        }.getType();
         WebTarget tgt = summonerInfoTarget.path(Arrays.asList(ids).toString().replaceAll("[\\[\\] ]", ""));
 
         Map<String, Summoner> result = gson.fromJson($(tgt), type);
@@ -1004,6 +1155,7 @@ public class ApiHandler {
 
     /**
      * Get summoner information for the summoner with the specified id
+     *
      * @param id The id of the summoner
      * @return Summoner information
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1931>Official API documentation</a>
@@ -1014,12 +1166,14 @@ public class ApiHandler {
 
     /**
      * Retrieve mastery pages for multiple users
+     *
      * @param ids The ids of the users
      * @return A map, mapping player ids to their respective mastery pages
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1933>Official API documentation</a>
      */
     public Map<Integer, Set<MasteryPage>> getMasteryPagesMultipleUsers(Integer... ids) {
-        Type type = new TypeToken<Map<String, MasteryPagesDto>>(){}.getType();
+        Type type = new TypeToken<Map<String, MasteryPagesDto>>() {
+        }.getType();
         String idString = Arrays.asList(ids).toString().replaceAll("[\\[\\] ]", "");
         WebTarget tgt = summonerInfoTarget.path(idString).path("masteries");
 
@@ -1032,6 +1186,7 @@ public class ApiHandler {
 
     /**
      * Retrieve the mastery pages of a user
+     *
      * @param id The user's id
      * @return The user's mastery pages
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1933>Official API documentation</a>
@@ -1042,12 +1197,14 @@ public class ApiHandler {
 
     /**
      * Retrieve summoner names for the specified ids
+     *
      * @param ids The ids to lookup
      * @return A map, mapping user ids to summoner names
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1934>Official API documentation</a>
      */
     public Map<Integer, String> getSummonerNames(Integer... ids) {
-        Type type = new TypeToken<Map<String, String>>(){}.getType();
+        Type type = new TypeToken<Map<String, String>>() {
+        }.getType();
         String idString = Arrays.asList(ids).toString().replaceAll("[\\[\\] ]", "");
         WebTarget tgt = summonerInfoTarget.path(idString).path("name");
 
@@ -1060,6 +1217,7 @@ public class ApiHandler {
 
     /**
      * Retrieve the summoner name of the specified user
+     *
      * @param id The id of the user
      * @return The summoner name of the user
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1934>Official API documentation</a>
@@ -1070,12 +1228,14 @@ public class ApiHandler {
 
     /**
      * Retrieve runes pages for multiple users
+     *
      * @param ids The ids of the users
      * @return A map, mapping user ids to their respective runes pages
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1932>Official API documentation</a>
      */
     public Map<Integer, Set<RunePage>> getRunePagesMultipleUsers(int... ids) {
-        Type type = new TypeToken<Map<String, RunePagesDto>>(){}.getType();
+        Type type = new TypeToken<Map<String, RunePagesDto>>() {
+        }.getType();
         WebTarget tgt = summonerInfoTarget.path(concat(ids)).path("runes");
 
         Map<String, RunePagesDto> tmpResult = gson.fromJson($(tgt), type);
@@ -1087,6 +1247,7 @@ public class ApiHandler {
 
     /**
      * Retrieve the runes pages of a user
+     *
      * @param id The user's id
      * @return The user's runes page
      * @see <a href=https://developer.riotgames.com/api/methods#!/620/1932>Official API documentation</a>
@@ -1101,6 +1262,7 @@ public class ApiHandler {
 
     /**
      * Retrieve the ranked teams of a user
+     *
      * @param id The user's id
      * @return The ranked teams of the user
      * @see <a href=https://developer.riotgames.com/api/methods#!/594/1865>Official API documentation</a>
@@ -1111,18 +1273,21 @@ public class ApiHandler {
 
     /**
      * Retrieve the ranked teams of the specified users
+     *
      * @param ids The users' ids
      * @return The ranked teams of the users
      * @see <a href=https://developer.riotgames.com/api/methods#!/594/1865>Official API documentation</a>
      */
     public Map<Long, List<RankedTeam>> getTeamsBySummoners(long... ids) {
-        Type type = new TypeToken<Map<Long, List<RankedTeam>>>(){}.getType();
+        Type type = new TypeToken<Map<Long, List<RankedTeam>>>() {
+        }.getType();
         WebTarget tgt = teamInfoTarget.path("by-summoner/" + concat(ids));
         return gson.fromJson($(tgt), type);
     }
 
     /**
      * Retrieve information for the specified ranked team
+     *
      * @param teamId The team to retrieve
      * @return Information about the specified team
      * @see <a href=https://developer.riotgames.com/api/methods#!/594/1866>Official API documentation</a>
@@ -1133,12 +1298,14 @@ public class ApiHandler {
 
     /**
      * Retrieve information for the specified ranked teams
+     *
      * @param teamIds The ids of the teams
      * @return A map, mapping team ids to team information
      * @see <a href=https://developer.riotgames.com/api/methods#!/594/1866>Official API documentation</a>
      */
     public Map<String, RankedTeam> getTeams(String... teamIds) {
-        Type type = new TypeToken<Map<String, RankedTeam>>(){}.getType();
+        Type type = new TypeToken<Map<String, RankedTeam>>() {
+        }.getType();
         WebTarget tgt = teamInfoTarget.path(String.join(",", teamIds));
 
         return gson.fromJson($(tgt), type);
@@ -1151,6 +1318,7 @@ public class ApiHandler {
 
     /**
      * Retrieve summoner ids for the specified names
+     *
      * @param names The names of the users
      * @return Their respective ids
      */
@@ -1161,6 +1329,7 @@ public class ApiHandler {
     /**
      * <p>
      * Retrieve the summoner id for the specified user
+     *
      * @param name The name of the user
      * @return Their respective ids
      */
@@ -1171,9 +1340,9 @@ public class ApiHandler {
     // </editor-fold>
 
 
-
     /**
      * Open the request to the web target and returns an InputStreamReader for the message body
+     *
      * @param target the web target to access
      * @return the reader for the message body
      */
@@ -1196,7 +1365,7 @@ public class ApiHandler {
         StringBuilder builder = new StringBuilder();
         boolean first = true;
 
-        for (long v: values) {
+        for (long v : values) {
             if (first) {
                 first = false;
             } else {
@@ -1213,7 +1382,7 @@ public class ApiHandler {
         StringBuilder builder = new StringBuilder();
         boolean first = true;
 
-        for (int v: values) {
+        for (int v : values) {
             if (first) {
                 first = false;
             } else {

@@ -803,6 +803,49 @@ public class ThrottledApiHandler implements AutoCloseable {
     public Future<List<MatchSummary>> getMatchHistory(long playerId) {
         return new ApiFuture<>(() -> handler.getMatchHistory(playerId));
     }
+
+    /**
+     * Retrieve a player's match history.
+     *
+     * @param playerId    The id of the player.
+     * @param championIds The championIds to use for retrieval.
+     * @return The match history of the player.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">Official API Documentation</a>
+     */
+    public Future<List<MatchSummary>> getMatchHistory(long playerId, String... championIds) {
+        return new ApiFuture<>(() -> handler.getMatchHistory(playerId, championIds));
+    }
+
+    /**
+     * Retrieve a player's match history, filtering out all games not in the specified queues.
+     *
+     * @param playerId    The id of the player.
+     * @param championIds The championIds to use for retrieval.
+     * @param queueTypes  The queue types to retrieve (must be one of RANKED_SOLO_5x5, RANKED_TEAM_3x3 or
+     *                    RANKED_TEAM_5x5).
+     * @return The match history of the player.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">Official API Documentation</a>
+     */
+    public Future<List<MatchSummary>> getMatchHistory(long playerId, String[] championIds, QueueType... queueTypes) {
+        return new ApiFuture<>(() -> handler.getMatchHistory(playerId, championIds, queueTypes));
+    }
+
+    /**
+     * Retrieve a player's match history, filtering out all games not in the specified queues.
+     * This method only returns games starting with beginIndex and ending at endIndex.
+     *
+     * @param playerId    The id of the player.
+     * @param championIds The championIds to use for retrieval.
+     * @param queueTypes  The queue types to retrieve (must be one of RANKED_SOLO_5x5, RANKED_TEAM_3x3 or
+     *                    RANKED_TEAM_5x5).
+     * @param beginIndex  The index of the first game that should be retrieved.
+     * @param endIndex    The index of the last game the should be retrieved.
+     * @return The match history of the player.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/805/2847">Official API Documentation</a>
+     */
+    public Future<List<MatchSummary>> getMatchHistory(long playerId, String[] championIds, QueueType[] queueTypes, int beginIndex, int endIndex) {
+        return new ApiFuture<>(() -> handler.getMatchHistory(playerId, championIds, queueTypes, beginIndex, endIndex));
+    }
     // </editor-fold>
 
     // <editor-fold desc="Stats">

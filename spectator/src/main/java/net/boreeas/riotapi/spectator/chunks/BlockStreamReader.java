@@ -23,48 +23,87 @@ import java.nio.ByteOrder;
 
 /**
  * Reads consecutive blocks from a buffer
+ *
  * @author Malte Schütze
  */
 public class BlockStreamReader {
     /**
      * The last read block, or <code>null</code> if no block has been read yet.
      */
-    @Getter private Block last;
+    @Getter
+    private Block last;
     private final ByteBuffer buffer;
+    private BlockFactory factory;
 
     public BlockStreamReader(byte[] data) {
+        this(data, DefaultBlockFactory.INSTANCE);
+    }
+
+    public BlockStreamReader(byte[] data, BlockFactory factory) {
         buffer = ByteBuffer.wrap(data);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
+        this.factory = factory;
     }
 
     /**
      * Reads the next block from the buffer.
+     *
      * @return The next block.
      */
     public Block next() {
 
         BlockHeader header = getBlockHeader();
 
-        byte[] content = new byte[header.getContentLength()];
+        if (header.getContentLength() > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException("Invalid content length: " + header.getContentLength());
+        }
+        byte[] content = new byte[(int) header.getContentLength()];
         buffer.get(content);
 
-        Block next = new Block(header, content);
+        Block next = factory.getBlock(header, content);
 
         last = next;
         return next;
     }
 
+
     private BlockHeader getBlockHeader() {
 
         Flags flags = new Flags(buffer.get());
 
-        long timestamp = flags.hasFlag(Flags.RELATIVE_TIME)
-                ? last.getHeader().getTimestamp() + buffer.get()
-                : (long) (buffer.getFloat() * 1000);
+        long timestamp;
+        if (flags.hasFlag(Flags.RELATIVE_TIME)) {
+            if (last == null) {
+                throw new IllegalStateException("Missing previous block");
+            }
+            timestamp = last.getHeader().getTimestamp() + (buffer.get() & 0xff);
+        } else {
+            timestamp = (long) (buffer.getFloat() * 1000);
+        }
 
-        int contentLength = flags.hasFlag(Flags.SHORT_CONTENT_LENGTH) ? buffer.get() : buffer.getInt();
-        int blockType = buffer.get() & 0xFF;
-        int blockParam = flags.hasFlag(Flags.SHORT_BLK_PARAM) ? buffer.get() : buffer.getInt();
+        long contentLength;
+        if (flags.hasFlag(Flags.SHORT_CONTENT_LENGTH)) {
+            contentLength = buffer.get() & 0xFF;
+        } else {
+            contentLength = ((long) buffer.getInt()) & 0xFFFFFFFFL;
+        }
+
+        int blockType;
+        if (flags.hasFlag(Flags.NO_BLOCKTYPE)) {
+            if (last == null) {
+                throw new IllegalStateException("Missing previous block");
+            }
+            blockType = last.getHeader().getType();
+        } else {
+            blockType = buffer.get() & 0xFF;
+        }
+
+        long blockParam;
+        if (flags.hasFlag(Flags.SHORT_BLK_PARAM)) {
+            blockParam = buffer.get() & 0xFF;
+        } else {
+            blockParam = buffer.getInt() & 0xFFFFFFFFL;
+        }
 
         return new BlockHeader(flags, timestamp, blockType, contentLength, blockParam);
     }

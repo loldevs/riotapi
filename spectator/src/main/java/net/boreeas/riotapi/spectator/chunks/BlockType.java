@@ -16,20 +16,39 @@
 
 package net.boreeas.riotapi.spectator.chunks;
 
-import lombok.*;
-
 /**
  * @author Malte Schütze
  */
-@Getter
-@Setter(AccessLevel.PACKAGE)
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public class BlockHeader {
-    private Flags flags;
-    private long timestamp;
-    private int type;
-    private long contentLength;
-    private long blockParam;
+public enum BlockType {
+    MINION_SPAWN(0x03),
+    ABILITY_LEVEL(0x15),
+    CREATE_EFFECT(0x17),
+    EXPERIENCE_GAIN(0x22),
+    PLAYER_HEADER(0x4c),
+    START_DEATHTIMER(0x5e),
+    MOVEMENT(0x61),
+    START_SPAWN(0x62),
+    NEUTRAL_CAMP_SPAWN(0x63),
+    ITEM_PURCHASE(0x6f),
+    UNK_85(0x85),
+    TOWER_DATA(0x9d),
+    GOLD_GAIN(0xe4),
+
+    UNKNOWN(0x00);
+
+    private final int id;
+
+    private BlockType(int id) {
+        this.id = id;
+    }
+
+    public static BlockType getById(int id) {
+        for (BlockType type: BlockType.values()) {
+            if (type.id == id) {
+                return type;
+            }
+        }
+
+        return UNKNOWN;
+    }
 }

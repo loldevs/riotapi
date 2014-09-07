@@ -14,22 +14,29 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.spectator.chunks;
+package net.boreeas.riotapi.spectator.chunks.blocks;
 
-import lombok.*;
+import lombok.Value;
+import lombok.extern.log4j.Log4j;
+import net.boreeas.riotapi.Util;
+import net.boreeas.riotapi.spectator.chunks.Block;
+import net.boreeas.riotapi.spectator.chunks.BlockHeader;
+import net.boreeas.riotapi.spectator.chunks.BlockType;
+import net.boreeas.riotapi.spectator.chunks.IsBlock;
 
 /**
  * @author Malte Schütze
  */
-@Getter
-@Setter(AccessLevel.PACKAGE)
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public class BlockHeader {
-    private Flags flags;
-    private long timestamp;
-    private int type;
-    private long contentLength;
-    private long blockParam;
+@Value
+@Log4j
+@IsBlock(BlockType.MOVEMENT)
+public class Movement extends Block {
+
+
+    public Movement(BlockHeader header, byte[] data) {
+        super(header, data);
+
+        log.warn("Unknown format: Movement");
+        Util.hexdump(data).forEach(log::warn);
+    }
 }

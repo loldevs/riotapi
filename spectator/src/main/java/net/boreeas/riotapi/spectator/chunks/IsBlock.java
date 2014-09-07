@@ -16,20 +16,19 @@
 
 package net.boreeas.riotapi.spectator.chunks;
 
-import lombok.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author Malte Schütze
  */
-@Getter
-@Setter(AccessLevel.PACKAGE)
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public class BlockHeader {
-    private Flags flags;
-    private long timestamp;
-    private int type;
-    private long contentLength;
-    private long blockParam;
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface IsBlock {
+    /**
+     * @return The value of the marker byte
+     */
+    BlockType value();
 }

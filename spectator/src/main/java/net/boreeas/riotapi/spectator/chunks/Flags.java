@@ -36,4 +36,8 @@ public class Flags {
     public boolean hasFlag(int flag) {
         return (flags & flag) == flag;
     }
+
+    public String toString() {
+        return String.format("Flags(%2x/%8s)", flags & 0xff, Integer.toBinaryString(flags & 0xff));
+    }
 }

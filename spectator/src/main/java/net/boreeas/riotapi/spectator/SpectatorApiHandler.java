@@ -160,13 +160,9 @@ public class SpectatorApiHandler {
 
             byte[] buffer = new byte[1024];
 
-            while (true) {
-                int read = in.read(buffer);
-                if (read != -1) {
-                    out.write(buffer, 0, read);
-                } else {
-                    break;
-                }
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
             }
 
             return out.toByteArray();

@@ -18,13 +18,51 @@ package net.boreeas.riotapi.spectator.chunks;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j;
+import net.boreeas.riotapi.Util;
+
+import java.io.ByteArrayOutputStream;
+import java.nio.BufferUnderflowException;
+import java.nio.ByteBuffer;
 
 /**
  * A block of data in a keyframe or chunk
  * @author Malte Schütze
  */
+@Log4j
 @AllArgsConstructor
 public class Block {
     @Getter private BlockHeader header;
-    private byte[] buffer;
+    protected byte[] buffer;
+
+
+    protected void assertEndOfBuffer(ByteBuffer buffer) {
+        if (buffer.remaining() > 0) {
+            log.warn("[" + BlockType.getById(header.getType()) + "] Expected end of buffer, but got " + buffer.remaining() + " remaining");
+
+            byte[] b = new byte[buffer.remaining()];
+            buffer.get(b);
+
+            Util.hexdump(b).forEach(log::warn);
+        }
+    }
+
+    @SneakyThrows
+    protected String readNullterminatedString(ByteBuffer buffer) {
+
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        try {
+            byte read;
+            while ((read = buffer.get()) != 0x00) {
+                bout.write(read);
+            }
+
+            return new String(bout.toByteArray(), "UTF-8");
+        } catch (BufferUnderflowException ex) {
+            log.warn("[" + BlockType.getById(header.getType()) + "] Hit end of buffer during cstr: " + new String(bout.toByteArray(), "UTF-8"));
+            throw ex;
+        }
+
+    }
 }

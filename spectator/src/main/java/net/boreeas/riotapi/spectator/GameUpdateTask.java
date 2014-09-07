@@ -192,7 +192,7 @@ public class GameUpdateTask implements Runnable {
     private void pullKeyframe(int id) {
         try {
             game.pullKeyFrame(id);
-            if (onKeyframePulled != null) { onKeyframePulled.accept(id); };
+            if (onKeyframePulled != null) { onKeyframePulled.accept(id); }
         } catch (RequestException ex) {
             if (ex.getErrorType() == RequestException.ErrorType.INTERNAL_SERVER_ERROR) {
                 retriesKeyframes.put(id, 1);

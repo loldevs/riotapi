@@ -12,6 +12,10 @@
 * Added support for gzip-encoding
 * Bugfix: Removed double API call in getMatch()
 
+##### Spectator
+* Deprecated singleton constructor of GamePool due to its inability to return running tasks.
+* Added callbacks to interface with GameUpdateTask: onChunkPulled, onKeyframePulled, onFinished
+
 ## 1.2.0
 ##### Domain
 * Dynamic loading for shard constants

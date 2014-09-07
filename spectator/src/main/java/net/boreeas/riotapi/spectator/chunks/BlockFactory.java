@@ -16,20 +16,9 @@
 
 package net.boreeas.riotapi.spectator.chunks;
 
-import lombok.*;
-
 /**
  * @author Malte Schütze
  */
-@Getter
-@Setter(AccessLevel.PACKAGE)
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public class BlockHeader {
-    private Flags flags;
-    private long timestamp;
-    private int type;
-    private long contentLength;
-    private long blockParam;
+public @FunctionalInterface interface BlockFactory {
+    Block getBlock(BlockHeader header, byte[] buffer);
 }

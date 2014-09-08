@@ -116,10 +116,6 @@ public class QueueTimer extends Thread {
                 }
 
 
-            } catch (AccountManagementException ex) {
-                this.ex = ex;
-                isError = true;
-                latch.countDown();
             } catch (RequestException ex) {
                 int type = ex.getErrorType().code;
                 if ((type >= RequestException.ErrorType.CLOUDFLARE_GENERIC.code && type <= RequestException.ErrorType.CLOUDFLARE_SSL_HANDSHAKE_FAILED.code)
@@ -131,6 +127,10 @@ public class QueueTimer extends Thread {
                     isError = true;
                     latch.countDown();
                 }
+            } catch (RuntimeException ex) {
+                this.ex = ex;
+                isError = true;
+                latch.countDown();
             }
         }
     }

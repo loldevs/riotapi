@@ -16,6 +16,8 @@
 
 package net.boreeas.riotapi.loginqueue;
 
+import lombok.extern.log4j.Log4j;
+import net.boreeas.riotapi.RequestException;
 import net.boreeas.riotapi.com.riotgames.platform.account.management.AccountManagementException;
 
 import java.util.concurrent.CountDownLatch;
@@ -24,7 +26,10 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by malte on 7/13/2014.
  */
+@Log4j
 public class QueueTimer extends Thread {
+
+    private static final int MAX_CLOUDFLARE_ERROR_RETRY = 3;
 
     private LoginQueue loginQueue;
     private String user;
@@ -35,7 +40,8 @@ public class QueueTimer extends Thread {
     private CountDownLatch latch = new CountDownLatch(1);
     private boolean isError = false;
     private AuthResult result;
-    private AccountManagementException ex;
+    private RuntimeException ex;
+    private int cloudflareErrorCounter = 0;
 
     public QueueTimer(LoginQueue loginQueue, String user, String password) {
         super("Queue Timer for " + user);
@@ -71,11 +77,23 @@ public class QueueTimer extends Thread {
     }
 
     public long getCurrentDelay() {
-        return overrideDelay > 0 ? overrideDelay : result.getDelay();
+        if (overrideDelay > 0) {
+            return overrideDelay;
+        }
+
+        if (result != null) {
+            return result.getDelay();
+        }
+
+        throw new IllegalStateException("Result not available yet");
     }
 
     public long getPosition() {
-        return result.getPosition();
+        if (result != null) {
+            return result.getPosition();
+        }
+
+        throw new IllegalStateException("Result not available yet");
     }
 
     public boolean isFinished() {
@@ -102,6 +120,17 @@ public class QueueTimer extends Thread {
                 this.ex = ex;
                 isError = true;
                 latch.countDown();
+            } catch (RequestException ex) {
+                int type = ex.getErrorType().code;
+                if ((type >= RequestException.ErrorType.CLOUDFLARE_GENERIC.code && type <= RequestException.ErrorType.CLOUDFLARE_SSL_HANDSHAKE_FAILED.code)
+                        && cloudflareErrorCounter < MAX_CLOUDFLARE_ERROR_RETRY) {
+                    cloudflareErrorCounter++;
+                    log.warn("Cloudflare error: " + type + " - Reattempting ("  + cloudflareErrorCounter + "/" + MAX_CLOUDFLARE_ERROR_RETRY + ")");
+                } else {
+                    this.ex = ex;
+                    isError = true;
+                    latch.countDown();
+                }
             }
         }
     }

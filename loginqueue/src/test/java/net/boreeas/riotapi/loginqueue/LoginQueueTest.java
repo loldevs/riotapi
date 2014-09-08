@@ -20,7 +20,6 @@ import junit.framework.TestCase;
 import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.com.riotgames.platform.account.management.InvalidCredentialsException;
 
-import java.net.URLEncoder;
 import java.util.concurrent.TimeUnit;
 
 public class LoginQueueTest extends TestCase {
@@ -34,7 +33,6 @@ public class LoginQueueTest extends TestCase {
     }
 
     public void testQueueWait() throws Exception {
-        System.out.println(URLEncoder.encode(Shard.NA.loginQueue, "UTF-8"));
         try {
             AuthResult result = new LoginQueue(Shard.NA).waitInQueue("foo", "").await(2, TimeUnit.SECONDS);
             fail();

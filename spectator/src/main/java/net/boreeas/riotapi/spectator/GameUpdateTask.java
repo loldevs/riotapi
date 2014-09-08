@@ -29,6 +29,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 /**
  * Pulls chunks and keyframes for the specified game from the server. Needs
@@ -47,6 +48,9 @@ public class GameUpdateTask implements Runnable {
     private InProgressGame game;
 
     @Setter private ScheduledFuture self;
+    @Setter private IntConsumer onChunkPulled;
+    @Setter private IntConsumer onKeyframePulled;
+    @Setter private Callback onFinished;
 
     private boolean firstRun = true;
     private Map<Integer, Integer> retriesChunks = new HashMap<>();
@@ -96,6 +100,7 @@ public class GameUpdateTask implements Runnable {
         if (chunkInfo.getEndGameChunkId() != 0 && chunkInfo.getEndGameChunkId() == chunkInfo.getChunkId() && retriesKeyframes.isEmpty() && retriesChunks.isEmpty()) {
             log.debug("[" + game.getGameId() + "] End of game reached at chunk " + chunkInfo.getEndGameChunkId());
             game.markEndReached();
+            if (onFinished != null) { onFinished.receive(); }
             cancel();
         }
     }
@@ -163,6 +168,7 @@ public class GameUpdateTask implements Runnable {
     private void pullChunk(int id) {
         try {
             game.pullChunk(id);
+            if (onChunkPulled != null) { onChunkPulled.accept(id); }
         } catch (RequestException ex) {
             if (ex.getErrorType() == RequestException.ErrorType.INTERNAL_SERVER_ERROR) {
                 retriesChunks.put(id, 1);
@@ -186,6 +192,7 @@ public class GameUpdateTask implements Runnable {
     private void pullKeyframe(int id) {
         try {
             game.pullKeyFrame(id);
+            if (onKeyframePulled != null) { onKeyframePulled.accept(id); }
         } catch (RequestException ex) {
             if (ex.getErrorType() == RequestException.ErrorType.INTERNAL_SERVER_ERROR) {
                 retriesKeyframes.put(id, 1);

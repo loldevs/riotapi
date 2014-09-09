@@ -1,5 +1,10 @@
 # Changelog
 ---------
+### 1.4.0
+##### Spectator
+* GamePool.submit() now returns GameUpdateTask
+* Added callbacks to GameUpdateTask for received chunks, received keyframes and when the game is finished
+
 ## 1.3.0
 ##### Domain
 * Bugfix: Fixed incorrect chat urls for the Vietnam and Indonesian regions 

@@ -20,7 +20,7 @@
     <parent>
         <groupId>net.boreeas</groupId>
         <artifactId>riotapi</artifactId>
-        <version>1.4.0</version>
+        <version>v.1.4.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>riotapi.xmpp</artifactId>

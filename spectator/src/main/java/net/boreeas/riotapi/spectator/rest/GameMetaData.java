@@ -16,10 +16,7 @@
 
 package net.boreeas.riotapi.spectator.rest;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.SneakyThrows;
-import lombok.ToString;
+import lombok.*;
 import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.spectator.SpectatorApiHandler;
 
@@ -39,7 +36,7 @@ public class GameMetaData {
     private String platformId;
     private String gameServerAddress;
     private int port;
-    private String encryptionKey;
+    @Setter private String encryptionKey;
     /**
      * Time between chunks in milliseconds
      */

@@ -37,6 +37,7 @@ public class InProgressGame implements SpectatedGame {
     private Shard platform;
     private long gameId;
 
+    private String b64key;
     @Getter private GameEncryptionData gameEncryptionData;
     private MappedDataCache<Integer, Chunk> chunks = new MappedDataCache<>();
     private MappedDataCache<Integer, KeyFrame> keyframes = new MappedDataCache<>();
@@ -56,6 +57,7 @@ public class InProgressGame implements SpectatedGame {
         this.handler = handler;
         this.platform = platform;
         this.gameId = gameId;
+        this.b64key = initialEncryptionKey;
         getMetaData(); // Init cache
 
         loadEncryptionKey(initialEncryptionKey);
@@ -73,6 +75,7 @@ public class InProgressGame implements SpectatedGame {
     public GameMetaData getMetaData() {
         // Force cache update
         cachedMetaData = handler.getGameMetaData(platform, gameId);
+        cachedMetaData.setEncryptionKey(b64key);
         return cachedMetaData;
     }
 

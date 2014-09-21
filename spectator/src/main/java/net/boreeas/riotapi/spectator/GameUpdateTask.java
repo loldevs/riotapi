@@ -16,6 +16,7 @@
 
 package net.boreeas.riotapi.spectator;
 
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import net.boreeas.riotapi.RequestException;
@@ -44,13 +45,15 @@ public class GameUpdateTask implements Runnable {
 
     private static final int DEFAULT_MAX_RETRIES = 5;
 
-    private Consumer<Exception> onError;
-    private InProgressGame game;
+    @Getter private InProgressGame game;
 
     @Setter private ScheduledFuture self;
     @Setter private IntConsumer onChunkPulled;
     @Setter private IntConsumer onKeyframePulled;
+    @Setter private Consumer<Exception> onError;
     @Setter private Callback onFinished;
+    @Setter private IntConsumer onKeyframeFailed;
+    @Setter private IntConsumer onChunkFailed;
 
     private boolean firstRun = true;
     private Map<Integer, Integer> retriesChunks = new HashMap<>();
@@ -138,8 +141,11 @@ public class GameUpdateTask implements Runnable {
         }
 
         if (!retriesExceeded.isEmpty()) {
-            retriesExceeded.forEach(retriesKeyframes::remove);
-            throw new RequestException("Unreachable keyframe: " + retriesExceeded);
+            for (int i: retriesExceeded) {
+                retriesKeyframes.remove(i);
+                if (onKeyframePulled != null) { onKeyframeFailed.accept(i); }
+            }
+            throw new RequestException("Unreachable keyframe(s): " + retriesExceeded);
         }
 
         if (!retrySuccessful.isEmpty()) {
@@ -155,8 +161,11 @@ public class GameUpdateTask implements Runnable {
         }
 
         if (!retriesExceeded.isEmpty()) {
-            retriesExceeded.forEach(retriesChunks::remove);
-            throw new RequestException("Unreachable chunk: " + retriesExceeded);
+            for (int i: retriesExceeded) {
+                retriesChunks.remove(i);
+                if (onChunkFailed != null) { onChunkFailed.accept(i); }
+            }
+            throw new RequestException("Unreachable chunk(s): " + retriesExceeded);
         }
 
         if (!retrySuccessful.isEmpty()) {

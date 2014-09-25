@@ -48,12 +48,12 @@ public class GameUpdateTask implements Runnable {
     @Getter private InProgressGame game;
 
     @Setter private ScheduledFuture self;
-    @Setter private IntConsumer onChunkPulled;
-    @Setter private IntConsumer onKeyframePulled;
-    @Setter private Consumer<Exception> onError;
-    @Setter private Callback onFinished;
-    @Setter private IntConsumer onKeyframeFailed;
-    @Setter private IntConsumer onChunkFailed;
+    private IntConsumer onChunkPulled;
+    private IntConsumer onKeyframePulled;
+    private Consumer<Exception> onError;
+    private Callback onFinished;
+    private IntConsumer onKeyframeFailed;
+    private IntConsumer onChunkFailed;
 
     private boolean firstRun = true;
     private Map<Integer, Integer> retriesChunks = new HashMap<>();
@@ -66,6 +66,40 @@ public class GameUpdateTask implements Runnable {
     public GameUpdateTask(InProgressGame game, Consumer<Exception> errorCallback) {
         this.game = game;
         this.onError = errorCallback;
+    }
+
+    public void addOnChunkPulled(IntConsumer consumer) {
+        this.onChunkPulled = onChunkPulled == null ? consumer : onChunkPulled.andThen(consumer);
+    }
+
+    public void addOnKeyframePulled(IntConsumer consumer) {
+        this.onKeyframePulled = onKeyframePulled == null ? consumer : onKeyframePulled.andThen(consumer);
+    }
+
+    public void addOnError(Consumer<Exception> consumer) {
+        this.onError = onError == null ? consumer : onError.andThen(consumer);
+    }
+
+    public void addOnFinished(Callback callback) {
+        this.onFinished = callback.and(onFinished);
+    }
+
+    public void addOnKeyframeFailed(IntConsumer consumer) {
+        this.onKeyframeFailed = onKeyframeFailed == null ? consumer : onKeyframeFailed.andThen(consumer);
+    }
+
+    public void addOnChunkFailed(IntConsumer consumer) {
+        this.onChunkFailed = onChunkFailed == null ? consumer : onChunkFailed.andThen(consumer);
+    }
+
+    @Deprecated
+    public void setOnError(Consumer<Exception> consumer) {
+        onError = consumer;
+    }
+
+    @Deprecated
+    public void setOnFinished(Callback callback) {
+        onFinished = callback;
     }
 
     @Override

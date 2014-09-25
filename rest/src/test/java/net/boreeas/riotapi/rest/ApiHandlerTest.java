@@ -97,11 +97,11 @@ public class ApiHandlerTest extends TestCase {
         handler.getLeagueEntries(SUMMONER_ID_1).get(1, MINUTES);
     }
 
-    public void _testGetLeaguesByTeam() throws Exception {
+    public void testGetLeaguesByTeam() throws Exception {
         handler.getLeagues(TEAM_ID).get(1, MINUTES);
     }
 
-    public void _testGetLeagueEntriesByTeam() throws Exception {
+    public void testGetLeagueEntriesByTeam() throws Exception {
         handler.getLeagueEntries(TEAM_ID).get(1, MINUTES);
     }
 

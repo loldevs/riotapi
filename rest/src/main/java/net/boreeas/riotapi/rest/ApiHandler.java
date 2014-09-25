@@ -283,7 +283,6 @@ public class ApiHandler {
         Type type = new TypeToken<Map<String, List<LeagueItem>>>() {
         }.getType();
         WebTarget tgt = leagueInfoTarget.path("by-team").path(concat(teamIds)).path("entry");
-        System.out.println("Team - League Items - " + tgt.getUri());
         return gson.fromJson($(tgt), type);
     }
 

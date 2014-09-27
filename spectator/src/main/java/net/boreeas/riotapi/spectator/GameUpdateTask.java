@@ -102,6 +102,16 @@ public class GameUpdateTask implements Runnable {
         onFinished = callback;
     }
 
+    @Deprecated
+    public void setOnChunkPulled(IntConsumer consumer) {
+        this.onChunkPulled = consumer;
+    }
+
+    @Deprecated
+    public void setOnKeyframePulled(IntConsumer consumer) {
+        this.onKeyframePulled = consumer;
+    }
+
     @Override
     public void run() {
         if (firstRun) {

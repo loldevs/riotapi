@@ -1,5 +1,15 @@
 # Changelog
 ---------
+### 1.5.0
+##### Rtmp
+* Added support for ignoring SSL certificate chain errors.
+
+##### Spectator
+* GameUpdateTask now supports callbacks for failed chunks and keyframes
+* GameUpdateTask now supports multiple callbacks per event
+* Deprecated: setOnError, setOnFinished, setOnChunkPulled, setOnKeyframePulled (use add* instead)
+* InProgressGame now adds the encryption key to the metadata if it isn't transmitted by the server
+
 ### 1.4.0
 ##### Spectator
 * GamePool.submit() now returns GameUpdateTask

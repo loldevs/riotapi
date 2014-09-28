@@ -17,6 +17,8 @@
 package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
+import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
+import net.boreeas.riotapi.com.riotgames.platform.game.GameType;
 import net.boreeas.riotapi.com.riotgames.platform.game.QueueType;
 
 import java.util.ArrayList;
@@ -37,4 +39,7 @@ public class Match {
     private List<Participant> participants = new ArrayList<>();
     private QueueType queueType;
     private String region;
+    private GameMode matchMode;
+    private GameType matchType;
+    private QueueType queueType;
 }

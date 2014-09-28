@@ -37,7 +37,6 @@ public class Match {
     private String matchVersion;
     private List<ParticipantIdentity> participantIdentities = new ArrayList<>();
     private List<Participant> participants = new ArrayList<>();
-    private QueueType queueType;
     private String region;
     private GameMode matchMode;
     private GameType matchType;

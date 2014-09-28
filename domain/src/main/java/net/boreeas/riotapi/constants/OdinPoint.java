@@ -19,11 +19,10 @@ package net.boreeas.riotapi.constants;
 /**
  * @author Malte Schütze
  */
-public enum TowerType {
-    BASE_TURRET,
-    FOUNTAIN_TURRET,
-    NEXUS_TURRET,
-    INNER_TURRET,
-    OUTER_TURRET,
-    UNDEFINED_TURRET
+public enum OdinPoint {
+    POINT_A,
+    POINT_B,
+    POINT_C,
+    POINT_D,
+    POINT_E
 }

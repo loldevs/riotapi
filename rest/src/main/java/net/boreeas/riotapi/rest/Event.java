@@ -29,29 +29,37 @@ import java.util.List;
 @Getter
 public class Event {
     private List<Integer> assistingParticipantIds = new ArrayList<>();
+    private AscendedType ascendedType;
     private BuildingType buildingType;
     private int creatorId;
     private int killerId;
     private int teamId;
     private int victimId;
     private Type eventType;
+    private int itemAfter;
+    private int itemBefore;
     private Lane laneType;
+    private LevelUpType levelUpType;
     private MonsterType monsterType;
     private Point position;
+    private OdinPoint odinPoint;
+    private int skillSlot;
     private long timestamp;
     private TowerType towerType;
     private WardType wardType;
 
     public enum Type {
+        ASCENDED_EVENT,
         BUILDING_KILL,
+        CAPTURE_POINT,
         CHAMPION_KILL,
         ELITE_MONSTER_KILL,
-        WARD_KILL,
-        WARD_PLACED,
         ITEM_DESTROYED,
         ITEM_PURCHASED,
         ITEM_SOLD,
         ITEM_UNDO,
-        SKILL_LEVEL_UP
+        SKILL_LEVEL_UP,
+        WARD_KILL,
+        WARD_PLACED
     }
 }

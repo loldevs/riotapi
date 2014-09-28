@@ -16,23 +16,10 @@
 
 package net.boreeas.riotapi.rest;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Created on 4/14/2014.
+ * @author Malte Schütze
  */
-@Getter
-@EqualsAndHashCode(of = {"id"})
-public class Mastery {
-    private List<String> description = new ArrayList<>();
+public class Rune {
     private long id;
     private long ranks;
-    private Image image;
-    private String name;
-    private String prereq;
-    private List<String> sanitizedDescription = new ArrayList<>();
 }

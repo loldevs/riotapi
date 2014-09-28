@@ -18,6 +18,9 @@ package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Malte Schütze
  */
@@ -30,4 +33,11 @@ public class Participant {
     private ParticipantStats stats;
     private int teamId;
     private ParticipantTimeline timeline;
+
+    private List<Rune> runes = new ArrayList<>();
+
+    /**
+     * Only contains id and rank
+     */
+    private List<Mastery> masteries = new ArrayList<>();
 }

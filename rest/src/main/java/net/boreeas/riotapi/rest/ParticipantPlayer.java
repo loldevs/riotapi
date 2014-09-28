@@ -26,4 +26,5 @@ public class ParticipantPlayer {
     private String matchHistoryUri;
     private int profileIconId;
     private String summonerName;
+    private long summonerId;
 }

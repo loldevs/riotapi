@@ -81,4 +81,5 @@ public class LoginDataPacket {
     private Object reconnectInfo;
     private Object emailStatus;
     private boolean showEmailVerificationPopup;
+    private long restrictedGamesRemainingForRanked;
 }

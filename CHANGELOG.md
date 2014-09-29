@@ -1,8 +1,19 @@
 # Changelog
 ---------
 ### 1.5.0
+##### Domain
+* Added getByName to Shard
+
 ##### Rtmp
 * Added support for ignoring SSL certificate chain errors.
+
+##### Rest
+* Added support for Status v1.0
+* Added summoner id to ParticipantPlayer
+* Added runes and masteries to Participant
+* Added match game and mode to Match
+* Added dominion victory score to PostMatchTeamOverview
+* Added missing fields and constants for the Ascension Event
 
 ##### Spectator
 * GameUpdateTask now supports callbacks for failed chunks and keyframes

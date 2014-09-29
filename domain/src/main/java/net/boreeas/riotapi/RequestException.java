@@ -53,6 +53,7 @@ public class RequestException extends RuntimeException {
         INTERNAL_SERVER_ERROR(500),
         SERVICE_UNAVAILABLE(503),
         CLOUDFLARE_GENERIC(520),
+        CLOUDFLARE_CONNECTION_REFUSED(521),
         CLOUDFLARE_TIMEOUT(522),
         CLOUDFLARE_SSL_HANDSHAKE_FAILED(525);
 

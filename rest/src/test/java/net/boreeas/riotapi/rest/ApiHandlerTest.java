@@ -229,4 +229,16 @@ public class ApiHandlerTest extends TestCase {
         return builder.toString();
     }
 
+    public void testGetShards() throws InterruptedException, ExecutionException, TimeoutException {
+        handler.getShards().get(1, MINUTES);
+    }
+
+    public void testGetShardStatus() throws InterruptedException, ExecutionException, TimeoutException {
+        List<ShardData> shardDatas = handler.getShards().get(1, MINUTES);
+        for (ShardData data: shardDatas) {
+            System.out.println(data);
+            handler.getShardSatatus(Shard.getByName(data.getSlug()));
+        }
+    }
+
 }

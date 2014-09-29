@@ -6,6 +6,7 @@
 
 ##### Rtmp
 * Added support for ignoring SSL certificate chain errors.
+* Added missing fields: LoginDataPacket.restrictedGamesRemainingForRanked, LeagueList.nextApexUpdate, LeagueList.maxLeagueSize
 
 ##### Rest
 * Added support for Status v1.0

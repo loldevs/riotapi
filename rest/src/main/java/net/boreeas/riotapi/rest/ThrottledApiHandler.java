@@ -773,7 +773,7 @@ public class ThrottledApiHandler implements AutoCloseable {
     /**
      * <p>
      * Retrieves general information about each shard.
-     * </p><br />
+     * </p><br>
      * This method does not count towards your rate limit.
      * @return A list of shard infomation.
      * @see <a href="https://developer.riotgames.com/api/methods#!/835/2939">Official API Documentation</a>
@@ -785,7 +785,7 @@ public class ThrottledApiHandler implements AutoCloseable {
     /**
      * <p>
      * Retrieves detailed information about the specified shard.
-     * </p><br />
+     * </p><br>
      * This method does not count towards your rate limit.
      * @param shard The target region
      * @return A list of shard infomation.

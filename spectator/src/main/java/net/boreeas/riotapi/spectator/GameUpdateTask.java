@@ -168,7 +168,7 @@ public class GameUpdateTask implements Runnable {
     }
 
     private void pullNewChunks(int maxId) {
-        log.debug("[" + game.getGameId() + "] " + (maxId - game.getLastAvailableChunk()) + " new chunks (" + (game.getLastAvailableChunk() + 1) + " to " + maxId + ")");
+        //log.debug("[" + game.getGameId() + "] " + (maxId - game.getLastAvailableChunk()) + " new chunks (" + (game.getLastAvailableChunk() + 1) + " to " + maxId + ")");
 
         // Time between chunks is occasionally less than the chunk time interval
         // So we check for all missed chunks here
@@ -189,7 +189,6 @@ public class GameUpdateTask implements Runnable {
                 retriesKeyframes.remove(i);
                 if (onKeyframePulled != null) { onKeyframeFailed.accept(i); }
             }
-            throw new RequestException("Unreachable keyframe(s): " + retriesExceeded);
         }
 
         if (!retrySuccessful.isEmpty()) {
@@ -209,7 +208,6 @@ public class GameUpdateTask implements Runnable {
                 retriesChunks.remove(i);
                 if (onChunkFailed != null) { onChunkFailed.accept(i); }
             }
-            throw new RequestException("Unreachable chunk(s): " + retriesExceeded);
         }
 
         if (!retrySuccessful.isEmpty()) {

@@ -38,8 +38,8 @@ public class GamePool {
     public GameUpdateTask submit(InProgressGame game, Consumer<Exception> errorCallback) {
 
         GameUpdateTask task = new GameUpdateTask(game, errorCallback);
-        // Run once to pull all pending chunks, then run once
-        task.run();
+        // Run once to pull all pending chunks, then run on repeat
+        pool.schedule(() -> task.run(), 0, TimeUnit.MILLISECONDS);
         ScheduledFuture<?> self = pool.scheduleAtFixedRate(task, game.getLastChunkInfo().getNextAvailableChunk(), game.getChunkInterval(), TimeUnit.MILLISECONDS);
         task.setSelf(self);
 

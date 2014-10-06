@@ -24,6 +24,7 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
  */
 @Serialization(name = "com.riotgames.platform.game.QueueType", deserializeOnly = true)
 public enum QueueType {
+    ASCENSION               (Flags.FEATURED),
     ARAM                    (Flags.ARAM),
     ARAM_5x5                (Flags.ARAM),
     ARAM_UNRANKED_1x1       (Flags.ARAM),

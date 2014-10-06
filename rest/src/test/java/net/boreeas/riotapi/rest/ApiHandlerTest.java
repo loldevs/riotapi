@@ -199,11 +199,11 @@ public class ApiHandlerTest extends TestCase {
         handler.getTeams(TEAM_ID).get(1, MINUTES);
     }
 
-    public void testGetMatchHistory() throws InterruptedException, ExecutionException, TimeoutException {
+    public void _testGetMatchHistory() throws InterruptedException, ExecutionException, TimeoutException {
         handler.getMatchHistory(SUMMONER_ID_1).get(1, MINUTES);
     }
 
-    public void testGetMatchDetails() throws InterruptedException, ExecutionException, TimeoutException {
+    public void _testGetMatchDetails() throws InterruptedException, ExecutionException, TimeoutException {
         handler.getMatch(handler.getMatchHistory(SUMMONER_ID_2).get(1, MINUTES).get(0).getMatchId()).get(1, MINUTES);
     }
 
@@ -227,6 +227,17 @@ public class ApiHandlerTest extends TestCase {
         }
 
         return builder.toString();
+    }
+
+    public void testGetShards() throws InterruptedException, ExecutionException, TimeoutException {
+        handler.getShards().get(1, MINUTES);
+    }
+
+    public void testGetShardStatus() throws InterruptedException, ExecutionException, TimeoutException {
+        List<ShardData> shardDatas = handler.getShards().get(1, MINUTES);
+        for (ShardData data: shardDatas) {
+            handler.getShardSatatus(Shard.getByName(data.getSlug()));
+        }
     }
 
 }

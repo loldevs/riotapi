@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rest;
-
-import lombok.Getter;
+package net.boreeas.riotapi.constants;
 
 /**
  * @author Malte Schütze
  */
-@Getter
-public class ParticipantPlayer {
-    private String matchHistoryUri;
-    private int profileIconId;
-    private String summonerName;
-    private long summonerId;
+public enum OdinPoint {
+    POINT_A,
+    POINT_B,
+    POINT_C,
+    POINT_D,
+    POINT_E
 }

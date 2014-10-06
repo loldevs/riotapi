@@ -21,6 +21,7 @@ package net.boreeas.riotapi.constants;
  */
 public enum TowerType {
     BASE_TURRET,
+    FOUNTAIN_TURRET,
     NEXUS_TURRET,
     INNER_TURRET,
     OUTER_TURRET,

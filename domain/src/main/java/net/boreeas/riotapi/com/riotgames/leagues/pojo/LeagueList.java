@@ -38,6 +38,8 @@ public class LeagueList {
     private String name;
     private String queue;
     private String tier;
+    private long maxLeagueSize;
+    private long nextApexUpdate;
 
     // Not transmitted via RTMP
     private String participantId;

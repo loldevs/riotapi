@@ -16,15 +16,11 @@
 
 package net.boreeas.riotapi.rest;
 
-import lombok.Getter;
-
 /**
  * @author Malte Schütze
  */
-@Getter
-public class ParticipantPlayer {
-    private String matchHistoryUri;
-    private int profileIconId;
-    private String summonerName;
-    private long summonerId;
+public class Translation {
+    private String content;
+    private String locale;
+    private String updated_at;
 }

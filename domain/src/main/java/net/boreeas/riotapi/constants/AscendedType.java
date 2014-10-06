@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rest;
-
-import lombok.Getter;
+package net.boreeas.riotapi.constants;
 
 /**
  * @author Malte Schütze
  */
-@Getter
-public class ParticipantPlayer {
-    private String matchHistoryUri;
-    private int profileIconId;
-    private String summonerName;
-    private long summonerId;
+public enum AscendedType {
+    CHAMPION_ASCENDED,
+    CLEAR_ASCENDED,
+    MINION_ASCENDED
 }

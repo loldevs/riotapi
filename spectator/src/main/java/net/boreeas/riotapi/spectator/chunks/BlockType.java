@@ -21,18 +21,31 @@ package net.boreeas.riotapi.spectator.chunks;
  */
 public enum BlockType {
     MINION_SPAWN(0x03),
+    SET_OWNERSHIP(0x07),
     ABILITY_LEVEL(0x15),
     CREATE_EFFECT(0x17),
-    EXPERIENCE_GAIN(0x22),
+    GOLD_REWARD(0x22),
+    CHAMPION_RESPAWN(0x2f),
+    SET_LEVEL(0x3f),
+    ATTENTION_PING(0x40),
+    EMOTE(0x42),
     PLAYER_HEADER(0x4c),
     START_DEATHTIMER(0x5e),
     MOVEMENT(0x61),
     START_SPAWN(0x62),
     NEUTRAL_CAMP_SPAWN(0x63),
+    DAMAGE_DEALT(0x65),
     ITEM_PURCHASE(0x6f),
-    UNK_85(0x85),
+    SET_COOLDOWN(0x85),
+    SUMMONER_DISCONNECT(0x98),
     TOWER_DATA(0x9d),
+    SET_ITEM_STACKS(0x9f),
+    SET_HEALTH(0xae),
+    ATTRIBUTE_GROUP(0xc4),
+    SET_TEAM(0xe0),
     GOLD_GAIN(0xe4),
+
+    EXTENDED(0xff),
 
     UNKNOWN(0x00);
 

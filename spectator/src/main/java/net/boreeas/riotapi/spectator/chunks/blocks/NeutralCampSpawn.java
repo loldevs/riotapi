@@ -47,7 +47,7 @@ public class NeutralCampSpawn extends Block {
 
 
         /*
-        this.entityId = header.getBlockParam();
+        this.entityId = header.getBlockOwner();
         this.entityPosX = buffer.getFloat();
         this.entityPosY = buffer.getFloat();
         this.entityPosZ = buffer.getFloat();

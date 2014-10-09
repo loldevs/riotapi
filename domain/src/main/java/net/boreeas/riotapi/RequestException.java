@@ -51,7 +51,11 @@ public class RequestException extends RuntimeException {
         NOT_FOUND(404),
         RATE_LIMIT_EXCEEDED(429),
         INTERNAL_SERVER_ERROR(500),
-        SERVICE_UNAVAILABLE(503);
+        SERVICE_UNAVAILABLE(503),
+        CLOUDFLARE_GENERIC(520),
+        CLOUDFLARE_CONNECTION_REFUSED(521),
+        CLOUDFLARE_TIMEOUT(522),
+        CLOUDFLARE_SSL_HANDSHAKE_FAILED(525);
 
         public final int code;
 
@@ -60,15 +64,12 @@ public class RequestException extends RuntimeException {
         }
 
         public static ErrorType getByCode(int code) {
-            switch (code) {
-                case 400: return BAD_REQUEST;
-                case 401: return UNAUTHORIZED;
-                case 404: return NOT_FOUND;
-                case 429: return RATE_LIMIT_EXCEEDED;
-                case 500: return INTERNAL_SERVER_ERROR;
-                case 503: return SERVICE_UNAVAILABLE;
-                default: return null;
+            for (ErrorType type: values()) {
+                if (type.code == code) {
+                    return type;
+                }
             }
+            return null;
         }
     }
 }

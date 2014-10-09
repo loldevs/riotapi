@@ -17,35 +17,29 @@
 package net.boreeas.riotapi.constants;
 
 /**
- * Created on 4/14/2014.
+ * @author Malte Schütze
  */
-public enum PlayerSide {
-    BLUE(100, 0),
-    PURPLE(200, 1);
+public enum PingType {
+    DEFAULT(0xb0),
+    DANGER(0xb2),
+    ENEMY_MISSING(0xb3),
+    ON_MY_WAY(0xb4),
+    RETREAT(0xb5),
+    ASSIST_ME(0xb6);
 
-    public final int id;
     public final int spectatorId;
 
-    private PlayerSide(int id, int spectatorId) {
-        this.id = id;
+    private PingType(int spectatorId) {
         this.spectatorId = spectatorId;
     }
 
-    public static PlayerSide getById(int id) {
-        switch (id) {
-            case 100: return BLUE;
-            case 200: return PURPLE;
-            default: return null;
-        }
-    }
-
-    public static PlayerSide getBySpectatorId(int id) {
-        for (PlayerSide side: values()) {
-            if (side.spectatorId == id) {
-                return side;
+    public static PingType getBySpectatorId(int id) {
+        for (PingType ping: values()) {
+            if (ping.spectatorId == id) {
+                return ping;
             }
         }
 
-        throw new IllegalArgumentException("Unknown side " + id);
+        throw new IllegalArgumentException("Unknown ping type " + id);
     }
 }

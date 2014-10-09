@@ -28,8 +28,9 @@ import lombok.*;
 @ToString
 public class BlockHeader {
     private Flags flags;
+    private Channel channel;
     private long timestamp;
     private int type;
     private long contentLength;
-    private long blockParam;
+    private long blockOwner;
 }

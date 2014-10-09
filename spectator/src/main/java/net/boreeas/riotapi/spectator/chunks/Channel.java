@@ -14,38 +14,33 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.constants;
+package net.boreeas.riotapi.spectator.chunks;
 
 /**
- * Created on 4/14/2014.
+ * @author Malte Schütze
  */
-public enum PlayerSide {
-    BLUE(100, 0),
-    PURPLE(200, 1);
+public enum Channel {
+    HANDSHAKE(0),
+    C2S(1),
+    GAMEPLAY(2),
+    S2C(3),
+    LOW_PRIORITY(4),
+    COMMUNICATION(5),
+    LOADING_SCREEN(6);
 
     public final int id;
-    public final int spectatorId;
 
-    private PlayerSide(int id, int spectatorId) {
+    private Channel(int id) {
         this.id = id;
-        this.spectatorId = spectatorId;
     }
 
-    public static PlayerSide getById(int id) {
-        switch (id) {
-            case 100: return BLUE;
-            case 200: return PURPLE;
-            default: return null;
-        }
-    }
-
-    public static PlayerSide getBySpectatorId(int id) {
-        for (PlayerSide side: values()) {
-            if (side.spectatorId == id) {
-                return side;
+    public static Channel getById(int id) {
+        for (Channel channel: values()) {
+            if (channel.id == id) {
+                return channel;
             }
         }
 
-        throw new IllegalArgumentException("Unknown side " + id);
+        throw new IllegalArgumentException("Invalid channel id: " + id);
     }
 }

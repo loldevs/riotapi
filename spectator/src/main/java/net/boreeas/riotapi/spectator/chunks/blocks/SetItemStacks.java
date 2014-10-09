@@ -18,48 +18,34 @@ package net.boreeas.riotapi.spectator.chunks.blocks;
 
 import lombok.Value;
 import lombok.extern.log4j.Log4j;
-import net.boreeas.riotapi.Util;
 import net.boreeas.riotapi.spectator.chunks.Block;
 import net.boreeas.riotapi.spectator.chunks.BlockHeader;
 import net.boreeas.riotapi.spectator.chunks.BlockType;
 import net.boreeas.riotapi.spectator.chunks.IsBlock;
 
-import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 /**
  * @author Malte Schütze
  */
 @Value
 @Log4j
-@IsBlock(BlockType.CREATE_EFFECT)
-public class CreateEffect extends Block {
-    private long userEntityId;
-    private short effectId;
-    private String name;
+@IsBlock(BlockType.SET_ITEM_STACKS)
+public class SetItemStacks extends Block {
+    private long entityId;
+    private int slotId;
+    private int countOnSlot;
 
-    public CreateEffect(BlockHeader header, byte[] data) {
+    public SetItemStacks(BlockHeader header, byte[] data) {
         super(header, data);
 
-        this.userEntityId = header.getBlockOwner();
+        this.entityId = header.getBlockOwner();
 
-        ByteBuffer buffer = ByteBuffer.wrap(data);
-        effectId = buffer.getShort();
+        ByteBuffer buffer = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN);
+        this.slotId = buffer.get() & 0xff;
+        this.countOnSlot = buffer.getShort() & 0xffff;
 
-        String name ="";
-        try {
-            name = readNullterminatedString(buffer);
-        } catch (BufferUnderflowException ex) {
-            log.debug("[CREATE_EFFECT] Edge case: buffer underflow from name");
-            Util.hexdump(data).forEach(log::debug);
-        }
-
-        this.name = name;
-
-        if (buffer.remaining() > 0) {
-            log.warn("[CREATE_EFFECT] Edge case: extra bytes");
-            Util.hexdump(data).forEach(log::debug);
-        }
         assertEndOfBuffer(buffer);
     }
 }

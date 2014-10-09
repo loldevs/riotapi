@@ -18,48 +18,39 @@ package net.boreeas.riotapi.spectator.chunks.blocks;
 
 import lombok.Value;
 import lombok.extern.log4j.Log4j;
-import net.boreeas.riotapi.Util;
 import net.boreeas.riotapi.spectator.chunks.Block;
 import net.boreeas.riotapi.spectator.chunks.BlockHeader;
 import net.boreeas.riotapi.spectator.chunks.BlockType;
 import net.boreeas.riotapi.spectator.chunks.IsBlock;
 
-import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 /**
  * @author Malte Schütze
  */
 @Value
 @Log4j
-@IsBlock(BlockType.CREATE_EFFECT)
-public class CreateEffect extends Block {
-    private long userEntityId;
-    private short effectId;
-    private String name;
+@IsBlock(BlockType.SET_HEALTH)
+public class SetHealth extends Block {
+    private long entityId;
+    private float maxHealth;
+    private float currentHealth;
 
-    public CreateEffect(BlockHeader header, byte[] data) {
+    public SetHealth(BlockHeader header, byte[] data) {
         super(header, data);
 
-        this.userEntityId = header.getBlockOwner();
+        this.entityId = header.getBlockOwner();
 
-        ByteBuffer buffer = ByteBuffer.wrap(data);
-        effectId = buffer.getShort();
+        ByteBuffer buffer = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN);
+        int unk1 = buffer.get() & 0xff;
+        int unk2 = buffer.get() & 0xff;
 
-        String name ="";
-        try {
-            name = readNullterminatedString(buffer);
-        } catch (BufferUnderflowException ex) {
-            log.debug("[CREATE_EFFECT] Edge case: buffer underflow from name");
-            Util.hexdump(data).forEach(log::debug);
-        }
+        this.maxHealth = buffer.getFloat();
+        this.currentHealth = buffer.getFloat();
 
-        this.name = name;
+        log.warn("[SET_HEALTH] unk1 unk2 = " + Integer.toHexString(unk1) + " " + Integer.toHexString(unk2));
 
-        if (buffer.remaining() > 0) {
-            log.warn("[CREATE_EFFECT] Edge case: extra bytes");
-            Util.hexdump(data).forEach(log::debug);
-        }
         assertEndOfBuffer(buffer);
     }
 }

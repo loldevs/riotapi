@@ -34,24 +34,19 @@ import java.nio.ByteOrder;
 @IsBlock(BlockType.START_DEATHTIMER)
 public class StartDeathtimer extends Block {
     private long entityId;
+    private long killerEntityId;
     private float duration;
 
     public StartDeathtimer(BlockHeader header, byte[] data) {
         super(header, data);
 
+        this.entityId = header.getBlockOwner();
+
         ByteBuffer buffer = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN);
+        this.killerEntityId = buffer.getInt() & 0xffffffffL;
 
-        this.entityId = header.getBlockParam();
-
-        long unk1 = buffer.getInt() & 0xffffffffL;
-        if (unk1 != 0) {
-            log.warn("Expected unk1 = 0, but got " + unk1);
-        }
-
-        long unk2 = buffer.getInt() & 0xffffffffL;
-        if (unk2 != 7) {
-            log.warn("Expected unk2 = 7, but got " + unk2);
-        }
+        long unk2 = buffer.getLong();
+        log.warn("[START_DEATHTIMER] unk2 = " + unk2 + " / 0x" + Long.toHexString(unk2));
 
         this.duration = buffer.getFloat();
 

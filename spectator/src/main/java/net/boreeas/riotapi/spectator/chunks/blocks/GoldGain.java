@@ -40,10 +40,8 @@ public class GoldGain extends Block {
     public GoldGain(BlockHeader header, byte[] data) {
         super(header, data);
 
-        ByteBuffer buffer = ByteBuffer.wrap(data);
-        buffer.order(ByteOrder.LITTLE_ENDIAN);
-
-        this.entityId = header.getBlockParam();
+        ByteBuffer buffer = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN);
+        this.entityId = buffer.getInt() & 0xffffffffL;
         this.gain = buffer.getFloat();
 
         assertEndOfBuffer(buffer);

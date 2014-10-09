@@ -31,21 +31,21 @@ import java.nio.ByteOrder;
  */
 @Value
 @Log4j
-@IsBlock(BlockType.EXPERIENCE_GAIN)
-public class ExperienceGain extends Block {
+@IsBlock(BlockType.GOLD_REWARD)
+public class GoldReward extends Block {
     private long receivingEntityId;
-    private long givingEntityId;
-    private float expGained;
+    private long killedEntityId;
+    private float goldGained;
 
-    public ExperienceGain(BlockHeader header, byte[] data) {
+    public GoldReward(BlockHeader header, byte[] data) {
         super(header, data);
 
         ByteBuffer buffer = ByteBuffer.wrap(data);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
 
-        this.receivingEntityId = header.getBlockParam();
-        this.givingEntityId = buffer.getInt() & 0xffffffffL;
-        this.expGained = buffer.getFloat();
+        this.receivingEntityId = header.getBlockOwner();
+        this.killedEntityId = buffer.getInt() & 0xffffffffL;
+        this.goldGained = buffer.getFloat();
 
         assertEndOfBuffer(buffer);
     }

@@ -42,7 +42,7 @@ public class BlockStreamReaderTest extends TestCase {
         GamePool pool = new GamePool();
         GameUpdateTask task = pool.submit(game);
 
-        task.setOnKeyframePulled(i ->
+        task.addOnKeyframePulled(i ->
             new Thread(() -> {
                 synchronized (BlockStreamReader.class) {
                     if (latch.getCount() == 0) {

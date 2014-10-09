@@ -67,9 +67,21 @@ public class PlayerHeader extends Block {
 
         this.champion = readNullterminatedString(buffer);
 
-        buffer.position(preStringPos + 0x80 + 0x40);
+        if (buffer.position() + 0x40 < buffer.capacity()) {
+            System.out.println("Position: " + preStringPos + " / " + (preStringPos + 0x80 + 0x40) + " - " + buffer.capacity());
+            buffer.position(preStringPos + 0x80 + 0x40);
 
-        this.unk5 = buffer.get() & 0xff;
+
+            this.unk5 = buffer.get() & 0xff;
+
+            assertEndOfBuffer(buffer);
+        } else {
+            log.warn("[PLAYER_HEADER] Unexpectedly short length: " + (buffer.capacity() - buffer.position() - 1) + " champion name buffer");
+
+            this.unk5 = buffer.get(buffer.capacity() - 1) & 0xff;
+        }
+
+
 
         if (unk1 != 2) {
             log.warn("[PLAYER_HEADER] Expected unk1 = 2.0, but got " + unk1);
@@ -90,7 +102,5 @@ public class PlayerHeader extends Block {
         if (unk5 != 0) {
             log.warn("[PLAYER_HEADER] Expected unk5 = 0, but got " + unk5);
         }
-
-        assertEndOfBuffer(buffer);
     }
 }

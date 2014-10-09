@@ -69,7 +69,9 @@ public class BlockStreamReader {
 
     private BlockHeader getBlockHeader() {
 
-        Flags flags = new Flags(buffer.get());
+        byte flagsAndChannel = buffer.get();
+        Flags flags = new Flags(flagsAndChannel);
+        Channel chan = Channel.getById(flagsAndChannel & 0b1111);
 
         long timestamp;
         if (flags.hasFlag(Flags.RELATIVE_TIME)) {
@@ -105,7 +107,7 @@ public class BlockStreamReader {
             blockParam = buffer.getInt() & 0xFFFFFFFFL;
         }
 
-        return new BlockHeader(flags, timestamp, blockType, contentLength, blockParam);
+        return new BlockHeader(flags, chan, timestamp, blockType, contentLength, blockParam);
     }
 
     /**

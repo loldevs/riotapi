@@ -31,27 +31,20 @@ import java.nio.ByteOrder;
  */
 @Value
 @Log4j
-@IsBlock(BlockType.UNK_85)
-public class Unk85 extends Block {
-    private int counter;
-    private float unk1;
-    private float unk2;
+@IsBlock(BlockType.SET_LEVEL)
+public class SetLevel extends Block {
+    private long entityId;
+    private int level;
+    private int skillPoints;
 
-    public Unk85(BlockHeader header, byte[] data) {
+    public SetLevel(BlockHeader header, byte[] data) {
         super(header, data);
 
+        this.entityId = header.getBlockOwner();
+        
         ByteBuffer buffer = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN);
-        counter = buffer.get() & 0xff;
-        unk1 = buffer.getFloat();
-        unk2 = buffer.getFloat();
-
-        if (unk1 != 0) {
-            log.warn("Unk:0x85: Expexted unk1 = 0.0, but was " + unk1);
-        }
-
-        if (unk2 != -1) {
-            log.warn("Unk:0x85: Expected unk2 = -1.0, but was " + unk2);
-        }
+        this.level = buffer.get() & 0xff;
+        this.skillPoints = buffer.get() & 0xff;
 
         assertEndOfBuffer(buffer);
     }

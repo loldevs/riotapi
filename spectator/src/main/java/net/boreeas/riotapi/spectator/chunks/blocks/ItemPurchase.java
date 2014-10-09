@@ -41,16 +41,15 @@ public class ItemPurchase extends Block {
     public ItemPurchase(BlockHeader header, byte[] buffer) {
         super(header, buffer);
 
-        ByteBuffer b = ByteBuffer.wrap(buffer);
-        b.order(ByteOrder.LITTLE_ENDIAN);
-        entityId = header.getBlockParam();
+        entityId = header.getBlockOwner();
+        ByteBuffer b = ByteBuffer.wrap(buffer).order(ByteOrder.LITTLE_ENDIAN);
         itemId = b.getInt() & 0xffffffffL;
         slotId = b.get() & 0xff;
         countOnSlot = b.getShort() & 0xffff;
 
         byte unk1 = b.get();
         if (unk1 != 0x40) {
-            log.warn("Expectec 0x40 as last field, but was " + unk1);
+            log.warn("[ITEM_PURCHASE] Expected unk1 = 0x40, but was " + unk1);
         }
 
         assertEndOfBuffer(b);

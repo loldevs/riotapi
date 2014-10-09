@@ -19,59 +19,89 @@ package net.boreeas.riotapi.spectator.chunks;
 import net.boreeas.riotapi.spectator.chunks.blocks.*;
 import org.apache.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author Malte Schütze
  */
 public enum DefaultBlockFactory implements BlockFactory {
     INSTANCE;
 
-    private final Map<Integer, Class<? extends Block>> blockClasses = new HashMap<>();
+    // private final Map<Integer, Class<? extends Block>> blockClasses = new HashMap<>();
 
 
     public Block getBlock(BlockHeader header, byte[] buffer) {
         BlockType type = BlockType.getById(header.getType());
         switch (type) {
+            case MINION_SPAWN:
+                return new MinionSpawn(header, buffer);
+
+            case SET_OWNERSHIP:
+                return new SetOwnership(header, buffer);
+
             case ABILITY_LEVEL:
                 return new AbilityLevel(header, buffer);
-
-            case EXPERIENCE_GAIN:
-                return new ExperienceGain(header, buffer);
 
             case CREATE_EFFECT:
                 return new CreateEffect(header, buffer);
 
-            case GOLD_GAIN:
-                return new GoldGain(header, buffer);
+            case GOLD_REWARD:
+                return new GoldReward(header, buffer);
 
-            case ITEM_PURCHASE:
-                return new ItemPurchase(header, buffer);
+            case CHAMPION_RESPAWN:
+                return new ChampionRespawn(header, buffer);
 
-            case MINION_SPAWN:
-                return new MinionSpawn(header, buffer);
+            case SET_LEVEL:
+                return new SetLevel(header, buffer);
 
-            case MOVEMENT:
-                return new Movement(header, buffer);
+            case ATTENTION_PING:
+                return new AttentionPing(header, buffer);
 
-            case NEUTRAL_CAMP_SPAWN:
-                return new NeutralCampSpawn(header, buffer);
+            case EMOTE:
+                return new Emote(header, buffer);
+
+            case PLAYER_HEADER:
+                return new PlayerHeader(header, buffer);
 
             case START_DEATHTIMER:
                 return new StartDeathtimer(header, buffer);
 
-            case TOWER_DATA:
-                return new TowerData(header, buffer);
-
-            case UNK_85:
-                return new Unk85(header, buffer);
+            case MOVEMENT:
+                return new Movement(header, buffer);
 
             case START_SPAWN:
                 return new StartSpawn(header, buffer);
 
-            case PLAYER_HEADER:
-                return new PlayerHeader(header, buffer);
+            case NEUTRAL_CAMP_SPAWN:
+                return new NeutralCampSpawn(header, buffer);
+
+            case DAMAGE_DEALT:
+                return new DamageDealt(header, buffer);
+
+            case ITEM_PURCHASE:
+                return new ItemPurchase(header, buffer);
+
+            case SET_COOLDOWN:
+                return new SetCooldown(header, buffer);
+
+            case SUMMONER_DISCONNECT:
+                return new SummonerDisconnect(header, buffer);
+
+            case TOWER_DATA:
+                return new TowerData(header, buffer);
+
+            case SET_ITEM_STACKS:
+                return new SetItemStacks(header, buffer);
+
+            case SET_HEALTH:
+                return new SetHealth(header, buffer);
+
+            case ATTRIBUTE_GROUP:
+                return new AttributeGroup(header, buffer);
+
+            case SET_TEAM:
+                return new SetTeam(header, buffer);
+
+            case GOLD_GAIN:
+                return new GoldGain(header, buffer);
 
             case UNKNOWN:
             default:

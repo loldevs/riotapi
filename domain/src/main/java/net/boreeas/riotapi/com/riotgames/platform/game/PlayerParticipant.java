@@ -19,6 +19,7 @@ package net.boreeas.riotapi.com.riotgames.platform.game;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.ArrayList;
@@ -38,26 +39,26 @@ public class PlayerParticipant extends GameParticipant {
     private long summonerId;
     // TODO inspect (generic type)
     private ArrayList lifetimeStatistics = new ArrayList<>();
-
-    /*
-
-    According to the client files, those fields don't exists anymore
-
-    // TODO inspect
-    private Object timeAddedToQueue;
-    private int index;
     private int queueRating;
     private String botDifficulty;
-    private long originalAccountNumber;
     private boolean minor;
-    // TODO inspect
     private Object locale;
     private int lastSelectedSkinIndex;
     private String partnerId;
-    private boolean teamOwner;
-    private String originalPlatformId;
-    // TODO inspect
+    private boolean rankedTeamGuest;
+    private int voterRating;
+    private Object selectedRole;
     private Object teamParticipantId;
-    private PointSummary pointSummary;
-    */
+    private long timeAddedToQueue;
+    private int index;
+    private long originalAccountNumber;
+    private long adjustmentFlags;
+    private boolean teamOwner;
+    private int teamRating;
+    private String originalPlatformId;
+    private Object selectedPosition;
+
+    public Shard getOriginalPlatformId() {
+        return originalPlatformId == null ? null : Shard.getBySpectatorPlatform(originalPlatformId);
+    }
 }

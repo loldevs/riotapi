@@ -1,5 +1,9 @@
 # Changelog
 ---------
+### 1.5.1
+##### Spectator
+* Fixed a bug where failing to pull a keyframe or chunk would crash GameUpdateTask
+
 ### 1.5.0
 ##### Domain
 * Added getByName to Shard

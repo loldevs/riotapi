@@ -1,5 +1,9 @@
 # Changelog
 ---------
+### 1.5.2 pending
+##### Domain
+* Added missing fields to GameDto
+
 ### 1.5.1
 ##### Spectator
 * Fixed a bug where failing to pull a keyframe or chunk would crash GameUpdateTask

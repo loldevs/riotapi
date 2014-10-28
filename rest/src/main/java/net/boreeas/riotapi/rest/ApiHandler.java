@@ -100,7 +100,7 @@ public class ApiHandler {
             matchHistoryInfoTarget = defaultTarget.path("v2.2").path("matchhistory");
             statsTarget = defaultTarget.path("v1.3").path("stats/by-summoner");
             summonerInfoTarget = defaultTarget.path("v1.4").path("summoner");
-            teamInfoTarget = defaultTarget.path("v2.3").path("team");
+            teamInfoTarget = defaultTarget.path("v2.4").path("team");
         }
 
         WebTarget defaultStaticTarget = c.target(API_GLOBAL_URL).queryParam("api_key", token).path("static-data").path(region);

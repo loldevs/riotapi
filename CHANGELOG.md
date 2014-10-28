@@ -1,6 +1,6 @@
 # Changelog
 ---------
-### 1.5.2 pending
+### 1.5.2
 ##### Domain
 * Added missing fields to GameDto
 

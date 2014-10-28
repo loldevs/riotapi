@@ -100,8 +100,8 @@ public class GameService {
         return client.sendRpcAndWait(SERVICE, "championSelectCompleted");
     }
 
-    public PlatformGameLifecycle retrieveInProgressSpectatorGameInfo(String summonerInfo) {
-        return client.sendRpcAndWait(SERVICE, "retrieveInProgressSpectatorGameInfo", summonerInfo);
+    public PlatformGameLifecycle retrieveInProgressSpectatorGameInfo(String summonerName) {
+        return client.sendRpcAndWait(SERVICE, "retrieveInProgressSpectatorGameInfo", summonerName);
     }
 
     public Object acceptPoppedGame(boolean accept) {

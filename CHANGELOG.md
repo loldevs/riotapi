@@ -4,6 +4,9 @@
 ##### Domain
 * Added missing fields to GameDto
 
+##### Rest
+* Updated team to v2.4. Apologies, this should've been in v1.3.0
+
 ### 1.5.1
 ##### Spectator
 * Fixed a bug where failing to pull a keyframe or chunk would crash GameUpdateTask

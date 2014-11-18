@@ -123,7 +123,7 @@ public enum Shard {
             "chat.kr." + Constants.BASE_PATH,
             "https://lq.kr." + Constants.BASE_PATH,
             "prod.kr." + Constants.BASE_PATH,
-            "QFKR1PROXY.kassad.in:8088"),
+            "http://spectator.kr." + Constants.BASE_PATH),
 
     // The following shards apparently don't specify a properties listing
     PBE("pbe",

@@ -29,10 +29,10 @@ import java.util.List;
 @EqualsAndHashCode(of = {"id"})
 public class Mastery {
     private List<String> description = new ArrayList<>();
-    private int id;
+    private long id;
+    private long ranks;
     private Image image;
     private String name;
     private String prereq;
-    private int ranks;
     private List<String> sanitizedDescription = new ArrayList<>();
 }

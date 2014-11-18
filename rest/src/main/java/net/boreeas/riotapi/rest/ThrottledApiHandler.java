@@ -769,6 +769,33 @@ public class ThrottledApiHandler implements AutoCloseable {
 
     // </editor-fold>
 
+    // <editor-fold desc="Status">
+    /**
+     * <p>
+     * Retrieves general information about each shard.
+     * </p><br>
+     * This method does not count towards your rate limit.
+     * @return A list of shard infomation.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/835/2939">Official API Documentation</a>
+     */
+    public Future<List<ShardData>> getShards() {
+        return new DummyFuture<>(handler.getShards());
+    }
+
+    /**
+     * <p>
+     * Retrieves detailed information about the specified shard.
+     * </p><br>
+     * This method does not count towards your rate limit.
+     * @param shard The target region
+     * @return A list of shard infomation.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/835/2938">Official API Documentation</a>
+     */
+    public Future<ShardStatus> getShardSatatus(Shard shard) {
+        return new DummyFuture<>(handler.getShardStatus(shard));
+    }
+    // </editor-fold>
+
     // <editor-fold desc="Match">
     /**
      * Retrieves the specified match, including timeline.

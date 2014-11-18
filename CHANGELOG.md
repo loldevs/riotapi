@@ -1,5 +1,38 @@
 # Changelog
 ---------
+### 1.5.2
+##### Domain
+* Added missing fields to GameDto
+
+##### Rest
+* Updated team to v2.4. Apologies, this should've been in v1.3.0
+
+### 1.5.1
+##### Spectator
+* Fixed a bug where failing to pull a keyframe or chunk would crash GameUpdateTask
+
+### 1.5.0
+##### Domain
+* Added getByName to Shard
+
+##### Rtmp
+* Added support for ignoring SSL certificate chain errors.
+* Added missing fields: LoginDataPacket.restrictedGamesRemainingForRanked, LeagueList.nextApexUpdate, LeagueList.maxLeagueSize
+
+##### Rest
+* Added support for Status v1.0
+* Added summoner id to ParticipantPlayer
+* Added runes and masteries to Participant
+* Added match game and mode to Match
+* Added dominion victory score to PostMatchTeamOverview
+* Added missing fields and constants for the Ascension Event
+
+##### Spectator
+* GameUpdateTask now supports callbacks for failed chunks and keyframes
+* GameUpdateTask now supports multiple callbacks per event
+* Deprecated: setOnError, setOnFinished, setOnChunkPulled, setOnKeyframePulled (use add* instead)
+* InProgressGame now adds the encryption key to the metadata if it isn't transmitted by the server
+
 ### 1.4.0
 ##### Spectator
 * GamePool.submit() now returns GameUpdateTask
@@ -19,6 +52,10 @@
 * Added new filter options for matchhistory calls
 * Added new event types for match timelines
 * Bugfix: Removed double API call in getMatch()
+
+##### Spectator
+* Deprecated singleton constructor of GamePool due to its inability to return running tasks.
+* Added callbacks to interface with GameUpdateTask: onChunkPulled, onKeyframePulled, onFinished
 
 ## 1.2.0
 ##### Domain

@@ -67,6 +67,7 @@ public class ApiHandler {
     private WebTarget matchInfoTarget;
     private WebTarget matchHistoryInfoTarget;
     private WebTarget staticDataTarget;
+    private WebTarget statusTarget;
     private WebTarget statsTarget;
     private WebTarget summonerInfoTarget;
     private WebTarget teamInfoTarget;
@@ -99,11 +100,12 @@ public class ApiHandler {
             matchHistoryInfoTarget = defaultTarget.path("v2.2").path("matchhistory");
             statsTarget = defaultTarget.path("v1.3").path("stats/by-summoner");
             summonerInfoTarget = defaultTarget.path("v1.4").path("summoner");
-            teamInfoTarget = defaultTarget.path("v2.3").path("team");
+            teamInfoTarget = defaultTarget.path("v2.4").path("team");
         }
 
         WebTarget defaultStaticTarget = c.target(API_GLOBAL_URL).queryParam("api_key", token).path("static-data").path(region);
 
+        statusTarget = c.target("http://status.leagueoflegends.com").path("shards");
         staticDataTarget = defaultStaticTarget.path("v1.2");
     }
 
@@ -283,7 +285,6 @@ public class ApiHandler {
         Type type = new TypeToken<Map<String, List<LeagueItem>>>() {
         }.getType();
         WebTarget tgt = leagueInfoTarget.path("by-team").path(concat(teamIds)).path("entry");
-        System.out.println("Team - League Items - " + tgt.getUri());
         return gson.fromJson($(tgt), type);
     }
 
@@ -926,6 +927,38 @@ public class ApiHandler {
         return gson.fromJson($(tgt), type);
     }
 
+    // </editor-fold>
+
+    // <editor-fold desc="Status v1.0">
+
+    /**
+     * <p>
+     * Retrieves general information about each shard.
+     * </p><br>
+     * This method does not count towards your rate limit.
+     * @return A list of shard infomation.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/835/2939">Official API Documentation</a>
+     */
+    public List<ShardData> getShards() {
+        Type type = new TypeToken<ArrayList<ShardData>>(){}.getType();
+
+        return gson.fromJson($(statusTarget), type);
+    }
+
+    /**
+     * <p>
+     * Retrieves detailed information about the specified shard.
+     * </p><br>
+     * This method does not count towards your rate limit.
+     * @param shard The target region
+     * @return A list of shard infomation.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/835/2938">Official API Documentation</a>
+     */
+    public ShardStatus getShardStatus(Shard shard) {
+        WebTarget tgt = statusTarget.path(shard.name);
+
+        return gson.fromJson($(tgt), ShardStatus.class);
+    }
     // </editor-fold>
 
     // <editor-fold desc="Match v2.2">

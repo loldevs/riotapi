@@ -14,17 +14,32 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rest;
-
-import lombok.Getter;
+package net.boreeas.riotapi.constants;
 
 /**
  * @author Malte Schütze
  */
-@Getter
-public class ParticipantPlayer {
-    private String matchHistoryUri;
-    private int profileIconId;
-    private String summonerName;
-    private long summonerId;
+public enum PingType {
+    DEFAULT(0xb0),
+    DANGER(0xb2),
+    ENEMY_MISSING(0xb3),
+    ON_MY_WAY(0xb4),
+    RETREAT(0xb5),
+    ASSIST_ME(0xb6);
+
+    public final int spectatorId;
+
+    private PingType(int spectatorId) {
+        this.spectatorId = spectatorId;
+    }
+
+    public static PingType getBySpectatorId(int id) {
+        for (PingType ping: values()) {
+            if (ping.spectatorId == id) {
+                return ping;
+            }
+        }
+
+        throw new IllegalArgumentException("Unknown ping type " + id);
+    }
 }

@@ -37,6 +37,7 @@ public class Game {
     private String gameState;
     // TODO inspect
     private Object glmGameHost;
+    private Object glmHost;
     private int glmPort;
     private int glmSecurePort;
     private List<GameObserver> observers = new ArrayList<>();
@@ -68,4 +69,11 @@ public class Game {
     private int joinTimerDuration;
     // TODO inspect
     private Object passbackDataPacket;
+    private List<?> practiceGameRewardsDisabledReasons = new ArrayList<>();
+    private Object teamOnePickOutcome;
+    private Object teamTwoPickOutcome;
+    private String terminatedCondition;
+    private String terminatedConditionString;
+    private FeaturedGameInfo featuredGameInfo;
+    private List<?> gameMutators = new ArrayList<>();
 }

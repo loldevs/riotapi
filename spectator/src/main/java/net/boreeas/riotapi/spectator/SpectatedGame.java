@@ -128,17 +128,12 @@ public interface SpectatedGame {
 
         try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(data))) {
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[2048];
 
             int read;
-            do {
-                read = in.read(buffer);
-                if (read == buffer.length) {
-                    bout.write(buffer);
-                } else {
-                    bout.write(buffer, 0, read);
-                }
-            } while (read == buffer.length);
+            while ((read = in.read(buffer)) != -1) {
+                bout.write(buffer, 0, read);
+            }
 
             return bout.toByteArray();
         } catch (IOException ex) {

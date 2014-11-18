@@ -19,6 +19,12 @@ package net.boreeas.riotapi.spectator;
 /**
  * @author Malte Schütze
  */
-public interface Callback {
+public @FunctionalInterface interface Callback {
     void receive();
+
+    default Callback and(Callback callback) {
+        if (callback == null) return this;
+
+        return () -> {receive(); callback.receive();};
+    }
 }

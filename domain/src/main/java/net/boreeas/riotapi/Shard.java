@@ -95,7 +95,7 @@ public enum Shard {
             "https://lq.ru." + Constants.BASE_PATH,
             "prod.ru." + Constants.BASE_PATH,
             "http://spectator.eu." + Constants.BASE_PATH),
-    LAN("la1",
+    LAN("lan",
             String.format(Constants.API_PATH_TEMPLATE, "lan"),
             // Alt values if loading fails
             "lan",
@@ -104,7 +104,7 @@ public enum Shard {
             "https://lq.la1." + Constants.BASE_PATH,
             "prod.la1." + Constants.BASE_PATH,
             "http://spectator.br." + Constants.BASE_PATH),
-    LAS("la2",
+    LAS("las",
             String.format(Constants.API_PATH_TEMPLATE, "las"),
             // Alt values if loading fails
             "las",
@@ -289,16 +289,6 @@ public enum Shard {
         static int MAX_VERSION_FALLBACK = 3;
     }
 
-    public static Shard getBySpectatorPlatform(String name) {
-        for (Shard shard: values()) {
-            if (shard.spectatorPlatformName.equals(name)) {
-                return shard;
-            }
-        }
-
-        return null;
-    }
-
     private class PropertyData {
         private String cdnTag;
         private String propertiesTemplate;
@@ -346,5 +336,27 @@ public enum Shard {
 
             return properties;
         }
+    }
+
+
+
+    public static Shard getBySpectatorPlatform(String name) {
+        for (Shard shard: values()) {
+            if (shard.spectatorPlatformName.equals(name)) {
+                return shard;
+            }
+        }
+
+        return null;
+    }
+
+    public static Shard getByName(String slug) {
+        for (Shard shard: values()) {
+            if (shard.name.equalsIgnoreCase(slug)) {
+                return shard;
+            }
+        }
+
+        return null;
     }
 }

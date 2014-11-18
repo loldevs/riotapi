@@ -16,15 +16,18 @@
 
 package net.boreeas.riotapi.rest;
 
-import lombok.Getter;
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Malte Schütze
  */
-@Getter
-public class ParticipantPlayer {
-    private String matchHistoryUri;
-    private int profileIconId;
-    private String summonerName;
-    private long summonerId;
+@Data
+public class Service {
+    private List<Incident> incidents = new ArrayList<>();
+    private String name;
+    private String slug;
+    private String status;
 }

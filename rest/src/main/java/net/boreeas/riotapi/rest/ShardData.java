@@ -16,15 +16,29 @@
 
 package net.boreeas.riotapi.rest;
 
-import lombok.Getter;
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Malte Schütze
  */
-@Getter
-public class ParticipantPlayer {
-    private String matchHistoryUri;
-    private int profileIconId;
-    private String summonerName;
-    private long summonerId;
+@Data
+public class ShardData {
+    /**
+     * Corresponds to Shard.prodUrl
+     */
+    private String hostname;
+    /**
+     * Clear name for the shard
+     */
+    private String name;
+    /**
+     * Locales supported by this region
+     */
+    private List<String> locales = new ArrayList<>();
+
+    private String regionTag;
+    private String slug;
 }

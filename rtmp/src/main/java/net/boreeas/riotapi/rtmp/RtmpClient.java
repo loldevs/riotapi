@@ -16,6 +16,7 @@
 
 package net.boreeas.riotapi.rtmp;
 
+import com.gvaneyck.rtmp.DummySSLSocketFactory;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -29,6 +30,7 @@ import net.boreeas.riotapi.rtmp.messages.control.*;
 import net.boreeas.riotapi.rtmp.serialization.*;
 import net.boreeas.riotapi.rtmp.services.*;
 
+import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.net.ProtocolException;
@@ -316,6 +318,10 @@ public abstract class RtmpClient {
     // </editor-fold>
 
     public void connect() throws IOException, InterruptedException {
+        connect(false);
+    }
+
+    public void connect(boolean ignoreCertificates) throws IOException, InterruptedException {
         log.info("Connecting to " + host + ":" + port);
         this.socket = useSSL ? SSLSocketFactory.getDefault().createSocket(host, port) : new Socket(host, port);
 
@@ -326,7 +332,23 @@ public abstract class RtmpClient {
         AmfWriter writer = new AmfWriter(socket.getOutputStream());
         AmfReader reader = new AmfReader(socket.getInputStream());
 
-        doHandshake(writer, reader);
+        try {
+            doHandshake(writer, reader);
+        } catch (SSLHandshakeException ex) {
+            disconnect();
+
+            if (ignoreCertificates) {
+                log.error("Error executing SSL handshake, reconnecting and ignoring certificate chain");
+                this.socket = new DummySSLSocketFactory().createSocket(host, port);
+                writer = new AmfWriter(socket.getOutputStream());
+                reader = new AmfReader(socket.getInputStream());
+
+                doHandshake(writer, reader);
+
+            } else {
+                throw ex;
+            }
+        }
 
         this.reader = new RtmpPacketReader(reader, this::onError, this::onPacket);
         this.writer = new RtmpPacketWriter(writer, ObjectEncoding.AMF3, this::onAsyncWriteException);
@@ -402,9 +424,9 @@ public abstract class RtmpClient {
 
     public void disconnect() {
         isConnected = false;
-        reader.close();
-        writer.close();
         try {
+            reader.close();
+            writer.close();
             socket.close();
         } catch (IOException e) {}
     }

@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.rest;
+package net.boreeas.riotapi.com.riotgames.platform.game;
 
-import lombok.Getter;
+import lombok.Data;
+import net.boreeas.riotapi.rtmp.serialization.Serialization;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Malte Schütze
  */
-@Getter
-public class ParticipantPlayer {
-    private String matchHistoryUri;
-    private int profileIconId;
-    private String summonerName;
-    private long summonerId;
+@Data
+@Serialization(name = "com.riotgames.platform.game.FeaturedGameInfo")
+public class FeaturedGameInfo {
+    private List<?> championVoteInfoList = new ArrayList<>();
+    private int dataVersion;
+    private Object futureData;
 }

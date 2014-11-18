@@ -31,6 +31,7 @@ public class PostMatchTeamOverview {
     private int baronKills;
     private int dragonKills;
     private int vilemawKills;
+    private int dominionVictoryScore;
     private boolean firstBaron;
     private boolean firstBlood;
     private boolean firstDragon;

@@ -20,13 +20,15 @@ package net.boreeas.riotapi.constants;
  * Created on 4/14/2014.
  */
 public enum PlayerSide {
-    BLUE(100),
-    PURPLE(200);
+    BLUE(100, 0),
+    PURPLE(200, 1);
 
     public final int id;
+    public final int spectatorId;
 
-    private PlayerSide(int id) {
+    private PlayerSide(int id, int spectatorId) {
         this.id = id;
+        this.spectatorId = spectatorId;
     }
 
     public static PlayerSide getById(int id) {
@@ -35,5 +37,15 @@ public enum PlayerSide {
             case 200: return PURPLE;
             default: return null;
         }
+    }
+
+    public static PlayerSide getBySpectatorId(int id) {
+        for (PlayerSide side: values()) {
+            if (side.spectatorId == id) {
+                return side;
+            }
+        }
+
+        throw new IllegalArgumentException("Unknown side " + id);
     }
 }

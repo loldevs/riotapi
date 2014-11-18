@@ -76,7 +76,7 @@ public enum Shard {
             "chat.oc1." + Constants.BASE_PATH,
             "https://lq.oc1." + Constants.BASE_PATH,
             "prod.oc1." + Constants.BASE_PATH,
-            "http://192.64.169.29" + Constants.BASE_PATH),
+            "http://spectator.oc1." + Constants.BASE_PATH),
     TR("tr",
             String.format(Constants.API_PATH_TEMPLATE, "tr"),
             // Alt values if loading fails

@@ -40,7 +40,7 @@ public enum Shard {
             "chat.euw1." + Constants.BASE_PATH,
             "https://lq.euw1." + Constants.BASE_PATH,
             "prod.euw1." + Constants.BASE_PATH,
-            "http://spectator.eu." + Constants.BASE_PATH + ":8088"),
+            "http://spectator.euw1." + Constants.BASE_PATH),
     EUNE("eune",
             String.format(Constants.API_PATH_TEMPLATE, "eune"),
             // Alt values if loading fails
@@ -67,7 +67,7 @@ public enum Shard {
             "chat.br." + Constants.BASE_PATH,
             "https://lq.br." + Constants.BASE_PATH,
             "prod.br." + Constants.BASE_PATH,
-            "http://spectator.br." + Constants.BASE_PATH),
+            "http://spectator.la2." + Constants.BASE_PATH),
     OCE("oc1",
             String.format(Constants.API_PATH_TEMPLATE, "oce"),
             // Alt values if loading fails
@@ -76,7 +76,7 @@ public enum Shard {
             "chat.oc1." + Constants.BASE_PATH,
             "https://lq.oc1." + Constants.BASE_PATH,
             "prod.oc1." + Constants.BASE_PATH,
-            "http://spectator.oc1." + Constants.BASE_PATH),
+            "http://192.64.169.29" + Constants.BASE_PATH),
     TR("tr",
             String.format(Constants.API_PATH_TEMPLATE, "tr"),
             // Alt values if loading fails

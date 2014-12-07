@@ -48,4 +48,5 @@ public class Summoner {
     private boolean nameChangeFlag;
     private boolean tutorialFlag;
     private List<Object> socialNetworkUserIds = new ArrayList<>();
+    private int previousSeasonHighestTeamReward;
 }

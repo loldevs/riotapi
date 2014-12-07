@@ -36,7 +36,8 @@ public class Amf3StringSerializer implements AmfSerializer<String> {
     @Override
     public void serialize(String val, DataOutputStream out) throws IOException {
 
-        writer.serializeAmf3(val.length() << 1 | 1);
-        out.write(val.getBytes("UTF-8"));
+        byte[] data = val.getBytes("UTF-8");
+        writer.serializeAmf3(data.length << 1 | 1);
+        out.write(data);
     }
 }

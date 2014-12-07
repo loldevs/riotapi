@@ -32,9 +32,10 @@ public enum Amf0StringSerializer implements AmfSerializer<String> {
         if (s.length() < 0xFFFF) {
             new DataOutputStream(out).writeUTF(s);
         } else {
+            byte[] data = s.getBytes("UTF-8");
             DataOutputStream dout = new DataOutputStream(out);
-            dout.writeInt(s.length());
-            dout.write(s.getBytes("UTF-8"));
+            dout.writeInt(data.length);
+            dout.write(data);
         }
     }
 }

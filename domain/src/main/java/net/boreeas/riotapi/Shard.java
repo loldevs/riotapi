@@ -342,12 +342,12 @@ public enum Shard {
 
     public static Shard getBySpectatorPlatform(String name) {
         for (Shard shard: values()) {
-            if (shard.spectatorPlatformName.equals(name)) {
+            if (shard.spectatorPlatformName.equalsIgnoreCase(name)) {
                 return shard;
             }
         }
 
-        return null;
+        throw new IllegalArgumentException("No shard with spectator platform name " + name);
     }
 
     public static Shard getByName(String slug) {
@@ -357,6 +357,20 @@ public enum Shard {
             }
         }
 
-        return null;
+        throw new IllegalArgumentException("No shard with name " + slug);
+    }
+
+    /**
+     * Returns the shard for which the spectator platform or the name match.
+     * @param name The name to look for
+     * @return The shard
+     */
+    public static Shard get(String name) {
+
+        for (Shard shard: values()) {
+            if (shard.name.equalsIgnoreCase(name) || shard.spectatorPlatformName.equalsIgnoreCase(name)) {
+                return shard;
+            }
+        }
     }
 }

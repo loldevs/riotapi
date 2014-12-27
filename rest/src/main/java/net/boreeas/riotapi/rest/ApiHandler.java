@@ -955,6 +955,8 @@ public class ApiHandler {
      * @see <a href="https://developer.riotgames.com/api/methods#!/835/2938">Official API Documentation</a>
      */
     public ShardStatus getShardStatus(Shard shard) {
+        log.info("Tgt: " + statusTarget + "/" + statusTarget.getUri());
+        log.info("Shard name: " + shard.name);
         WebTarget tgt = statusTarget.path(shard.name);
 
         return gson.fromJson($(tgt), ShardStatus.class);

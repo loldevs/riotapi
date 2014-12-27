@@ -23,6 +23,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -34,6 +35,7 @@ public enum Shard {
 
     EUW("euw",
             String.format(Constants.API_PATH_TEMPLATE, "euw"),
+            Arrays.asList("eu1", "euw1"),
             // Alt values if loading fails
             "euw",
             "EUW1",
@@ -43,6 +45,7 @@ public enum Shard {
             "http://spectator.euw1." + Constants.BASE_PATH),
     EUNE("eune",
             String.format(Constants.API_PATH_TEMPLATE, "eune"),
+            Arrays.asList("eu2", "eun1"),
             // Alt values if loading fails
             "eune",
             "EUN1",
@@ -52,6 +55,7 @@ public enum Shard {
             "http://spectator.eu." + Constants.BASE_PATH + ":8088"),
     NA("na",
             String.format(Constants.API_PATH_TEMPLATE, "na"),
+            Arrays.asList("na1"),
             // Alt values if loading fails
             "na",
             "NA1",
@@ -61,6 +65,7 @@ public enum Shard {
             "http://spectator.na." + Constants.BASE_PATH),
     BR("br",
             String.format(Constants.API_PATH_TEMPLATE, "br"),
+            Arrays.asList("br1"),
             // Alt values if loading fails
             "br",
             "BR1",
@@ -70,6 +75,7 @@ public enum Shard {
             "http://spectator.la2." + Constants.BASE_PATH),
     OCE("oc1",
             String.format(Constants.API_PATH_TEMPLATE, "oce"),
+            Arrays.asList("oce"),
             // Alt values if loading fails
             "oce",
             "OC1",
@@ -79,6 +85,7 @@ public enum Shard {
             "http://spectator.oc1." + Constants.BASE_PATH),
     TR("tr",
             String.format(Constants.API_PATH_TEMPLATE, "tr"),
+            Arrays.asList("tr1"),
             // Alt values if loading fails
             "tr",
             "TR1",
@@ -88,6 +95,7 @@ public enum Shard {
             "http://spectator.tr." + Constants.BASE_PATH),
     RU("ru",
             String.format(Constants.API_PATH_TEMPLATE, "ru"),
+            Arrays.asList("ru1"),
             // Alt values if loading fails
             "ru",
             "RU",
@@ -97,6 +105,7 @@ public enum Shard {
             "http://spectator.eu." + Constants.BASE_PATH),
     LAN("la1",
             String.format(Constants.API_PATH_TEMPLATE, "lan"),
+            Arrays.asList("lan"),
             // Alt values if loading fails
             "lan",
             "LA1",
@@ -106,6 +115,7 @@ public enum Shard {
             "http://spectator.br." + Constants.BASE_PATH),
     LAS("la2",
             String.format(Constants.API_PATH_TEMPLATE, "las"),
+            Arrays.asList("las"),
             // Alt values if loading fails
             "las",
             "LA2",
@@ -117,6 +127,7 @@ public enum Shard {
             "http://legendspatch-lol.x-cdn.com/KR_CBT/projects/lol_air_client_config_%s/releases/releaselisting_%s",
             "http://legendspatch-lol.x-cdn.com/KR_CBT/projects/lol_air_client_config_%s/releases/%s/files/lol.properties",
             String.format(Constants.API_PATH_TEMPLATE, "kr"),
+            Arrays.asList("kr1"),
             // Alt values if loading fails
             "kr",
             "KR",
@@ -127,6 +138,7 @@ public enum Shard {
 
     // The following shards apparently don't specify a properties listing
     PBE("pbe",
+            Arrays.asList("pbe1"),
             "PBE1",
             "chat.pbe1." + Constants.BASE_PATH,
             Constants.API_PATH_TEMPLATE,
@@ -135,6 +147,7 @@ public enum Shard {
             "http://spectator.pbe1." + Constants.BASE_PATH + ":8088",
             false),
     SG("sg",
+            Arrays.asList("sg1"),
             "SG",
             "chat." + Constants.GARENA_PATH,
             null,
@@ -143,6 +156,7 @@ public enum Shard {
             "qfsea1proxy.kassad.in:8088",
             true),
     TW("tw",
+            Arrays.asList("tw1"),
             "TW",
             "chatth." + Constants.GARENA_PATH,
             null,
@@ -151,6 +165,7 @@ public enum Shard {
             "QFTW1PROXY.kassad.in:8088",
             true),
     TH("th",
+            Arrays.asList("th1"),
             "TH",
             "chatth." + Constants.GARENA_PATH,
             null,
@@ -159,6 +174,7 @@ public enum Shard {
             "qfsea1proxy.kassad.in:8088",
             true),
     PH("ph",
+            Arrays.asList("ph1"),
             "PH",
             "chatph." + Constants.GARENA_PATH,
             null,
@@ -167,6 +183,7 @@ public enum Shard {
             "qfsea1proxy.kassad.in:8088",
             true),
     VN("vn",
+            Arrays.asList("vn1"),
             "VN",
             "chatvn." + Constants.GARENA_PATH,
             null,
@@ -175,6 +192,7 @@ public enum Shard {
             "qfsea1proxy.kassad.in:8088",
             true),
     ID("id",
+            Arrays.asList("id1"),
             "ID",
             "chatid." + Constants.GARENA_PATH,
             null,
@@ -185,6 +203,7 @@ public enum Shard {
 
 
     public final String name;
+    public final List<String> altNames;
     public final String spectatorPlatformName;
     public final String chatUrl;
     public final String prodUrl;
@@ -199,14 +218,14 @@ public enum Shard {
     public static final int RTMPS_PORT = 2099;
     public static final String CONN_INFO_SERVICE = "http://ll.leagueoflegends.com/services/connection_info";
 
-    private Shard(String cdnTag, String api,
+    private Shard(String cdnTag, String api, List<String> altNames,
                   String altName, String altSpectatorPlatformName, String altChat, String altLoginQueue, String altProd, String altSpectator) {
 
-        this(cdnTag, Constants.VERSION_LISTING_TEMPLATE, Constants.PROPERTIES_TEMPLATE,
-                api, altName, altSpectatorPlatformName, altChat, altLoginQueue, altProd, altSpectator);
+        this(cdnTag, Constants.VERSION_LISTING_TEMPLATE, Constants.PROPERTIES_TEMPLATE, api, altNames,
+                altName, altSpectatorPlatformName, altChat, altLoginQueue, altProd, altSpectator);
     }
 
-    private Shard(String cdnTag, String versionListingTemplate, String propertiesTemplate, String api,
+    private Shard(String cdnTag, String versionListingTemplate, String propertiesTemplate, String api, List<String> altNames,
                   String altName, String altSpectatorPlatformName, String altChat, String altLoginQueue, String altProd, String altSpectator) {
 
         Properties properties = new Properties();
@@ -228,6 +247,7 @@ public enum Shard {
         this.chatUrl = properties.getProperty("xmpp_server", altChat).trim();
         this.loginQueue = properties.getProperty("lq_uri", altLoginQueue).trim();
         this.name = properties.getProperty("regionTag", altName).trim();
+        this.altNames = altNames;
         this.spectatorPlatformName = properties.getProperty("platformId", altSpectatorPlatformName).trim();
 
 
@@ -248,9 +268,10 @@ public enum Shard {
         this.apiUrl = api;
     }
 
-    private Shard(String name, String spectatorPlatformName, String chat, String api, String loginQueue, String prod, String spectator, boolean garena) {
+    private Shard(String name, List<String> altNames, String spectatorPlatformName, String chat, String api, String loginQueue, String prod, String spectator, boolean garena) {
 
         this.name = name;
+        this.altNames = altNames;
         this.spectatorPlatformName = spectatorPlatformName;
         this.chatUrl = chat;
         this.apiUrl = api;
@@ -372,7 +393,13 @@ public enum Shard {
     }
 
     /**
-     * Returns the shard for which the spectator platform or the name match. This method is case-insensitive.
+     * Returns the shard for which one of the following is true:
+     * <ul>
+     *     <li>The shard's name is equal to the given name</li>
+     *     <li>The shard's spectator platform name is equal to the given name</li>
+     *     <li>Any of the shard's alternative names are equal to the given name</li>
+     * </ul>
+     * This method is case-insensitive.
      * @param name The name to look for
      * @return The shard
      * @throws net.boreeas.riotapi.ShardNotFoundExeption If no shard with that name or platform name was found.
@@ -380,7 +407,8 @@ public enum Shard {
     public static Shard get(String name) {
 
         for (Shard shard: values()) {
-            if (shard.name.equalsIgnoreCase(name) || shard.spectatorPlatformName.equalsIgnoreCase(name)) {
+            if (shard.name.equalsIgnoreCase(name) || shard.spectatorPlatformName.equalsIgnoreCase(name)
+                    || shard.altNames.stream().anyMatch(s -> s.equalsIgnoreCase(name))) {
                 return shard;
             }
         }

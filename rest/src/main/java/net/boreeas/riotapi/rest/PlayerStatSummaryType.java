@@ -35,7 +35,11 @@ public enum PlayerStatSummaryType {
     HEXAKILL("SummonersRift6x6"),
     TEAMBUILDER("CAP5x5"),
     URF("URF"),
-    URF_BOTS("URFBots");
+    URF_BOTS("URFBots"),
+    NIGHTMARE_BOTS("NightmareBot"),
+    ASCENSION("Ascension"),
+    HEXAKILL_TWISTED_TREELINE("Hexakill"),
+    KING_PORO("KingPoro");
 
     public final String name;
 

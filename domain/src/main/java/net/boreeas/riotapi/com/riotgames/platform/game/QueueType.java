@@ -51,6 +51,8 @@ public enum QueueType {
     FIRSTBLOOD_1x1          (Flags.FEATURED),
     FIRSTBLOOD_2x2          (Flags.FEATURED),
     GROUP_FINDER_5x5        (Flags.TEAM_BUILDER),
+    KING_PORO               (Flags.FEATURED),
+    KING_PORO_5x5           (Flags.FEATURED),
     NIGHTMARE_BOT           (Flags.BOT | Flags.FEATURED),
     NIGHTMARE_BOT_5x5_RANK1 (Flags.BOT | Flags.FEATURED),
     NIGHTMARE_BOT_5x5_RANK2 (Flags.BOT | Flags.FEATURED),
@@ -77,9 +79,9 @@ public enum QueueType {
     RANKED_TEAM_5x5         (Flags.RANKED | Flags.DRAFT | Flags.PREMADE),
     SR_6x6                  (Flags.FEATURED),
     TUTORIAL,
-    URF(Flags.FEATURED),
-    URF_5x5(Flags.FEATURED),
-    URF_BOT(Flags.FEATURED | Flags.BOT);
+    URF                     (Flags.FEATURED),
+    URF_5x5                 (Flags.FEATURED),
+    URF_BOT                 (Flags.FEATURED | Flags.BOT);
 
     private final int flags;
 

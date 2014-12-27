@@ -29,7 +29,8 @@ public enum GameMode {
     TUTORIAL,
     ONEFORALL,
     ASCENSION,
-    FIRSTBLOOD;
+    FIRSTBLOOD,
+    KINGPORO;
 
     public static GameMode getByName(String name) {
         for (GameMode mode: values()) {

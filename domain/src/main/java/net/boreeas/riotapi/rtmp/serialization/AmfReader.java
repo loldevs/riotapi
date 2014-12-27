@@ -267,11 +267,11 @@ public class AmfReader extends InputStream implements ObjectInput {
         return deserializeAmf3(type);
     }
 
-    public <T> T  deserializeAmf3(@NonNull Amf3Type type) throws IOException {
+    public <T> T deserializeAmf3(@NonNull Amf3Type type) throws IOException {
         return deserializeAmf3(type.ordinal());
     }
 
-    private <T> T  deserializeAmf3(int type) throws IOException {
+    private <T> T deserializeAmf3(int type) throws IOException {
         try {
             return (T) amf3Deserializers.get(type).call();
         } catch (Exception ex) {

@@ -16,6 +16,7 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.game;
 
+import com.google.gson.annotations.SerializedName;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
@@ -51,8 +52,11 @@ public enum QueueType {
     FIRSTBLOOD_1x1          (Flags.FEATURED),
     FIRSTBLOOD_2x2          (Flags.FEATURED),
     GROUP_FINDER_5x5        (Flags.TEAM_BUILDER),
+    KINGPORO                (Flags.FEATURED),
     KING_PORO               (Flags.FEATURED),
     KING_PORO_5x5           (Flags.FEATURED),
+    @SerializedName("KINGPORO-5X5") // Don't even ask
+    KING_PORO_5x5_2         (Flags.FEATURED),
     NIGHTMARE_BOT           (Flags.BOT | Flags.FEATURED),
     NIGHTMARE_BOT_5x5_RANK1 (Flags.BOT | Flags.FEATURED),
     NIGHTMARE_BOT_5x5_RANK2 (Flags.BOT | Flags.FEATURED),

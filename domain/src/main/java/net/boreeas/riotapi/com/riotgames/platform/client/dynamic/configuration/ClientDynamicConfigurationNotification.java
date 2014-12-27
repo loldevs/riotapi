@@ -45,6 +45,8 @@ public class ClientDynamicConfigurationNotification {
 
     @Getter
     private class ConfigOptions {
+        @SerializedName("PlatformShutdown")
+        private PlatformShutdown platformShutdown;
         @SerializedName("ContextualEducation")
         private ContextualEducation contextualEducation;
         @SerializedName("DisabledChampionSkins")
@@ -61,7 +63,7 @@ public class ClientDynamicConfigurationNotification {
         @Delegate @Getter(AccessLevel.NONE) private GuestSlots guestSlots;
         @SerializedName("ContextualEducationURLs")
         private Map<String, String> contextualEducationURLs = new HashMap<>();
-        @SerializedName("ServiceStatusApi")
+        @SerializedName("ServiceStatusAPI")
         @Delegate @Getter(AccessLevel.NONE) private ServiceStatusApi serviceStatusApi;
         @SerializedName("NewPlayerRouter")
         private NewPlayerRouter newPlayerRouter;
@@ -71,6 +73,10 @@ public class ClientDynamicConfigurationNotification {
         private QueueRestriction queueRestriction;
         @SerializedName("DockedPrompt")
         @Delegate @Getter(AccessLevel.NONE) private DockedPrompt dockedPrompt;
+        @SerializedName("QueueImages")
+        private QueueImages queueImages;
+        @SerializedName("SuggestedPlayers")
+        private SuggestedPlayers suggestedPlayers;
         @SerializedName("SeasonRewards")
         private SeasonRewards seasonRewards;
         @SerializedName("DisabledChampions")
@@ -102,6 +108,34 @@ public class ClientDynamicConfigurationNotification {
 
             return disabledChampions;
         }
+    }
+
+    @Getter
+    public class SuggestedPlayers {
+        @SerializedName("HonoredPlayersLimit")
+        private int honoredPlayersLimit;
+        @SerializedName("FriendsOfFriendsLimit")
+        private int friendsOfFriendsLimit;
+        @SerializedName("Enabled")
+        private boolean enabled;
+        @SerializedName("OnlineFriendsLimit")
+        private int onlineFriendsLimit;
+        @SerializedName("PreviousPremadesLimit")
+        private int previousPremadeLimits;
+        @SerializedName("MaxNumSuggestedPlayers")
+        private int maxNumSuggestedPlayers;
+        @SerializedName("VictoriousComradesLimit")
+        private int victoriousComradesLimit;
+        @SerializedName("FriendsOfFriendsEnabled")
+        private boolean friendsOfFriendsEnabled;
+        @SerializedName("MaxNumReplacements")
+        private int maxNumReplacements;
+    }
+
+    @Getter
+    public class QueueImages {
+        @SerializedName("OverrideQueueImage")
+        private boolean overrideQueueImage;
     }
 
     @Getter
@@ -314,5 +348,11 @@ public class ClientDynamicConfigurationNotification {
 
             return minimumPointsPerRewardLevel;
         }
+    }
+
+    @Getter
+    public class PlatformShutdown {
+        @SerializedName("Enabled")
+        private boolean enabled;
     }
 }

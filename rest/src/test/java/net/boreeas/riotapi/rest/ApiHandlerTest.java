@@ -17,6 +17,7 @@
 package net.boreeas.riotapi.rest;
 
 import junit.framework.TestCase;
+import net.boreeas.riotapi.RequestException;
 import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.com.riotgames.platform.game.QueueType;
 import net.boreeas.riotapi.constants.Season;
@@ -69,142 +70,302 @@ public class ApiHandlerTest extends TestCase {
     }
 
     public void testGetBasicChampData() throws Exception {
-        List<BasicChampData> euwBasicChampDatas = handler.getBasicChampData().get(1, MINUTES);
-        assertNotNull(euwBasicChampDatas);
-        assertFalse(euwBasicChampDatas.isEmpty());
+        try {
+            List<BasicChampData> euwBasicChampDatas = handler.getBasicChampData().get(1, MINUTES);
+            assertNotNull(euwBasicChampDatas);
+            assertFalse(euwBasicChampDatas.isEmpty());
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetFreeToPlayChampions() throws Exception {
-        Future<List<BasicChampData>> ftpChamps = handler.getFreeToPlayChampions();
-        assertNotNull(ftpChamps.get(1, MINUTES));
-        assertEquals((ftpChamps.get()).size(), 10);
+        try {
+            Future<List<BasicChampData>> ftpChamps = handler.getFreeToPlayChampions();
+            assertNotNull(ftpChamps.get(1, MINUTES));
+            assertEquals((ftpChamps.get()).size(), 10);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetChampionBasicData() throws Exception {
-        handler.getBasicChampData(1).get(1, MINUTES);
+        try {
+            handler.getBasicChampData(1).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetRecentGames() throws Exception {
-        handler.getRecentGames(SUMMONER_ID_2).get(1, MINUTES);
+        try {
+            handler.getRecentGames(SUMMONER_ID_2).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetLeagues() throws Exception {
-        handler.getLeagues(SUMMONER_ID_2).get(1, MINUTES);
+        try {
+            handler.getLeagues(SUMMONER_ID_2).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
 
     }
 
     public void testGetLeagueEntries() throws Exception {
-        handler.getLeagueEntries(SUMMONER_ID_1).get(1, MINUTES);
+        try {
+            handler.getLeagueEntries(SUMMONER_ID_1).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetLeaguesByTeam() throws Exception {
-        handler.getLeagues(TEAM_ID).get(1, MINUTES);
+        try {
+            handler.getLeagues(TEAM_ID).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetLeagueEntriesByTeam() throws Exception {
-        handler.getLeagueEntries(TEAM_ID).get(1, MINUTES);
+        try {
+            handler.getLeagueEntries(TEAM_ID).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetChallenger() throws Exception {
-        handler.getChallenger(QueueType.RANKED_SOLO_5x5).get(1, MINUTES);
+        try {
+            handler.getChallenger(QueueType.RANKED_SOLO_5x5).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetChampion() throws Exception {
-        handler.getChampion(1, ChampData.ALL).get(1, MINUTES);
+        try {
+            handler.getChampion(1, ChampData.ALL).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetChampions() throws Exception {
-        handler.getChampions(ChampData.ALL).get(1, MINUTES);
+        try {
+            handler.getChampions(ChampData.ALL).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetItems() throws InterruptedException, ExecutionException, TimeoutException {
-        handler.getItemList(ItemData.ALL).get(1, MINUTES);
+        try {
+            handler.getItemList(ItemData.ALL).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetItem() throws InterruptedException, ExecutionException, TimeoutException {
-        handler.getItem(2003, ItemData.CONSUME_ON_FULL).get(1, MINUTES);
+        try {
+            handler.getItem(2003, ItemData.CONSUME_ON_FULL).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetMasteries() throws InterruptedException, ExecutionException, TimeoutException {
-        handler.getMasteries(MasteryData.ALL).get(1, MINUTES);
+        try {
+            handler.getMasteries(MasteryData.ALL).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetMastery() throws InterruptedException, ExecutionException, TimeoutException {
-        handler.getMastery(4353, MasteryData.SANITIZED_DESCRIPTION).get(1, MINUTES);
+        try {
+            handler.getMastery(4353, MasteryData.SANITIZED_DESCRIPTION).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetRealm() throws InterruptedException, ExecutionException, TimeoutException {
-        handler.getRealm().get(1, MINUTES);
+        try {
+            handler.getRealm().get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetRunes() throws InterruptedException, ExecutionException, TimeoutException {
-        handler.getRuneList(ItemData.ALL).get(1, MINUTES);
+        try {
+            handler.getRuneList(ItemData.ALL).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetRune() throws InterruptedException, ExecutionException, TimeoutException {
-        handler.getRune(5235, ItemData.HIDE_FROM_ALL).get(1, MINUTES);
+        try {
+            handler.getRune(5235, ItemData.HIDE_FROM_ALL).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetSummonerSpells() throws InterruptedException, ExecutionException, TimeoutException {
-        handler.getSummonerSpells(SpellData.COOLDOWN_BURN).get(1, MINUTES);
+        try {
+            handler.getSummonerSpells(SpellData.COOLDOWN_BURN).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetSummonerSpell() throws InterruptedException, ExecutionException, TimeoutException {
-        handler.getSummonerSpell(1, SpellData.ALL).get(1, MINUTES);
+        try {
+            handler.getSummonerSpell(1, SpellData.ALL).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetRankedStats() throws InterruptedException, TimeoutException, ExecutionException {
-        handler.getRankedStats(SUMMONER_ID_1).get(1, MINUTES);
+        try {
+            handler.getRankedStats(SUMMONER_ID_1).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetStatSummary() throws InterruptedException, TimeoutException, ExecutionException {
-        handler.getStatsSummary(SUMMONER_ID_1, Season.SEASON3).get(1, MINUTES);
+        try {
+            handler.getStatsSummary(SUMMONER_ID_1, Season.SEASON3).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetSummoners() throws InterruptedException, TimeoutException, ExecutionException {
-        handler.getSummoners(SUMMONER_NAME_1, SUMMONER_NAME_2).get(1, MINUTES);
+        try {
+            handler.getSummoners(SUMMONER_NAME_1, SUMMONER_NAME_2).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetSummonersById() throws InterruptedException, TimeoutException, ExecutionException {
-        handler.getSummoners(SUMMONER_ID_1, SUMMONER_ID_2).get(1, MINUTES);
+        try {
+            handler.getSummoners(SUMMONER_ID_1, SUMMONER_ID_2).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetSummoner() throws InterruptedException, TimeoutException, ExecutionException {
-        handler.getSummoner(SUMMONER_NAME_2).get(1, MINUTES);
+        try {
+            handler.getSummoner(SUMMONER_NAME_2).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetSummonerById() throws InterruptedException, TimeoutException, ExecutionException {
-        handler.getSummoner(SUMMONER_ID_2).get(1, MINUTES);
+        try {
+            handler.getSummoner(SUMMONER_ID_2).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetRunePages() throws InterruptedException, TimeoutException, ExecutionException {
-        handler.getRunePages(SUMMONER_ID_2).get(1, MINUTES);
-        handler.getRunePagesMultipleUsers(SUMMONER_ID_2, SUMMONER_ID_1).get(1, MINUTES);
+        try {
+            handler.getRunePages(SUMMONER_ID_2).get(1, MINUTES);
+            handler.getRunePagesMultipleUsers(SUMMONER_ID_2, SUMMONER_ID_1).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
 
     }
 
     public void testGetMasteryPages() throws InterruptedException, TimeoutException, ExecutionException {
-        handler.getMasteryPages(SUMMONER_ID_1).get(1, MINUTES);
-        handler.getMasteryPagesMultipleUsers(SUMMONER_ID_1, SUMMONER_ID_2).get(1, MINUTES);
+        try {
+            handler.getMasteryPages(SUMMONER_ID_1).get(1, MINUTES);
+            handler.getMasteryPagesMultipleUsers(SUMMONER_ID_1, SUMMONER_ID_2).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
 
     }
 
     public void testGetNames() throws InterruptedException, TimeoutException, ExecutionException {
-        handler.getSummonerName(SUMMONER_ID_2).get(1, MINUTES);
-        handler.getSummonerNames(SUMMONER_ID_1, SUMMONER_ID_2).get(1, MINUTES);
+        try {
+            handler.getSummonerName(SUMMONER_ID_2).get(1, MINUTES);
+            handler.getSummonerNames(SUMMONER_ID_1, SUMMONER_ID_2).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetTeams() throws InterruptedException, TimeoutException, ExecutionException {
-        handler.getTeams(SUMMONER_ID_1).get(1, MINUTES);
-        handler.getTeams(TEAM_ID).get(1, MINUTES);
+        try {
+            handler.getTeams(SUMMONER_ID_1).get(1, MINUTES);
+            handler.getTeams(TEAM_ID).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetMatchHistory() throws InterruptedException, ExecutionException, TimeoutException {
-        handler.getMatchHistory(SUMMONER_ID_1).get(1, MINUTES);
+        try {
+            handler.getMatchHistory(SUMMONER_ID_1).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetMatchDetails() throws InterruptedException, ExecutionException, TimeoutException {
-        handler.getMatch(handler.getMatchHistory(SUMMONER_ID_2).get(1, MINUTES).get(0).getMatchId()).get(1, MINUTES);
+        try {
+            handler.getMatch(handler.getMatchHistory(SUMMONER_ID_2).get(1, MINUTES).get(0).getMatchId()).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testConcat() {
@@ -216,7 +377,7 @@ public class ApiHandlerTest extends TestCase {
         StringBuilder builder = new StringBuilder();
         boolean first = true;
 
-        for (long v: values) {
+        for (long v : values) {
             if (first) {
                 first = false;
             } else {
@@ -230,14 +391,23 @@ public class ApiHandlerTest extends TestCase {
     }
 
     public void testGetShards() throws InterruptedException, ExecutionException, TimeoutException {
-        handler.getShards().get(1, MINUTES);
+        try {
+            handler.getShards().get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
     }
 
     public void testGetShardStatus() throws InterruptedException, ExecutionException, TimeoutException {
-        List<ShardData> shardDatas = handler.getShards().get(1, MINUTES);
-        System.out.println("Shards: " + shardDatas);
-        for (ShardData data: shardDatas) {
-            handler.getShardStatus(Shard.get(data.getSlug()));
+        try {
+            List<ShardData> shardDatas = handler.getShards().get(1, MINUTES);
+            for (ShardData data : shardDatas) {
+                handler.getShardStatus(Shard.get(data.getSlug()));
+            }
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
         }
     }
 

@@ -68,7 +68,10 @@ public class QueueTimer extends Thread {
         } else if (result != null) {
             return result;
         } else {
-            throw new IllegalStateException("Await timed out before first run");
+            run();
+            if (isError) throw ex;
+            if (result != null) return result;
+            throw new IllegalStateException("No result after run");
         }
     }
 

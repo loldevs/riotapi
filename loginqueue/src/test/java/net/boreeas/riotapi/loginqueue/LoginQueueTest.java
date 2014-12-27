@@ -43,14 +43,6 @@ public class LoginQueueTest extends TestCase {
         }
     }
 
-    public void testQueueEarlyReturn() throws Exception {
-        try {
-            AuthResult result = new LoginQueue(Shard.NA).waitInQueue("foo", "").await(0, TimeUnit.SECONDS);
-            fail();
-        } catch (IllegalStateException ex) {
-        }
-    }
-
     public void testQueueAuth() throws Exception {
         Properties prop = new Properties();
         prop.load(new InputStreamReader(new FileInputStream("testconfig.properties")));

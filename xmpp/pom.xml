@@ -20,7 +20,7 @@
     <parent>
         <groupId>net.boreeas</groupId>
         <artifactId>riotapi</artifactId>
-        <version>1.5.3</version>
+        <version>1.5.4</version>
     </parent>
 
     <artifactId>riotapi.xmpp</artifactId>
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>net.boreeas</groupId>
             <artifactId>riotapi.domain</artifactId>
-            <version>1.5.3</version>
+            <version>1.5.4</version>
         </dependency>
 
 

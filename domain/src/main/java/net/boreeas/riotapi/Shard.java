@@ -339,31 +339,43 @@ public enum Shard {
     }
 
 
-
-    public static Shard getBySpectatorPlatform(String name) {
+    /**
+     * Retrieve a shard by its spectator platform name. This method is case-insensitive.
+     * @param name The platform name
+     * @return The shard
+     * @throws net.boreeas.riotapi.ShardNotFoundExeption If no shard with that platform name was found.
+     */
+    public static Shard getBySpectatorPlatform(String name) throws ShardNotFoundExeption {
         for (Shard shard: values()) {
             if (shard.spectatorPlatformName.equalsIgnoreCase(name)) {
                 return shard;
             }
         }
 
-        throw new IllegalArgumentException("No shard with spectator platform name " + name);
+        throw new ShardNotFoundExeption("No shard with spectator platform name " + name);
     }
 
-    public static Shard getByName(String slug) {
+    /**
+     * Retrieve a shard by its name. This method is case-insensitive.
+     * @param slug The name.
+     * @return The shard.
+     * @throws ShardNotFoundExeption If no shard with that name was found.
+     */
+    public static Shard getByName(String slug) throws ShardNotFoundExeption {
         for (Shard shard: values()) {
             if (shard.name.equalsIgnoreCase(slug)) {
                 return shard;
             }
         }
 
-        throw new IllegalArgumentException("No shard with name " + slug);
+        throw new ShardNotFoundExeption("No shard with name " + slug);
     }
 
     /**
-     * Returns the shard for which the spectator platform or the name match.
+     * Returns the shard for which the spectator platform or the name match. This method is case-insensitive.
      * @param name The name to look for
      * @return The shard
+     * @throws net.boreeas.riotapi.ShardNotFoundExeption If no shard with that name or platform name was found.
      */
     public static Shard get(String name) {
 
@@ -372,5 +384,7 @@ public enum Shard {
                 return shard;
             }
         }
+
+        throw new ShardNotFoundExeption("No such shard: " + name);
     }
 }

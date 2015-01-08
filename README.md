@@ -12,3 +12,16 @@ This is a Java 8 project designed to offer a simple binding to most League of Le
 |[xmpp](https://github.com/loldevs/riotapi/wiki/xmpp) | Connect to the chat server. A simple wrapper that takes care of menial tasks such as channel name encoding |
 
 Take a look at the [wiki](https://github.com/loldevs/riotapi/wiki) for a complete documentation.
+
+## Releases
+See our [release listing](https://github.com/loldevs/riotapi/releases)
+
+## Get It
+We are on maven! Include the following in your <dependencies> in your pom.xml:
+```xml
+<dependency>
+  <groupId>net.boreeas</groupId>
+  <artifactId>$REQUIRED_MODULE</artifact>
+  <version>1.5.3</version>
+</dependency>
+```

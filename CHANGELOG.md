@@ -1,5 +1,27 @@
 # Changelog
 ---------
+### 1.5.3
+##### General
+* Fixed several versioning problems in the pom
+
+##### Domain
+* Updated several spectator URLs
+* Updated the region tags for LAN and LAS, which were renamed to LA1 and LA2
+* Added altNames to shards. This list is being maintained manually for now
+* Added generic Shard.get that matches on shard region name, shard spectator platform and any of the alt names
+* Shard getters now throw ShardNotFoundException if no shard with that name was found
+* Added field "previousSeasonHighestTeamReward" to Summoner
+* Added multiple fields to the dynamic client configuration sent at RTMP login
+* Added missing constants to QueueType, GameType, GameMode
+
+##### RTMP
+* Improved exception handling
+* Fixed UTF-8 encoding error
+
+##### Login Queue
+* Now always runs at least once, even if a timeout occurs before
+
+
 ### 1.5.2
 ##### Domain
 * Added missing fields to GameDto

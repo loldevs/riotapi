@@ -33,6 +33,15 @@
     <packaging>pom</packaging>
     <version>${project.version}</version>
 
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.version>1.5.4</project.version>
+    </properties>
+    
+
     <developers>
         <developer>
             <name>Malte Schuetze</name>
@@ -79,13 +88,6 @@
             <url>http://opensource.org/licenses/Apache-2.0</url>
         </license>
     </licenses>
-
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.version>1.5.4</project.version>
-    </properties>
 
     <profiles>
         <profile>

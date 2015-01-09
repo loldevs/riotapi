@@ -16,22 +16,9 @@
 
 package net.boreeas.xmpp;
 
-import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.net.ssl.SSLSocketFactory;
-
 import lombok.Getter;
 import net.boreeas.riotapi.Shard;
-
 import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.SmackException.NoResponseException;
 import org.jivesoftware.smack.XMPPException;
@@ -39,18 +26,27 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 
+import javax.net.ssl.SSLSocketFactory;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map.Entry;
+import java.util.Set;
+
 public class XmppClient extends XMPPTCPConnection {
 
 	private HashMap<String, MultiUserChat> chatRooms;
 
 	private @Getter Shard server;
-	private @Getter String user;
+	private @Getter String username;
 	private String pass;
 
-	public XmppClient(Shard server, String user, String pass) {
+	public XmppClient(Shard server, String username, String pass) {
 		super(buildConnectionConfiguration(server));
 		this.server = server;
-		this.user = user;
+		this.username = username;
 		this.pass = pass;
 		chatRooms = new HashMap<String, MultiUserChat>();
 	}
@@ -58,7 +54,7 @@ public class XmppClient extends XMPPTCPConnection {
 	@Override
 	public void connect() throws SmackException, IOException, XMPPException {
 		super.connect();
-		login(user, "AIR_" + pass, "xiff");
+		login(username, "AIR_" + pass, "xiff");
 	}
 
 	private static ConnectionConfiguration buildConnectionConfiguration(Shard shard) {

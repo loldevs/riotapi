@@ -16,14 +16,13 @@
 
 package net.boreeas.xmpp;
 
-import java.io.StringReader;
+import lombok.Data;
+import org.jivesoftware.smack.packet.Presence;
 
 import javax.xml.bind.JAXB;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.Data;
-
-import org.jivesoftware.smack.packet.Presence;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 @Data
 @XmlRootElement(name = "body")
@@ -49,5 +48,11 @@ public class RiotStatus {
 	
 	public static RiotStatus parsePresence(Presence presence) {
 		return JAXB.unmarshal(new StringReader(presence.getStatus()), RiotStatus.class);
+	}
+
+	public String toSring() {
+		StringWriter writer = new StringWriter();
+		JAXB.marshal(this, writer);
+		return writer.toString();
 	}
 }

@@ -103,8 +103,8 @@ public enum Shard {
             "https://lq.ru." + Constants.BASE_PATH,
             "prod.ru." + Constants.BASE_PATH,
             "http://spectator.eu." + Constants.BASE_PATH),
-    LAN("lan",
-            String.format(Constants.API_PATH_TEMPLATE, "lan"),
+    LAN("la1", "lan",
+            String.format(Constants.API_PATH_TEMPLATE, "la1"),
             Arrays.asList("la1", "lan"),
             // Alt values if loading fails
             "lan",
@@ -113,8 +113,8 @@ public enum Shard {
             "https://lq.la1." + Constants.BASE_PATH,
             "prod.la1." + Constants.BASE_PATH,
             "http://spectator.br." + Constants.BASE_PATH),
-    LAS("las",
-            String.format(Constants.API_PATH_TEMPLATE, "las"),
+    LAS("la2", "las",
+            String.format(Constants.API_PATH_TEMPLATE, "la2"),
             Arrays.asList("la2", "las"),
             // Alt values if loading fails
             "las",
@@ -203,6 +203,7 @@ public enum Shard {
 
 
     public final String name;
+    public final String slug; // fucking riot and their fucking la1/la2 server names
     public final List<String> altNames;
     public final String spectatorPlatformName;
     public final String chatUrl;
@@ -217,6 +218,13 @@ public enum Shard {
     public static final int JABBER_PORT = 5223;
     public static final int RTMPS_PORT = 2099;
     public static final String CONN_INFO_SERVICE = "http://ll.leagueoflegends.com/services/connection_info";
+
+    private Shard(String cdnTag, String slug, String api, List<String> altNames,
+                  String altName, String altSpectatorPlatformName, String altChat, String altLoginQueue, String altProd, String altSpectator) {
+
+        this(cdnTag, slug, Constants.VERSION_LISTING_TEMPLATE, Constants.PROPERTIES_TEMPLATE, api, altNames,
+                altName, altSpectatorPlatformName, altChat, altLoginQueue, altProd, altSpectator);
+    }
 
     private Shard(String cdnTag, String api, List<String> altNames,
                   String altName, String altSpectatorPlatformName, String altChat, String altLoginQueue, String altProd, String altSpectator) {
@@ -247,6 +255,51 @@ public enum Shard {
         this.chatUrl = properties.getProperty("xmpp_server", altChat).trim();
         this.loginQueue = properties.getProperty("lq_uri", altLoginQueue).trim();
         this.name = properties.getProperty("regionTag", altName).trim();
+        this.slug = this.name;
+        this.altNames = altNames;
+        this.spectatorPlatformName = properties.getProperty("platformId", altSpectatorPlatformName).trim();
+
+
+        String spectator = properties.getProperty("featuredGamesUrl");
+        if (spectator == null || spectator.isEmpty()) {
+            spectator = altSpectator;
+        } else {
+            try {
+                URI spectatorUri = new URI(spectator.trim());
+                spectator = spectatorUri.getScheme() + "://" + spectatorUri.getHost() + ":" + spectatorUri.getPort();
+            } catch (URISyntaxException ex) {
+                spectator = altSpectator;
+            }
+        }
+        this.spectatorUrl = spectator;
+
+        this.isGarena = false;
+        this.apiUrl = api;
+    }
+
+    private Shard(String cdnTag, String slug, String versionListingTemplate, String propertiesTemplate, String api, List<String> altNames,
+                  String altName, String altSpectatorPlatformName, String altChat, String altLoginQueue, String altProd, String altSpectator) {
+
+        Properties properties = new Properties();
+        Version version = new Version("0");
+        try {
+            List<Version> versions = loadCurrentVersions(versionListingTemplate, cdnTag);
+
+            PropertyData propertyData = new PropertyData(cdnTag, propertiesTemplate, properties, version, versions).invoke();
+            version = propertyData.getVersion();
+            properties = propertyData.getProperties();
+
+        } catch (IOException e) {
+            Logger.getLogger(Shard.class).fatal("Failed to load shard data for " + cdnTag, e);
+        }
+
+        this.version = version;
+
+        this.slug = slug;
+        this.prodUrl = properties.getProperty("host", altProd).trim();
+        this.chatUrl = properties.getProperty("xmpp_server", altChat).trim();
+        this.loginQueue = properties.getProperty("lq_uri", altLoginQueue).trim();
+        this.name = properties.getProperty("regionTag", altName).trim();
         this.altNames = altNames;
         this.spectatorPlatformName = properties.getProperty("platformId", altSpectatorPlatformName).trim();
 
@@ -271,6 +324,7 @@ public enum Shard {
     private Shard(String name, List<String> altNames, String spectatorPlatformName, String chat, String api, String loginQueue, String prod, String spectator, boolean garena) {
 
         this.name = name;
+        this.slug = name;
         this.altNames = altNames;
         this.spectatorPlatformName = spectatorPlatformName;
         this.chatUrl = chat;

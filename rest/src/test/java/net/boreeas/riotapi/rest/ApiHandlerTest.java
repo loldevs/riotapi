@@ -407,7 +407,8 @@ public class ApiHandlerTest extends TestCase {
             }
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (ex.getErrorType() == null) System.out.println(ex.getErrorCode());
+            if (ex.getErrorCode() < 500 || ex.getErrorCode() > 599) throw ex;
         }
     }
 

@@ -103,9 +103,9 @@ public enum Shard {
             "https://lq.ru." + Constants.BASE_PATH,
             "prod.ru." + Constants.BASE_PATH,
             "http://spectator.eu." + Constants.BASE_PATH),
-    LAN("la1",
+    LAN("lan",
             String.format(Constants.API_PATH_TEMPLATE, "lan"),
-            Arrays.asList("lan"),
+            Arrays.asList("la1", "lan"),
             // Alt values if loading fails
             "lan",
             "LA1",
@@ -113,9 +113,9 @@ public enum Shard {
             "https://lq.la1." + Constants.BASE_PATH,
             "prod.la1." + Constants.BASE_PATH,
             "http://spectator.br." + Constants.BASE_PATH),
-    LAS("la2",
+    LAS("las",
             String.format(Constants.API_PATH_TEMPLATE, "las"),
-            Arrays.asList("las"),
+            Arrays.asList("la2", "las"),
             // Alt values if loading fails
             "las",
             "LA2",

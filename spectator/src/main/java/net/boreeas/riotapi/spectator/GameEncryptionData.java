@@ -46,6 +46,18 @@ public class GameEncryptionData {
     }
 
     /**
+     * Creates a cipher for encrypting data with the specified key.
+     * @return A Blowfish/ECB/PKCS5Padding cipher in encryption mode.
+     * @throws GeneralSecurityException
+     */
+    public Cipher getEncryptionCipher() throws GeneralSecurityException {
+        Cipher cipher = Cipher.getInstance("Blowfish/ECB/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "Blowfish"));
+
+        return cipher;
+    }
+
+    /**
      * Decrypts the data with the specified key.
      * @param in The data to decrypt.
      * @return The decrypted data.
@@ -53,5 +65,15 @@ public class GameEncryptionData {
     @SneakyThrows
     public byte[] decrypt(byte[] in) {
         return getCipher().doFinal(in);
+    }
+
+    /**
+     * Encrypts the data with the specified key.
+     * @param in The data to encrypt.
+     * @return The encrypted data.
+     */
+    @SneakyThrows
+    public byte[] encrypt(byte[] in) {
+        return getEncryptionCipher().doFinal(in);
     }
 }

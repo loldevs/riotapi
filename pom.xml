@@ -31,14 +31,13 @@
     <description>A general purpose library for interfacing with various LoL services. This artifact is an aggregator for all submodules</description>
     <url>https://github.com/loldevs/riotapi</url>
     <packaging>pom</packaging>
-    <version>${project.version}</version>
+    <version>1.5.4</version>
 
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.version>1.5.4-SNAPSHOT</project.version>
     </properties>
 
 

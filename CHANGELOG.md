@@ -1,5 +1,15 @@
 # Changelog
 ---------
+### 1.5.4
+##### General
+* Unified sibling dependencies via ${project.version}
+
+##### Xmpp
+* Renamed field user and its getters to username since that was conflicting with getUser() from the superclass.
+
+##### Spectator
+* Added compression method to SpectatedGame and encryption method to GameEncryptionData to mirror decompression and decryption
+
 ### 1.5.3
 ##### General
 * Fixed several versioning problems in the pom

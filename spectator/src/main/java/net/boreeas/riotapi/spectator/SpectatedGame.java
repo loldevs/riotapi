@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Created on 5/1/2014.
@@ -135,6 +136,24 @@ public interface SpectatedGame {
                 bout.write(buffer, 0, read);
             }
 
+            return bout.toByteArray();
+        } catch (IOException ex) {
+            throw new RuntimeException("Failure during decompression", ex);
+        }
+    }
+
+    /**
+     * Compress the data via gzip.
+     * @param data Gzip-compressed data.
+     * @return Compressed data
+     */
+    public static byte[] compress(byte[] data) {
+
+        try (ByteArrayOutputStream bout = new ByteArrayOutputStream();
+             GZIPOutputStream gzip = new GZIPOutputStream(bout)) {
+
+            gzip.write(data);
+            gzip.flush();
             return bout.toByteArray();
         } catch (IOException ex) {
             throw new RuntimeException("Failure during decompression", ex);

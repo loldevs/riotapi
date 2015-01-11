@@ -403,11 +403,12 @@ public class ApiHandlerTest extends TestCase {
         try {
             List<ShardData> shardDatas = handler.getShards().get(1, MINUTES);
             for (ShardData data : shardDatas) {
+                System.out.println(data);
                 handler.getShardStatus(Shard.get(data.getSlug()));
             }
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType() == null) System.out.println(ex.getErrorCode());
+            if (ex.getErrorType() == null) System.out.println("Unknown error code: " + ex.getErrorCode());
             if (ex.getErrorCode() < 500 || ex.getErrorCode() > 599) throw ex;
         }
     }

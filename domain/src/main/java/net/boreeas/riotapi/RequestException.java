@@ -38,7 +38,7 @@ public class RequestException extends RuntimeException {
     public RequestException(int responseCode, ErrorType error) {
         super(responseCode + "/" + error + " error during request");
         this.error = error;
-        this.code = code;
+        this.code = responseCode;
     }
 
     public ErrorType getErrorType() {

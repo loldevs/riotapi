@@ -17,6 +17,7 @@
 package net.boreeas.xmpp;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import net.boreeas.riotapi.Shard;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.SmackException;
@@ -28,12 +29,13 @@ import org.jivesoftware.smackx.muc.MultiUserChat;
 
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class XmppClient extends XMPPTCPConnection {
 
@@ -63,15 +65,14 @@ public class XmppClient extends XMPPTCPConnection {
 		connConf.setSocketFactory(SSLSocketFactory.getDefault());
 		return connConf;
 	}
-	
+
 	public Set<MultiUserChat> getJoinedRooms() {
-		Set<MultiUserChat> rooms = new HashSet<MultiUserChat>();
-		for (Entry<String, MultiUserChat> roomEntry : chatRooms.entrySet()) {
-			rooms.add(roomEntry.getValue());
-		}
+		Set<MultiUserChat> rooms = chatRooms.entrySet().stream()
+				.map(Entry<String, MultiUserChat>::getValue)
+				.collect(Collectors.toSet());
 		return rooms;
 	}
-	
+
 	public void sendToUser(String to, String message) throws Exception {
 		Message packet = new Message(to);
 		packet.setBody(message);
@@ -79,24 +80,29 @@ public class XmppClient extends XMPPTCPConnection {
 		packet.setFrom(getUser().split("/")[0]);
 		sendPacket(packet);
 	}
-	
+
 	public void sendToChannel(String roomName, String message) throws Exception {
-		chatRooms.get(roomName).sendMessage(message);
+		chatRooms.get(roomName.toLowerCase()).sendMessage(message);
 	}
 
-	public void joinChannel(String channelName, ChatType type, String password) {
+	public MultiUserChat joinChannel(String channelName, ChatType type, String password) {
 		try {
+			channelName = channelName.toLowerCase();
 			MultiUserChat room = new MultiUserChat(this, getChatRoomJID(channelName, type, password, password==null));
 			chatRooms.put(channelName, room);
 			if (password == null) {
 				try {
 					room.join(getUser());
-				} catch (NoResponseException e) {}
+				} catch (NoResponseException e) {
+					throw new IllegalStateException("Could not join room", e);
+				}
 			} else {
 				room.join(getUser(), password);
 			}
+
+			return room;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new IllegalStateException(e);
 		}
 	}
 
@@ -122,14 +128,14 @@ public class XmppClient extends XMPPTCPConnection {
 	 * @return the string
 	 * @throws NoSuchAlgorithmException the no such algorithm exception
 	 */
+	@SneakyThrows(IOException.class)
 	public String sha1(String input) throws NoSuchAlgorithmException {
 		MessageDigest mDigest = MessageDigest.getInstance("SHA1");
-		byte[] result = mDigest.digest(input.getBytes());
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < result.length; i++) {
-			sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
-		}
-		return sb.toString();
+		byte[] result = mDigest.digest(input.getBytes("UTF-8"));
+		String resultString = String.format("%040x", new BigInteger(1, result));
+		System.out.println("Result: " + resultString);
+		System.out.println("Alt   : " + new BigInteger(1, result).toString(16));
+		return resultString;
 	}
 
 

@@ -1,5 +1,9 @@
 # Changelog
 ---------
+### 1.5.5
+##### Xmpp
+* Added toString() to RiotStatus that encodes the status in a XMPP-compatible presence format
+
 ### 1.5.4
 ##### General
 * Unified sibling dependencies via ${project.version}

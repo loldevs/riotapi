@@ -73,6 +73,10 @@ public class XmppClient extends XMPPTCPConnection {
 		return rooms;
 	}
 
+	public MultiUserChat getJoinedRoom(String name) {
+		return chatRooms.get(name.toLowerCase());
+	}
+
 	public void sendToUser(String to, String message) throws Exception {
 		Message packet = new Message(to);
 		packet.setBody(message);
@@ -92,9 +96,10 @@ public class XmppClient extends XMPPTCPConnection {
 			chatRooms.put(channelName, room);
 			if (password == null) {
 				try {
-					room.join(getUser());
+					room.join(getUsername());
+					room.sendRegistrationForm(room.getRegistrationForm());
 				} catch (NoResponseException e) {
-					throw new IllegalStateException("Could not join room", e);
+					//throw new IllegalStateException("Could not join room", e);
 				}
 			} else {
 				room.join(getUser(), password);

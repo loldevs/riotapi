@@ -58,7 +58,7 @@
         <dependency>
             <groupId>org.igniterealtime.smack</groupId>
             <artifactId>smack-extensions</artifactId>
-            <version>4.0.2</version>
+            <version>4.0.4</version>
         </dependency>
     </dependencies>
 </project>

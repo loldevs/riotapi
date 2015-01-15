@@ -4,6 +4,10 @@
 ##### Xmpp
 * Added toString() to RiotStatus that encodes the status in a XMPP-compatible presence format
 
+##### Domain
+* Added bot difficulty constant
+* Added missing classes for game invitations
+
 ### 1.5.4
 ##### General
 * Unified sibling dependencies via ${project.version}

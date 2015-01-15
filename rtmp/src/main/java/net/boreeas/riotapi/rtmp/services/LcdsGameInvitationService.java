@@ -18,6 +18,7 @@ package net.boreeas.riotapi.rtmp.services;
 
 import lombok.AllArgsConstructor;
 import net.boreeas.riotapi.com.riotgames.platform.gameinvite.contract.LobbyStatus;
+import net.boreeas.riotapi.constants.BotDifficulty;
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
 import java.util.List;
@@ -39,6 +40,10 @@ public class LcdsGameInvitationService {
     }
 
     public LobbyStatus createArrangedBotTeamLobby(double queueId, String difficulty) {
+        return client.sendRpcAndWait(SERVICE, "createArrangedTeamLobby", difficulty);
+    }
+
+    public LobbyStatus createArrangedBotTeamLobby(double queueId, BotDifficulty difficulty) {
         return client.sendRpcAndWait(SERVICE, "createArrangedTeamLobby", difficulty);
     }
 

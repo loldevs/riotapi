@@ -31,6 +31,7 @@
 * Added Javadoc to LcdsGameInvitationService
 * Made RtmpClient autocloseable
 * Added automatic heartbeats to RtmpClient
+* Deprecated ambiguous varargs sendRpc() methods, and replaced them with explicit versions
 
 ### 1.5.4
 ##### General

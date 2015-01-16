@@ -539,17 +539,74 @@ public abstract class RtmpClient implements AutoCloseable {
     }
 
 
-
+    /**
+     * <p>
+     * Send a remote procedure call.
+     * </p>
+     * <p>
+     *     Note that due to varargs ambiguity, this method will not work if the first argument to the call is a string.
+     *     In that case, use the explicit {@link #sendRpcWithEndpoint(String, String, String, Object...)} with endpoint
+     *     "my-rtmps" instead, or use {@link #sendRpcToDefault(String, String, Object...)}
+     * </p>
+     * @param service The service handling the call
+     * @param method The method to call
+     * @param args Optional arguments to the call
+     * @return The invoke id callback
+     * @deprecated Use the explicit {@link #sendRpcToDefault(String, String, Object...)} instead
+     */
+    @Deprecated
     public int sendRpc(String service, String method, Object... args) {
         return sendRpc("my-rtmps", service, method, args);
     }
 
+    /**
+     * <p>
+     * Send a remote procedure call.
+     * </p>
+     * @param service The service handling the call
+     * @param method The method to call
+     * @param args Optional arguments to the call
+     * @return The callback getting called once the rpc returns a result
+     */
+    public InvokeCallback sendRpcToDefault(String service, String method, Object... args) {
+        return sendRpcWithEndpoint("my-rtmps", service, method, args);
+    }
+
+    /**
+     * Send a remote procedure call.
+     * @param endpoint The endpoint of the call
+     * @param service The service handling the call
+     * @param method The method to call
+     * @param args Optional args to the call
+     * @return The id of the callback
+     * @deprecated Due to method resolution ambiguities, this method is due to be removed within the next couple
+     * of releases. Use the explicit {@link #sendRpcWithEndpoint(String, String, String, Object...)} instead.
+     */
+    @Deprecated
     public int sendRpc(String endpoint, String service, String method, Object... args) {
         RemotingMessage message = createRemotingMessage(endpoint, service, method, args);
         Invoke invoke = createAmf3InvokeSkeleton(null, message);
 
         send(invoke);
         return invoke.getInvokeId();
+    }
+
+    /**
+     * Send a remote procedure call.
+     * @param endpoint The endpoint of the call
+     * @param service The service handling the call
+     * @param method The method to call
+     * @param args Optional args to the call
+     * @return The callback getting called once the rpc returns a result
+     */
+    public InvokeCallback sendRpcWithEndpoint(String endpoint, String service, String method, Object... args) {
+        RemotingMessage message = createRemotingMessage(endpoint, service, method, args);
+        Invoke invoke = createAmf3InvokeSkeleton(null, message);
+        InvokeCallback callback = getInvokeCallback(invoke.getInvokeId());
+
+
+        send(invoke);
+        return callback;
     }
 
 

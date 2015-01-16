@@ -24,58 +24,116 @@ import net.boreeas.riotapi.rtmp.RtmpClient;
 import java.util.List;
 
 /**
- * Created by malte on 7/18/2014.
+ * The game invitation service manages group creation and joining for Group Finder and Premade Teans.
  */
 @AllArgsConstructor
 public class LcdsGameInvitationService {
     private static final String SERVICE = "lcdsGameInvitationService";
     private RtmpClient client;
 
-    public LobbyStatus createGroupFinderLobby(double gameMode, String uuid) {
-        return client.sendRpcAndWait(SERVICE, "createGroupFinderLobby", gameMode, uuid);
+    /**
+     * Create a groupfinder lobby
+     * @param queueId The target queue
+     * @param uuid The uuid for this lobby
+     * @return The lobby status
+     */
+    public LobbyStatus createGroupFinderLobby(long queueId, String uuid) {
+        return client.sendRpcAndWait(SERVICE, "createGroupFinderLobby", queueId, uuid);
     }
 
-    public LobbyStatus createArrangedTeamLobby(double queueId) {
+    /**
+     * Create a premade team lobby
+     * @param queueId The target queue
+     * @return The lobby status
+     */
+    public LobbyStatus createArrangedTeamLobby(long queueId) {
         return client.sendRpcAndWait(SERVICE, "createArrangedTeamLobby", queueId);
     }
 
-    public LobbyStatus createArrangedBotTeamLobby(double queueId, String difficulty) {
-        return client.sendRpcAndWait(SERVICE, "createArrangedTeamLobby", difficulty);
+    /**
+     * Create a premade team lobby for bot games
+     * @param queueId The target queue
+     * @param difficulty The difficulty of the bots
+     * @return The lobby status
+     * @deprecated Use {@link #createArrangedBotTeamLobby(long, net.boreeas.riotapi.constants.BotDifficulty)}
+     */
+    @Deprecated
+    public LobbyStatus createArrangedBotTeamLobby(long queueId, String difficulty) {
+        return client.sendRpcAndWait(SERVICE, "createArrangedTeamLobby", queueId, difficulty);
     }
 
-    public LobbyStatus createArrangedBotTeamLobby(double queueId, BotDifficulty difficulty) {
-        return client.sendRpcAndWait(SERVICE, "createArrangedTeamLobby", difficulty);
+    /**
+     * Create a premade team lobby for bot games
+     * @param queueId The target queue
+     * @param difficulty The difficulty of the bots
+     * @return The lobby status
+     */
+    public LobbyStatus createArrangedBotTeamLobby(long queueId, BotDifficulty difficulty) {
+        return client.sendRpcAndWait(SERVICE, "createArrangedTeamLobby", queueId, difficulty);
     }
 
+    /**
+     * Retrieve the lobby status for the current team lobby
+     * @return The lobby status
+     */
     public LobbyStatus getLobbyStatus() {
         return client.sendRpcAndWait(SERVICE, "getLobbyStatus");
     }
 
+    /**
+     * Retrieve all currently pending invitations. Invitations are pending if the user has neither accepted nor
+     * declined.
+     * @return The pending invitations
+     */
     public List<Object> getPendingInvitations() {
         return client.sendRpcAndWait(SERVICE, "getPendingInvitations");
     }
 
-    public void grantInvitePrivileges(double summonerId) {
+    /**
+     * Grant invite privileges to the target summoner
+     * @param summonerId The id of the summoner
+     */
+    public void grantInvitePrivileges(long summonerId) {
         client.sendRpc(SERVICE, "grantInvitePrivileges", summonerId);
     }
 
-    public void transferOwnership(double summonerId) {
+    /**
+     * Transfer lobby ownership to the target user
+     * @param summonerId The id of the summoner
+     */
+    public void transferOwnership(long summonerId) {
 
         client.sendRpc(SERVICE, "transferOwnership", summonerId);
     }
 
-    public void invite(double summonerId) {
+    /**
+     * Invite the target user to the current lobby.
+     * @param summonerId The id of the summoner
+     */
+    public void invite(long summonerId) {
         client.sendRpc(SERVICE, "invite", summonerId);
     }
 
+    /**
+     * Leave the current lobby.
+     */
     public void leave() {
         client.sendRpc(SERVICE, "leave");
     }
 
+    /**
+     * Accept a game invitation.
+     * @param inviteId The id of the invitation (transmitted via {@link net.boreeas.riotapi.com.riotgames.platform.gameinvite.contract.InvitationRequest})
+     * @return The lobby status
+     */
     public LobbyStatus accept(String inviteId) {
         return client.sendRpcAndWait(SERVICE, "decline", inviteId);
     }
 
+    /**
+     * Decline an invitation
+     * @param inviteId The id of the invitation (transmitted via {@link net.boreeas.riotapi.com.riotgames.platform.gameinvite.contract.InvitationRequest})
+     */
     public void decline(String inviteId) {
         client.sendRpc(SERVICE, "decline", inviteId);
     }

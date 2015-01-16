@@ -45,7 +45,7 @@ import java.util.function.Predicate;
  * Created on 5/24/2014.
  */
 @Log4j
-public abstract class RtmpClient {
+public abstract class RtmpClient implements AutoCloseable {
 
     public static final int RTMP_VERSION = 3;
     private static final int PAYLOAD_SIZE = 1536;
@@ -424,21 +424,17 @@ public abstract class RtmpClient {
 
     public void disconnect() {
         isConnected = false;
+        close();
+    }
+
+    @Override
+    public void close() {
         try {
             reader.close();
             writer.close();
             socket.close();
         } catch (IOException e) {}
     }
-
-
-
-
-
-
-
-
-
 
 
     public void authenticate(String user, String password, String authKey, String clientVersion) {

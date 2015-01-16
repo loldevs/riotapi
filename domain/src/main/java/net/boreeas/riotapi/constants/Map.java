@@ -28,7 +28,13 @@ public enum Map {
     TWISTED_TREELINE_ORIG(4, "Twisted Treeline (Original)", GameMap.TWISTED_TREELINE_OLD),
     CRYSTAL_SCAR(8, "The Crystal Scar", GameMap.CRYSTAL_SCAR),
     TWISTED_TREELINE_CURR(10, "Twisted Treeline (Current)", GameMap.TWISTED_TREELINE),
-    DEBUG_MAP(11, "Debug Map", null),
+    /**
+     * summoners rift beta map
+     * @deprecated Use {@link #SR_NEW} instead
+     */
+    @Deprecated
+    DEBUG_MAP(11, "Summoner", null),
+    SR_NEW(11, "Summoner's Rift (Updated)", GameMap.SUMMONERS_RIFT),
     HOWLING_ABYSS(12, "Howling Abyss", GameMap.HOWLING_ABYSS);
 
 

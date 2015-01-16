@@ -106,6 +106,17 @@ public class GameMap {
             "???"
     );
 
+    public static final GameMap SUMMONERS_RIFT_NEW = new GameMap(
+            "Summoner's Rift (Beta)",
+            "SummonersRift",
+            11,
+            1,
+            10,
+            "The newest and most venerated Field of Justice is known as Summoner's Rift.  Traverse down one of three " +
+            "different paths in order to attack your enemy at their weakest point.  Work with your allies to siege " +
+            "the enemy base and destroy their Nexus!"
+    );
+
     /**
      * Not accessible to clients
      */

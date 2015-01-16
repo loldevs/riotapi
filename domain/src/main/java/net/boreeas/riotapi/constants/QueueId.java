@@ -71,7 +71,7 @@ public class QueueId {
      */
     public final int TT_3v3_BOT_EASY_AND_MEDIUM = 52;
     /**
-     * For crystal scar easy bot games
+     * For crystal scar easy and medium bot games
      */
     public final int ODIN_5v5_BOT_EASY_AND_MEDIUM = 25;
     /**

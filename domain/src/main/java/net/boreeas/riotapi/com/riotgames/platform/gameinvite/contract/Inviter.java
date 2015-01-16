@@ -30,8 +30,4 @@ public class Inviter {
     private String summonerName;
     private long summonerId;
     private LeagueTier previousSeasonHighestTier;
-    private String invitationId;
-    private Object invitePayload;
-    @JsonSerialization
-    private InvitationGameMetaData gameMetaData;
 }

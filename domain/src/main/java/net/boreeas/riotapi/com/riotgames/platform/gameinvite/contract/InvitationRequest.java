@@ -17,6 +17,7 @@
 package net.boreeas.riotapi.com.riotgames.platform.gameinvite.contract;
 
 import lombok.Data;
+import net.boreeas.riotapi.rtmp.serialization.JsonSerialization;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 /**
@@ -31,4 +32,8 @@ public class InvitationRequest {
     private InviteType inviteType;
     private InvitationState invitationState;
     private Inviter inviter;
+    private String invitationId;
+    private Object invitePayload;
+    @JsonSerialization
+    private InvitationGameMetaData gameMetaData;
 }

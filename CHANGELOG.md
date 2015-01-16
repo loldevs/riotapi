@@ -9,6 +9,7 @@
 ##### Rtmp
 * Fixed bug where bot game lobby creation called the normal team lobby creation
 * Rtmp subscription channels now throw error if the channel is retrieved before its name is known
+* Fixed a bug where accepting an invitation would decline the inviation
 
 ### 1.5.5
 ##### Xmpp

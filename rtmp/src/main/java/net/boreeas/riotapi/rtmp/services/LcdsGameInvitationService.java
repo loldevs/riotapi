@@ -127,7 +127,7 @@ public class LcdsGameInvitationService {
      * @return The lobby status
      */
     public LobbyStatus accept(String inviteId) {
-        return client.sendRpcAndWait(SERVICE, "decline", inviteId);
+        return client.sendRpcAndWait(SERVICE, "accept", inviteId);
     }
 
     /**

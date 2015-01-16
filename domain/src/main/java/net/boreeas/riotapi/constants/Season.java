@@ -23,7 +23,9 @@ public enum Season {
     PRESEASON3(3),
     SEASON3(3),
     PRESEASON4(4),
-    SEASON4(4);
+    SEASON4(4),
+    PREASEASON5(5),
+    SEASON5(5);
 
     public final int numeric;
 

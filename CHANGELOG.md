@@ -12,6 +12,7 @@
 * Added queue type and queue id for the new custom game mode, nemesis pick
 * Added "Master" league tier
 * Added new map (SR Beta)
+* Added new season
 
 ##### Rtmp
 * Fixed bug where bot game invites would not pass the queue id

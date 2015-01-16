@@ -433,12 +433,12 @@ public abstract class RtmpClient implements AutoCloseable {
     }
 
     public void disconnect() {
-        isConnected = false;
         close();
     }
 
     @Override
     public void close() {
+        isConnected = false;
         try {
             reader.close();
             writer.close();

@@ -8,6 +8,10 @@
 * Added bot difficulty constant
 * Added missing classes for game invitations
 
+##### Rtmp
+* Fixed bug where bot game invites would not pass the queue id
+* Added Javadoc to LcdsGameInvitationService
+
 ### 1.5.4
 ##### General
 * Unified sibling dependencies via ${project.version}

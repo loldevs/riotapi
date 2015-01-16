@@ -29,7 +29,7 @@ import java.util.List;
  */
 @AllArgsConstructor
 public class SummonerService {
-    private static final String SERVICE = "summonerService";
+    public static final String SERVICE = "summonerService";
     private RtmpClient client;
 
 

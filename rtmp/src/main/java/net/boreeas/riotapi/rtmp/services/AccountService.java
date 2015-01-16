@@ -25,7 +25,7 @@ import net.boreeas.riotapi.rtmp.RtmpClient;
  */
 @AllArgsConstructor
 public class AccountService {
-    private static final String SERVICE = "accountService";
+    public static final String SERVICE = "accountService";
     private RtmpClient client;
 
     /**

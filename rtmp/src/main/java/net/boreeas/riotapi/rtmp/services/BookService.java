@@ -27,8 +27,8 @@ import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePageBoo
  */
 @AllArgsConstructor
 public class BookService {
-    private static final String SPELL_BOOK_SERVICE = "spellBookService";
-    private static final String MASTERY_BOOK_SERVICE = "masteryBookService";
+    public static final String SPELL_BOOK_SERVICE = "spellBookService";
+    public static final String MASTERY_BOOK_SERVICE = "masteryBookService";
     private RtmpClient client;
 
     public RunePageBook getSpellBook(long summonerId) {

@@ -30,7 +30,7 @@ import javax.annotation.Nonnull;
 @AllArgsConstructor
 @Nonnull
 public class SummonerTeamService {
-    private static final String SERVICE = "summonerTeamService";
+    public static final String SERVICE = "summonerTeamService";
     private RtmpClient client;
 
     public Player createPlayer() {

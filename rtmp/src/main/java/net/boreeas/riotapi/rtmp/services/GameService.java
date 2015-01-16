@@ -29,7 +29,7 @@ import java.util.List;
  */
 @AllArgsConstructor
 public class GameService {
-    private static final String SERVICE = "gameService";
+    public static final String SERVICE = "gameService";
     private RtmpClient client;
 
     public List<PracticeGameSearchResult> listAllPracticeGame() {

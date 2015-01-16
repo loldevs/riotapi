@@ -25,7 +25,7 @@ import net.boreeas.riotapi.rtmp.RtmpClient;
  */
 @AllArgsConstructor
 public class LcdsChampionTradeService {
-    private static final String SERVICE = "lcdsChampionTradeService";
+    public static final String SERVICE = "lcdsChampionTradeService";
     private RtmpClient client;
 
     public PotentialTraders getPotentialTraders() {

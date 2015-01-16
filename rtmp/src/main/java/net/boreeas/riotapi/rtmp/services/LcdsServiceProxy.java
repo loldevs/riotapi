@@ -28,7 +28,7 @@ import net.boreeas.riotapi.rtmp.RtmpClient;
  */
 @AllArgsConstructor
 public class LcdsServiceProxy {
-    private static final String SERVICE = "lcdsServiceProxy";
+    public static final String SERVICE = "lcdsServiceProxy";
     private RtmpClient client;
 
     public LobbyStatus createGroupFinderLobby(int type, String uuid) {

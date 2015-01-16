@@ -32,7 +32,7 @@ import java.util.List;
  */
 @AllArgsConstructor
 public class PlayerStatsService {
-    private static final String SERVICE = "playerStatsService";
+    public static final String SERVICE = "playerStatsService";
     private RtmpClient client;
 
     public Object processEloQuestionaire(SummonerSkillLevel skill) {

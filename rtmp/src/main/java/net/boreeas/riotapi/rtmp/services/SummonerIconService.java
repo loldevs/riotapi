@@ -25,7 +25,7 @@ import net.boreeas.riotapi.rtmp.RtmpClient;
  */
 @AllArgsConstructor
 public class SummonerIconService {
-    private static final String SERVICE = "summonerIconService";
+    public static final String SERVICE = "summonerIconService";
     private RtmpClient client;
 
     public SummonerIconInventory getSummonerIconInventory(double summonerId) {

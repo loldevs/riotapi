@@ -32,7 +32,7 @@ import java.util.List;
 @AllArgsConstructor
 @ParametersAreNonnullByDefault
 public class MatchmakerService {
-    private static final String SERVICE = "matchmakerService";
+    public static final String SERVICE = "matchmakerService";
     private RtmpClient client;
 
     /**

@@ -28,7 +28,7 @@ import java.util.List;
  */
 @AllArgsConstructor
 public class InventoryService {
-    private static final String SERVICE = "inventoryService";
+    public static final String SERVICE = "inventoryService";
     private RtmpClient client;
 
     public SummonerActiveBoostDto getSummonerActiveBoosts() {

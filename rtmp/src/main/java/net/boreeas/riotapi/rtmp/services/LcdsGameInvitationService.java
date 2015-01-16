@@ -28,7 +28,7 @@ import java.util.List;
  */
 @AllArgsConstructor
 public class LcdsGameInvitationService {
-    private static final String SERVICE = "lcdsGameInvitationService";
+    public static final String SERVICE = "lcdsGameInvitationService";
     private RtmpClient client;
 
     /**

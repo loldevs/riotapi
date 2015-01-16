@@ -26,7 +26,7 @@ import net.boreeas.riotapi.rtmp.RtmpClient;
  */
 @AllArgsConstructor
 public class LcdsRerollService {
-    private static final String SERVICE = "lcdsRerollService";
+    public static final String SERVICE = "lcdsRerollService";
     private RtmpClient client;
 
     public PointSummary getPointsBalance() {

@@ -28,7 +28,7 @@ import java.util.TimeZone;
  * Created by malte on 7/15/2014.
  */
 public class LoginService {
-    private static final String SERVICE = "loginService";
+    public static final String SERVICE = "loginService";
     private RtmpClient client;
     private SimpleDateFormat format = new SimpleDateFormat("ddd MMM d yyyy HH:mm:ss");
 

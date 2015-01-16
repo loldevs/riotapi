@@ -25,7 +25,10 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 public enum GameType {
     CUSTOM_GAME,
     TUTORIAL_GAME,
-    MATCHED_GAME;
+    MATCHED_GAME,
+    COOP_VS_AI_GAME,
+    RANKED_GAME,
+    NORMAL_GAME;
 
     public static GameType getByName(String name) {
         for (GameType type: values()) {

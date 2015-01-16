@@ -24,15 +24,18 @@ import java.util.concurrent.TimeUnit;
  */
 public class InvokeCallback {
     private CountDownLatch latch = new CountDownLatch(1);
-    private Object result;
+    private volatile Object result;
 
     public Object waitForReply() throws InterruptedException {
         latch.await();
         return result;
     }
 
-    public Object waitForReply(long timeout, TimeUnit unit) throws InterruptedException {
+    public Object waitForReply(long timeout, TimeUnit unit) throws InterruptedException, IllegalStateException {
         latch.await(timeout, unit);
+        if (result == null) {
+            throw new IllegalStateException("Wait timed out, but result did not arrive");
+        }
         return result;
     }
 

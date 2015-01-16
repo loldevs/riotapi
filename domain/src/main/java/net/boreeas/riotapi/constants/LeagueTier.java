@@ -21,6 +21,7 @@ package net.boreeas.riotapi.constants;
  */
 public enum LeagueTier {
     CHALLENGER,
+    MASTER,
     DIAMOND,
     PLATINUM,
     GOLD,

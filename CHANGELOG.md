@@ -10,6 +10,7 @@
 * Added missing classes for game invitations
 * Added missing game modes
 * Added queue type and queue id for the new custom game mode, nemesis pick
+* Added "Master" league tier
 
 ##### Rtmp
 * Fixed bug where bot game invites would not pass the queue id

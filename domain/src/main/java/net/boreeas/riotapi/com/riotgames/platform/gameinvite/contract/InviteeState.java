@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 The LolDevs team (https://github.com/loldevs)
+ * Copyright 2015 The LolDevs team (https://github.com/loldevs)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,13 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.gameinvite.contract;
 
-import lombok.Data;
-import net.boreeas.riotapi.rtmp.serialization.Serialization;
-
 /**
- * Created on 7/19/2014.
+ * @author Malte Schütze
  */
-@Data
-@Serialization(name = "com.riotgames.platform.gameinvite.contract.Invitee")
-public class Invitee {
-    private String inviteeStateAsString;
-    private InviteeState inviteeState;
-    private String summonerName;
-    private long summonerId;
+public enum InviteeState {
+    CREATOR,
+    PENDING,
+    ACCEPTED,
+    DECLINED,
+    QUIT
 }

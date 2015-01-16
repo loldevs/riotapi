@@ -3,6 +3,7 @@
 ### 1.5.6
 ##### Domain
 * Queue ids now static
+* Added invitee state
 
 ##### Rtmp
 * Fixed bug where bot game lobby creation called the normal team lobby creation

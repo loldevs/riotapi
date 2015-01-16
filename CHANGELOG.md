@@ -4,9 +4,11 @@
 ##### Domain
 * Queue ids now static
 * Added invitee state
+* Added lobby member class
 
 ##### Rtmp
 * Fixed bug where bot game lobby creation called the normal team lobby creation
+* Rtmp subscription channels now throw error if the channel is retrieved before its name is known
 
 ### 1.5.5
 ##### Xmpp

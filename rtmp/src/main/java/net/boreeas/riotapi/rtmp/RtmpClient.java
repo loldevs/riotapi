@@ -71,9 +71,9 @@ public abstract class RtmpClient implements AutoCloseable {
 
     // Async messages
     private Map<Consumer<AsyncMessageEvent>, Predicate<AsyncMessageEvent>> asyncMessageListeners = new ConcurrentHashMap<>();
-    @Getter private String broadcastChannel;
-    @Getter private String gameNewsChannel;
-    @Getter private String clientNewsChannel;
+    private String broadcastChannel;
+    private String gameNewsChannel;
+    private String clientNewsChannel;
 
     // Connection data
     @Getter private boolean isConnected = false;
@@ -490,6 +490,21 @@ public abstract class RtmpClient implements AutoCloseable {
         }
 
         return session;
+    }
+
+    public String getBroadcastChannel() {
+        if (broadcastChannel == null) throw new IllegalStateException("Broadcast channel is unknown. Possible cause: Connection not finished");
+        return broadcastChannel;
+    }
+
+    public String getGameNewsChannel() {
+        if (gameNewsChannel == null) throw new IllegalStateException("Game news channel is unknown. Possible cause: Connection not finished");
+        return gameNewsChannel;
+    }
+
+    public String getClientNewsChannel() {
+        if (clientNewsChannel == null) throw new IllegalStateException("Client news channel is unknown. Possible cause: Connection not finished");
+        return clientNewsChannel;
     }
 
 

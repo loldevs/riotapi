@@ -74,4 +74,8 @@ public class QueueId {
      * For crystal scar easy bot games
      */
     public final int ODIN_5v5_BOT_EASY_AND_MEDIUM = 25;
+    /**
+     * For nemesis draft custom games
+     */
+    public final int CUSTOM_COUNTER_PICK = 310;
 }

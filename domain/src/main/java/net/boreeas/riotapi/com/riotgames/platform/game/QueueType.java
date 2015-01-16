@@ -45,6 +45,7 @@ public enum QueueType {
     CAP1x1                  (Flags.TEAM_BUILDER),
     CAP5x5                  (Flags.TEAM_BUILDER),
     CLASSIC,
+    COUNTER_PICK            (Flags.FEATURED | Flags.DRAFT),
     CUSTOM,
     FEATURED                (Flags.FEATURED),
     FEATURED_BOT            (Flags.BOT | Flags.FEATURED),

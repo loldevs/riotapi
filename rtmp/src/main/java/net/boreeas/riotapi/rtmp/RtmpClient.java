@@ -37,6 +37,9 @@ import java.net.ProtocolException;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -49,6 +52,7 @@ public abstract class RtmpClient implements AutoCloseable {
 
     public static final int RTMP_VERSION = 3;
     private static final int PAYLOAD_SIZE = 1536;
+    private static final int HEARTBEAT_INTERVAL = 2000;
     public static final int INVOKE_STREAM = 3;
     public static final int DEFAULT_MSG_STREAM = 0;
 
@@ -78,6 +82,8 @@ public abstract class RtmpClient implements AutoCloseable {
     private String localClientId;
     @Getter private Session session;
     @Getter private LoginDataPacket loginDataPacket;
+    private ScheduledExecutorService heartbeatExecutor = Executors.newScheduledThreadPool(1);
+    private int heartbeats = 1;
 
     // Async await
     private Map<Integer, InvokeCallback> callbacks = new HashMap<>();
@@ -371,6 +377,10 @@ public abstract class RtmpClient implements AutoCloseable {
             log.error("Got interrupted, disconnecting: " + ex);
             disconnect();
         }
+
+        heartbeatExecutor.scheduleAtFixedRate(() -> loginService.performLcdsHeartBeat(loginDataPacket.getAllSummonerData().getSummoner().getAcctId(), session.getToken(), heartbeats++),
+                HEARTBEAT_INTERVAL, HEARTBEAT_INTERVAL, TimeUnit.MILLISECONDS
+        );
     }
 
     private void doHandshake(AmfWriter writer, AmfReader reader) throws IOException {
@@ -433,6 +443,7 @@ public abstract class RtmpClient implements AutoCloseable {
             reader.close();
             writer.close();
             socket.close();
+            heartbeatExecutor.shutdownNow();
         } catch (IOException e) {}
     }
 

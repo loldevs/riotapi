@@ -13,6 +13,8 @@
 ##### Rtmp
 * Fixed bug where bot game invites would not pass the queue id
 * Added Javadoc to LcdsGameInvitationService
+* Made RtmpClient autocloseable
+* Added automatic heartbeats to RtmpClient
 
 ### 1.5.4
 ##### General

@@ -11,6 +11,8 @@
 * Rtmp subscription channels now throw error if the channel is retrieved before its name is known
 * Fixed a bug where accepting an invitation would decline the inviation
 * Made all service names public
+* Added javadoc to all services
+* Deprecated ambiguous varargs sendRpc() methods, and replaced them with explicit versions
 
 ### 1.5.5
 ##### Xmpp
@@ -31,7 +33,6 @@
 * Added Javadoc to LcdsGameInvitationService
 * Made RtmpClient autocloseable
 * Added automatic heartbeats to RtmpClient
-* Deprecated ambiguous varargs sendRpc() methods, and replaced them with explicit versions
 
 ### 1.5.4
 ##### General

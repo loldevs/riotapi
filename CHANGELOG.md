@@ -4,6 +4,9 @@
 ##### Domain
 * Queue ids now static
 
+##### Rtmp
+* Fixed bug where bot game lobby creation called the normal team lobby creation
+
 ### 1.5.5
 ##### Xmpp
 * Added toString() to RiotStatus that encodes the status in a XMPP-compatible presence format

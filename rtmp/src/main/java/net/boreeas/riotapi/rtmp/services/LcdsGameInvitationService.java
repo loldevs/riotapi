@@ -59,7 +59,7 @@ public class LcdsGameInvitationService {
      */
     @Deprecated
     public LobbyStatus createArrangedBotTeamLobby(long queueId, String difficulty) {
-        return client.sendRpcAndWait(SERVICE, "createArrangedTeamLobby", queueId, difficulty);
+        return client.sendRpcAndWait(SERVICE, "createArrangedBotTeamLobby", queueId, difficulty);
     }
 
     /**
@@ -69,7 +69,7 @@ public class LcdsGameInvitationService {
      * @return The lobby status
      */
     public LobbyStatus createArrangedBotTeamLobby(long queueId, BotDifficulty difficulty) {
-        return client.sendRpcAndWait(SERVICE, "createArrangedTeamLobby", queueId, difficulty);
+        return client.sendRpcAndWait(SERVICE, "createArrangedBotTeamLobby", queueId, difficulty);
     }
 
     /**

@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
 /**
- * Created by malte on 7/15/2014.
+ * Preference storage. Unknown
  */
 @AllArgsConstructor
 public class PlayerPreferencesService {
@@ -32,7 +32,7 @@ public class PlayerPreferencesService {
     }
 
     public void savePreferences(Object preferences) {
-        client.sendRpc(SERVICE, "savePreferences", preferences);
+        client.sendRpcToDefault(SERVICE, "savePreferences", preferences);
     }
 
     public Object setEnabled(String a, double b) {

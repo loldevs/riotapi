@@ -28,38 +28,78 @@ import net.boreeas.riotapi.rtmp.RtmpClient;
 import java.util.List;
 
 /**
- * Created by malte on 7/18/2014.
+ * Retrieve player stats. New accounts need to call {@link #processEloQuestionaire(net.boreeas.riotapi.com.riotgames.platform.summoner.SummonerSkillLevel)} here
  */
 @AllArgsConstructor
 public class PlayerStatsService {
     public static final String SERVICE = "playerStatsService";
     private RtmpClient client;
 
+    /**
+     * Set the skill level for this account
+     * @param skill The skill level
+     * @return unknown
+     */
     public Object processEloQuestionaire(SummonerSkillLevel skill) {
         return client.sendRpcAndWait(SERVICE, "processEloQuestionaire", skill);
     }
 
-    public PlayerLifetimeStats retrievePlayerStatsByAccountId(double accountId, Season season) {
+    /**
+     * Retrieve player stats
+     * @param accountId The player's id
+     * @param season The target season
+     * @return Player stats
+     */
+    public PlayerLifetimeStats retrievePlayerStatsByAccountId(long accountId, Season season) {
         return client.sendRpcAndWait(SERVICE, "retrievePlayerStatsByAccountId", accountId, season);
     }
 
-    public List<ChampionStatInfo> retrieveTopPlayedChampions(double accId, GameMode mode) {
+    /**
+     * Retrieve the most played champions for the target player
+     * @param accId The player's id
+     * @param mode The mode to check
+     * @return Champion stats
+     */
+    public List<ChampionStatInfo> retrieveTopPlayedChampions(long accId, GameMode mode) {
         return client.sendRpcAndWait(SERVICE, "retrieveTopPlayedChampions", accId, mode);
     }
 
-    public AggregatedStats getAggregatedStats(double id, GameMode gameMode, Season season) {
+    /**
+     * Retrieve a player's stats
+     * @param id The id of the player
+     * @param gameMode The game mode to check
+     * @param season The season to check
+     * @return Stats
+     */
+    public AggregatedStats getAggregatedStats(long id, GameMode gameMode, Season season) {
         return client.sendRpcAndWait(SERVICE, "getAggregatedStats", id, gameMode, season.numeric);
     }
 
-    public RecentGames getRecentGames(double accId) {
+    /**
+     * Retrieve recently played games for the target player
+     * @param accId The id of the player
+     * @return The recent games
+     */
+    public RecentGames getRecentGames(long accId) {
         return client.sendRpcAndWait(SERVICE, "getRecentGames", accId);
     }
 
+    /**
+     * Retrieve stats for a team
+     * @param teamId The id of the team
+     * @return The team stats
+     */
     public List<TeamAggregatedStats> getTeamAggregatedStats(TeamId teamId) {
         return client.sendRpcAndWait(SERVICE, "getTeamAggregatedStats", teamId);
     }
 
-    public EndOfGameStats getTeamEndOfGameStats(TeamId teamId, double gameId) {
+    /**
+     * Retrieve post-game stats for a team
+     * @param teamId The id of the team
+     * @param gameId The if of the game
+     * @return Post-game stats
+     */
+    public EndOfGameStats getTeamEndOfGameStats(TeamId teamId, long gameId) {
         return client.sendRpcAndWait(SERVICE, "getTeamEndOfGameStats", teamId, gameId);
     }
 }

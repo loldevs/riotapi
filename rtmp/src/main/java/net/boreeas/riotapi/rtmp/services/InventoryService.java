@@ -24,17 +24,25 @@ import net.boreeas.riotapi.rtmp.RtmpClient;
 import java.util.List;
 
 /**
- * Created by malte on 7/15/2014.
+ * Retrieve account information
  */
 @AllArgsConstructor
 public class InventoryService {
     public static final String SERVICE = "inventoryService";
     private RtmpClient client;
 
+    /**
+     * Retrieve boosts that are currently active for the player
+     * @return The boosts
+     */
     public SummonerActiveBoostDto getSummonerActiveBoosts() {
         return client.sendRpcAndWait(SERVICE, "getSummonerActiveBoosts");
     }
 
+    /**
+     * Retrieve all champions owned by the player
+     * @return The champinons
+     */
     public List<Champion> getAvailableChampions() {
         return client.sendRpcAndWait(SERVICE, "getAvailableChampions");
     }

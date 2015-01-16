@@ -23,7 +23,7 @@ import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePage;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePageBook;
 
 /**
- * Created by malte on 7/16/2014.
+ * Handle runes and masteries
  */
 @AllArgsConstructor
 public class BookService {
@@ -31,22 +31,47 @@ public class BookService {
     public static final String MASTERY_BOOK_SERVICE = "masteryBookService";
     private RtmpClient client;
 
+    /**
+     * Retrieve rune page info for the target player
+     * @param summonerId The player's id
+     * @return The rune pages
+     */
     public RunePageBook getSpellBook(long summonerId) {
         return client.sendRpcAndWait(SPELL_BOOK_SERVICE, "getSpellBook", summonerId);
     }
 
+    /**
+     * Select the rune page that should be used by default
+     * @param page The page that should be used
+     * @return The page?
+     */
     public RunePage selectDefaultSpellBookPage(RunePage page) {
         return client.sendRpcAndWait(SPELL_BOOK_SERVICE, "selectDefaultSpellBookPage", page);
     }
 
+    /**
+     * Save current rune page info
+     * @param spellBook The rune pages
+     * @return The rune pages?
+     */
     public RunePageBook saveSpellBook(RunePageBook spellBook) {
         return client.sendRpcAndWait(SPELL_BOOK_SERVICE, "saveSpellBook", spellBook);
     }
 
+    /**
+     * Retrieve masteries for the target playwer
+     * @param summonerId The id of the player
+     * @return The masteries
+     */
     public MasteryBook getMasteryBook(long summonerId) {
         return client.sendRpcAndWait(MASTERY_BOOK_SERVICE, "getMasteryBook", summonerId);
     }
 
+    /**
+     * Save current masteries
+     * @param masteryBook The masteries to save
+     * @return The masteries?
+     */
     public MasteryBook saveMasteryBook(MasteryBook masteryBook) {
         return client.sendRpcAndWait(MASTERY_BOOK_SERVICE, "saveMasteryBook", masteryBook);
     }

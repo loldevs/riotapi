@@ -21,7 +21,7 @@ import net.boreeas.riotapi.com.riotgames.platform.account.impl.AccountState;
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
 /**
- * Created by malte on 7/15/2014.
+ * Account management stuff
  */
 @AllArgsConstructor
 public class AccountService {

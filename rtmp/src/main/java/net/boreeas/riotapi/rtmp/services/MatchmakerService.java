@@ -27,7 +27,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 /**
- * Created by malte on 7/15/2014.
+ * Complimentary to {@link net.boreeas.riotapi.rtmp.services.GameService}, this service handles joining
+ * and leaving queues
  */
 @AllArgsConstructor
 @ParametersAreNonnullByDefault
@@ -40,7 +41,7 @@ public class MatchmakerService {
      * @param queueId The id for the queue
      * @return Information on the queue
      */
-    public QueueInfo getQueueInfo(double queueId) {
+    public QueueInfo getQueueInfo(long queueId) {
         return client.sendRpcAndWait(SERVICE, "getQueueInfo", queueId);
     }
 
@@ -53,6 +54,10 @@ public class MatchmakerService {
         return client.sendRpcAndWait(SERVICE, "attachTeamToQueue", params);
     }
 
+    /**
+     * (Probably) leave the current queues?
+     * @return unknown
+     */
     public Object purgeFromQueues() {
         return client.sendRpcAndWait(SERVICE, "purgeFromQueues");
     }
@@ -72,7 +77,7 @@ public class MatchmakerService {
      * @return <code>true</code> if successfully cancelled, otherwise cancelling isn't possible (i.e. champ select
      * imminent)
      */
-    public boolean cancelFromQueueIfPossible(double summonerId) {
+    public boolean cancelFromQueueIfPossible(long summonerId) {
         return client.sendRpcAndWait(SERVICE, "cancelFromQueueIfPossible", summonerId);
     }
 
@@ -84,6 +89,10 @@ public class MatchmakerService {
         return client.sendRpcAndWait(SERVICE, "getAvailableQueues");
     }
 
+    /**
+     * See if matchmaking is enabled. Unknown if that means globally or to see if the player is in a queue.
+     * @return <code>true</code> if enabled, <code>false</code> otherwise
+     */
     public boolean isMatchmakingEnabled() {
         return client.sendRpcAndWait(SERVICE, "isMatchmakingEnabled");
     }

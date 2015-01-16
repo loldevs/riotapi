@@ -21,25 +21,45 @@ import net.boreeas.riotapi.com.riotgames.platform.trade.api.contract.PotentialTr
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
 /**
- * Created by malte on 7/18/2014.
+ * This service handles trade attmempts in draft and aram.
  */
 @AllArgsConstructor
 public class LcdsChampionTradeService {
     public static final String SERVICE = "lcdsChampionTradeService";
     private RtmpClient client;
 
+    /**
+     * List all players with whom a trade could be attempted
+     * @return The potential traders
+     */
     public PotentialTraders getPotentialTraders() {
         return client.sendRpcAndWait(SERVICE, "getPotentialTraders");
     }
 
+    /**
+     * Attempt to trade with the target player
+     * @param summonerInternalName The summoner's internal name, as sent by {@link #getPotentialTraders()}
+     * @param championId Unknown - id of sent champion? id of trade?
+     * @return unknown
+     */
     public Object attemptTrade(String summonerInternalName, int championId) {
         return client.sendRpcAndWait(SERVICE, "attemptTrade", summonerInternalName, championId, false);
     }
 
+    /**
+     * Dismiss an attempted trade
+     * @return unknown
+     */
     public Object dismissTrade() {
         return client.sendRpcAndWait(SERVICE, "dismissTrade");
     }
 
+    /**
+     * Accept a trade
+     * @param summonerInternalName The summoner's internal name
+     * @param championId unknown - The id of the sent champion?
+     * @return unknown
+     */
     public Object acceptTrade(String summonerInternalName, int championId) {
         return client.sendRpcAndWait(SERVICE, "attemptTrade", summonerInternalName, championId, true);
     }

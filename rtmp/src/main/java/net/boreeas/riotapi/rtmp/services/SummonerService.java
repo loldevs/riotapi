@@ -25,38 +25,72 @@ import net.boreeas.riotapi.rtmp.RtmpClient;
 import java.util.List;
 
 /**
- * Created by malte on 7/18/2014.
+ * Retrive player stats. New accounts need to call {@see #createDefaultSummoner} here
  */
 @AllArgsConstructor
 public class SummonerService {
     public static final String SERVICE = "summonerService";
     private RtmpClient client;
 
-
-    public AllSummonerData getAllSummonerDataByAccount(double accId) {
+    /**
+     * Retrieve summoner information
+     * @param accId The target account id
+     * @return Information
+     */
+    public AllSummonerData getAllSummonerDataByAccount(long accId) {
         return client.sendRpcAndWait(SERVICE, "getAllSummonerDataByAccount", accId);
     }
 
+    /**
+     * Retrieve a summoner by their public name
+     * @param name The name of the player
+     * @return Public information of the target player
+     */
     public PublicSummoner getSummonerByName(String name) {
         return client.sendRpcAndWait(SERVICE, "getSummonerByName", name);
     }
 
-    public AllPublicSummonerData getAllPublicSummonerDataByAccount(double accId) {
+    /**
+     * Retrieve public summoner information
+     * @param accId The target account id
+     * @return The information
+     */
+    public AllPublicSummonerData getAllPublicSummonerDataByAccount(long accId) {
         return client.sendRpcAndWait(SERVICE, "getAllPublicSummonerDataByAccount", accId);
     }
 
+    /**
+     * Retrieve a summoner's internal name by their public name
+     * @param name The target's name
+     * @return The internal name
+     */
     public String getSummonerInternalNameByName(String name) {
         return client.sendRpcAndWait(SERVICE, "getSummonerInternalNameByName", name);
     }
 
+    /**
+     * Update your profile icon
+     * @param iconId The id of the icon
+     * @return unknown
+     */
     public Object updateProfileIconId(long iconId) {
         return client.sendRpcAndWait(SERVICE, "updateProfileIconId", iconId);
     }
 
-    public List<String> getSummonerNames(double... summonerIds) {
+    /**
+     * Retrieve summoner names for the target ids
+     * @param summonerIds The ids of the players
+     * @return Their names
+     */
+    public List<String> getSummonerNames(long... summonerIds) {
         return client.sendRpcAndWait(SERVICE, "getSummonerNames", summonerIds);
     }
 
+    /**
+     * Create a new summoner with the target display name
+     * @param name The display name
+     * @return The new summoner's information
+     */
     public AllSummonerData createDefaultSummoner(String name) {
         return client.sendRpcAndWait(SERVICE, "createDefaultSummoner", name);
     }

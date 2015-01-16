@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
- * Created by malte on 7/15/2014.
+ * Logging in and authenticating, as well as performing regular pings
  */
 public class LoginService {
     public static final String SERVICE = "loginService";

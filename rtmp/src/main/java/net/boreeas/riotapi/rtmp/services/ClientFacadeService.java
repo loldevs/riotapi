@@ -22,7 +22,7 @@ import net.boreeas.riotapi.com.riotgames.platform.harassment.LcdsResponseString;
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
 /**
- * Created by malte on 7/15/2014.
+ * Some account management stuff. Purpose not 100% known
  */
 @AllArgsConstructor
 public class ClientFacadeService {

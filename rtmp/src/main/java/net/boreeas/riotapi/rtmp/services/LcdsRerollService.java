@@ -22,17 +22,25 @@ import net.boreeas.riotapi.com.riotgames.platform.reroll.pojo.RollResult;
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
 /**
- * Created by malte on 7/18/2014.
+ * Handle ARAM rerolls
  */
 @AllArgsConstructor
 public class LcdsRerollService {
     public static final String SERVICE = "lcdsRerollService";
     private RtmpClient client;
 
+    /**
+     * Get the currently available reroll points
+     * @return The points
+     */
     public PointSummary getPointsBalance() {
         return client.sendRpcAndWait(SERVICE, "getPointsBalance");
     }
 
+    /**
+     * Reroll your champion
+     * @return The result of the roll
+     */
     public RollResult roll() {
         return client.sendRpcAndWait(SERVICE, "roll");
     }

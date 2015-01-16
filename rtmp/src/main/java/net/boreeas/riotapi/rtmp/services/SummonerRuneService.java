@@ -21,14 +21,19 @@ import net.boreeas.riotapi.com.riotgames.platform.summoner.runes.SummonerRuneInv
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
 /**
- * Created by malte on 7/16/2014.
+ * Manage runes
  */
 @AllArgsConstructor
 public class SummonerRuneService {
     public static final String SERVICE = "summonerRuneService";
     private RtmpClient client;
 
-    public SummonerRuneInventory getSummonerRuneInventory(double summonerId) {
+    /**
+     * Retrieve all owned runes
+     * @param summonerId The id of the target player
+     * @return The player's runes
+     */
+    public SummonerRuneInventory getSummonerRuneInventory(long summonerId) {
         return client.sendRpcAndWait(SERVICE, "getSummonerRuneInventory", summonerId);
     }
 }

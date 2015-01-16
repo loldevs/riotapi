@@ -21,14 +21,19 @@ import net.boreeas.riotapi.com.riotgames.platform.summoner.icon.SummonerIconInve
 import net.boreeas.riotapi.rtmp.RtmpClient;
 
 /**
- * Created by malte on 7/18/2014.
+ * Manage summoner icons
  */
 @AllArgsConstructor
 public class SummonerIconService {
     public static final String SERVICE = "summonerIconService";
     private RtmpClient client;
 
-    public SummonerIconInventory getSummonerIconInventory(double summonerId) {
+    /**
+     * Retrieve the targets owned icons
+     * @param summonerId The id of the player
+     * @return The player's icons
+     */
+    public SummonerIconInventory getSummonerIconInventory(long summonerId) {
         return client.sendRpcAndWait(SERVICE, "getSummonerIconInventory", summonerId);
     }
 

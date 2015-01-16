@@ -94,7 +94,7 @@ public class LcdsGameInvitationService {
      * @param summonerId The id of the summoner
      */
     public void grantInvitePrivileges(long summonerId) {
-        client.sendRpc(SERVICE, "grantInvitePrivileges", summonerId);
+        client.sendRpcToDefault(SERVICE, "grantInvitePrivileges", summonerId);
     }
 
     /**
@@ -103,7 +103,7 @@ public class LcdsGameInvitationService {
      */
     public void transferOwnership(long summonerId) {
 
-        client.sendRpc(SERVICE, "transferOwnership", summonerId);
+        client.sendRpcToDefault(SERVICE, "transferOwnership", summonerId);
     }
 
     /**
@@ -111,14 +111,14 @@ public class LcdsGameInvitationService {
      * @param summonerId The id of the summoner
      */
     public void invite(long summonerId) {
-        client.sendRpc(SERVICE, "invite", summonerId);
+        client.sendRpcToDefault(SERVICE, "invite", summonerId);
     }
 
     /**
      * Leave the current lobby.
      */
     public void leave() {
-        client.sendRpc(SERVICE, "leave");
+        client.sendRpcToDefault(SERVICE, "leave");
     }
 
     /**
@@ -135,6 +135,6 @@ public class LcdsGameInvitationService {
      * @param inviteId The id of the invitation (transmitted via {@link net.boreeas.riotapi.com.riotgames.platform.gameinvite.contract.InvitationRequest})
      */
     public void decline(String inviteId) {
-        client.sendRpc(SERVICE, "decline", inviteId);
+        client.sendRpcToDefault(SERVICE, "decline", inviteId);
     }
 }

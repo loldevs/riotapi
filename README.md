@@ -22,6 +22,6 @@ We are on maven! Include the following in your <dependencies> in your pom.xml:
 <dependency>
   <groupId>net.boreeas</groupId>
   <artifactId>$REQUIRED_MODULE</artifact>
-  <version>1.5.3</version>
+  <version>1.5.4</version>
 </dependency>
 ```

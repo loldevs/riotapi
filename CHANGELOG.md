@@ -5,8 +5,10 @@
 * Added toString() to RiotStatus that encodes the status in a XMPP-compatible presence format
 
 ##### Domain
-* Added bot difficulty constant
+* Added bot difficulty constants
+* Added queue id constants
 * Added missing classes for game invitations
+* Added missing game modes
 
 ##### Rtmp
 * Fixed bug where bot game invites would not pass the queue id

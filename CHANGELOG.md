@@ -16,6 +16,7 @@
 * Deprecated ambiguous varargs sendRpc() methods, and replaced them with explicit versions
 * Invoke callback throws IllegalStateException if wait times out but no value has been set
 * Fixed bug where LCDS Heartbeats disconnected the client
+* Fixed bug where wrong player class was used in SummonerTeamService.createPlayer
 
 ### 1.5.5
 ##### Xmpp

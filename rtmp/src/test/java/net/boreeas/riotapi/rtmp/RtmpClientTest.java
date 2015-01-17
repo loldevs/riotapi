@@ -159,7 +159,8 @@ public class RtmpClientTest extends TestCase {
     }
 
     public void testLcdsHeartBeat() {
-        client.loginService.performLcdsHeartBeat(client.getLoginDataPacket().getAllSummonerData().getSummoner().getAcctId(), client.getSession().getToken(), 1);
+        String s = client.loginService.performLcdsHeartBeat(client.getLoginDataPacket().getAllSummonerData().getSummoner().getAcctId(), client.getSession().getToken(), 1);
+        System.out.println(s);
     }
 
     public void testGetAvailableQueues() {
@@ -254,7 +255,7 @@ public class RtmpClientTest extends TestCase {
         client.summonerTeamService.isNameValidAndAvailable("Test Team");
     }
 
-    public void testIsTagValidAndAvailablge() {
+    public void testIsTagValidAndAvailable() {
         client.summonerTeamService.isTagValidAndAvailable("TEST");
     }
 }

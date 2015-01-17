@@ -5,6 +5,7 @@
 * Queue ids now static
 * Added invitee state
 * Added lobby member class
+* Fixed xmpp url loading for shards
 
 ##### Rtmp
 * Fixed bug where bot game lobby creation called the normal team lobby creation

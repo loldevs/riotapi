@@ -30,7 +30,7 @@ import java.util.TimeZone;
 public class LoginService {
     public static final String SERVICE = "loginService";
     private RtmpClient client;
-    private SimpleDateFormat format = new SimpleDateFormat("ddd MMM d yyyy HH:mm:ss");
+    private SimpleDateFormat format = new SimpleDateFormat("EEE MMM d yyyy HH:mm:ss z");
 
     public LoginService(RtmpClient client) {
         this.client = client;

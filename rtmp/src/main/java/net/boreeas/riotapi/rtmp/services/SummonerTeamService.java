@@ -17,8 +17,8 @@
 package net.boreeas.riotapi.rtmp.services;
 
 import lombok.AllArgsConstructor;
-import net.boreeas.riotapi.com.riotgames.platform.gameinvite.contract.Player;
 import net.boreeas.riotapi.com.riotgames.team.TeamId;
+import net.boreeas.riotapi.com.riotgames.team.dto.Player;
 import net.boreeas.riotapi.com.riotgames.team.dto.Team;
 import net.boreeas.riotapi.rtmp.RtmpClient;
 

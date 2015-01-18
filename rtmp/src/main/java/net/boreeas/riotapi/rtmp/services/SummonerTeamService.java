@@ -37,7 +37,7 @@ public class SummonerTeamService {
      * Create a ranked team player?
      * @return The created player?
      */
-    public net.boreeas.riotapi.com.riotgames.team.dto.Player createPlayer() {
+    public Player createPlayer() {
         return client.sendRpcAndWait(SERVICE, "createPlayer");
     }
 

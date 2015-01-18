@@ -17,6 +17,8 @@
 * Invoke callback throws IllegalStateException if wait times out but no value has been set
 * Fixed bug where LCDS Heartbeats disconnected the client
 * Fixed bug where wrong player class was used in SummonerTeamService.createPlayer
+* Adjusted heartbeat interval
+* Added automatic call to summonerTeamService.createPlayer, which if not called prevented some calls from returning
 
 ### 1.5.5
 ##### Xmpp

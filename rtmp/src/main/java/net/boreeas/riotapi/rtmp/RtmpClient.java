@@ -52,7 +52,7 @@ public abstract class RtmpClient implements AutoCloseable {
 
     public static final int RTMP_VERSION = 3;
     private static final int PAYLOAD_SIZE = 1536;
-    private static final int HEARTBEAT_INTERVAL = 2000;
+    private static final int HEARTBEAT_INTERVAL = 120; // Interval for heartbeats in seconds
     public static final int INVOKE_STREAM = 3;
     public static final int DEFAULT_MSG_STREAM = 0;
 
@@ -257,28 +257,33 @@ public abstract class RtmpClient implements AutoCloseable {
         InvokeCallback callback = getInvokeCallback(invokeId);
 
         Object result = params;
-        if (method.getName().equals("_result")) {
+        switch (method.getName()) {
+            case "_result":
 
-            if (params instanceof AcknowledgeMessage) {
-                result = ((AcknowledgeMessage) params).getBody();
-            }
-        } else if (method.getName().equals("receive")) {
-            AsyncMessage async = (AsyncMessage) params;
+                if (params instanceof AcknowledgeMessage) {
+                    result = ((AcknowledgeMessage) params).getBody();
+                }
+                break;
+            case "receive":
+                AsyncMessage async = (AsyncMessage) params;
 
-            String subtopic = Objects.toString(async.getHeaders().get(AsyncMessage.SUBTOPIC));
-            String clientId = async.getClientId();
-            Object body = async.getBody();
+                String subtopic = Objects.toString(async.getHeaders().get(AsyncMessage.SUBTOPIC));
+                String clientId = async.getClientId();
+                Object body = async.getBody();
 
-            result = new AsyncMessageEvent(clientId, subtopic, body);
-            onAsyncMessageEvent((AsyncMessageEvent) result);
-        } else if (method.getName().equals("onstatus")) {
+                result = new AsyncMessageEvent(clientId, subtopic, body);
+                onAsyncMessageEvent((AsyncMessageEvent) result);
+                break;
+            case "onstatus":
 
-            log.info("Onstatus: " + Objects.toString(method.getParams()) + "/" + method.getStatus() + "/Success=" + method.isSuccess());
-        } else {
+                log.info("Onstatus: " + Objects.toString(method.getParams()) + "/" + method.getStatus() + "/Success=" + method.isSuccess());
+                break;
+            default:
 
-            log.info("Unknown command: " + method.getName() + "/" + Arrays.toString(method.getParams()) + "/" + method.getStatus() + "/Success=" + method.isSuccess()
-            + "\n\t\t\tParams = " + params.getClass()
-            + "\n\t\t\tMethod = " + method.getClass());
+                log.info("Unknown command: " + method.getName() + "/" + Arrays.toString(method.getParams()) + "/" + method.getStatus() + "/Success=" + method.isSuccess()
+                        + "\n\t\t\tParams = " + params.getClass()
+                        + "\n\t\t\tMethod = " + method.getClass());
+                break;
         }
 
         if (callback != null) {
@@ -379,8 +384,10 @@ public abstract class RtmpClient implements AutoCloseable {
         }
 
         heartbeatExecutor.scheduleAtFixedRate(() -> loginService.performLcdsHeartBeat(loginDataPacket.getAllSummonerData().getSummoner().getAcctId(), session.getToken(), heartbeats++),
-                HEARTBEAT_INTERVAL, HEARTBEAT_INTERVAL, TimeUnit.MILLISECONDS
+                0, HEARTBEAT_INTERVAL, TimeUnit.SECONDS
         );
+
+        summonerTeamService.createPlayer(); // Apparently necessary for some calls to return
     }
 
     private void doHandshake(AmfWriter writer, AmfReader reader) throws IOException {
@@ -613,9 +620,8 @@ public abstract class RtmpClient implements AutoCloseable {
 
     public <T> T sendRpcAndWait(String service, String method, Object... args) {
 
-
         try {
-            InvokeCallback callback = getInvokeCallback(sendRpc(service, method, args));
+            InvokeCallback callback = sendRpcToDefault(service, method, args);
             Object o = callback.waitForReply();
 
             if (o instanceof InvokeException) {

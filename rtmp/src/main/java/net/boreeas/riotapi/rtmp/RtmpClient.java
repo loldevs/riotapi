@@ -382,12 +382,6 @@ public abstract class RtmpClient implements AutoCloseable {
             log.error("Got interrupted, disconnecting: " + ex);
             disconnect();
         }
-
-        heartbeatExecutor.scheduleAtFixedRate(() -> loginService.performLcdsHeartBeat(loginDataPacket.getAllSummonerData().getSummoner().getAcctId(), session.getToken(), heartbeats++),
-                0, HEARTBEAT_INTERVAL, TimeUnit.SECONDS
-        );
-
-        summonerTeamService.createPlayer(); // Apparently necessary for some calls to return
     }
 
     private void doHandshake(AmfWriter writer, AmfReader reader) throws IOException {
@@ -495,6 +489,13 @@ public abstract class RtmpClient implements AutoCloseable {
         if (state != AccountState.ENABLED) {
             throw new RtmpException("Invalid account state: " + state);
         }
+
+        // Setup pings
+        heartbeatExecutor.scheduleAtFixedRate(() -> loginService.performLcdsHeartBeat(loginDataPacket.getAllSummonerData().getSummoner().getAcctId(), session.getToken(), heartbeats++),
+                0, HEARTBEAT_INTERVAL, TimeUnit.SECONDS
+        );
+
+        summonerTeamService.createPlayer(); // Apparently necessary for some calls to return
 
         return session;
     }

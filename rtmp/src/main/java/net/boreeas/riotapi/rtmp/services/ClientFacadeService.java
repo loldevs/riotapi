@@ -40,7 +40,7 @@ public class ClientFacadeService {
     /**
      * Call the kudos service
      * @param json kudos data
-     * @return
+     * @return Some response
      */
     public LcdsResponseString callKudos(String json) {
         return client.sendRpcAndWait(SERVICE, "callKudos", json);

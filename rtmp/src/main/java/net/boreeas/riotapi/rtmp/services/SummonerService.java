@@ -25,7 +25,7 @@ import net.boreeas.riotapi.rtmp.RtmpClient;
 import java.util.List;
 
 /**
- * Retrive player stats. New accounts need to call {@see #createDefaultSummoner} here
+ * Retrive player stats. New accounts need to call {@link #createDefaultSummoner} here
  */
 @AllArgsConstructor
 public class SummonerService {

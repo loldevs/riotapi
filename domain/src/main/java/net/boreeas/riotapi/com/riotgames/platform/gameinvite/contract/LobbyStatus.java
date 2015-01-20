@@ -17,6 +17,7 @@
 package net.boreeas.riotapi.com.riotgames.platform.gameinvite.contract;
 
 import lombok.Data;
+import net.boreeas.riotapi.rtmp.serialization.JsonSerialization;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.ArrayList;
@@ -29,7 +30,8 @@ import java.util.List;
 @Serialization(name = "com.riotgames.platform.gameinvite.contract.LobbyStatus")
 public class LobbyStatus {
     private String chatKey;
-    private String gameMetaData;
+    @JsonSerialization
+    private LobbyMetaData gameMetaData;
     private Player owner;
     private List<Double> members = new ArrayList<>();
     private List<Invitee> invitees = new ArrayList<>();

@@ -7,6 +7,7 @@
 
 ##### Xmpp
 * Added helper method for sending messages to summoner ids.
+* Added method for joining a chat room without name hashing
 
 
 ### 1.5.6

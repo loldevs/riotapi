@@ -115,6 +115,16 @@ public class XmppClient extends XMPPTCPConnection {
 		}
 	}
 
+	public MultiUserChat joinChannelWithoutHashing(String name, String password) {
+		MultiUserChat chat = new MultiUserChat(this, name);
+		chatRooms.put(name, chat);
+		try {
+			chat.join(getUsername(), password);
+		} catch (XMPPException.XMPPErrorException | SmackException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
 	private String getRoomName(String roomName, ChatType type) throws Exception {
 		String sha = sha1(roomName);
 		return type.type + "~" + sha;

@@ -85,6 +85,10 @@ public class XmppClient extends XMPPTCPConnection {
 		sendPacket(packet);
 	}
 
+	public void sendToUser(long id, String message) throws Exception {
+		sendToUser("sum" + id + "@pvp.net", message);
+	}
+
 	public void sendToChannel(String roomName, String message) throws Exception {
 		chatRooms.get(roomName.toLowerCase()).sendMessage(message);
 	}

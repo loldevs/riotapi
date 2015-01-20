@@ -1,5 +1,10 @@
 # Changelog
 ---------
+### 1.5.7
+##### Xmpp
+* Added helper method for sending messages to summoner ids.
+
+
 ### 1.5.6
 ##### Domain
 * Queue ids now static

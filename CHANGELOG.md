@@ -1,6 +1,10 @@
 # Changelog
 ---------
 ### 1.5.7
+##### Domain
+* Added missing game mutators to practice game config
+* Added LobbyMetaData
+
 ##### Xmpp
 * Added helper method for sending messages to summoner ids.
 

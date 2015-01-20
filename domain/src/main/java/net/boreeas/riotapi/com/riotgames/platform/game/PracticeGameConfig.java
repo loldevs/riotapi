@@ -20,6 +20,9 @@ import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.platform.game.map.GameMap;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created on 7/19/2014.
  */
@@ -38,4 +41,5 @@ public class PracticeGameConfig {
     private String allowSpectators;
     private int maxNumPlayers;
     private String region;
+    private List<?> gameMutators = new ArrayList<>();
 }

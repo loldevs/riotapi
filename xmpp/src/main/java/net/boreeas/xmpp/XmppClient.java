@@ -120,6 +120,7 @@ public class XmppClient extends XMPPTCPConnection {
 		chatRooms.put(name, chat);
 		try {
 			chat.join(getUsername(), password);
+			return chat;
 		} catch (XMPPException.XMPPErrorException | SmackException e) {
 			throw new IllegalStateException(e);
 		}

@@ -20,6 +20,7 @@ package net.boreeas.riotapi.constants;
  * @author Malte Schütze
  */
 public enum BotDifficulty {
+    NONE,
     INTRO,
     EASY,
     HARD

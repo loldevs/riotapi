@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import net.boreeas.riotapi.Shard;
+import net.boreeas.riotapi.constants.BotDifficulty;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class PlayerParticipant extends GameParticipant {
     // TODO inspect (generic type)
     private ArrayList lifetimeStatistics = new ArrayList<>();
     private int queueRating;
-    private String botDifficulty;
+    private BotDifficulty botDifficulty;
     private boolean minor;
     private Object locale;
     private int lastSelectedSkinIndex;

@@ -28,13 +28,20 @@ import java.util.List;
 @Data
 @Serialization(name = "com.riotgames.platform.game.GameDTO")
 public class Game {
+    /**
+     * Known values: ALL
+     */
     private String spectatorsAllowed;
     private boolean passwordSet;
-    private String gameType;
+    private GameType gameType;
     private int gameTypeConfigId;
     // TODO inspect
     private Object glmGameId;
+    /**
+     * Known values: TEAM_SELECT, CHAMP_SELECT
+     */
     private String gameState;
+    private String gameStateString;
     // TODO inspect
     private Object glmGameHost;
     private Object glmHost;
@@ -52,6 +59,9 @@ public class Game {
     private String name;
     private int spectatorDelay;
     private String terminateCondition;
+    /**
+     * Queue type or NONE
+     */
     private String queueTypeName;
     // TODO inspect
     private Object passbackUrl;
@@ -59,19 +69,24 @@ public class Game {
     private long optimisticLock;
     private int maxNumPlayers;
     private int queuePosition;
-    private String gameMode;
+    private GameMode gameMode;
     private long expiryTime;
     private int mapId;
     private List<Integer> banOrder = new ArrayList<>();
     private int pickTurn;
-    private String gameStateString;
     private List<PlayerChampionSelection> playerChampionSelections = new ArrayList<>();
     private int joinTimerDuration;
     // TODO inspect
     private Object passbackDataPacket;
-    private List<?> practiceGameRewardsDisabledReasons = new ArrayList<>();
+    /**
+     * Known values: INSUFFICIENT_PLAYERS, UNBALANCED_TEAMS
+     */
+    private List<String> practiceGameRewardsDisabledReasons = new ArrayList<>();
     private Object teamOnePickOutcome;
     private Object teamTwoPickOutcome;
+    /**
+     * Known values: NOT_TERMINATED
+     */
     private String terminatedCondition;
     private String terminatedConditionString;
     private FeaturedGameInfo featuredGameInfo;

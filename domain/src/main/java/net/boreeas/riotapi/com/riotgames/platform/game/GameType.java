@@ -28,7 +28,8 @@ public enum GameType {
     MATCHED_GAME,
     COOP_VS_AI_GAME,
     RANKED_GAME,
-    NORMAL_GAME;
+    NORMAL_GAME,
+    PRACTICE_GAME;
 
     public static GameType getByName(String name) {
         for (GameType type: values()) {

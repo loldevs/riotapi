@@ -5,6 +5,9 @@
 * Added missing game mutators to practice game config
 * Added LobbyMetaData
 
+##### Rtmp
+* Fixed typo in gameService.startChampSelect
+
 ##### Xmpp
 * Added helper method for sending messages to summoner ids.
 * Added method for joining a chat room without name hashing

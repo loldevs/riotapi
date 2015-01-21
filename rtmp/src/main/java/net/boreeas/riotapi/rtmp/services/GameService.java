@@ -131,7 +131,7 @@ public class GameService {
      * @return Champion select info
      */
     public StartChampSelect startChampionSelect(long gameId, long lock) {
-        return client.sendRpcAndWait(SERVICE, "startChampionSelect", gameId, lock);
+        return client.sendRpcAndWait(SERVICE, "startChampionSelection", gameId, lock);
     }
 
     /**

@@ -1049,7 +1049,7 @@ public class ApiHandler {
      * @return The match details.
      * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
      */
-    public Match getMatch(long matchId) {
+    public MatchDetail getMatch(long matchId) {
         return getMatch(matchId, true);
     }
 
@@ -1061,7 +1061,7 @@ public class ApiHandler {
      * @return The match details.
      * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
      */
-    public Match getMatch(long matchId, boolean includeTimeline) {
+    public MatchDetail getMatch(long matchId, boolean includeTimeline) {
         WebTarget tgt = matchInfoTarget.path("" + matchId).queryParam("includeTimeline", includeTimeline);
         return gson.fromJson($(tgt), MatchDetail.class);
     }

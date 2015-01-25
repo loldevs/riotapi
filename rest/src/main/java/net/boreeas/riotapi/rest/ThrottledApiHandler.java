@@ -903,7 +903,7 @@ public class ThrottledApiHandler implements AutoCloseable {
      * @return The match details.
      * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
      */
-    public Future<Match> getMatch(long matchId) {
+    public Future<MatchDetail> getMatch(long matchId) {
         return new ApiFuture<>(() -> handler.getMatch(matchId));
     }
 
@@ -914,7 +914,7 @@ public class ThrottledApiHandler implements AutoCloseable {
      * @return The match details.
      * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
      */
-    public Future<Match> getMatch(long matchId, boolean includeTimeline) {
+    public Future<MatchDetail> getMatch(long matchId, boolean includeTimeline) {
         return new ApiFuture<>(() -> handler.getMatch(matchId, includeTimeline));
     }
     // </editor-fold>

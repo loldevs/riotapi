@@ -17,7 +17,6 @@
 package net.boreeas.riotapi.rest;
 
 import lombok.Getter;
-import net.boreeas.riotapi.constants.Season;
 
 /**
  * This class is no longer needed, but for compatibility reasons can't be removed
@@ -25,5 +24,4 @@ import net.boreeas.riotapi.constants.Season;
  */
 @Getter
 public class MatchSummary extends Match {
-    private Season season;
 }

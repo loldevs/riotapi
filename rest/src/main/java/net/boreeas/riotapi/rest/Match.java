@@ -20,7 +20,6 @@ import lombok.Getter;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameType;
 import net.boreeas.riotapi.com.riotgames.platform.game.QueueType;
-import net.boreeas.riotapi.com.riotgames.team.dto.Team;
 import net.boreeas.riotapi.constants.Season;
 
 import java.util.ArrayList;
@@ -44,7 +43,5 @@ public class Match {
     private GameType matchType;
     private QueueType queueType;
     private String platformId;
-    private List<Team> teams = new ArrayList<>();
-    private MatchTimeline timeline;
     private Season season;
 }

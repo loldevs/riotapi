@@ -4,11 +4,18 @@
 ##### Domain
 * Added missing game mutators to practice game config
 * Added LobbyMetaData
+* Updated Season
 
 ##### Rtmp
 * Fixed typo in gameService.startChampSelect
 * Fixed a bug where the handshake failed on slow connections
 * Fixed an incorrect parameter to PlayerPreferenceService.loadPreferenceByKey
+
+##### Rest
+* Fixed an incorrect return type for the match endpoint
+* Added missing fields to match
+* Added maps endpoint to static data
+* Added locales and localized messages endpoint to static dat<
 
 ##### Xmpp
 * Added helper method for sending messages to summoner ids.

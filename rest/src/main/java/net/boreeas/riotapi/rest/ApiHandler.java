@@ -161,7 +161,7 @@ public class ApiHandler {
 
     // </editor-fold>
 
-    // <editor-fold desc="League v2.4">
+    // <editor-fold desc="League v2.5">
 
     /**
      * Get a listing of leagues for the summoner
@@ -927,6 +927,84 @@ public class ApiHandler {
         return gson.fromJson($(tgt), type);
     }
 
+    /**
+     * <p>
+     * Retrieve map information
+     * </p>
+     * This method does not count towards the rate limit
+     *
+     * @return The list of all available map.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/931">The official api documentation</a>
+     */
+    public MapDataOverview getMaps() {
+        WebTarget tgt = staticDataTarget.path("map");
+        return gson.fromJson($(tgt), MapDataOverview.class);
+    }
+
+    /**
+     * <p>
+     * Retrieve map information
+     * </p>
+     * This method does not count towards the rate limit
+     *
+     * @param version The data dragon version.
+     * @param locale The locale information.
+     *
+     * @return The list of all available maps.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/931">The official api documentation</a>
+     */
+    public MapDataOverview getMaps(String version, String locale) {
+        WebTarget tgt = staticDataTarget.path("map").queryParam("version", version).queryParam("locale", locale);
+        return gson.fromJson($(tgt), MapDataOverview.class);
+    }
+
+    /**
+     * <p>
+     *     Retrieve supported locales for the specified region
+     * </p>
+     * This method does not count towards your rate limit
+     *
+     * @return A list of locales
+     * @see <a href="https://developer.riotgames.com/api/methods#!/931/3226">The official api documentation</a>
+     */
+    public List<String> getLocales() {
+        Type type = new TypeToken<List<String>>() {
+        }.getType();
+        WebTarget tgt = staticDataTarget.path("languages");
+        return gson.fromJson($(tgt), type);
+    }
+
+    /**
+     * <p>
+     *     Retrieve localized strings for the english locale
+     * </p>
+     * This method does not count towards your rate limit
+     *
+     * @return A list of localized message
+     * @see <a href="https://developer.riotgames.com/api/methods#!/931/3226">The official api documentation</a>
+     */
+    public LocalizedMessages getLocalizedMessages() {
+        WebTarget tgt = staticDataTarget.path("language-strings");
+        return gson.fromJson($(tgt), LocalizedMessages.class);
+    }
+
+    /**
+     * <p>
+     *     Retrieve localized strings for the english locale
+     * </p>
+     * This method does not count towards your rate limit
+     *
+     * @param version The data dragon version of the data
+     * @param locale The locale to lookup.
+     *
+     * @return A list of localized message
+     * @see <a href="https://developer.riotgames.com/api/methods#!/931/3226">The official api documentation</a>
+     */
+    public LocalizedMessages getLocalizedMessages(String version, String locale) {
+        WebTarget tgt = staticDataTarget.path("language-strings").queryParam("version", version).queryParam("locale", locale);
+        return gson.fromJson($(tgt), LocalizedMessages.class);
+    }
+
     // </editor-fold>
 
     // <editor-fold desc="Status v1.0">
@@ -971,7 +1049,7 @@ public class ApiHandler {
      * @return The match details.
      * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
      */
-    public MatchDetail getMatch(long matchId) {
+    public Match getMatch(long matchId) {
         return getMatch(matchId, true);
     }
 
@@ -983,7 +1061,7 @@ public class ApiHandler {
      * @return The match details.
      * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
      */
-    public MatchDetail getMatch(long matchId, boolean includeTimeline) {
+    public Match getMatch(long matchId, boolean includeTimeline) {
         WebTarget tgt = matchInfoTarget.path("" + matchId).queryParam("includeTimeline", includeTimeline);
         return gson.fromJson($(tgt), MatchDetail.class);
     }

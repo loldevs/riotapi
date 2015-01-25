@@ -413,4 +413,39 @@ public class ApiHandlerTest extends TestCase {
         }
     }
 
+    public void testGetMaps() throws InterruptedException, ExecutionException, TimeoutException {
+        try {
+            handler.getMaps().get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
+    }
+
+    public void testGetVersions() throws InterruptedException, ExecutionException, TimeoutException {
+        try {
+            handler.getVersions().get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
+    }
+
+    public void testGetLocales() throws InterruptedException, ExecutionException, TimeoutException {
+        try {
+            handler.getLocales().get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
+    }
+
+    public void testGetLocalizedMessages() throws InterruptedException, ExecutionException, TimeoutException {
+        try {
+            handler.getLocalizedMessages().get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+        }
+    }
 }

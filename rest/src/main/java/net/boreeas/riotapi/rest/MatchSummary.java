@@ -20,6 +20,7 @@ import lombok.Getter;
 import net.boreeas.riotapi.constants.Season;
 
 /**
+ * This class is no longer needed, but for compatibility reasons can't be removed
  * @author Malte Schütze
  */
 @Getter

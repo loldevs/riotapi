@@ -16,10 +16,33 @@
 
 package net.boreeas.riotapi.rest;
 
+import lombok.Data;
+import net.boreeas.riotapi.Version;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Basic map information
  * @author Malte Schütze
  */
+@Data
 public class MapDataOverview {
+    /**
+     * Maps map id to map data
+     */
+    private Map<Integer, MapData> data = new HashMap<>();
+    /**
+     * The type of information. Always "map"
+     */
+    private String type;
+    private String version;
 
+    /**
+     * The data dragon version of this data
+     * @return The version
+     */
+    public Version getVersion() {
+        return new Version(version);
+    }
 }

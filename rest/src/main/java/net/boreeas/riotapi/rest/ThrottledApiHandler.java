@@ -767,6 +767,90 @@ public class ThrottledApiHandler implements AutoCloseable {
         return new DummyFuture<>(handler.getSummonerSpell(id, data, version, locale));
     }
 
+    /**
+     * <p>
+     * Retrieve currently supported game versions.
+     * </p>
+     * This method does not count towards the rate limit
+     *
+     * @return A list of supported game versions
+     * @see <a href=https://developer.riotgames.com/api/methods#!/710/2527>Official API documentation</a>
+     */
+    public Future<List<String>> getVersions() {
+        return new DummyFuture<>(handler.getVersions());
+    }
+
+    /**
+     * <p>
+     * Retrieve map information
+     * </p>
+     * This method does not count towards the rate limit
+     *
+     * @return The list of all available map.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/931">The official api documentation</a>
+     */
+    public Future<MapDataOverview> getMaps() {
+        return new DummyFuture<>(handler.getMaps());
+    }
+
+    /**
+     * <p>
+     * Retrieve map information
+     * </p>
+     * This method does not count towards the rate limit
+     *
+     * @param version The data dragon version.
+     * @param locale The locale information.
+     *
+     * @return The list of all available maps.
+     * @see <a href="https://developer.riotgames.com/api/methods#!/931">The official api documentation</a>
+     */
+    public Future<MapDataOverview> getMaps(String version, String locale) {
+        return new DummyFuture<>(handler.getMaps(version, locale));
+    }
+
+    /**
+     * <p>
+     *     Retrieve supported locales for the specified region
+     * </p>
+     * This method does not count towards your rate limit
+     *
+     * @return A list of locales
+     * @see <a href="https://developer.riotgames.com/api/methods#!/931/3226">The official api documentation</a>
+     */
+    public Future<List<String>> getLocales() {
+        return new DummyFuture<>(handler.getLocales());
+    }
+
+    /**
+     * <p>
+     *     Retrieve localized strings for the english locale
+     * </p>
+     * This method does not count towards your rate limit
+     *
+     * @return A list of localized message
+     * @see <a href="https://developer.riotgames.com/api/methods#!/931/3226">The official api documentation</a>
+     */
+    public Future<LocalizedMessages> getLocalizedMessages() {
+        return new DummyFuture<>(handler.getLocalizedMessages());
+    }
+
+
+    /**
+     * <p>
+     *     Retrieve localized strings for the english locale
+     * </p>
+     * This method does not count towards your rate limit
+     *
+     * @param version The data dragon version of the data
+     * @param locale The locale to lookup.
+     *
+     * @return A list of localized message
+     * @see <a href="https://developer.riotgames.com/api/methods#!/931/3226">The official api documentation</a>
+     */
+    public Future<LocalizedMessages> getLocalizedMessages(String version, String locale) {
+        return new DummyFuture<>(handler.getLocalizedMessages(version, locale));
+    }
     // </editor-fold>
 
     // <editor-fold desc="Status">
@@ -819,7 +903,7 @@ public class ThrottledApiHandler implements AutoCloseable {
      * @return The match details.
      * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
      */
-    public Future<MatchDetail> getMatch(long matchId) {
+    public Future<Match> getMatch(long matchId) {
         return new ApiFuture<>(() -> handler.getMatch(matchId));
     }
 
@@ -830,7 +914,7 @@ public class ThrottledApiHandler implements AutoCloseable {
      * @return The match details.
      * @see <a href="https://developer.riotgames.com/api/methods#!/806/2848">Official API Documentation</a>
      */
-    public Future<MatchDetail> getMatch(long matchId, boolean includeTimeline) {
+    public Future<Match> getMatch(long matchId, boolean includeTimeline) {
         return new ApiFuture<>(() -> handler.getMatch(matchId, includeTimeline));
     }
     // </editor-fold>

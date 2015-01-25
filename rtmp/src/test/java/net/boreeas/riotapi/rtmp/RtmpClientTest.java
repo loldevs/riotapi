@@ -200,7 +200,7 @@ public class RtmpClientTest extends TestCase {
     }
 
     public void testGetAggregatedStats() {
-        client.playerStatsService.getAggregatedStats(accountId, GameMode.CLASSIC, Season.SEASON4);
+        client.playerStatsService.getAggregatedStats(accountId, GameMode.CLASSIC, Season.SEASON2014);
     }
 
     public void testGetRecentGames() {

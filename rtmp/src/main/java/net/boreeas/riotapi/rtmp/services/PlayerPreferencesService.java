@@ -27,7 +27,7 @@ public class PlayerPreferencesService {
     public static final String SERVICE = "playerPreferencesService";
     private RtmpClient client;
 
-    public Object loadPreferencesByKey(String key, double a, double b) {
+    public Object loadPreferencesByKey(String key, double a, boolean b) {
         return client.sendRpcAndWait(SERVICE, "loadPreferencesByKey", key, a, b);
     }
 

@@ -254,6 +254,7 @@ public abstract class RtmpClient implements AutoCloseable {
         Object params = method.getParams().length == 1 ? method.getParams()[0] : method.getParams();
 
         int invokeId = cmd.getInvokeId();
+        System.out.println("Invoke " + invokeId + " returned");
         InvokeCallback callback = getInvokeCallback(invokeId);
 
         Object result = params;
@@ -405,8 +406,10 @@ public abstract class RtmpClient implements AutoCloseable {
         // S1
 
         byte[] buffer = new byte[PAYLOAD_SIZE];
-        int read = reader.read(buffer);
-        if (read != buffer.length) throw new ProtocolException("Incomplete buffer at S2");
+        int read = 0;
+        do {
+            read += reader.read(buffer, read, buffer.length - read);
+        } while (read != buffer.length);
 
         long zeroTime = buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
         this.timeOffset = System.currentTimeMillis() - zeroTime;
@@ -423,8 +426,10 @@ public abstract class RtmpClient implements AutoCloseable {
 
         // S2
 
-        read = reader.read(buffer);
-        if (read != buffer.length) throw new ProtocolException("Incomplete buffer at S2");
+        read = 0;
+        do {
+            read += reader.read(buffer, read, buffer.length - read);
+        } while (read != buffer.length);
 
         for (int i = 8; i < buffer.length; i++) {
             if (buffer[i] != c1Payload[i]) {
@@ -495,7 +500,26 @@ public abstract class RtmpClient implements AutoCloseable {
                 0, HEARTBEAT_INTERVAL, TimeUnit.SECONDS
         );
 
+        System.out.println("Avail queues");
+        matchmakerService.getAvailableQueues();
+        System.out.println("Active boosts");
+        inventoryService.getSummonerActiveBoosts();
+        System.out.println("Avail champs");
+        inventoryService.getAvailableChampions();
+        System.out.println("Rune inv");
+        summonerRuneService.getSummonerRuneInventory(loginDataPacket.getAllSummonerData().getSummoner().getSumId());
+        System.out.println("League pos");
+        leaguesServiceProxy.getMyLeaguePositions();
+        System.out.println("Load pref");
+        playerPreferencesService.loadPreferencesByKey("KEY_BINDINGS", Double.NaN, false);
+        System.out.println("Mastery book");
+        bookService.getMasteryBook(loginDataPacket.getAllSummonerData().getSummoner().getSumId());
+        System.out.println("Lobby status " + sendRpcAndWait(LcdsGameInvitationService.SERVICE, "checkLobbyStatus"));
+        System.out.println("Pending invitations");
+        lcdsGameInvitationService.getPendingInvitations();
+        System.out.println("Create player");
         summonerTeamService.createPlayer(); // Apparently necessary for some calls to return
+
 
         return session;
     }
@@ -611,6 +635,7 @@ public abstract class RtmpClient implements AutoCloseable {
         RemotingMessage message = createRemotingMessage(endpoint, service, method, args);
         Invoke invoke = createAmf3InvokeSkeleton(null, message);
         InvokeCallback callback = getInvokeCallback(invoke.getInvokeId());
+        System.out.println("CALL " + endpoint + "::" + service + "." + method + " " + Arrays.toString(args) + "\n\t-> id=" + invoke.getInvokeId());
 
 
         send(invoke);

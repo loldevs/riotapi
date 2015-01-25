@@ -7,6 +7,7 @@
 
 ##### Rtmp
 * Fixed typo in gameService.startChampSelect
+* Fixed a bug where the handshake failed on slow connections
 
 ##### Xmpp
 * Added helper method for sending messages to summoner ids.

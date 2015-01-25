@@ -258,4 +258,24 @@ public class RtmpClientTest extends TestCase {
     public void testIsTagValidAndAvailable() {
         client.summonerTeamService.isTagValidAndAvailable("TEST");
     }
+
+    /*
+    CountDownLatch latch = new CountDownLatch(1);
+    public void testSomething() throws InterruptedException {
+        client.addAsyncChannelListener(this::callback, client.getClientNewsChannel());
+        latch.await();
+    }
+
+    private void callback(AsyncMessageEvent evt) {
+        if (evt.getBody() instanceof InvitationRequest) {
+            System.out.println("got invite, accept");
+            //LobbyStatus accept = client.lcdsGameInvitationService.accept(((InvitationRequest) evt.getBody()).getInvitationId());
+            client.sendRpcToDefault(LcdsGameInvitationService.SERVICE, "accept", ((InvitationRequest) evt.getBody()).getInvitationId());
+            System.out.println("" + client.sendRpcAndWait(LcdsGameInvitationService.SERVICE, "checkLobbyStatus"));
+            System.out.println(client.lcdsGameInvitationService.getLobbyStatus());
+            System.out.println("Status done");
+            latch.countDown();
+        }
+    }
+    */
 }

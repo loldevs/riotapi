@@ -446,10 +446,10 @@ public abstract class RtmpClient implements AutoCloseable {
     public void close() {
         isConnected = false;
         try {
-            reader.close();
-            writer.close();
-            socket.close();
-            heartbeatExecutor.shutdownNow();
+            if (reader != null) reader.close();
+            if (writer != null) writer.close();
+            if (socket != null) socket.close();
+            if (heartbeatExecutor != null) heartbeatExecutor.shutdownNow();
         } catch (IOException e) {}
     }
 

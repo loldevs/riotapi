@@ -19,12 +19,16 @@ package net.boreeas.riotapi.rest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.boreeas.riotapi.Version;
 import net.boreeas.riotapi.com.riotgames.platform.game.QueueType;
 import net.boreeas.riotapi.constants.Season;
 import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueList;
 import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueItem;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePage;
+import net.boreeas.riotapi.rest.api.CurrentGameHandler;
+import net.boreeas.riotapi.rest.api.FeaturedGamesHandler;
+import net.boreeas.riotapi.rest.api.LoLRestApi;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -32,7 +36,7 @@ import java.util.concurrent.*;
 /**
  * Created on 4/23/2014.
  */
-public class ThrottledApiHandler implements AutoCloseable {
+public class ThrottledApiHandler implements AutoCloseable, LoLRestApi {
 
     public static final int PERIOD = 50; // 0.05s
 
@@ -41,6 +45,9 @@ public class ThrottledApiHandler implements AutoCloseable {
     private Timer timer = new Timer(true);
 
     private ApiHandler handler;
+
+    @Getter public final AsyncCurrentGameHandler currentGameHandler = new AsyncCurrentGameHandler();
+    @Getter public final AsyncFeaturedGamesHandler featuredGamesHandler = new AsyncFeaturedGamesHandler();
 
 
     public ThrottledApiHandler(Shard shard, String token, Limit... lim) {
@@ -118,6 +125,48 @@ public class ThrottledApiHandler implements AutoCloseable {
     /* ****************************
         delegation to api handler
      *************************** */
+
+    public class AsyncCurrentGameHandler implements CurrentGameHandler {
+
+        @Override
+        public CurrentGameInfo getCurrentGameInfo(long summoner) {
+            try {
+                return asyncGetCurrentGameInfo(summoner).get();
+            } catch (ExecutionException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public Future<CurrentGameInfo> asyncGetCurrentGameInfo(long summoner) {
+            return new ApiFuture<>(() -> handler.currentGameHandler.getCurrentGameInfo(summoner));
+        }
+
+        @Override
+        public Version getVersion() {
+            return handler.currentGameHandler.getVersion();
+        }
+    }
+
+    public class AsyncFeaturedGamesHandler implements FeaturedGamesHandler {
+
+        @Override
+        public FeaturedGames getFeaturedGames() {
+            try {
+                return asyncGetFeaturedGames().get();
+            } catch (ExecutionException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public Future<FeaturedGames> asyncGetFeaturedGames() {
+            return new ApiFuture<>(handler.featuredGamesHandler::getFeaturedGames);
+        }
+
+        @Override
+        public Version getVersion() {
+            return handler.getFeaturedGamesHandler().getVersion();
+        }
+    }
 
     // <editor-fold desc="Champion">
 

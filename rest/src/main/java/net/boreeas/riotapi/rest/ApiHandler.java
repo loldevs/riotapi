@@ -20,16 +20,20 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.reflect.TypeToken;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
 import net.boreeas.riotapi.RequestException;
 import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.Util;
+import net.boreeas.riotapi.Version;
 import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueItem;
 import net.boreeas.riotapi.com.riotgames.leagues.pojo.LeagueList;
 import net.boreeas.riotapi.com.riotgames.platform.game.QueueType;
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePage;
 import net.boreeas.riotapi.constants.Season;
+import net.boreeas.riotapi.rest.api.CurrentGameHandler;
+import net.boreeas.riotapi.rest.api.LoLRestApi;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -48,7 +52,7 @@ import java.util.zip.GZIPInputStream;
  * Created on 4/12/2014.
  */
 @Log4j
-public class ApiHandler {
+public class ApiHandler implements LoLRestApi {
 
     private static final GsonBuilder builder = new GsonBuilder();
 
@@ -59,6 +63,7 @@ public class ApiHandler {
 
 
     private static final String API_GLOBAL_URL = "https://global.api.pvp.net/api/lol";
+    private static final String SPECTATOR_API_URL = "http://%s.api.pvp.net/observer-mode/rest";
 
     private Gson gson = builder.create();
     private WebTarget championInfoTarget;
@@ -71,6 +76,8 @@ public class ApiHandler {
     private WebTarget statsTarget;
     private WebTarget summonerInfoTarget;
     private WebTarget teamInfoTarget;
+    @Getter public final CurrentGame currentGameHandler;
+    @Getter public final FeaturedGamesHandler featuredGamesHandler;
 
     /**
      * Create a new ApiHandler object
@@ -90,8 +97,11 @@ public class ApiHandler {
         if (shard.isGarena) {
 
             log.warn("Garena doesn't support a public API. Only static-data is supported for this shard.");
+            currentGameHandler = null;
+            featuredGamesHandler = null;
         } else {
             WebTarget defaultTarget = c.target(shard.apiUrl).queryParam("api_key", token).path(region);
+            WebTarget spectatorTarget = c.target(String.format(SPECTATOR_API_URL, shard.name)).queryParam("api_key", token);
 
             championInfoTarget = defaultTarget.path("v1.2").path("champion");
             gameInfoTarget = defaultTarget.path("v1.3").path("game/by-summoner");
@@ -101,6 +111,8 @@ public class ApiHandler {
             statsTarget = defaultTarget.path("v1.3").path("stats/by-summoner");
             summonerInfoTarget = defaultTarget.path("v1.4").path("summoner");
             teamInfoTarget = defaultTarget.path("v2.4").path("team");
+            this.currentGameHandler = new CurrentGame("v1.0", spectatorTarget.path("consumer"));
+            this.featuredGamesHandler = new FeaturedGamesHandler("v1.0", spectatorTarget.path("featured"));
         }
 
         WebTarget defaultStaticTarget = c.target(API_GLOBAL_URL).queryParam("api_key", token).path("static-data").path(region);
@@ -1449,6 +1461,52 @@ public class ApiHandler {
     }
 
     // </editor-fold>
+
+
+
+    public class CurrentGame implements CurrentGameHandler {
+        public final String version;
+        private WebTarget target;
+
+        public CurrentGame(String version, WebTarget target) {
+            this.version = version;
+            this.target = target;
+        }
+
+        @Override
+        public CurrentGameInfo getCurrentGameInfo(long summoner) {
+            WebTarget tgt = target.path("getSpectatorGameInfo");
+            return gson.fromJson($(tgt), CurrentGameInfo.class);
+        }
+
+        @Override
+        public Version getVersion() {
+            return new Version(version);
+        }
+    }
+
+    public class FeaturedGamesHandler implements net.boreeas.riotapi.rest.api.FeaturedGamesHandler {
+        private String version;
+        private WebTarget tgt;
+
+        public FeaturedGamesHandler(String version, WebTarget featured) {
+            this.version = version;
+            this.tgt = featured;
+        }
+
+        @Override
+        public FeaturedGames getFeaturedGames() {
+            return gson.fromJson($(tgt), FeaturedGames.class);
+        }
+
+        @Override
+        public Version getVersion() {
+            return new Version(version);
+        }
+    }
+
+
+
 
 
     /**

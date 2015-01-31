@@ -17,6 +17,7 @@
 package net.boreeas.riotapi.spectator.rest;
 
 import lombok.Getter;
+import net.boreeas.riotapi.com.riotgames.platform.summoner.Mastery;
 import net.boreeas.riotapi.constants.PlayerSide;
 
 
@@ -25,6 +26,9 @@ import net.boreeas.riotapi.constants.PlayerSide;
  */
 @Getter
 public class FeaturedPlayer {
+    private boolean bot;
+    private int championId;
+    private List<Mastery>
     /**
      * The team id of this player (100 for blue team, 200 for purple team)
      */
@@ -41,10 +45,8 @@ public class FeaturedPlayer {
      * The skin this player is using
      */
     private int skinIndex;
-    private int championId;
     private int profileIconId;
     private String summonerName;
-    private boolean bot;
 
     public PlayerSide getTeam() {
         return PlayerSide.getById(teamId);

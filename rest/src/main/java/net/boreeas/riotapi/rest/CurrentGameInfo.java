@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 The LolDevs team (https://github.com/loldevs)
+ * Copyright 2015 The LolDevs team (https://github.com/loldevs)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.spectator.rest;
+package net.boreeas.riotapi.rest;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.com.riotgames.platform.game.BannedChampion;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
@@ -29,12 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created on 4/14/2014.
+ * In-progress game info from the rest api
+ * @author Malte Schütze
  */
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-public class FeaturedGame {
+@Data
+public class CurrentGameInfo {
     private List<BannedChampion> bannedChampions = new ArrayList<>();
     private long gameId;
     private long gameLength;
@@ -45,7 +43,7 @@ public class FeaturedGame {
     private int mapId;
     private int gameTypeConfigId;
     @Getter(AccessLevel.NONE) private ObserverData observers;
-    private List<FeaturedPlayer> participants = new ArrayList<>();
+    private List<InProgressGameParticipant> participants = new ArrayList<>();
     private String platformId;
 
     public String getEncryptionKey() {

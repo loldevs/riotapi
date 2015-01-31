@@ -448,4 +448,8 @@ public class ApiHandlerTest extends TestCase {
             if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
         }
     }
+
+    public void testGetFeaturedGames() {
+        handler.featuredGamesHandler.getFeaturedGames();
+    }
 }

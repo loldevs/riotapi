@@ -1,5 +1,14 @@
 # Changelog
 ---------
+### 1.6.0
+##### Rest
+* Added support for featured-games v1.0 and current-game v.10
+* Both of those apis are structured slightly different from the usual rest apis. Use 'handler.featuredGamesHandler.getFeaturedGames()'
+
+##### Rtmp
+* Fixed NPE in close()
+
+
 ### 1.5.7
 ##### Domain
 * Added missing game mutators to practice game config

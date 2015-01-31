@@ -76,7 +76,7 @@ public class ApiHandlerTest extends TestCase {
             assertFalse(euwBasicChampDatas.isEmpty());
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -87,7 +87,7 @@ public class ApiHandlerTest extends TestCase {
             assertEquals((ftpChamps.get()).size(), 10);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -96,7 +96,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getBasicChampData(1).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -105,7 +105,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getRecentGames(SUMMONER_ID_2).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -114,7 +114,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getLeagues(SUMMONER_ID_2).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
 
     }
@@ -124,7 +124,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getLeagueEntries(SUMMONER_ID_1).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -133,7 +133,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getLeagues(TEAM_ID).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -142,7 +142,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getLeagueEntries(TEAM_ID).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -151,7 +151,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getChallenger(QueueType.RANKED_SOLO_5x5).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -160,7 +160,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getChampion(1, ChampData.ALL).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -169,7 +169,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getChampions(ChampData.ALL).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -178,7 +178,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getItemList(ItemData.ALL).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -187,7 +187,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getItem(2003, ItemData.CONSUME_ON_FULL).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -196,7 +196,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getMasteries(MasteryData.ALL).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -205,7 +205,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getMastery(4353, MasteryData.SANITIZED_DESCRIPTION).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -214,7 +214,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getRealm().get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -223,7 +223,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getRuneList(ItemData.ALL).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -232,7 +232,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getRune(5235, ItemData.HIDE_FROM_ALL).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -241,7 +241,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getSummonerSpells(SpellData.COOLDOWN_BURN).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -250,7 +250,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getSummonerSpell(1, SpellData.ALL).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -259,7 +259,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getRankedStats(SUMMONER_ID_1).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -268,7 +268,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getStatsSummary(SUMMONER_ID_1, Season.SEASON3).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -277,7 +277,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getSummoners(SUMMONER_NAME_1, SUMMONER_NAME_2).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -286,7 +286,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getSummoners(SUMMONER_ID_1, SUMMONER_ID_2).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -295,7 +295,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getSummoner(SUMMONER_NAME_2).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -304,7 +304,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getSummoner(SUMMONER_ID_2).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -314,7 +314,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getRunePagesMultipleUsers(SUMMONER_ID_2, SUMMONER_ID_1).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
 
     }
@@ -325,7 +325,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getMasteryPagesMultipleUsers(SUMMONER_ID_1, SUMMONER_ID_2).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
 
     }
@@ -336,7 +336,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getSummonerNames(SUMMONER_ID_1, SUMMONER_ID_2).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -346,7 +346,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getTeams(TEAM_ID).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -355,7 +355,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getMatchHistory(SUMMONER_ID_1).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -364,7 +364,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getMatch(handler.getMatchHistory(SUMMONER_ID_2).get(1, MINUTES).get(0).getMatchId()).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -395,7 +395,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getShards().get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -418,7 +418,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getMaps().get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -427,7 +427,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getVersions().get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -436,7 +436,7 @@ public class ApiHandlerTest extends TestCase {
             handler.getLocales().get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
@@ -445,11 +445,26 @@ public class ApiHandlerTest extends TestCase {
             handler.getLocalizedMessages().get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
-            if (ex.getErrorType().code < 500 || ex.getErrorType().code > 599) throw ex;
+            if (isNotServerside(ex)) throw ex;
         }
     }
 
     public void testGetFeaturedGames() {
-        handler.featuredGamesHandler.getFeaturedGames();
+        try {
+            handler.featuredGamesHandler.getFeaturedGames();
+        } catch (RuntimeException ex) {
+            // Runtime -> Execution -> Request
+            if (throwForward(ex)) {
+                throw ex;
+            }
+        }
+    }
+
+    private boolean throwForward(RuntimeException ex) {
+        return !(ex.getCause().getCause() instanceof RequestException) || isNotServerside((RequestException) ex.getCause().getCause());
+    }
+
+    private boolean isNotServerside(RequestException ex) {
+        return ex.getErrorType().code < 500 || ex.getErrorType().code > 599;
     }
 }

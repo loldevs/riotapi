@@ -27,7 +27,6 @@ import net.boreeas.riotapi.constants.PlayerSide;
 public class FeaturedPlayer {
     private boolean bot;
     private int championId;
-    
     /**
      * The team id of this player (100 for blue team, 200 for purple team)
      */

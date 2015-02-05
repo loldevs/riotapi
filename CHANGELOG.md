@@ -1,5 +1,9 @@
 # Changelog
 ---------
+### 1.6.1
+##### Rtmp
+* Fixed bug where the heartbeat executor wasn't properly restarted on connection failure.
+
 ### 1.6.0
 ##### Rest
 * Added support for featured-games v1.0 and current-game v.10

@@ -354,6 +354,7 @@ public abstract class RtmpClient implements AutoCloseable {
                 this.socket = new DummySSLSocketFactory().createSocket(host, port);
                 writer = new AmfWriter(socket.getOutputStream());
                 reader = new AmfReader(socket.getInputStream());
+                heartbeatExecutor = Executors.newScheduledThreadPool(1);
 
                 doHandshake(writer, reader);
 

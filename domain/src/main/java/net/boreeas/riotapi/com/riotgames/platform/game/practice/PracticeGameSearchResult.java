@@ -20,6 +20,8 @@ import lombok.Data;
 import net.boreeas.riotapi.com.riotgames.platform.game.PlayerParticipant;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
+import java.util.ArrayList;
+
 /**
  * Created on 7/19/2014.
  */
@@ -30,6 +32,9 @@ public class PracticeGameSearchResult {
     // TODO inspect
     private Object glmGameId;
     // TODO inspect
+    private Object glmHost;
+    private int glmPort;
+    private ArrayList<Object> gameMutators = new ArrayList<>();
     private Object glmGameHost;
     private int glmGamePort;
     private String gameModeString;

@@ -153,8 +153,6 @@ public class XmppClient extends XMPPTCPConnection {
 		MessageDigest mDigest = MessageDigest.getInstance("SHA1");
 		byte[] result = mDigest.digest(input.getBytes("UTF-8"));
 		String resultString = String.format("%040x", new BigInteger(1, result));
-		System.out.println("Result: " + resultString);
-		System.out.println("Alt   : " + new BigInteger(1, result).toString(16));
 		return resultString;
 	}
 

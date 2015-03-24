@@ -256,7 +256,6 @@ public abstract class RtmpClient implements AutoCloseable {
         Object params = method.getParams().length == 1 ? method.getParams()[0] : method.getParams();
 
         int invokeId = cmd.getInvokeId();
-        System.out.println("Invoke " + invokeId + " returned");
         InvokeCallback callback = getInvokeCallback(invokeId);
 
         Object result = params;
@@ -474,7 +473,6 @@ public abstract class RtmpClient implements AutoCloseable {
         credentials.setDomain("lolclient.lol.riotgames.com");
         credentials.setOperatingSystem("Windows 8");
 
-        System.out.println("AuthenticationCredentials:\n" + credentials);
         log.info("Login service call: " + user + "/***/" + ignCreds+ " on client version " + clientVersion + " (locale " + locale + ")");
 
         this.session = loginService.login(credentials);
@@ -505,24 +503,14 @@ public abstract class RtmpClient implements AutoCloseable {
                 0, HEARTBEAT_INTERVAL, TimeUnit.SECONDS
         );
 
-        System.out.println("Avail queues");
         matchmakerService.getAvailableQueues();
-        System.out.println("Active boosts");
         inventoryService.getSummonerActiveBoosts();
-        System.out.println("Avail champs");
         inventoryService.getAvailableChampions();
-        System.out.println("Rune inv");
         summonerRuneService.getSummonerRuneInventory(loginDataPacket.getAllSummonerData().getSummoner().getSumId());
-        System.out.println("League pos");
         leaguesServiceProxy.getMyLeaguePositions();
-        System.out.println("Load pref");
         playerPreferencesService.loadPreferencesByKey("KEY_BINDINGS", Double.NaN, false);
-        System.out.println("Mastery book");
         bookService.getMasteryBook(loginDataPacket.getAllSummonerData().getSummoner().getSumId());
-        System.out.println("Lobby status " + sendRpcAndWait(LcdsGameInvitationService.SERVICE, "checkLobbyStatus"));
-        System.out.println("Pending invitations");
         lcdsGameInvitationService.getPendingInvitations();
-        System.out.println("Create player");
         summonerTeamService.createPlayer(); // Apparently necessary for some calls to return
 
 
@@ -640,8 +628,6 @@ public abstract class RtmpClient implements AutoCloseable {
         RemotingMessage message = createRemotingMessage(endpoint, service, method, args);
         Invoke invoke = createAmf3InvokeSkeleton(null, message);
         InvokeCallback callback = getInvokeCallback(invoke.getInvokeId());
-        System.out.println("CALL " + endpoint + "::" + service + "." + method + " " + Arrays.toString(args) + "\n\t-> id=" + invoke.getInvokeId());
-
 
         send(invoke);
         return callback;

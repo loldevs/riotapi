@@ -20,11 +20,8 @@ import junit.framework.TestCase;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
 import net.boreeas.riotapi.Shard;
-import net.boreeas.riotapi.com.riotgames.platform.game.Game;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
-import net.boreeas.riotapi.com.riotgames.platform.game.PracticeGameConfig;
 import net.boreeas.riotapi.com.riotgames.platform.game.QueueType;
-import net.boreeas.riotapi.com.riotgames.platform.game.map.GameMap;
 import net.boreeas.riotapi.com.riotgames.platform.login.impl.ClientVersionMismatchException;
 import net.boreeas.riotapi.com.riotgames.platform.matchmaking.GameQueueConfig;
 import net.boreeas.riotapi.com.riotgames.platform.matchmaking.MatchMakerParams;
@@ -41,7 +38,6 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Properties;
-import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -265,6 +261,7 @@ public class RtmpClientTest extends TestCase {
     }
 
 
+    /*
     public void testStartCustomGame() throws Exception {
         PracticeGameConfig config = new PracticeGameConfig();
         config.setAllowSpectators("ALL");
@@ -281,7 +278,7 @@ public class RtmpClientTest extends TestCase {
 
         client.gameService.startChampionSelect(practiceGame.getId(), 2);
     }
-
+    */
     /*
     CountDownLatch latch = new CountDownLatch(1);
     public void testAcceptExternGameInvite() throws InterruptedException {

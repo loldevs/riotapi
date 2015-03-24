@@ -27,5 +27,5 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 public class Member {
     private String summonerName;
     private long summonerId;
-    private boolean hasDelegateInvitePower;
+    private boolean hasDelegatedInvitePower;
 }

@@ -1,5 +1,10 @@
 # Changelog
 ---------
+### 2.0.1
+##### Domain
+* Fixed misspelled field name in com.riotgames.platform.gameinvite.contract.Member (hasDelegateInvitePower -> hasDelegatedInvitePower)
+
+
 ### 2.0.0
 ##### Rtmp
 * Fixed bug where the heartbeat executor wasn't properly restarted on connection failure.

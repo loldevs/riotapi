@@ -1,13 +1,18 @@
 # Changelog
 ---------
-### 1.6.1
+### 2.0.0
 ##### Rtmp
 * Fixed bug where the heartbeat executor wasn't properly restarted on connection failure.
+
+##### Loginqueue
+* Switched to new auth mechanism (this breaks the login queue and rtmp backwards compatibility)
+
 
 ### 1.6.0
 ##### Rest
 * Added support for featured-games v1.0 and current-game v.10
 * Both of those apis are structured slightly different from the usual rest apis. Use 'handler.featuredGamesHandler.getFeaturedGames()'
+
 
 ##### Rtmp
 * Fixed NPE in close()

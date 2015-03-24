@@ -7,6 +7,9 @@
 ##### Loginqueue
 * Switched to new auth mechanism (this breaks the login queue and rtmp backwards compatibility)
 
+##### Rest
+* Fixed crash if the response had no Content-Encoding header
+
 
 ### 1.6.0
 ##### Rest

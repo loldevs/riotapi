@@ -8,7 +8,7 @@ This is a Java 8 project designed to offer a simple binding to most League of Le
 |[loginqueue](https://github.com/loldevs/riotapi/wiki/loginqueue) | Login to a server. |
 |[rest](https://github.com/loldevs/riotapi/wiki/rest) | The official rest API provided by Riot. Includes an unthrottled handler as well as a throttled, asynchronous handler with configurable rate limits |
 |[rtmp](https://github.com/loldevs/riotapi/wiki/rtmp) | The part that makes the client run. |
-|[spectator](https://github.com/loldevs/riotapi/wiki/spectator) | Spectate games. Supports loading spectator files (.rofl) and streaming via the rest API. For non-featured games, you will need to provide a decryption key, which can be retrieved via RTMP |
+|[spectator](https://github.com/loldevs/riotapi/wiki/spectator) | Spectate games. Supports loading spectator files (.rofl) and streaming via the rest API. For non-featured games, you will need to provide a decryption key, which can be retrieved via RTMP or REST. Note that decoding frames isn't completely supported yet |
 |[xmpp](https://github.com/loldevs/riotapi/wiki/xmpp) | Connect to the chat server. A simple wrapper that takes care of menial tasks such as channel name encoding |
 
 Take a look at the [wiki](https://github.com/loldevs/riotapi/wiki) for a complete documentation.
@@ -22,6 +22,6 @@ We are on maven! Include the following in your <dependencies> in your pom.xml:
 <dependency>
   <groupId>net.boreeas</groupId>
   <artifactId>riotapi.$REQUIRED_MODULE</artifactId>
-  <version>1.6.1</version>
+  <version>2.0.0</version>
 </dependency>
 ```

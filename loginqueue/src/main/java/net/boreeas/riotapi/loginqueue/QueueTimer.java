@@ -51,9 +51,9 @@ public class QueueTimer extends Thread {
     }
 
 
-    public String await() throws InterruptedException {
+    public IngameCredentials await() throws InterruptedException {
         this.latch.await();
-        return getResultOrError().getToken();
+        return getResultOrError().getInGameCredentials();
     }
 
     public AuthResult await(long timeout, TimeUnit unit) throws InterruptedException {

@@ -45,7 +45,7 @@ public class LoginQueue {
     private WebTarget tgt;
 
     public LoginQueue(Shard shard) {
-        tgt = ClientBuilder.newClient().target(shard.loginQueue).path("login-queue/rest/queue/authenticate");
+        tgt = ClientBuilder.newClient().target(shard.loginQueue).path("login-queue/rest/queues/lol/authenticate");
     }
 
     @SneakyThrows
@@ -60,7 +60,6 @@ public class LoginQueue {
             throw new RequestException(response.getStatus());
         }
 
-
         String json;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader((InputStream) response.getEntity()))) {
             json = reader.readLine();
@@ -73,8 +72,8 @@ public class LoginQueue {
             case "FAILED":
                 throw new RequestException("Login failed: " + result.get("reason").getAsString());
             case "LOGIN":
-                IngameCredentials credentials = new Gson().fromJson(result.get("inGameCredentials"), IngameCredentials.class);
-                return new AuthResult(result.get("token").getAsString(), credentials);
+                IngameCredentials credentials = new Gson().fromJson(result.get("lqt"), IngameCredentials.class);
+                return new AuthResult(credentials);
             case "QUEUE":
                 Type type = new TypeToken<List<Ticker>>(){}.getType();
                 List<Ticker> tickers = new Gson().fromJson(result.get("tickers"), type);
@@ -91,7 +90,7 @@ public class LoginQueue {
     }
 
     @SneakyThrows
-    public String waitInQueueBlocking(String user, String password) {
+    public IngameCredentials waitInQueueBlocking(String user, String password) {
         return waitInQueue(user, password).await();
     }
 }

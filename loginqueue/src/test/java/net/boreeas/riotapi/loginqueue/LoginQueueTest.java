@@ -47,7 +47,7 @@ public class LoginQueueTest extends TestCase {
         Properties prop = new Properties();
         prop.load(new InputStreamReader(new FileInputStream("testconfig.properties")));
 
-        String token = new LoginQueue(Shard.EUW).waitInQueueBlocking(prop.getProperty("user"), prop.getProperty("pass"));
+        IngameCredentials token = new LoginQueue(Shard.EUW).waitInQueueBlocking(prop.getProperty("user"), prop.getProperty("pass"));
         System.out.println("LQ token: " + token);
     }
 }

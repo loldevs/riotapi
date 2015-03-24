@@ -25,10 +25,12 @@ import lombok.ToString;
 @Getter
 @ToString
 public class IngameCredentials {
-    private boolean inGame;
-    private Long summonerId;
-    private String serverIp;
-    private Long serverPort;
-    private String encryptionKey;
-    private String handshakeToken;
+    private String other;
+    private String fingerprint;
+    private String signature;
+    private long timestamp;
+    private String uuid;
+    private String resources;
+    private long account_id;
+    private String account_name;
 }

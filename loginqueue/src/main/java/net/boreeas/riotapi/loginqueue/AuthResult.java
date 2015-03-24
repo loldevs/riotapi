@@ -30,16 +30,14 @@ public class AuthResult {
 
     private Status status;
 
-    private String token;
     private IngameCredentials inGameCredentials;
 
     private int delay;
     private int node;
     private List<Ticker> tickers;
 
-    public AuthResult(String token, IngameCredentials inGameCredentials) {
+    public AuthResult(IngameCredentials inGameCredentials) {
         this.status = Status.OK;
-        this.token = token;
         this.inGameCredentials = inGameCredentials;
     }
 
@@ -59,9 +57,9 @@ public class AuthResult {
         return ticker.getId() - ticker.getCurrent();
     }
 
-    public String getToken() {
+    public IngameCredentials getCredentials() {
         if (status == Status.OK) {
-            return token;
+            return inGameCredentials;
         }
 
         throw new IllegalStateException("Still in queue");

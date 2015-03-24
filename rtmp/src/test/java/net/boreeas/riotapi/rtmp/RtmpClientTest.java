@@ -20,8 +20,11 @@ import junit.framework.TestCase;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
 import net.boreeas.riotapi.Shard;
+import net.boreeas.riotapi.com.riotgames.platform.game.Game;
 import net.boreeas.riotapi.com.riotgames.platform.game.GameMode;
+import net.boreeas.riotapi.com.riotgames.platform.game.PracticeGameConfig;
 import net.boreeas.riotapi.com.riotgames.platform.game.QueueType;
+import net.boreeas.riotapi.com.riotgames.platform.game.map.GameMap;
 import net.boreeas.riotapi.com.riotgames.platform.login.impl.ClientVersionMismatchException;
 import net.boreeas.riotapi.com.riotgames.platform.matchmaking.GameQueueConfig;
 import net.boreeas.riotapi.com.riotgames.platform.matchmaking.MatchMakerParams;
@@ -31,12 +34,14 @@ import net.boreeas.riotapi.com.riotgames.platform.summoner.runes.SummonerRuneInv
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePageBook;
 import net.boreeas.riotapi.com.riotgames.team.dto.Team;
 import net.boreeas.riotapi.constants.Season;
+import net.boreeas.riotapi.loginqueue.IngameCredentials;
 import net.boreeas.riotapi.loginqueue.LoginQueue;
 
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -78,11 +83,11 @@ public class RtmpClientTest extends TestCase {
 
         String user = testConfig.getProperty("user");
         String pass = testConfig.getProperty("pass");
-        String authKey = new LoginQueue(shard).waitInQueue(user, pass).await();
+        IngameCredentials authKey = new LoginQueue(shard).waitInQueue(user, pass).await();
 
         try {
             client.connect();
-            client.authenticate(user, pass, authKey, "4.13.14_07_25_15_10");
+            client.authenticate(user, pass, authKey, "5.5.15_03_09_13_59");
         } catch (ClientVersionMismatchException ex) {
             log.info("Reconnecting with version " + ex.getCurrentVersion());
             client.authenticate(user, pass, new LoginQueue(shard).waitInQueue(user, pass).await(), ex.getCurrentVersion());
@@ -259,9 +264,27 @@ public class RtmpClientTest extends TestCase {
         client.summonerTeamService.isTagValidAndAvailable("TEST");
     }
 
+
+    public void testStartCustomGame() throws Exception {
+        PracticeGameConfig config = new PracticeGameConfig();
+        config.setAllowSpectators("ALL");
+        config.setPassbackUrl(null);
+        config.setRegion("");
+        config.setGameName("My super secret test game " + UUID.randomUUID());
+        config.setPassbackDataPacket(null);
+        config.setGamePassword("yoyoyo");
+        config.setGameTypeConfig(1);
+        config.setGameMap(GameMap.SUMMONERS_RIFT_NEW);
+        config.setGameMode(GameMode.CLASSIC.name());
+        config.setMaxNumPlayers(10);
+        Game practiceGame = client.gameService.createPracticeGame(config);
+
+        client.gameService.startChampionSelect(practiceGame.getId(), 2);
+    }
+
     /*
     CountDownLatch latch = new CountDownLatch(1);
-    public void testSomething() throws InterruptedException {
+    public void testAcceptExternGameInvite() throws InterruptedException {
         client.addAsyncChannelListener(this::callback, client.getClientNewsChannel());
         latch.await();
     }

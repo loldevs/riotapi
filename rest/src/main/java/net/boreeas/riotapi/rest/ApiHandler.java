@@ -63,7 +63,7 @@ public class ApiHandler implements LoLRestApi {
 
 
     private static final String API_GLOBAL_URL = "https://global.api.pvp.net/api/lol";
-    private static final String SPECTATOR_API_URL = "http://%s.api.pvp.net/observer-mode/rest";
+    private static final String SPECTATOR_API_URL = "https://%s.api.pvp.net/observer-mode/rest";
 
     private Gson gson = builder.create();
     private WebTarget championInfoTarget;
@@ -1523,7 +1523,8 @@ public class ApiHandler implements LoLRestApi {
             throw new RequestException(response.getStatus(), RequestException.ErrorType.getByCode(response.getStatus()));
         }
 
-        if (response.getHeaderString("Content-Encoding").equals("gzip")) {
+        String encoding = response.getHeaderString("Content-Encoding");
+        if (encoding != null && encoding.equals("gzip")) {
             return new InputStreamReader(new GZIPInputStream((java.io.InputStream) response.getEntity()));
         } else {
             return new InputStreamReader((java.io.InputStream) response.getEntity());

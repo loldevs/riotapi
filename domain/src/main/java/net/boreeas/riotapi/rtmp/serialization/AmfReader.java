@@ -514,7 +514,7 @@ public class AmfReader extends InputStream implements ObjectInput {
             }
 
             if (field == null) {
-                if (fieldName.equals("futureData") || fieldName.equals("dataVersion")) {
+                if (fieldName.equals("futureData") || fieldName.equals("dataVersion") || fieldName.equals("DSSubtopic") || fieldName.equals("DSId")) {
                     log.trace("No match for field " + (type.isEmpty() ? "<anonymous>" : type) + "." + fieldName + " in " + match);
                 } else {
                     log.warn("No match for field " + (type.isEmpty() ? "<anonymous>" : type) + "." + fieldName + " in " + match);

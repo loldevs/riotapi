@@ -106,7 +106,7 @@ public class XmppClient extends XMPPTCPConnection {
 					//throw new IllegalStateException("Could not join room", e);
 				}
 			} else {
-				room.join(getUser(), password);
+				room.join(getUsername(), password);
 			}
 
 			return room;
@@ -149,12 +149,10 @@ public class XmppClient extends XMPPTCPConnection {
 	 * @throws NoSuchAlgorithmException the no such algorithm exception
 	 */
 	@SneakyThrows(IOException.class)
-	public String sha1(String input) throws NoSuchAlgorithmException {
+	public static String sha1(String input) throws NoSuchAlgorithmException {
 		MessageDigest mDigest = MessageDigest.getInstance("SHA1");
 		byte[] result = mDigest.digest(input.getBytes("UTF-8"));
 		String resultString = String.format("%040x", new BigInteger(1, result));
 		return resultString;
 	}
-
-
 }

@@ -86,6 +86,7 @@ public abstract class RtmpClient implements AutoCloseable {
     @Getter private LoginDataPacket loginDataPacket;
     private ScheduledExecutorService heartbeatExecutor = Executors.newScheduledThreadPool(1);
     private int heartbeats = 1;
+    @Setter @Getter private boolean debug;
 
     // Async await
     private Map<Integer, InvokeCallback> callbacks = new HashMap<>();
@@ -338,12 +339,15 @@ public abstract class RtmpClient implements AutoCloseable {
         log.info("Connecting to " + host + ":" + port);
         this.socket = useSSL ? SSLSocketFactory.getDefault().createSocket(host, port) : new Socket(host, port);
 
-        // Debug stuff
-        //AmfWriter writer = new AmfWriter(new DumpingOutputStream(socket.getOutputStream()));
-        //AmfReader reader = new AmfReader(new DumpingInputStream(socket.getInputStream()));
-
-        AmfWriter writer = new AmfWriter(socket.getOutputStream());
-        AmfReader reader = new AmfReader(socket.getInputStream());
+        AmfWriter writer;
+        AmfReader reader;
+        if (debug) {
+            writer = new AmfWriter(new DumpingOutputStream(socket.getOutputStream()));
+            reader = new AmfReader(new DumpingInputStream(socket.getInputStream()));
+        } else {
+            writer = new AmfWriter(socket.getOutputStream());
+            reader = new AmfReader(socket.getInputStream());
+        }
 
         try {
             doHandshake(writer, reader);

@@ -36,14 +36,15 @@ public enum MasteryData {
     private MasteryData(String name) {
         this.name = name;
     }
-
-    public static MasteryData getByName() {
+/*
+    public static MasteryData getByName(String name) {
         for (MasteryData data: values()) {
-            if (data.name.equals(data)) {
+            if (data.name.equals(name)) {
                 return data;
             }
         }
 
         return null;
     }
+*/
 }

@@ -16,7 +16,7 @@
 
 package net.boreeas.riotapi.rest;
 
-import lombok.Data;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * @author Malte Schütze
  */
-@Data
+@Getter
 public class ShardStatus extends ShardData {
     private List<Service> services = new ArrayList<>();
 }

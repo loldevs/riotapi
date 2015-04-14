@@ -34,6 +34,9 @@ public class Game {
     private String spectatorsAllowed;
     private boolean passwordSet;
     private GameType gameType;
+    /**
+     * See LoginDataPacket.gameTypeConfigs for more information
+     */
     private int gameTypeConfigId;
     // TODO inspect
     private Object glmGameId;

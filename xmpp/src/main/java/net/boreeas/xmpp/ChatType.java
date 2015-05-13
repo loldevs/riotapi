@@ -18,67 +18,67 @@ package net.boreeas.xmpp;
 
 public enum ChatType {
 
-	/**
-	 * For custom game lobbies
-	 */
-	ARRANGING_PRACTICE("ap"),
-	/**
-	 * Maybe in-client team chat?
-	 */
-	RANKED_TEAM("tm"),
-	/**
-	 * Maybe blue team's champ select chat?
-	 */
-	CHAMPION_SELECT1("c1"),
-	/**
-	 * Maybe red team's champ select chat?
-	 */
-	CHAMPION_SELECT2("c2"),
-	/**
-	 * Private chat rooms
-	 */
-	PRIVATE("pr"),
-	/**
-	 * For the team creation chat
-	 */
-	ARRANGING_GAME("ag"),
-	/**
-	 * No idea
-	 */
-	GLOBAL("gl"),
-	/**
-	 * Public chat rooms
-	 */
-	PUBLIC("pu"),
-	/**
-	 * Team builder chat
-	 */
-	CAP("cp"),
-	/**
-	 * The "in queue" chat
-	 */
-	QUEUED("aq"),
-	/**
-	 * No idea
-	 */
-	CTA("cta"),
-	/**
-	 * Chat after a game    
-	 */
-	POST_GAME("pg");
+    /**
+     * For custom game lobbies
+     */
+    ARRANGING_PRACTICE("ap"),
+    /**
+     * Maybe in-client team chat?
+     */
+    RANKED_TEAM("tm"),
+    /**
+     * Maybe blue team's champ select chat?
+     */
+    CHAMPION_SELECT1("c1"),
+    /**
+     * Maybe red team's champ select chat?
+     */
+    CHAMPION_SELECT2("c2"),
+    /**
+     * Private chat rooms
+     */
+    PRIVATE("pr"),
+    /**
+     * For the team creation chat
+     */
+    ARRANGING_GAME("ag"),
+    /**
+     * No idea
+     */
+    GLOBAL("gl"),
+    /**
+     * Public chat rooms
+     */
+    PUBLIC("pu"),
+    /**
+     * Team builder chat
+     */
+    CAP("cp"),
+    /**
+     * The "in queue" chat
+     */
+    QUEUED("aq"),
+    /**
+     * No idea
+     */
+    CTA("cta"),
+    /**
+     * Chat after a game
+     */
+    POST_GAME("pg");
 
-	public final String type;
+    public final String type;
 
-	private ChatType(String type) {
-		this.type = type;
-	}
+    private ChatType(String type) {
+        this.type = type;
+    }
 
-	public ChatType resolve(String type) {
-		for (ChatType t : values()) {
-			if (t.type.equals(type)) {
-				return t;
-			}
-		}
-		return null;
-	}
+    public ChatType resolve(String type) {
+        for (ChatType t : values()) {
+            if (t.type.equals(type)) {
+                return t;
+            }
+        }
+        return null;
+    }
 }

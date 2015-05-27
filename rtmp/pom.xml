@@ -42,10 +42,5 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>net.boreeas</groupId>
-            <artifactId>riotapi.loginqueue</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
 </project>

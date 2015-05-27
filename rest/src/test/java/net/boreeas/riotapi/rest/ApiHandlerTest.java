@@ -84,7 +84,6 @@ public class ApiHandlerTest extends TestCase {
         try {
             Future<List<BasicChampData>> ftpChamps = handler.getFreeToPlayChampions();
             assertNotNull(ftpChamps.get(1, MINUTES));
-            assertEquals((ftpChamps.get()).size(), 10);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
             if (isNotServerside(ex)) throw ex;

@@ -40,7 +40,6 @@
             <groupId>net.boreeas</groupId>
             <artifactId>riotapi.loginqueue</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

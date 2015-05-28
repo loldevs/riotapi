@@ -30,5 +30,5 @@ import net.boreeas.riotapi.rtmp.serialization.Serialization;
 @ToString
 @Serialization(name = "com.riotgames.platform.reroll.pojo.AramPlayerParticipant")
 public class AramPlayerParticipant extends PlayerParticipant {
-    private int pointSummary;
+    private PointSummary pointSummary;
 }

@@ -292,7 +292,7 @@ public class RtmpClientTest extends TestCase {
             //LobbyStatus accept = client.lcdsGameInvitationService.accept(((InvitationRequest) evt.getBody()).getInvitationId());
             client.sendRpcToDefault(LcdsGameInvitationService.SERVICE, "accept", ((InvitationRequest) evt.getBody()).getInvitationId());
             System.out.println("" + client.sendRpcAndWait(LcdsGameInvitationService.SERVICE, "checkLobbyStatus"));
-            System.out.println(client.lcdsGameInvitationService.getLobbyStatus());
+            System.out.println(client.lcdsGameInvitationService.checkLobbyStatus());
             System.out.println("Status done");
             latch.countDown();
         }

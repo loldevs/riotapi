@@ -76,8 +76,8 @@ public class LcdsGameInvitationService {
      * Retrieve the lobby status for the current team lobby
      * @return The lobby status
      */
-    public LobbyStatus getLobbyStatus() {
-        return client.sendRpcAndWait(SERVICE, "getLobbyStatus");
+    public LobbyStatus checkLobbyStatus() {
+        return client.sendRpcAndWait(SERVICE, "checkLobbyStatus");
     }
 
     /**

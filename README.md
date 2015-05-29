@@ -22,6 +22,6 @@ We are on maven! Include the following in your <dependencies> in your pom.xml:
 <dependency>
   <groupId>net.boreeas</groupId>
   <artifactId>riotapi.$REQUIRED_MODULE</artifactId>
-  <version>2.0.2</version>
+  <version>2.0.2  </version>
 </dependency>
 ```

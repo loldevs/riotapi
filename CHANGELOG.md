@@ -1,8 +1,13 @@
 # Changelog
 ---------
+### 2.0.3
+##### Rtmp
+* LcdsGameInvitationStatus.getLobbyStatus has been renamed to checkLobbyStatus
+
 ### 2.0.1
 ##### Domain
 * Fixed misspelled field name in com.riotgames.platform.gameinvite.contract.Member (hasDelegateInvitePower -> hasDelegatedInvitePower)
+
 
 
 ### 2.0.0

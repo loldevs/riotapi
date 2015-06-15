@@ -1,6 +1,10 @@
 # Changelog
 ---------
+
 ### 2.0.3
+##### Domain
+* Fixed a bug where multiple prod urls where not being parsed correctly
+
 ##### Rtmp
 * LcdsGameInvitationStatus.getLobbyStatus has been renamed to checkLobbyStatus
 

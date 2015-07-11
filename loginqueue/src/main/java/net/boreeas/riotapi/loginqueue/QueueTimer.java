@@ -31,7 +31,7 @@ public class QueueTimer extends Thread {
 
     private static final int MAX_CLOUDFLARE_ERROR_RETRY = 3;
 
-    private LoginQueue loginQueue;
+    private LoginProvider loginQueue;
     private String user;
     private String password;
 
@@ -43,7 +43,7 @@ public class QueueTimer extends Thread {
     private RuntimeException ex;
     private int cloudflareErrorCounter = 0;
 
-    public QueueTimer(LoginQueue loginQueue, String user, String password) {
+    public QueueTimer(LoginProvider loginQueue, String user, String password) {
         super("Queue Timer for " + user);
         this.loginQueue = loginQueue;
         this.user = user;
@@ -51,9 +51,9 @@ public class QueueTimer extends Thread {
     }
 
 
-    public IngameCredentials await() throws InterruptedException {
+    public String await() throws InterruptedException {
         this.latch.await();
-        return getResultOrError().getInGameCredentials();
+        return getResultOrError().getToken();
     }
 
     public AuthResult await(long timeout, TimeUnit unit) throws InterruptedException {

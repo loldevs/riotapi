@@ -16,7 +16,6 @@
 
 package net.boreeas.riotapi.rtmp;
 
-import com.google.gson.Gson;
 import com.gvaneyck.rtmp.DummySSLSocketFactory;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +25,6 @@ import net.boreeas.riotapi.com.riotgames.platform.account.impl.AccountState;
 import net.boreeas.riotapi.com.riotgames.platform.clientfacade.domain.LoginDataPacket;
 import net.boreeas.riotapi.com.riotgames.platform.login.AuthenticationCredentials;
 import net.boreeas.riotapi.com.riotgames.platform.login.Session;
-import net.boreeas.riotapi.loginqueue.IngameCredentials;
 import net.boreeas.riotapi.rtmp.messages.*;
 import net.boreeas.riotapi.rtmp.messages.control.*;
 import net.boreeas.riotapi.rtmp.serialization.*;
@@ -460,16 +458,16 @@ public abstract class RtmpClient implements AutoCloseable {
     }
 
 
-    public void authenticate(String user, String password, IngameCredentials credentials, String clientVersion) {
-        authenticate(user, password, credentials, clientVersion, "en_GB");
+    public void authenticate(String user, String password, String authToken, String clientVersion) {
+        authenticate(user, password, authToken, clientVersion, "en_GB");
     }
 
-    public Session authenticate(String user, String password, IngameCredentials ignCreds, String clientVersion, String locale) {
+    public Session authenticate(String user, String password, String authToken, String clientVersion, String locale) {
         AuthenticationCredentials credentials = new AuthenticationCredentials();
         credentials.setUsername(user);
         credentials.setPassword(password);
         credentials.setClientVersion(clientVersion);
-        credentials.setAuthToken(new Gson().toJson(ignCreds));
+        credentials.setAuthToken(authToken);
         credentials.setLocale(locale);
         //String addr = Util.getConnectionInfoIpAddr();
         //credentials.setIpAddress(addr);
@@ -477,7 +475,7 @@ public abstract class RtmpClient implements AutoCloseable {
         credentials.setDomain("lolclient.lol.riotgames.com");
         credentials.setOperatingSystem("Windows 8");
 
-        log.info("Login service call: " + user + "/***/" + ignCreds+ " on client version " + clientVersion + " (locale " + locale + ")");
+        log.info("Login service call: " + user + "/***/" + authToken+ " on client version " + clientVersion + " (locale " + locale + ")");
 
         this.session = loginService.login(credentials);
 

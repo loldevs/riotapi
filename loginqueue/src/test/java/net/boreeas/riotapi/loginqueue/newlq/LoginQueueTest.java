@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.loginqueue;
+package net.boreeas.riotapi.loginqueue.newlq;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 import net.boreeas.riotapi.Shard;
 import net.boreeas.riotapi.com.riotgames.platform.account.management.InvalidCredentialsException;
+import net.boreeas.riotapi.loginqueue.AuthResult;
 
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -30,7 +32,7 @@ public class LoginQueueTest extends TestCase {
     public void testGetAuthKeyInvalidCredentials() throws Exception {
         try {
             new LoginQueue(Shard.NA).getAuthToken("Foo", "");
-            fail();
+            Assert.fail();
         } catch (InvalidCredentialsException ex) {
         }
     }
@@ -38,7 +40,7 @@ public class LoginQueueTest extends TestCase {
     public void testQueueWait() throws Exception {
         try {
             AuthResult result = new LoginQueue(Shard.NA).waitInQueue("foo", "").await(2, TimeUnit.SECONDS);
-            fail();
+            Assert.fail();
         } catch (InvalidCredentialsException ex) {
         }
     }
@@ -47,7 +49,7 @@ public class LoginQueueTest extends TestCase {
         Properties prop = new Properties();
         prop.load(new InputStreamReader(new FileInputStream("testconfig.properties")));
 
-        IngameCredentials token = new LoginQueue(Shard.EUW).waitInQueueBlocking(prop.getProperty("user"), prop.getProperty("pass"));
+        String token = new LoginQueue(Shard.EUW).waitInQueueBlocking(prop.getProperty("user"), prop.getProperty("pass"));
         System.out.println("LQ token: " + token);
     }
 }

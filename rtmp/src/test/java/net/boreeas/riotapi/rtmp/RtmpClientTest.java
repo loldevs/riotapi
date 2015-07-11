@@ -31,7 +31,6 @@ import net.boreeas.riotapi.com.riotgames.platform.summoner.runes.SummonerRuneInv
 import net.boreeas.riotapi.com.riotgames.platform.summoner.spellbook.RunePageBook;
 import net.boreeas.riotapi.com.riotgames.team.dto.Team;
 import net.boreeas.riotapi.constants.Season;
-import net.boreeas.riotapi.loginqueue.IngameCredentials;
 import net.boreeas.riotapi.loginqueue.LoginQueue;
 
 import java.io.FileInputStream;
@@ -79,7 +78,7 @@ public class RtmpClientTest extends TestCase {
 
         String user = testConfig.getProperty("user");
         String pass = testConfig.getProperty("pass");
-        IngameCredentials authKey = new LoginQueue(shard).waitInQueue(user, pass).await();
+        String authKey = new LoginQueue(shard).waitInQueueBlocking(user, pass);
 
         try {
             client.connect();

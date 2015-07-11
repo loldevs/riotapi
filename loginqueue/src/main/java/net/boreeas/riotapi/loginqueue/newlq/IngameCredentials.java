@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 The LolDevs team (https://github.com/loldevs)
+ * Copyright 2014 The LolDevs team (https://github.com/loldevs)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package net.boreeas.riotapi.loginqueue;
+package net.boreeas.riotapi.loginqueue.newlq;
 
-import java.util.List;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
- * @author Malte Schütze
+ * Created by malte on 7/12/2014.
  */
-public interface AuthResult {
-    List<Ticker> getTickers();
-
-    int getPosition();
-
-    String getToken();
-
-    Status getStatus();
-
-    int getDelay();
-
-    int getNode();
-
-    public enum Status { OK, QUEUE }
+@Getter
+@ToString
+public class IngameCredentials {
+    private String other;
+    private String fingerprint;
+    private String signature;
+    private long timestamp;
+    private String uuid;
+    private String resources;
+    private long account_id;
+    private String account_name;
 }

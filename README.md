@@ -17,7 +17,7 @@ Take a look at the [wiki](https://github.com/loldevs/riotapi/wiki) for a complet
 See our [release listing](https://github.com/loldevs/riotapi/releases)
 
 ## Get It
-We are on maven! Include the following in your <dependencies> in your pom.xml:
+We are on maven! Include the following in the <dependencies> section of your pom.xml:
 ```xml
 <dependency>
   <groupId>net.boreeas</groupId>

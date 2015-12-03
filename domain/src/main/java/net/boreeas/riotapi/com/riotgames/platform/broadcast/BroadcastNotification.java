@@ -48,7 +48,10 @@ public class BroadcastNotification implements Externalizable {
 
     public void readExternal(ObjectInput in) throws IOException {
         byte[] buffer = new byte[in.readInt()];
-        in.read(buffer);
+        int i = 0;
+        while (i < buffer.length - 1) {
+            i += in.read(buffer, i, buffer.length - i);
+        }
         String json = new String(buffer, "UTF-8");
         JsonElement elem = new JsonParser().parse(json);
         this.json = elem == null || elem.isJsonNull() ? null : elem.getAsJsonObject();

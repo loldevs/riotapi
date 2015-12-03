@@ -1,5 +1,14 @@
 # Changelog
 ---------
+### 2.0.5
+##### Domain
+* Added MasteryGroup.version and MasteryRow.maxPointsInRow
+* Added LeagueItem.inactivityStatus and LeagueItem.timeUntilInactivityStatusChanges
+* Added new QueueTypes
+
+### 2.0.4
+##### Loginqueue
+* Reverted to old login queue. Sorry for the breakage
 
 ### 2.0.3
 ##### Domain

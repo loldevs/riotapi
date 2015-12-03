@@ -33,6 +33,7 @@ public enum QueueType {
     ARAM_UNRANKED_3x3       (Flags.ARAM),
     ARAM_UNRANKED_5x5       (Flags.ARAM),
     ARAM_UNRANKED_6x6       (Flags.ARAM),
+    BILGEWATER              (Flags.ARAM | Flags.FEATURED),
     BOT                     (Flags.BOT),
     BOT_3x3                 (Flags.BOT),
     BOT_5x5                 (Flags.BOT),
@@ -53,6 +54,7 @@ public enum QueueType {
     FIRSTBLOOD_1x1          (Flags.FEATURED),
     FIRSTBLOOD_2x2          (Flags.FEATURED),
     GROUP_FINDER_5x5        (Flags.TEAM_BUILDER),
+    HEXAKILL                (Flags.FEATURED),
     KINGPORO                (Flags.FEATURED),
     KING_PORO               (Flags.FEATURED),
     KING_PORO_5x5           (Flags.FEATURED),
@@ -73,6 +75,9 @@ public enum QueueType {
     ODIN_RANKED_PREMADE     (Flags.RANKED | Flags.DRAFT | Flags.PREMADE | Flags.DOMINION),
     ODIN_RANKED_SOLO        (Flags.RANKED | Flags.DRAFT | Flags.DOMINION),
     ODIN_UNRANKED           (Flags.DOMINION),
+    ODINBOT                 (Flags.DOMINION),
+    @SerializedName("ODINBOT-5x5")
+    ODINBOT_5x5             (Flags.DOMINION),
     ONEFORALL               (Flags.FEATURED),
     ONEFORALL_5x5           (Flags.FEATURED),
     RANKED_PREMADE_3x3      (Flags.RANKED | Flags.DRAFT | Flags.PREMADE),
@@ -157,7 +162,6 @@ public enum QueueType {
         return (this.flags & flags) >= flags;
     }
 
-
     public static QueueType getByName(String name) {
         for (QueueType type: values()) {
             if (type.name().equals(name)) {
@@ -165,7 +169,7 @@ public enum QueueType {
             }
         }
 
-        return null;
+        throw new IllegalArgumentException("Unknown queue type: " + name);
     }
 
     public static class Flags {

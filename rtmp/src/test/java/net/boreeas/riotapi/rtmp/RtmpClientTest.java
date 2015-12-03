@@ -72,6 +72,7 @@ public class RtmpClientTest extends TestCase {
         testConfig.load(new InputStreamReader(new FileInputStream("testconfig.properties")));
 
         client = new DefaultRtmpClient(shard.prodUrl, Shard.RTMPS_PORT, true);
+        //client.setDebug(true);
         asyncMessageReceiver = new AsyncMessageReceiver();
         client.addAsyncChannelListener(asyncMessageReceiver);
         //client = new DefaultRtmpClient("localhost", 2099, true);

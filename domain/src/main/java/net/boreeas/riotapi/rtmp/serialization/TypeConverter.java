@@ -17,6 +17,7 @@
 package net.boreeas.riotapi.rtmp.serialization;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.extern.log4j.Log4j;
 import net.boreeas.riotapi.rtmp.serialization.amf3.DynamicObject;
 
@@ -31,6 +32,12 @@ import java.util.*;
  */
 @Log4j
 public class TypeConverter {
+
+    private static Gson gson;
+    static {
+        GsonBuilder builder = new GsonBuilder();
+        gson = builder.create();
+    }
 
     /**
      * There may be type mismatched caused by the serialization process which we try to fix here
@@ -216,7 +223,12 @@ public class TypeConverter {
         }
 
         if (json && obj instanceof String) {
-            return new Gson().fromJson((String) obj, cls);
+            try {
+                return gson.fromJson((String) obj, cls);
+            } catch (Exception e) {
+                System.out.println("Possibly malformed json: " + obj);
+                return gson.fromJson((String) obj, cls);
+            }
         }
 
         throw new IllegalArgumentException("Unknown conversion " + obj.getClass() + " => " + cls);

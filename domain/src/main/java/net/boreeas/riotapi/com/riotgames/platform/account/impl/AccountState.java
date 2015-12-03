@@ -35,7 +35,7 @@ public enum AccountState {
             case "TRANSFERRING_OUT":return TRANSFERRING_OUT;
             case "TRANSFERRED_OUT": return TRANSFERRED_OUT;
             case "GENERATING":      return GENERATING;
-            default:                return null;
+            default:                throw new IllegalArgumentException("Unknown account state: " + name);
         }
     }
 }

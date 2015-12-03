@@ -44,8 +44,6 @@ public class LoginDataPacket {
     private int maxPracticeGameSize;
     private SummonerCatalog summonerCatalog;
     private long ipBalance;
-    // TODO inspect
-    private Object recconectInfo;
     private List<String> languages;
     // TODO inspect
     private List<Object> simpleMessages = new ArrayList<>();

@@ -53,7 +53,10 @@ public class ClientSystemStatesNotification implements Externalizable {
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         byte[] buffer = new byte[in.readInt()];
-        in.read(buffer);
+        int i = 0;
+        while (i < buffer.length - 1) {
+            i += in.read(buffer, i, buffer.length - i);
+        }
         String json = new String(buffer, "UTF-8");
         this.inner = new Gson().fromJson(json, Inner.class);
     }

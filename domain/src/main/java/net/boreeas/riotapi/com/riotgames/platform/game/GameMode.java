@@ -39,6 +39,6 @@ public enum GameMode {
             }
         }
 
-        return null;
+        throw new IllegalArgumentException("Unknown game mode: " + name);
     }
 }

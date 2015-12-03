@@ -16,11 +16,12 @@
 
 package net.boreeas.riotapi.com.riotgames.platform.login.impl;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import net.boreeas.riotapi.com.riotgames.platform.messaging.PlatformException;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
-
-import java.util.HashSet;
 
 /**
  * Created on 7/21/2014.
@@ -28,7 +29,9 @@ import java.util.HashSet;
 @Data
 @Serialization(name = "com.riotgames.platform.login.impl.ClientVersionMismatchException")
 public class ClientVersionMismatchException extends PlatformException {
-    private HashSet<Object> surpressed = new HashSet<>();
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private Object suppressed;
 
     public String toString() {
         String s = getClass().getName();

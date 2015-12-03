@@ -39,4 +39,5 @@ public class MasteryGroup {
     private String name;
     @SerializedName(name = "tltGroupId")
     private int masteryGroupId;
+    private int version;
 }

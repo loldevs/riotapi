@@ -394,7 +394,7 @@ public enum Shard {
                     version = versions.get(i);
                     return this;
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(Shard.class).error("No shard data listing for " + cdnTag + "/" + versions.get(i).getVersionString());
+                    Logger.getLogger(Shard.class).warn("No shard data listing for " + cdnTag + "/" + versions.get(i).getVersionString());
                 }
             }
 

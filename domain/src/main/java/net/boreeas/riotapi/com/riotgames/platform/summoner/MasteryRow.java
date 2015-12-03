@@ -41,4 +41,5 @@ public class MasteryRow {
     private int pointsToActivate;
     @SerializedName(name = "tltRowId")
     private int id;
+    private int maxPointsInRow;
 }

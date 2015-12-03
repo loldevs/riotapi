@@ -38,6 +38,6 @@ public enum GameType {
             }
         }
 
-        return null;
+        throw new IllegalArgumentException("Unknown game type: " + name);
     }
 }

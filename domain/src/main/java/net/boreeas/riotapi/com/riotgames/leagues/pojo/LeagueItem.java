@@ -58,6 +58,8 @@ public class LeagueItem {
     private int previousDayLeaguePosition;
     private boolean displayDecayWarning;
     private int demotionWarning;
+    private long timeUntilInactivityStatusChanges;
+    private InactivityStatus inactivityStatus = InactivityStatus.UNKNOWN_STATUS;
 
     public int getRank() {
         switch (rank) {

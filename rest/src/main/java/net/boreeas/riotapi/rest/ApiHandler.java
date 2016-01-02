@@ -107,7 +107,7 @@ public class ApiHandler implements LoLRestApi {
             gameInfoTarget = defaultTarget.path("v1.3").path("game/by-summoner");
             leagueInfoTarget = defaultTarget.path("v2.5").path("league");
             matchInfoTarget = defaultTarget.path("v2.2").path("match");
-            matchHistoryInfoTarget = defaultTarget.path("v2.2").path("matchhistory");
+            matchHistoryInfoTarget = defaultTarget.path("v2.2").path("matchlist/by-summoner");
             statsTarget = defaultTarget.path("v1.3").path("stats/by-summoner");
             summonerInfoTarget = defaultTarget.path("v1.4").path("summoner");
             teamInfoTarget = defaultTarget.path("v2.4").path("team");

@@ -201,7 +201,7 @@ public class ApiHandlerTest extends TestCase {
 
     public void testGetMastery() throws InterruptedException, ExecutionException, TimeoutException {
         try {
-            handler.getMastery(4353, MasteryData.SANITIZED_DESCRIPTION).get(1, MINUTES);
+            handler.getMastery(6111, MasteryData.SANITIZED_DESCRIPTION).get(1, MINUTES);
         } catch (RequestException ex) {
             // 5xx errors indicate serverside issues
             if (isNotServerside(ex)) throw ex;

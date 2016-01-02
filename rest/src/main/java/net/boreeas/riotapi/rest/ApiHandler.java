@@ -306,10 +306,22 @@ public class ApiHandler implements LoLRestApi {
      *
      * @param queue The queue type for which to retrieve the league information
      * @return The queue's challenger league
-     * @see <a href=https://developer.riotgames.com/api/methods#!/593/1864>Official API documentation</a>
+     * @see <a href=https://developer.riotgames.com/api/methods#!/985/3354>Official API documentation</a>
      */
     public LeagueList getChallenger(QueueType queue) {
         WebTarget tgt = leagueInfoTarget.path("challenger").queryParam("type", queue.name());
+        return gson.fromJson($(tgt), LeagueList.class);
+    }
+    
+    /**
+     * Get the region's master league
+     *
+     * @param queue The queue type for which to retrieve the league information
+     * @return The queue's master league
+     * @see <a href=https://developer.riotgames.com/api/methods#!/593/1864>Official API documentation</a>
+     */
+    public LeagueList getMaster(QueueType queue) {
+        WebTarget tgt = leagueInfoTarget.path("master").queryParam("type", queue.name());
         return gson.fromJson($(tgt), LeagueList.class);
     }
 

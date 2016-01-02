@@ -305,6 +305,16 @@ public class ThrottledApiHandler implements AutoCloseable, LoLRestApi {
     public Future<LeagueList> getChallenger(QueueType queue) {
         return new ApiFuture<>(() -> handler.getChallenger(queue));
     }
+    
+    /**
+     * Get the region's master league
+     * @param queue The queue type for which to retrieve the league information
+     * @return The queue's master league
+     * @see <a href=https://developer.riotgames.com/api/methods#!/593/1864>Official API documentation</a>
+     */
+    public Future<LeagueList> getMaster(QueueType queue) {
+        return new ApiFuture<>(() -> handler.getMaster(queue));
+    }
 
 
     // </editor-fold>

@@ -153,6 +153,15 @@ public class ApiHandlerTest extends TestCase {
             if (isNotServerside(ex)) throw ex;
         }
     }
+    
+    public void testGetMaster() throws Exception {
+        try {
+            handler.getMaster(QueueType.RANKED_SOLO_5x5).get(1, MINUTES);
+        } catch (RequestException ex) {
+            // 5xx errors indicate serverside issues
+            if (isNotServerside(ex)) throw ex;
+        }
+    }
 
     public void testGetChampion() throws Exception {
         try {

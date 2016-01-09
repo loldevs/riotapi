@@ -19,7 +19,9 @@ package net.boreeas.riotapi.com.riotgames.platform.catalog.champion;
 import lombok.Data;
 import net.boreeas.riotapi.rtmp.serialization.Serialization;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created on 7/29/2014.
@@ -36,4 +38,5 @@ public class ChampionSkin {
     private boolean freeToPlayReward;
     private int skinId;
     private boolean owned;
+    private List<Object> sources = new ArrayList<>();
 }

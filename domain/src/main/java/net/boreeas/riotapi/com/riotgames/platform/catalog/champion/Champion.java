@@ -41,4 +41,5 @@ public class Champion {
     private int championId;
     private boolean freeToPlayReward;
     private boolean owned;
+    private List<Object> sources = new ArrayList<>();
 }

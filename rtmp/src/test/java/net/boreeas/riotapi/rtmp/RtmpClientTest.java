@@ -260,7 +260,7 @@ public class RtmpClientTest extends TestCase {
         client.summonerTeamService.isTagValidAndAvailable("TEST");
     }
 
-
+    
     /*
     public void testStartCustomGame() throws Exception {
         PracticeGameConfig config = new PracticeGameConfig();
@@ -276,7 +276,9 @@ public class RtmpClientTest extends TestCase {
         config.setMaxNumPlayers(10);
         Game practiceGame = client.gameService.createPracticeGame(config);
 
-        client.gameService.startChampionSelect(practiceGame.getId(), 2);
+        StartChampSelect startChampSelect = client.gameService.startChampionSelect(practiceGame.getId(), 2);
+        client.gameService.setClientReceivedGameMessage(practiceGame.getId(), "CHAMP_SELECT");
+        client.gameService.selectChampion(42);
     }
     */
     /*

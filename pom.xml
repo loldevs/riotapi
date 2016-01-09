@@ -31,7 +31,7 @@
     <description>A general purpose library for interfacing with various LoL services. This artifact is an aggregator for all submodules</description>
     <url>https://github.com/loldevs/riotapi</url>
     <packaging>pom</packaging>
-    <version>2.0.5</version>
+    <version>2.0.6</version>
 
 
     <properties>

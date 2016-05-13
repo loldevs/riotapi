@@ -55,8 +55,8 @@ public class Game {
     private Object statusOfParticipants;
     private long id;
     private PlayerParticipant ownerSummary;
-    private List<Participant> teamOne = new ArrayList<>();
-    private List<Participant> teamTwo = new ArrayList<>();
+    private List<PlayerParticipant> teamOne = new ArrayList<>();
+    private List<PlayerParticipant> teamTwo = new ArrayList<>();
     private List<BannedChampion> bannedChampions = new ArrayList<>();
     private String roomName;
     private String name;

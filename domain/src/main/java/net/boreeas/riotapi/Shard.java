@@ -252,7 +252,7 @@ public enum Shard {
         this.version = version;
 
         this.prodUrl = properties.getProperty("host", altProd).trim().split(",")[0];
-        this.chatUrl = properties.getProperty("xmpp_server", altChat).trim();
+        this.chatUrl = properties.getProperty("xmpp_server_url", altChat).trim();
         this.loginQueue = properties.getProperty("lq_uri", altLoginQueue).trim();
         this.name = properties.getProperty("regionTag", altName).trim();
         this.slug = this.name;

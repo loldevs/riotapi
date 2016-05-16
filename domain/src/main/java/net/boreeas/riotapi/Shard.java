@@ -135,6 +135,16 @@ public enum Shard {
             "https://lq.kr." + Constants.BASE_PATH,
             "prod.kr." + Constants.BASE_PATH,
             "http://spectator.kr." + Constants.BASE_PATH),
+    JP("jp",
+            String.format(Constants.API_PATH_TEMPLATE, "jp"),
+            Arrays.asList("jp1"),
+            // Alt values if loading fails
+            "jp",
+            "JP1",
+            "chat.jp1." + Constants.BASE_PATH,
+            "https://lq.jp1." + Constants.BASE_PATH.replaceAll("\\.com", ".jp"),
+            "prod.jp1." + Constants.BASE_PATH,
+            "http://spectator.jp1." + Constants.BASE_PATH),
 
     // The following shards apparently don't specify a properties listing
     PBE("pbe",

@@ -37,12 +37,14 @@ public class InProgressGameParticipant {
     private String summonerName;
     private long teamId;
 
-    private class Mastery {
+    @Data
+    public class Mastery {
         private int masteryId;
         private int rank;
     }
 
-    private class Rune {
+    @Data
+    public class Rune {
         private int count;
         private long runeId;
     }

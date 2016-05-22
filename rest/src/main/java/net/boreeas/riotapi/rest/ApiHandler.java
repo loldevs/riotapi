@@ -217,7 +217,7 @@ public class ApiHandler implements LoLRestApi {
      * @return A list of league entries
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1863>Official API documentation</a>
      */
-    public List<LeagueItem> getLeagueEntries(long summoner) {
+    public List<LeagueList> getLeagueEntries(long summoner) {
         return getLeagueItemsVarArgs(summoner).get(summoner);
     }
 
@@ -228,12 +228,12 @@ public class ApiHandler implements LoLRestApi {
      * @return A map, mapping summoner ids to lists of league entries for that summoner
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1863>Official API documentation</a>
      */
-    public Map<Long, List<LeagueItem>> getLeagueEntries(long... summoners) {
+    public Map<Long, List<LeagueList>> getLeagueEntries(long... summoners) {
         return getLeagueItemsVarArgs(summoners);
     }
 
-    private Map<Long, List<LeagueItem>> getLeagueItemsVarArgs(long... summoners) {
-        Type type = new TypeToken<Map<Long, List<LeagueItem>>>() {
+    private Map<Long, List<LeagueList>> getLeagueItemsVarArgs(long... summoners) {
+        Type type = new TypeToken<Map<Long, List<LeagueList>>>() {
         }.getType();
         WebTarget tgt = leagueInfoTarget.path("by-summoner/" + concat(summoners)).path("entry");
         return gson.fromJson($(tgt), type);

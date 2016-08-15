@@ -1,3 +1,6 @@
+# Warning
+Please note that this project is largely abandoned, and you should not expect further updates and support.
+
 # RiotAPI
 
 This is a Java 8 project designed to offer a simple binding to most League of Legends services. Right now this includes:

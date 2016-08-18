@@ -32,6 +32,7 @@ public class Champion {
     private int id;
     private Image image;
     private ChampionInfo info;
+    private String name;
     private String key;
     private String lore;
     private String partype;

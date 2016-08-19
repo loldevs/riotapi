@@ -111,7 +111,7 @@ public class ApiHandler implements LoLRestApi {
             statsTarget = defaultTarget.path("v1.3").path("stats/by-summoner");
             summonerInfoTarget = defaultTarget.path("v1.4").path("summoner");
             teamInfoTarget = defaultTarget.path("v2.4").path("team");
-            this.currentGameHandler = new CurrentGame("v1.0", spectatorTarget.path("consumer"));
+            this.currentGameHandler = new CurrentGame("v1.0", spectatorTarget.path("consumer"), shard.spectatorPlatformName);
             this.featuredGamesHandler = new FeaturedGamesHandler("v1.0", spectatorTarget.path("featured"));
         }
 
@@ -1479,15 +1479,17 @@ public class ApiHandler implements LoLRestApi {
     public class CurrentGame implements CurrentGameHandler {
         public final String version;
         private WebTarget target;
+        private String platformId;
 
-        public CurrentGame(String version, WebTarget target) {
+        public CurrentGame(String version, WebTarget target, String platformId) {
             this.version = version;
             this.target = target;
+            this.platformId = platformId;
         }
 
         @Override
         public CurrentGameInfo getCurrentGameInfo(long summoner) {
-            WebTarget tgt = target.path("getSpectatorGameInfo");
+            WebTarget tgt = target.path("getSpectatorGameInfo").path(platformId).path(String.valueOf(summoner));
             return gson.fromJson($(tgt), CurrentGameInfo.class);
         }
 

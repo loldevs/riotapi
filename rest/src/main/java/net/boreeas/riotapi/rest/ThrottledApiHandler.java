@@ -242,7 +242,7 @@ public class ThrottledApiHandler implements AutoCloseable, LoLRestApi {
      * @return A list of league entries
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1863>Official API documentation</a>
      */
-    public Future<List<LeagueItem>> getLeagueEntries(long summoner) {
+    public Future<List<LeagueList>> getLeagueEntries(long summoner) {
         return new ApiFuture<>(() -> handler.getLeagueEntries(summoner));
     }
 
@@ -252,7 +252,7 @@ public class ThrottledApiHandler implements AutoCloseable, LoLRestApi {
      * @return A map, mapping summoner ids to lists of league entries for that summoner
      * @see <a href=https://developer.riotgames.com/api/methods#!/593/1863>Official API documentation</a>
      */
-    public Future<Map<Long, List<LeagueItem>>> getLeagueEntries(long... summoners) {
+    public Future<Map<Long, List<LeagueList>>> getLeagueEntries(long... summoners) {
         return new ApiFuture<>(() -> handler.getLeagueEntries(summoners));
     }
 
